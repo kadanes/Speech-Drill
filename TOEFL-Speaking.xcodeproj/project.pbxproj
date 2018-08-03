@@ -8,17 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204ECAF21134A2200A51E8B /* RecordingCell.swift */; };
-		B204ECB22113740700A51E8B /* song.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B204ECB12113740700A51E8B /* song.mp3 */; };
 		B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB22210FF664009C678C /* AppDelegate.swift */; };
 		B21ABB25210FF664009C678C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB24210FF664009C678C /* ViewController.swift */; };
 		B21ABB28210FF664009C678C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB26210FF664009C678C /* Main.storyboard */; };
 		B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB29210FF664009C678C /* Assets.xcassets */; };
 		B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */; };
+		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
+		B22C8139211413AD00104E02 /* topics.txt in Resources */ = {isa = PBXBuildFile; fileRef = B22C8138211413AD00104E02 /* topics.txt */; };
+		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
+		B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C813C2114809700104E02 /* SectionHeaderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B204ECAF21134A2200A51E8B /* RecordingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
-		B204ECB12113740700A51E8B /* song.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = song.mp3; sourceTree = "<group>"; };
 		B21ABB1F210FF664009C678C /* TOEFL-Speaking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOEFL-Speaking.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B21ABB22210FF664009C678C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B21ABB24210FF664009C678C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,6 +28,10 @@
 		B21ABB29210FF664009C678C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B21ABB2C210FF664009C678C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B21ABB2E210FF664009C678C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		B22C8138211413AD00104E02 /* topics.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.txt; sourceTree = "<group>"; };
+		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
+		B22C813C2114809700104E02 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +49,7 @@
 			isa = PBXGroup;
 			children = (
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
+				B22C813C2114809700104E02 /* SectionHeaderCell.swift */,
 			);
 			path = "Custom Class";
 			sourceTree = "<group>";
@@ -50,6 +57,8 @@
 		B21ABB16210FF664009C678C = {
 			isa = PBXGroup;
 			children = (
+				B22C8138211413AD00104E02 /* topics.txt */,
+				B22C813A2114366E00104E02 /* topics.csv */,
 				B21ABB21210FF664009C678C /* TOEFL-Speaking */,
 				B21ABB20210FF664009C678C /* Products */,
 			);
@@ -66,7 +75,6 @@
 		B21ABB21210FF664009C678C /* TOEFL-Speaking */ = {
 			isa = PBXGroup;
 			children = (
-				B204ECB12113740700A51E8B /* song.mp3 */,
 				B204ECAE211349FE00A51E8B /* Custom Class */,
 				B21ABB35210FFA19009C678C /* Custom View */,
 				B21ABB22210FF664009C678C /* AppDelegate.swift */,
@@ -82,6 +90,7 @@
 		B21ABB35210FFA19009C678C /* Custom View */ = {
 			isa = PBXGroup;
 			children = (
+				B22C81362114133300104E02 /* RoundButton.swift */,
 			);
 			path = "Custom View";
 			sourceTree = "<group>";
@@ -145,9 +154,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B22C813B2114366E00104E02 /* topics.csv in Resources */,
 				B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */,
-				B204ECB22113740700A51E8B /* song.mp3 in Resources */,
 				B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */,
+				B22C8139211413AD00104E02 /* topics.txt in Resources */,
 				B21ABB28210FF664009C678C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,6 +185,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
+				B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */,
 				B21ABB25210FF664009C678C /* ViewController.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,

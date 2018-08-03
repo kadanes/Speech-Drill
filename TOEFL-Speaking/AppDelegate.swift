@@ -16,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let topicNumber  = UserDefaults.standard.integer(forKey: "topicNumber")
+        if (topicNumber == 0) {
+            UserDefaults.standard.set(1, forKey: "topicNumber")
+        }
+        
         return true
     }
 
