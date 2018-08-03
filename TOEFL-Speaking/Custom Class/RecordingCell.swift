@@ -58,6 +58,16 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
         }
     }
     
+    @IBAction func shareRecordingPressed(_ sender: Any) {
+        
+        let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
+        
+        activityVC.popoverPresentationController?.sourceView = delegate?.view
+        
+        delegate?.present(activityVC, animated: true, completion: nil)
+    }
+    
+    
     @IBAction func playRecording(_ sender: Any) {
     
         if !isPlaying {

@@ -27,7 +27,13 @@ class SectionHeaderCell: UITableViewCell,AVAudioPlayerDelegate {
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
         url = (delegate?.mergeAudioFiles(date: sectionNameLbl.text!))!
+     
+        let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = delegate?.view
         
+        delegate?.present(activityVC, animated: true, completion: {
+            self.deleteFile(url: self.url)
+        })
     }
     @IBAction func playRecordingTapped(_ sender: UIButton) {
         url = (delegate?.mergeAudioFiles(date: sectionNameLbl.text!))!
