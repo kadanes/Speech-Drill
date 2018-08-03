@@ -95,20 +95,13 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5HR-uQ-1Xg">
-                                <rect key="frame" x="0.0" y="160" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="160" width="375" height="180"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pr2-oc-9A7">
-                                        <rect key="frame" x="4" y="4" width="367" height="116"/>
-                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M92-pP-niw">
-                                        <rect key="frame" x="27.5" y="122" width="320" height="26"/>
+                                        <rect key="frame" x="27.5" y="138" width="320" height="40"/>
                                         <subviews>
                                             <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s3-J3-klY" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="49" height="26"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="41.5" height="40"/>
                                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="&lt;&lt;&lt;"/>
                                                 <connections>
@@ -116,7 +109,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                <rect key="frame" x="54" y="0.0" width="49.5" height="26"/>
+                                                <rect key="frame" x="46.5" y="0.0" width="41.5" height="40"/>
                                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="&lt;&lt;"/>
                                                 <connections>
@@ -124,15 +117,22 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                <rect key="frame" x="108.5" y="0.0" width="49" height="26"/>
+                                                <rect key="frame" x="93" y="0.0" width="41.5" height="40"/>
                                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="&lt;"/>
                                                 <connections>
                                                     <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H1N-tw-QQg"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DMH-43-8Hn">
+                                                <rect key="frame" x="139.5" y="0.0" width="41" height="40"/>
+                                                <color key="backgroundColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="0.29504169861963192" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
+                                                <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Zo-OZI" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                <rect key="frame" x="162.5" y="0.0" width="49" height="26"/>
+                                                <rect key="frame" x="185.5" y="0.0" width="41.5" height="40"/>
                                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="&gt;"/>
                                                 <connections>
@@ -140,7 +140,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                <rect key="frame" x="216.5" y="0.0" width="49.5" height="26"/>
+                                                <rect key="frame" x="232" y="0.0" width="41.5" height="40"/>
                                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="&gt;&gt;"/>
                                                 <connections>
@@ -148,7 +148,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                <rect key="frame" x="271" y="0.0" width="49" height="26"/>
+                                                <rect key="frame" x="278.5" y="0.0" width="41.5" height="40"/>
                                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="&gt;&gt;&gt;"/>
                                                 <connections>
@@ -158,36 +158,42 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="320" id="Muv-mb-lbj"/>
+                                            <constraint firstAttribute="height" constant="40" id="mkK-AA-3YS"/>
                                         </constraints>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DMH-43-8Hn">
-                                        <rect key="frame" x="6" y="6" width="30" height="15"/>
-                                        <color key="backgroundColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="0.29504169861963192" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rLn-6E-DJS">
+                                        <rect key="frame" x="8" y="4" width="359" height="130"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Topic" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="pr2-oc-9A7">
+                                                <rect key="frame" x="8" y="8" width="343" height="114"/>
+                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="T10-qW-6rg"/>
-                                            <constraint firstAttribute="height" constant="15" id="wWi-Ja-Oph"/>
+                                            <constraint firstAttribute="trailing" secondItem="pr2-oc-9A7" secondAttribute="trailing" constant="8" id="C3M-xf-hW3"/>
+                                            <constraint firstItem="pr2-oc-9A7" firstAttribute="leading" secondItem="rLn-6E-DJS" secondAttribute="leading" constant="8" id="Rgv-ey-QgW"/>
+                                            <constraint firstAttribute="bottom" secondItem="pr2-oc-9A7" secondAttribute="bottom" constant="8" id="rfx-Ev-LZc"/>
+                                            <constraint firstItem="pr2-oc-9A7" firstAttribute="top" secondItem="rLn-6E-DJS" secondAttribute="top" constant="8" id="xqb-ii-9XL"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
-                                        <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.37055522200000002" green="0.37056469920000001" blue="0.37055957319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="M92-pP-niw" firstAttribute="centerX" secondItem="5HR-uQ-1Xg" secondAttribute="centerX" id="4WU-cD-W9Z"/>
-                                    <constraint firstItem="pr2-oc-9A7" firstAttribute="leading" secondItem="5HR-uQ-1Xg" secondAttribute="leading" constant="4" id="4ur-7n-byK"/>
-                                    <constraint firstItem="M92-pP-niw" firstAttribute="top" secondItem="pr2-oc-9A7" secondAttribute="bottom" constant="2" id="Haa-TI-d7K"/>
-                                    <constraint firstItem="pr2-oc-9A7" firstAttribute="top" secondItem="5HR-uQ-1Xg" secondAttribute="top" constant="4" id="KiH-GG-8OF"/>
-                                    <constraint firstAttribute="height" constant="150" id="SET-Zb-anJ"/>
-                                    <constraint firstItem="DMH-43-8Hn" firstAttribute="leading" secondItem="5HR-uQ-1Xg" secondAttribute="leading" constant="6" id="eo7-Jt-Q5o"/>
-                                    <constraint firstAttribute="bottom" secondItem="pr2-oc-9A7" secondAttribute="bottom" constant="30" id="g9P-hJ-QE9"/>
-                                    <constraint firstAttribute="trailing" secondItem="pr2-oc-9A7" secondAttribute="trailing" constant="4" id="t9N-Be-uR7"/>
-                                    <constraint firstItem="DMH-43-8Hn" firstAttribute="top" secondItem="5HR-uQ-1Xg" secondAttribute="top" constant="6" id="uC6-cD-mNM"/>
+                                    <constraint firstItem="rLn-6E-DJS" firstAttribute="leading" secondItem="5HR-uQ-1Xg" secondAttribute="leading" constant="8" id="BYQ-Bj-bZJ"/>
+                                    <constraint firstItem="M92-pP-niw" firstAttribute="top" secondItem="rLn-6E-DJS" secondAttribute="bottom" constant="4" id="IPv-fc-H1M"/>
+                                    <constraint firstAttribute="height" constant="180" id="SET-Zb-anJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="rLn-6E-DJS" secondAttribute="trailing" constant="8" id="Zaz-dN-kbC"/>
+                                    <constraint firstItem="rLn-6E-DJS" firstAttribute="top" secondItem="5HR-uQ-1Xg" secondAttribute="top" constant="4" id="mmo-TB-hxy"/>
                                     <constraint firstAttribute="bottom" secondItem="M92-pP-niw" secondAttribute="bottom" constant="2" id="vVL-ap-NLm"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recordings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfV-Pb-qa9">
-                                <rect key="frame" x="0.0" y="310" width="375" height="40"/>
+                                <rect key="frame" x="0.0" y="340" width="375" height="40"/>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="sJs-Tf-Zmg"/>
@@ -197,8 +203,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hIS-sg-tLL">
-                                <rect key="frame" x="0.0" y="350" width="375" height="317"/>
-                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="380" width="375" height="287"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" id="Jau-su-4xW" customClass="SectionHeaderCell" customModule="TOEFL_Speaking" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -224,16 +230,36 @@
                                                         <action selector="shareRecordingsTapped:" destination="Jau-su-4xW" eventType="touchUpInside" id="cm6-mj-l0b"/>
                                                     </connections>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BR4-gE-2vs">
+                                                    <rect key="frame" x="307" y="10" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="9h4-bK-dle"/>
+                                                        <constraint firstAttribute="height" constant="25" id="P63-Ea-jdE"/>
+                                                    </constraints>
+                                                    <state key="normal" title="▶️"/>
+                                                    <connections>
+                                                        <action selector="playRecordingTapped:" destination="Jau-su-4xW" eventType="touchUpInside" id="D8D-7h-KGd"/>
+                                                    </connections>
+                                                </button>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="qCJ-Pe-q3A">
+                                                    <rect key="frame" x="279" y="12" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="lVd-8g-rQq" firstAttribute="leading" secondItem="BR4-gE-2vs" secondAttribute="trailing" constant="8" id="1Kz-a6-WXV"/>
+                                                <constraint firstItem="BR4-gE-2vs" firstAttribute="centerY" secondItem="ZEC-Qp-IBY" secondAttribute="centerY" id="JTo-yk-gd6"/>
                                                 <constraint firstItem="lVd-8g-rQq" firstAttribute="centerY" secondItem="ZEC-Qp-IBY" secondAttribute="centerY" id="UqM-MT-9dj"/>
                                                 <constraint firstItem="Dh3-AB-ZcH" firstAttribute="centerX" secondItem="ZEC-Qp-IBY" secondAttribute="centerX" id="Z6Y-Kv-XEf"/>
                                                 <constraint firstAttribute="trailing" secondItem="lVd-8g-rQq" secondAttribute="trailing" constant="10" id="Znx-xx-rEv"/>
+                                                <constraint firstItem="qCJ-Pe-q3A" firstAttribute="centerY" secondItem="ZEC-Qp-IBY" secondAttribute="centerY" id="izT-hy-EDV"/>
+                                                <constraint firstItem="BR4-gE-2vs" firstAttribute="leading" secondItem="qCJ-Pe-q3A" secondAttribute="trailing" constant="8" id="oTs-i6-RDo"/>
                                                 <constraint firstItem="Dh3-AB-ZcH" firstAttribute="centerY" secondItem="ZEC-Qp-IBY" secondAttribute="centerY" id="xAI-kg-YlN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="qCJ-Pe-q3A" id="K50-kB-uYa"/>
+                                            <outlet property="playPauseBtn" destination="BR4-gE-2vs" id="75D-Fg-qxj"/>
                                             <outlet property="sectionNameLbl" destination="Dh3-AB-ZcH" id="gDt-im-REH"/>
                                         </connections>
                                     </tableViewCell>
@@ -314,7 +340,6 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.56904578210000001" blue="0.57461684940000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="1Y0-Rb-pak"/>
                             <constraint firstItem="Jgd-R0-zAP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5iQ-Ud-nd1"/>

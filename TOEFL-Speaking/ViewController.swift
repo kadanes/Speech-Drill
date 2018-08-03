@@ -40,9 +40,9 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer?
     
-    var recordingList: [Dictionary<String,URL>] = []
     var dateSortedRecordingList: Dictionary<String,Array<URL>> = [:]
-    
+    var mergeAudioURL: URL?
+
     
     let userDefaults = UserDefaults.standard
     
@@ -126,9 +126,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             
             
             let url = NSURL.fileURL(withPath: fullRecordingPath)
-            
-            print(url)
-            
+                        
             let recordSettings = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                 AVSampleRateKey: 12000,
@@ -142,7 +140,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
                 
                 audioRecorder.prepareToRecord()
                 
-                audioRecorder.record(forDuration: 45)
+                audioRecorder.record(forDuration: Double(defaultSpeakTime))
                 
                 
             } catch let error as NSError {
@@ -192,7 +190,9 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     
     func parseDate(timeStamp: String) -> String {
         
-        let ts = Double(timeStamp)!
+        guard let ts = Double(timeStamp) else {
+            return "NIL"
+        }
         
         let date = Date(timeIntervalSince1970: ts)
         let dateFormatter = DateFormatter()
@@ -274,6 +274,8 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             
             let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
             cell.configureCell(date: date)
+            cell.delegate = self
+            
             return cell
         }
         
@@ -287,7 +289,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -307,5 +309,65 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     
     }
 
+    
+    func mergeAudioFiles(date:String) -> URL {
+        let composition = AVMutableComposition()
+        
+        guard let audioFileUrls = dateSortedRecordingList[date] else {
+            return URL(fileURLWithPath: "")
+        }
+
+        for i in 0 ..< audioFileUrls.count {
+            
+            let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
+            
+            let asset = AVURLAsset(url: (audioFileUrls[i]))
+            
+            let track = asset.tracks(withMediaType: AVMediaType.audio)[0]
+            
+            let timeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
+            
+            do{
+                try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
+            } catch let error as NSError {
+                print("Error while inseting in composition for url",i+1)
+                print(error.localizedDescription)
+                
+            }
+        }
+        
+        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! as NSURL
+        
+        self.mergeAudioURL = documentDirectoryURL.appendingPathComponent("MergedAudio.m4a")!
+        
+        
+        let assetExport = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A)
+        
+        assetExport?.outputFileType = AVFileType.m4a
+        assetExport?.outputURL = mergeAudioURL!
+        
+        assetExport?.exportAsynchronously(completionHandler:
+            {
+                switch assetExport!.status
+                {
+                case AVAssetExportSessionStatus.failed:
+                    print("failed \(assetExport?.error)")
+                case AVAssetExportSessionStatus.cancelled:
+                    print("cancelled \(assetExport?.error)")
+                case AVAssetExportSessionStatus.unknown:
+                    print("unknown\(assetExport?.error)")
+                case AVAssetExportSessionStatus.waiting:
+                    print("waiting\(assetExport?.error)")
+                case AVAssetExportSessionStatus.exporting:
+                    print("exporting\(assetExport?.error)")
+                default:
+                    print("Audio Concatenation Complete")
+                }
+            })
+        
+        return mergeAudioURL!
+    }
+    
+    
 }
 

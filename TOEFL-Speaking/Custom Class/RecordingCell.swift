@@ -36,7 +36,6 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
     }
     
     func getTopicNumber(url: String) {
-        print(url)
 
         let urlComponents = url.components(separatedBy: "/")
         let fileName = urlComponents[urlComponents.count - 1]
@@ -64,7 +63,6 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
         if !isPlaying {
             
             do{
-                print(url)
                 
                 audioPlayer = try AVAudioPlayer(contentsOf: url!)
                 audioPlayer?.delegate = self
@@ -76,7 +74,7 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
                 playPauseBtn.setTitle("⏸", for: .normal)
                 
             } catch let error as NSError {
-                print(audioPlayer)
+
                 print("Error Playing")
                 print(error)
             }
@@ -109,7 +107,7 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        print("Done")
+
         isPlaying = false
         playPauseBtn.setTitle("▶️", for: .normal)
     }
