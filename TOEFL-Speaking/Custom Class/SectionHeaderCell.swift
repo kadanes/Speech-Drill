@@ -15,6 +15,9 @@ class SectionHeaderCell: UITableViewCell,AVAudioPlayerDelegate {
     var audioPlayer: AVAudioPlayer?
     var isPlaying = false
     var url = URL(fileURLWithPath: "")
+    var date = ""
+    
+    var isMerged = false
     
     @IBOutlet weak var sectionNameLbl: UILabel!
     
@@ -26,84 +29,65 @@ class SectionHeaderCell: UITableViewCell,AVAudioPlayerDelegate {
     }
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
-        url = (delegate?.mergeAudioFiles(date: sectionNameLbl.text!))!
-     
-        let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
-        activityVC.popoverPresentationController?.sourceView = delegate?.view
         
-        delegate?.present(activityVC, animated: true, completion: {
-            self.deleteFile(url: self.url)
-        })
+        shareMergedAudio()
     }
-    @IBAction func playRecordingTapped(_ sender: UIButton) {
-        url = (delegate?.mergeAudioFiles(date: sectionNameLbl.text!))!
-        
-        let fileManager = FileManager.default
-        while !fileManager.fileExists(atPath: url.path) {
-            activityIndicator.startAnimating()
-            activityIndicator.isHidden = false
-        }
-        
-        activityIndicator.startAnimating()
-        activityIndicator.isHidden = true
-        
-        if !isPlaying {
-            
-            do{
-                audioPlayer = try AVAudioPlayer(contentsOf: url)
-                audioPlayer?.delegate = self
-                
-                isPlaying = true
-                guard let audioPlayer = audioPlayer else { return }
-                audioPlayer.play()
 
-                sender.setTitle("⏸", for: .normal)
+    @IBAction func playRecordingTapped(_ sender: UIButton) {
+        
+        
+        if (!isPlaying) {
+            
+            isPlaying = true
+            sender.setTitle("⏸", for: .normal)
+            
+            delegate?.mergeAudioFiles(date: date, completion: {
+                do{
+                    self.audioPlayer = try AVAudioPlayer(contentsOf: getMergedFileURL())
+                    self.audioPlayer?.delegate = self
+                    
+                    self.isPlaying = true
+                    guard let audioPlayer = self.audioPlayer else { return }
+                    
+                    audioPlayer.play()
+                    
+                } catch let error as NSError {
+                    
+                    print("Error Playing")
+                    print(error)
+                }
                 
-            } catch let error as NSError {
-                
-                print("Error Playing")
-                print(error)
-            }
+            })
             
         } else {
-            
             isPlaying = false
             audioPlayer?.stop()
             sender.setTitle("▶️", for: .normal)
-            deleteFile(url: url)
         }
+    
     }
     
     func configureCell(date:String) {
         sectionNameLbl.text = date
-        activityIndicator.isHidden = true
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        self.date = date
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         isPlaying = false
         playPauseBtn.setTitle("▶️", for: .normal)
-        deleteFile(url: url)
         
     }
     
-    func deleteFile(url:URL) {
+    func shareMergedAudio() {
         
-        do{
-            try FileManager.default.removeItem(at: url)
-            print("Removing Successful")
-            
-        } catch let error as NSError {
-            print("Could Not Delete File")
-            
-            print(error.localizedDescription)
-            
-        }
+        let mergedAudioURL = getMergedFileURL()
+        
+        let activityVC = UIActivityViewController(activityItems: [mergedAudioURL],applicationActivities: nil)
+        
+        activityVC.popoverPresentationController?.sourceView = self.delegate?.view
+        
+        self.delegate?.present(activityVC, animated: true, completion: nil)
     }
-
+    
+    
 }

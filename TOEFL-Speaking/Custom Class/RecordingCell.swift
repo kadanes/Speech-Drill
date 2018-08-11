@@ -60,13 +60,12 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
         
-        let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
+        let activityVC = UIActivityViewController(activityItems: [url ?? URL(fileURLWithPath: "")],applicationActivities: nil)
         
         activityVC.popoverPresentationController?.sourceView = delegate?.view
         
         delegate?.present(activityVC, animated: true, completion: nil)
     }
-    
     
     @IBAction func playRecording(_ sender: Any) {
     
@@ -76,6 +75,9 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
                 
                 audioPlayer = try AVAudioPlayer(contentsOf: url!)
                 audioPlayer?.delegate = self
+                
+                
+                delegate?.renderTopic(topicNumber: topicNumber)
                 
                 isPlaying = true
                 guard let audioPlayer = audioPlayer else { return }

@@ -120,7 +120,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             
             let timestamp = Int(round((NSDate().timeIntervalSince1970)))
 
-            let path =  "\(timestamp)_\(topicNumber)"+".m4a"
+            let path =  "\(timestamp)_\(topicNumber)"+"."+recordingExtension
 
             let fullRecordingPath = (documents as NSString).appendingPathComponent(path)
             
@@ -151,7 +151,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
         }
     }
 
-    
     func updateURLList() {
                 
         dateSortedRecordingList.removeAll()
@@ -164,25 +163,27 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
 
                 let recordingName = "\(file)"
 
-                if recordingName.hasSuffix(".m4a") {
+                if recordingName.hasSuffix("."+recordingExtension) {
 
-                    let fileName = recordingName.components(separatedBy: ".")
-
-                    let fileNameComponents = fileName[0].components(separatedBy: "_")
-
-                    let date = parseDate(timeStamp: fileNameComponents[0])
-
-                    let url = URL(fileURLWithPath: documents+"/"+"\(file)")
-
-                    var recordingURLs = dateSortedRecordingList[date]
-
-                    if recordingURLs == nil {
-                        recordingURLs = [URL]()
+                    if (recordingName != mergedFileName) {
+                        let fileName = recordingName.components(separatedBy: ".")
+                        
+                        let fileNameComponents = fileName[0].components(separatedBy: "_")
+                        
+                        let date = parseDate(timeStamp: fileNameComponents[0])
+                        
+                        let url = URL(fileURLWithPath: documents+"/"+"\(file)")
+                        
+                        var recordingURLs = dateSortedRecordingList[date]
+                        
+                        if recordingURLs == nil {
+                            recordingURLs = [URL]()
+                        }
+                        
+                        recordingURLs?.append(url)
+                        dateSortedRecordingList[date] = recordingURLs
                     }
-
-                    recordingURLs?.append(url)
-                    dateSortedRecordingList[date] = recordingURLs
-
+            
                 }
             }
         }
@@ -246,13 +247,15 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             adjustThinkTimeBtn.text = "\(defaultThinkTime)"
             adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
             recordBtn.setTitle("⭕️", for: .normal)
-
             recording = false
             blinking = false
             
             timer.invalidate()
             
             updateURLList()
+            
+            topicNumber += 1
+            renderTopic(topicNumber: topicNumber)
             
             recordingTableView.reloadData()
         }
@@ -284,7 +287,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return 40
     }
 
     
@@ -310,11 +313,20 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     }
 
     
-    func mergeAudioFiles(date:String) -> URL {
+    func mergeAudioFiles(date:String,completion: @escaping () -> ()) {
+        
+        do {
+            try FileManager.default.removeItem(at: getMergedFileURL())
+            print("Deleted Old File")
+            
+        } catch let error as NSError {
+            print("Error: \(error.domain)")
+        }
+        
         let composition = AVMutableComposition()
         
         guard let audioFileUrls = dateSortedRecordingList[date] else {
-            return URL(fileURLWithPath: "")
+            return
         }
 
         for i in 0 ..< audioFileUrls.count {
@@ -329,45 +341,60 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             
             do{
                 try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
+                
+                
+                let delimiterPath = Bundle.main.path(forResource: beepSoundFileName, ofType: recordingExtension)
+                
+                if let path = delimiterPath {
+                    let delimiterURL = URL(fileURLWithPath: path)
+                    print(delimiterURL)
+                    
+                    let assetDelimiter = AVURLAsset(url: delimiterURL)
+                    
+                    let trackDelimiter = assetDelimiter.tracks(withMediaType: AVMediaType.audio)[0]
+                    
+                    let timeRangeDelimiter = CMTimeRange(start: CMTimeMake(0, 600), duration: trackDelimiter.timeRange.duration)
+                    
+                    try compositionAudioTrack.insertTimeRange(timeRangeDelimiter, of: trackDelimiter, at: composition.duration)
+                }
+                
             } catch let error as NSError {
-                print("Error while inseting in composition for url",i+1)
+                print("Error while inseting in composition for url: ",i+1)
                 print(error.localizedDescription)
                 
             }
         }
         
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! as NSURL
+       
+       
         
-        self.mergeAudioURL = documentDirectoryURL.appendingPathComponent("MergedAudio.m4a")!
+        let assetExport = AVAssetExportSession(asset: composition, presetName: presetName)
         
+        assetExport?.outputFileType = outputFileType
         
-        let assetExport = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A)
-        
-        assetExport?.outputFileType = AVFileType.m4a
-        assetExport?.outputURL = mergeAudioURL!
+        assetExport?.outputURL = getMergedFileURL()
         
         assetExport?.exportAsynchronously(completionHandler:
             {
+            
                 switch assetExport!.status
                 {
                 case AVAssetExportSessionStatus.failed:
-                    print("failed \(assetExport?.error)")
+                    print("failed \(assetExport?.error ?? "FAILED" as! Error)")
                 case AVAssetExportSessionStatus.cancelled:
-                    print("cancelled \(assetExport?.error)")
+                    print("cancelled \(assetExport?.error ?? "CANCELLED" as! Error)")
                 case AVAssetExportSessionStatus.unknown:
-                    print("unknown\(assetExport?.error)")
+                    print("unknown\(assetExport?.error ?? "UNKNOWN" as! Error)")
                 case AVAssetExportSessionStatus.waiting:
-                    print("waiting\(assetExport?.error)")
+                    print("waiting\(assetExport?.error ?? "WAITING" as! Error)")
                 case AVAssetExportSessionStatus.exporting:
-                    print("exporting\(assetExport?.error)")
+                    print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
                 default:
                     print("Audio Concatenation Complete")
+                    completion()   
                 }
             })
-        
-        return mergeAudioURL!
     }
-    
     
 }
 
