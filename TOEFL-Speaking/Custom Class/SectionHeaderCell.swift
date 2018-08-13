@@ -8,16 +8,16 @@
 
 import UIKit
 import AVFoundation
-class SectionHeaderCell: UITableViewCell,AVAudioPlayerDelegate {
+class SectionHeaderCell: UITableViewCell {
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     weak var delegate: ViewController?
-    var audioPlayer: AVAudioPlayer?
-    var isPlaying = false
+
     var url = URL(fileURLWithPath: "")
     var date = ""
     
     var isMerged = false
+    
     
     @IBOutlet weak var sectionNameLbl: UILabel!
     
@@ -35,49 +35,17 @@ class SectionHeaderCell: UITableViewCell,AVAudioPlayerDelegate {
 
     @IBAction func playRecordingTapped(_ sender: UIButton) {
         
-        
-        if (!isPlaying) {
-            
-            isPlaying = true
-            sender.setTitle("⏸", for: .normal)
-            
-            delegate?.mergeAudioFiles(date: date, completion: {
-                do{
-                    self.audioPlayer = try AVAudioPlayer(contentsOf: getMergedFileURL())
-                    self.audioPlayer?.delegate = self
-                    
-                    self.isPlaying = true
-                    guard let audioPlayer = self.audioPlayer else { return }
-                    
-                    audioPlayer.play()
-                    
-                } catch let error as NSError {
-                    
-                    print("Error Playing")
-                    print(error)
-                }
-                
-            })
-            
-        } else {
-            isPlaying = false
-            audioPlayer?.stop()
-            sender.setTitle("▶️", for: .normal)
-        }
-    
+        guard let list = delegate?.getAudioFilesList(date: date) else {return}
+        delegate?.mergeAudioFiles(audioFileUrls: list, completion: {
+            self.delegate?.playRecording(url: getMergedFileURL(), button: sender)
+        })
     }
     
     func configureCell(date:String) {
         sectionNameLbl.text = date
         self.date = date
     }
-    
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        isPlaying = false
-        playPauseBtn.setTitle("▶️", for: .normal)
-        
-    }
-    
+
     func shareMergedAudio() {
         
         let mergedAudioURL = getMergedFileURL()

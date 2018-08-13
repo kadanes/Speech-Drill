@@ -21,6 +21,8 @@
 		B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C3211F5B0700AD786C /* beep1.m4a */; };
 		B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C5211F5BAA00AD786C /* beep2.m4a */; };
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
+		B27F31332121F6A200872047 /* CheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F31322121F6A200872047 /* CheckBoxButton.swift */; };
+		B27F31362122021200872047 /* tick.png in Resources */ = {isa = PBXBuildFile; fileRef = B27F31352122021200872047 /* tick.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		B25F80C3211F5B0700AD786C /* beep1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep1.m4a; sourceTree = "<group>"; };
 		B25F80C5211F5BAA00AD786C /* beep2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep2.m4a; sourceTree = "<group>"; };
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
+		B27F31322121F6A200872047 /* CheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxButton.swift; sourceTree = "<group>"; };
+		B27F31352122021200872047 /* tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tick.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 			children = (
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
 				B22C813C2114809700104E02 /* SectionHeaderCell.swift */,
+				B27F31322121F6A200872047 /* CheckBoxButton.swift */,
 			);
 			path = "Custom Class";
 			sourceTree = "<group>";
@@ -65,9 +70,6 @@
 		B21ABB16210FF664009C678C = {
 			isa = PBXGroup;
 			children = (
-				B23F5FEA211EFA68006034EC /* Assets */,
-				B22C8138211413AD00104E02 /* topics.txt */,
-				B22C813A2114366E00104E02 /* topics.csv */,
 				B21ABB21210FF664009C678C /* TOEFL-Speaking */,
 				B21ABB20210FF664009C678C /* Products */,
 			);
@@ -84,15 +86,17 @@
 		B21ABB21210FF664009C678C /* TOEFL-Speaking */ = {
 			isa = PBXGroup;
 			children = (
+				B27F31342122020400872047 /* Images */,
+				B23F5FEA211EFA68006034EC /* Assets */,
 				B25F80B8211F4F3200AD786C /* Constants.swift */,
+				B27F31372122025F00872047 /* Controller */,
 				B204ECAE211349FE00A51E8B /* Custom Class */,
 				B21ABB35210FFA19009C678C /* Custom View */,
-				B21ABB22210FF664009C678C /* AppDelegate.swift */,
-				B21ABB24210FF664009C678C /* ViewController.swift */,
-				B21ABB26210FF664009C678C /* Main.storyboard */,
-				B21ABB29210FF664009C678C /* Assets.xcassets */,
-				B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */,
+				B27F31382122027700872047 /* Utils */,
 				B21ABB2E210FF664009C678C /* Info.plist */,
+				B21ABB26210FF664009C678C /* Main.storyboard */,
+				B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */,
+				B21ABB29210FF664009C678C /* Assets.xcassets */,
 			);
 			path = "TOEFL-Speaking";
 			sourceTree = "<group>";
@@ -109,10 +113,36 @@
 		B23F5FEA211EFA68006034EC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				B22C813A2114366E00104E02 /* topics.csv */,
+				B22C8138211413AD00104E02 /* topics.txt */,
 				B25F80C3211F5B0700AD786C /* beep1.m4a */,
 				B25F80C5211F5BAA00AD786C /* beep2.m4a */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		B27F31342122020400872047 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				B27F31352122021200872047 /* tick.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		B27F31372122025F00872047 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B21ABB24210FF664009C678C /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B27F31382122027700872047 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B21ABB22210FF664009C678C /* AppDelegate.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,6 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */,
+				B27F31362122021200872047 /* tick.png in Resources */,
 				B22C813B2114366E00104E02 /* topics.csv in Resources */,
 				B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */,
 				B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */,
@@ -209,6 +240,7 @@
 			files = (
 				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
 				B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */,
+				B27F31332121F6A200872047 /* CheckBoxButton.swift in Sources */,
 				B21ABB25210FF664009C678C /* ViewController.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
@@ -290,6 +322,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -344,6 +377,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;

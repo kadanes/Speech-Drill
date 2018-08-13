@@ -187,7 +187,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hIS-sg-tLL">
-                                <rect key="frame" x="0.0" y="321" width="375" height="346"/>
+                                <rect key="frame" x="0.0" y="321" width="375" height="306"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" id="Jau-su-4xW" customClass="SectionHeaderCell" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -252,47 +252,58 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Zv5-GT-FHF">
-                                                    <rect key="frame" x="15" y="3" width="345" height="40"/>
+                                                    <rect key="frame" x="4" y="3" width="367" height="40"/>
                                                     <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52d-RJ-MZb" customClass="CheckBoxButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="bv1-GO-GDE"/>
+                                                            </constraints>
+                                                            <connections>
+                                                                <action selector="selectRecordingTapped:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="2if-Eb-H0C"/>
+                                                            </connections>
+                                                        </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eir-5C-wRp">
-                                                            <rect key="frame" x="0.0" y="0.0" width="165" height="40"/>
+                                                            <rect key="frame" x="50" y="0.0" width="167" height="40"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                                             <color key="textColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                            <rect key="frame" x="175" y="0.0" width="50" height="40"/>
-                                                            <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="4aq-Hj-aQI">
+                                                            <rect key="frame" x="227" y="0.0" width="140" height="40"/>
+                                                            <subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="44.5" height="40"/>
+                                                                    <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                    <state key="normal" title="▶️"/>
+                                                                    <connections>
+                                                                        <action selector="playRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="E4w-Zz-5Zc"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-cm-fjw" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                    <rect key="frame" x="47.5" y="0.0" width="45" height="40"/>
+                                                                    <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                    <state key="normal" title="🗑"/>
+                                                                    <connections>
+                                                                        <action selector="deleteRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="GkP-tb-PdW"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xna-0Q-hnQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                    <rect key="frame" x="95.5" y="0.0" width="44.5" height="40"/>
+                                                                    <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                    <state key="normal" title="📤"/>
+                                                                    <connections>
+                                                                        <action selector="shareRecordingPressed:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="WPJ-Kw-yh0"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="cWH-u5-eUb"/>
+                                                                <constraint firstAttribute="width" constant="140" id="vHX-rp-5Ej"/>
                                                             </constraints>
-                                                            <state key="normal" title="▶️"/>
-                                                            <connections>
-                                                                <action selector="playRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="E4w-Zz-5Zc"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-cm-fjw" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                            <rect key="frame" x="235" y="0.0" width="50" height="40"/>
-                                                            <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="4a1-eu-pm8"/>
-                                                            </constraints>
-                                                            <state key="normal" title="🗑"/>
-                                                            <connections>
-                                                                <action selector="deleteRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="GkP-tb-PdW"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xna-0Q-hnQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                            <rect key="frame" x="295" y="0.0" width="50" height="40"/>
-                                                            <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="tna-FQ-yaA"/>
-                                                            </constraints>
-                                                            <state key="normal" title="📤"/>
-                                                            <connections>
-                                                                <action selector="shareRecordingPressed:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="WPJ-Kw-yh0"/>
-                                                            </connections>
-                                                        </button>
+                                                        </stackView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="vyU-7R-pR9"/>
@@ -309,14 +320,15 @@
                                             <constraints>
                                                 <constraint firstItem="AwO-bs-vXF" firstAttribute="leading" secondItem="5QQ-FW-iFj" secondAttribute="leading" id="EV3-dh-sCq"/>
                                                 <constraint firstAttribute="trailing" secondItem="AwO-bs-vXF" secondAttribute="trailing" id="KLl-XW-YTk"/>
-                                                <constraint firstItem="Zv5-GT-FHF" firstAttribute="leading" secondItem="5QQ-FW-iFj" secondAttribute="leading" constant="15" id="Ke3-9r-ZYx"/>
+                                                <constraint firstItem="Zv5-GT-FHF" firstAttribute="leading" secondItem="5QQ-FW-iFj" secondAttribute="leading" constant="4" id="Ke3-9r-ZYx"/>
                                                 <constraint firstItem="Zv5-GT-FHF" firstAttribute="centerY" secondItem="5QQ-FW-iFj" secondAttribute="centerY" id="LzS-IO-W1f"/>
-                                                <constraint firstAttribute="trailing" secondItem="Zv5-GT-FHF" secondAttribute="trailing" constant="15" id="U5z-Oi-CnV"/>
+                                                <constraint firstAttribute="trailing" secondItem="Zv5-GT-FHF" secondAttribute="trailing" constant="4" id="U5z-Oi-CnV"/>
                                                 <constraint firstAttribute="bottom" secondItem="AwO-bs-vXF" secondAttribute="bottom" id="U7v-HG-ERh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
+                                            <outlet property="checkBoxBtn" destination="52d-RJ-MZb" id="weB-SG-3hY"/>
                                             <outlet property="playPauseBtn" destination="GWU-N2-BwQ" id="bLu-7x-ga1"/>
                                             <outlet property="recordingNameLbl" destination="eir-5C-wRp" id="HHh-Cg-zaG"/>
                                         </connections>
@@ -367,21 +379,66 @@
                                     <constraint firstAttribute="height" constant="50" id="wzs-ty-XZ3"/>
                                 </constraints>
                             </view>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0tL-M8-dRP">
+                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qA-8f-df2">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="J3Z-Yy-qYk"/>
+                                        </constraints>
+                                        <state key="normal" title="❌"/>
+                                        <connections>
+                                            <action selector="cancelSelectedTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="J4U-zM-V3y"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVR-g6-4WM">
+                                        <rect key="frame" x="60" y="0.0" width="255" height="40"/>
+                                        <color key="backgroundColor" red="0.85613167285919189" green="0.7660786509513855" blue="0.059069089591503143" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                        <state key="normal" title="Export">
+                                            <color key="titleColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="exportSelectedTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gvB-fS-OOp"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OuX-zo-6iH">
+                                        <rect key="frame" x="315" y="0.0" width="60" height="40"/>
+                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="8sE-in-wKt"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <state key="normal" title="▶️"/>
+                                        <connections>
+                                            <action selector="playSelectedAudioTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UyN-Q9-2Hx"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="3V7-3U-IWY"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="hIS-sg-tLL" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="1Y0-Rb-pak"/>
                             <constraint firstItem="Jgd-R0-zAP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5iQ-Ud-nd1"/>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="9WK-2d-W8S"/>
                             <constraint firstItem="GXv-Yh-rDT" firstAttribute="top" secondItem="YjK-Rj-zih" secondAttribute="bottom" id="ALm-5D-Xob"/>
+                            <constraint firstItem="0tL-M8-dRP" firstAttribute="top" secondItem="hIS-sg-tLL" secondAttribute="bottom" id="Ekm-BD-s2N"/>
                             <constraint firstItem="GXv-Yh-rDT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Jne-cx-MQZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0tL-M8-dRP" secondAttribute="trailing" id="KbZ-Gc-IJb"/>
                             <constraint firstItem="Jgd-R0-zAP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Kin-ip-XtX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YjK-Rj-zih" secondAttribute="trailing" id="Lid-SZ-pNz"/>
+                            <constraint firstItem="0tL-M8-dRP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="LuX-zk-rf4"/>
                             <constraint firstItem="YjK-Rj-zih" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="VTZ-wA-loW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GXv-Yh-rDT" secondAttribute="trailing" id="Wqd-2n-qJ7"/>
                             <constraint firstItem="5HR-uQ-1Xg" firstAttribute="top" secondItem="Jgd-R0-zAP" secondAttribute="bottom" id="X0e-8e-fB4"/>
                             <constraint firstItem="5HR-uQ-1Xg" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="cId-4f-wlR"/>
                             <constraint firstItem="5HR-uQ-1Xg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="frP-nB-4tZ"/>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="top" secondItem="GXv-Yh-rDT" secondAttribute="bottom" id="hAO-tj-ysr"/>
+                            <constraint firstItem="0tL-M8-dRP" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="qBO-CE-PLu"/>
                             <constraint firstItem="Jgd-R0-zAP" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="r5G-nr-lqf"/>
                             <constraint firstItem="YjK-Rj-zih" firstAttribute="top" secondItem="5HR-uQ-1Xg" secondAttribute="bottom" id="rWr-cR-TBa"/>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="s1I-Yi-HRL"/>
@@ -391,6 +448,9 @@
                     <connections>
                         <outlet property="adjustSpeakTimeBtn" destination="d2n-0g-Jvi" id="Eyq-4y-D2v"/>
                         <outlet property="adjustThinkTimeBtn" destination="uK6-KK-xud" id="FMc-1g-gPA"/>
+                        <outlet property="exportMenuHeight" destination="3V7-3U-IWY" id="CtL-ea-d8M"/>
+                        <outlet property="exportMenuStackView" destination="0tL-M8-dRP" id="WJ5-FL-yCE"/>
+                        <outlet property="exportSelectedBtn" destination="hVR-g6-4WM" id="MV1-1Z-NII"/>
                         <outlet property="recordBtn" destination="mWY-tR-IMK" id="GCC-O6-5Wm"/>
                         <outlet property="recordingTableView" destination="hIS-sg-tLL" id="8Id-9r-V8p"/>
                         <outlet property="topicLbl" destination="pr2-oc-9A7" id="yyI-v9-YrH"/>

@@ -9,19 +9,21 @@
 import UIKit
 import AVFoundation
 
-class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
+class RecordingCell: UITableViewCell {
     
     @IBOutlet weak var recordingNameLbl: UILabel!
     
     @IBOutlet weak var playPauseBtn: RoundButton!
     
-    var audioPlayer: AVAudioPlayer?
+    
+    @IBOutlet weak var checkBoxBtn: CheckBoxButton!
+    
     weak var delegate: ViewController?
     var topicNumber = 0
     var timeStamp = 0
-    var isPlaying = false
     var url: URL?
-
+    var isRecordingSelected = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -33,7 +35,19 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
         getTopicNumber(url: "\(url)")
         recordingNameLbl.text = "Topic \(topicNumber)"
         
+        
     }
+    
+    func selectCheckBox() {
+        checkBoxBtn.setImage(#imageLiteral(resourceName: "tick.png"), for: .normal)
+        isRecordingSelected = true
+    }
+    
+    func deselectCheckBox() {
+        checkBoxBtn.setImage(nil, for: .normal)
+        isRecordingSelected = false
+    }
+    
     
     func getTopicNumber(url: String) {
 
@@ -67,36 +81,10 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
         delegate?.present(activityVC, animated: true, completion: nil)
     }
     
-    @IBAction func playRecording(_ sender: Any) {
-    
-        if !isPlaying {
-            
-            do{
-                
-                audioPlayer = try AVAudioPlayer(contentsOf: url!)
-                audioPlayer?.delegate = self
-                
-                
-                delegate?.renderTopic(topicNumber: topicNumber)
-                
-                isPlaying = true
-                guard let audioPlayer = audioPlayer else { return }
-                audioPlayer.prepareToPlay()
-                audioPlayer.play()
-                playPauseBtn.setTitle("⏸", for: .normal)
-                
-            } catch let error as NSError {
-
-                print("Error Playing")
-                print(error)
-            }
-            
-            
-        } else {
-            isPlaying = false
-            audioPlayer?.stop()
-            playPauseBtn.setTitle("▶️", for: .normal)
-
+    @IBAction func playRecording(_ sender: UIButton) {
+        
+        if let url = url {
+            delegate?.playRecording(url: url, button: playPauseBtn)
         }
         
     }
@@ -105,7 +93,6 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
         
         do{
             try FileManager.default.removeItem(at: url!)
-            print("Removing Successful")
             
             delegate?.updateURLList()
             delegate?.recordingTableView.reloadData()
@@ -118,10 +105,31 @@ class RecordingCell: UITableViewCell,AVAudioPlayerDelegate {
         }
     }
     
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-
-        isPlaying = false
-        playPauseBtn.setTitle("▶️", for: .normal)
+    @IBAction func selectRecordingTapped(_ sender: UIButton) {
+        
+        delegate?.renderTopic(topicNumber: topicNumber, saveDefault: false)
+        
+        if !isRecordingSelected {
+            
+            DispatchQueue.main.async {
+                sender.setImage(#imageLiteral(resourceName: "tick.png"), for: .normal)
+                self.delegate?.stopPlaying()
+            }
+            
+        
+            delegate?.addToExportList(url: url!)
+            
+        } else {
+            DispatchQueue.main.async {
+                sender.setImage(nil, for: .normal)
+            }
+            
+            delegate?.removeFromExportList(url: url!)
+        }
+        
+        isRecordingSelected = !isRecordingSelected
+        delegate?.toggleExportMenu()
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

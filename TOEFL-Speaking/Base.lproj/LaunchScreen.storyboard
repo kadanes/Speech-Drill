@@ -18,17 +18,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🗣" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3l-if-B2d">
-                                <rect key="frame" x="106" y="254" width="163" height="179.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🎤" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3l-if-B2d">
+                                <rect key="frame" x="106" y="194" width="163" height="179.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="150"/>
                                 <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Improve Your Speaking!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lq1-me-tZP">
+                                <rect key="frame" x="45.5" y="423.5" width="284.5" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="bxo-8P-NM2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="27"/>
+                                <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Z3l-if-B2d" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="A4O-se-XwU"/>
+                            <constraint firstItem="Z3l-if-B2d" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-50" id="8PV-rR-HG8"/>
+                            <constraint firstItem="lq1-me-tZP" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="140" id="La9-op-XWU"/>
                             <constraint firstItem="Z3l-if-B2d" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bCZ-ei-gQc"/>
+                            <constraint firstItem="lq1-me-tZP" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jpQ-Vw-Zvc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

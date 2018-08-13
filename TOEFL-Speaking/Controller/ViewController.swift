@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 
-class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDelegate,UITableViewDelegate,UITableViewDataSource {
+class ViewController: UIViewController {
    
 
     @IBOutlet weak var adjustThinkTimeBtn: UILabel!
@@ -23,6 +23,13 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     @IBOutlet weak var topicLbl: UILabel!
     
     @IBOutlet weak var topicNumberLbl: UILabel!
+    
+   
+    @IBOutlet weak var exportSelectedBtn: UIButton!
+    
+    @IBOutlet weak var exportMenuHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var exportMenuStackView: UIStackView!
     
     let defaultThinkTime = 15
     let defaultSpeakTime = 45
@@ -38,13 +45,22 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    var audioPlayer: AVAudioPlayer?
+    
     
     var dateSortedRecordingList: Dictionary<String,Array<URL>> = [:]
+    
+    var exportSelected = [URL]()
+
     var mergeAudioURL: URL?
 
     
     let userDefaults = UserDefaults.standard
+    
+    
+    var playingRecordingURL: URL?
+    var playPauseButton: UIButton?
+    var isPlaying = false
+    var audioPlayer: AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +72,15 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
         
         readTopics()
         topicNumber = userDefaults.integer(forKey: "topicNumber")
-        renderTopic(topicNumber: topicNumber)
+        renderTopic(topicNumber: topicNumber, saveDefault: true)
         
     }
     
     
-    func renderTopic(topicNumber: Int) {
-        userDefaults.set(topicNumber, forKey: "topicNumber")
+    func renderTopic(topicNumber: Int, saveDefault: Bool) {
+        if saveDefault{
+            userDefaults.set(topicNumber, forKey: "topicNumber")
+        }
         
         UIView.animate(withDuration: 1) {
             
@@ -87,7 +105,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
         let increment = sender.tag
         topicNumber = (topicNumber + increment < topics.count) ? topicNumber + increment : topics.count - 1
         
-        renderTopic(topicNumber: topicNumber)
+        renderTopic(topicNumber: topicNumber, saveDefault: true)
         
     }
     
@@ -95,7 +113,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
         let decrement = sender.tag
         topicNumber = (topicNumber - decrement > 0) ? topicNumber - decrement : 1
         
-        renderTopic(topicNumber: topicNumber)
+        renderTopic(topicNumber: topicNumber, saveDefault: true)
 
     }
     
@@ -105,49 +123,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
         if (!recording) {
             recording = true
             let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
-        }
-    }
-
-
-    func recordAudio() {
-
-        do {
-            let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try audioSession.setActive(true)
-            
-            let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
-            
-            let timestamp = Int(round((NSDate().timeIntervalSince1970)))
-
-            let path =  "\(timestamp)_\(topicNumber)"+"."+recordingExtension
-
-            let fullRecordingPath = (documents as NSString).appendingPathComponent(path)
-            
-            
-            let url = NSURL.fileURL(withPath: fullRecordingPath)
-                        
-            let recordSettings = [
-                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                AVSampleRateKey: 12000,
-                AVNumberOfChannelsKey: 1,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-                ] as [String : Any]
-            
-            do{
-                audioRecorder = try AVAudioRecorder(url:url, settings: recordSettings)
-                audioRecorder.delegate = self
-                
-                audioRecorder.prepareToRecord()
-                
-                audioRecorder.record(forDuration: Double(defaultSpeakTime))
-                
-                
-            } catch let error as NSError {
-                print("Error with recording")
-                print(error.localizedDescription)
-            }
-        } catch {
         }
     }
 
@@ -255,65 +230,21 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             updateURLList()
             
             topicNumber += 1
-            renderTopic(topicNumber: topicNumber)
+            renderTopic(topicNumber: topicNumber, saveDefault: true)
             
             recordingTableView.reloadData()
         }
         
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return dateSortedRecordingList.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
-        return dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].value.count
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func getAudioFilesList(date: String) -> [URL] {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as? SectionHeaderCell {
-            
-            let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
-            cell.configureCell(date: date)
-            cell.delegate = self
-            
-            return cell
-        }
+        guard let urlList = dateSortedRecordingList[date] else {return [URL]()}
         
-        return UITableViewCell()
+        return urlList
     }
     
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-    }
-
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "recordingCell") as? RecordingCell {
-            
-            let recordings = dateSortedRecordingList.sorted{ $0.0 > $1.0 }[indexPath.section]
-            
-            cell.configureCell(url: recordings.value[indexPath.row])
-            cell.delegate = self
-            
-            return cell
-            
-        } else {
-            return UITableViewCell()
-        }
-    
-    }
-
-    
-    func mergeAudioFiles(date:String,completion: @escaping () -> ()) {
+    func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         
         do {
             try FileManager.default.removeItem(at: getMergedFileURL())
@@ -325,10 +256,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
         
         let composition = AVMutableComposition()
         
-        guard let audioFileUrls = dateSortedRecordingList[date] else {
-            return
-        }
-
+        
         for i in 0 ..< audioFileUrls.count {
             
             let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
@@ -365,9 +293,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             }
         }
         
-       
-       
-        
         let assetExport = AVAssetExportSession(asset: composition, presetName: presetName)
         
         assetExport?.outputFileType = outputFileType
@@ -396,5 +321,253 @@ class ViewController: UIViewController, AVAudioPlayerDelegate,AVAudioRecorderDel
             })
     }
     
+    
+    func toggleExportMenu() {
+        if exportSelected.count > 0 {
+            exportMenuHeight.constant = 40
+            exportMenuStackView.isHidden = false
+
+            exportSelectedBtn.setTitle("Export \(exportSelected.count) recordings", for: .normal)
+            
+        } else {
+            exportMenuHeight.constant = 0
+            exportMenuStackView.isHidden = true
+        }
+    }
+    
+    
+    func addToExportList(url: URL) {
+        exportSelected.append(url)
+    }
+    
+    func removeFromExportList(url: URL) {
+        exportSelected = exportSelected.filter {$0 != url}
+    }
+    
+    func clearSelected() {
+        exportSelected.removeAll()
+        toggleExportMenu()
+        recordingTableView.reloadData()
+    }
+    
+    @IBAction func exportSelectedTapped(_ sender: UIButton) {
+        
+        mergeAudioFiles(audioFileUrls: exportSelected) {
+            
+            let activityVC = UIActivityViewController(activityItems: [getMergedFileURL()],applicationActivities: nil)
+            
+            activityVC.popoverPresentationController?.sourceView = self.view
+            
+            self.present(activityVC, animated: true, completion: {
+                
+            })
+            
+            activityVC.completionWithItemsHandler = { activity, success, items, error in
+            
+                self.clearSelected()
+            }
+        }
+    }
+    
+    @IBAction func cancelSelectedTapped(_ sender: UIButton) {
+        clearSelected()
+    }
+    
 }
 
+extension ViewController: AVAudioPlayerDelegate {
+    
+    
+    func stopPlaying() {
+       
+        
+        DispatchQueue.main.async {
+             self.playPauseButton?.setTitle("▶️", for: .normal)
+        }
+        
+        isPlaying = false
+        playingRecordingURL = nil
+        audioPlayer?.stop()
+    }
+    
+    func playRecording(url: URL, button: UIButton){
+        
+        
+        if (url != playingRecordingURL) {
+            
+            if (playPauseButton == nil ) {
+                playPauseButton = button
+            }
+            
+            DispatchQueue.main.async {
+                self.playPauseButton!.setTitle("▶️", for: .normal)
+                self.playPauseButton = button
+                self.playPauseButton!.setTitle("⏸", for: .normal)
+            }
+           
+            isPlaying = true
+            playingRecordingURL = url
+            
+            do{
+                
+                audioPlayer = try AVAudioPlayer(contentsOf: playingRecordingURL!)
+                audioPlayer?.delegate = self
+                
+                guard let audioPlayer = audioPlayer else { return }
+                audioPlayer.prepareToPlay()
+                audioPlayer.play()
+                
+            } catch let error as NSError {
+                
+                print(error.localizedDescription)
+            }
+            
+        } else if (isPlaying) {
+            
+            audioPlayer?.pause()
+            isPlaying = false
+            
+            DispatchQueue.main.sync {
+                playPauseButton!.setTitle("▶️", for: .normal)
+            }
+            
+        } else if (!isPlaying) {
+
+            audioPlayer?.play()
+            isPlaying = true
+            
+            DispatchQueue.main.sync {
+                playPauseButton!.setTitle("⏸", for: .normal)
+            }
+        }
+        
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        
+        playingRecordingURL = nil
+        isPlaying = false
+        
+        DispatchQueue.main.async {
+            self.playPauseButton!.setTitle("▶️", for: .normal)
+        }
+    }
+    
+    
+    @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
+        
+        mergeAudioFiles(audioFileUrls: exportSelected) {
+            self.playRecording(url: getMergedFileURL(), button: sender)
+        }
+        
+    }
+  
+}
+
+extension ViewController: AVAudioRecorderDelegate {
+    func recordAudio() {
+        
+        do {
+            let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try audioSession.setActive(true)
+            
+            let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
+            
+            let timestamp = Int(round((NSDate().timeIntervalSince1970)))
+            
+            let path =  "\(timestamp)_\(topicNumber)"+"."+recordingExtension
+            
+            let fullRecordingPath = (documents as NSString).appendingPathComponent(path)
+            
+            
+            let url = NSURL.fileURL(withPath: fullRecordingPath)
+            
+            let recordSettings = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVSampleRateKey: 12000,
+                AVNumberOfChannelsKey: 1,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+                ] as [String : Any]
+            
+            do{
+                audioRecorder = try AVAudioRecorder(url:url, settings: recordSettings)
+                audioRecorder.delegate = self
+                
+                audioRecorder.prepareToRecord()
+                
+                audioRecorder.record(forDuration: Double(defaultSpeakTime))
+                
+                
+            } catch let error as NSError {
+                print("Error with recording")
+                print(error.localizedDescription)
+            }
+        } catch {
+        }
+    }
+}
+
+
+
+extension ViewController:UITableViewDataSource,UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return dateSortedRecordingList.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].value.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as? SectionHeaderCell {
+            
+            let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
+            cell.configureCell(date: date)
+            cell.delegate = self
+            
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return sectionHeaderHeight
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return recordingCellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "recordingCell") as? RecordingCell {
+            
+            let recordings = dateSortedRecordingList.sorted{ $0.0 > $1.0 }[indexPath.section]
+            
+            let url = recordings.value[indexPath.row]
+            cell.configureCell(url: url )
+            cell.delegate = self
+            
+            if(exportSelected.contains(url)) {
+                cell.selectCheckBox()
+            } else {
+                cell.deselectCheckBox()
+            }
+            
+            
+            return cell
+            
+        } else {
+            return UITableViewCell()
+        }
+        
+    }
+
+}
