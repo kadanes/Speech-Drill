@@ -35,7 +35,6 @@ class RecordingCell: UITableViewCell {
         getTopicNumber(url: "\(url)")
         recordingNameLbl.text = "Topic \(topicNumber)"
         
-        
     }
     
     func selectCheckBox() {
@@ -85,6 +84,7 @@ class RecordingCell: UITableViewCell {
         
         if let url = url {
             delegate?.playRecording(url: url, button: playPauseBtn)
+            delegate?.renderTopic(topicNumber: topicNumber, saveDefault: false)
         }
         
     }

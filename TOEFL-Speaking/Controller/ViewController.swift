@@ -427,8 +427,8 @@ extension ViewController: AVAudioPlayerDelegate {
             audioPlayer?.pause()
             isPlaying = false
             
-            DispatchQueue.main.sync {
-                playPauseButton!.setTitle("▶️", for: .normal)
+            DispatchQueue.main.async {
+                self.playPauseButton!.setTitle("▶️", for: .normal)
             }
             
         } else if (!isPlaying) {
@@ -436,8 +436,8 @@ extension ViewController: AVAudioPlayerDelegate {
             audioPlayer?.play()
             isPlaying = true
             
-            DispatchQueue.main.sync {
-                playPauseButton!.setTitle("⏸", for: .normal)
+            DispatchQueue.main.async {
+                self.playPauseButton!.setTitle("⏸", for: .normal)
             }
         }
         
