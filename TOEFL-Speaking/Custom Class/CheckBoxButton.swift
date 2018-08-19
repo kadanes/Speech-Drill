@@ -15,5 +15,4 @@ class CheckBoxButton: UIButton {
         layer.borderColor = UIColor.white.cgColor
         layer.borderWidth = 3
     }
-
 }

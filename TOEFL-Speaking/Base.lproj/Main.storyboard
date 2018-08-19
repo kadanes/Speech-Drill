@@ -79,29 +79,29 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M92-pP-niw">
                                         <rect key="frame" x="8" y="102" width="359" height="40"/>
                                         <subviews>
-                                            <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s3-J3-klY" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                            <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s3-J3-klY" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="47" height="40"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="&lt;&lt;&lt;"/>
+                                                <state key="normal" title="&lt;&lt;&lt;" image="tleft.png"/>
                                                 <connections>
                                                     <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qCq-1H-cxt"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                 <rect key="frame" x="52" y="0.0" width="47" height="40"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="&lt;&lt;"/>
+                                                <state key="normal" title="&lt;&lt;" image="dleft.png"/>
                                                 <connections>
                                                     <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPd-46-T2X"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                 <rect key="frame" x="104" y="0.0" width="47" height="40"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="&lt;"/>
+                                                <state key="normal" title="&lt;" image="sleft.png"/>
                                                 <connections>
                                                     <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H1N-tw-QQg"/>
                                                 </connections>
@@ -114,29 +114,29 @@
                                                 <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Zo-OZI" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Zo-OZI" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                 <rect key="frame" x="208" y="0.0" width="47" height="40"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="&gt;"/>
+                                                <color key="tintColor" red="1" green="0.98431372549019602" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal" image="sright.png"/>
                                                 <connections>
                                                     <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GdI-5q-fC5"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                 <rect key="frame" x="260" y="0.0" width="47" height="40"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="&gt;&gt;"/>
+                                                <state key="normal" title="&gt;&gt;" image="dright.png"/>
                                                 <connections>
                                                     <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H43-KQ-wlH"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                            <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                 <rect key="frame" x="312" y="0.0" width="47" height="40"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="&gt;&gt;&gt;"/>
+                                                <state key="normal" title="&gt;&gt;&gt;" image="tright.png"/>
                                                 <connections>
                                                     <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="058-DA-CaD"/>
                                                 </connections>
@@ -187,7 +187,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hIS-sg-tLL">
-                                <rect key="frame" x="0.0" y="321" width="375" height="306"/>
+                                <rect key="frame" x="0.0" y="321" width="375" height="346"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" id="Jau-su-4xW" customClass="SectionHeaderCell" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -206,24 +206,22 @@
                                                             <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BR4-gE-2vs">
+                                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BR4-gE-2vs">
                                                             <rect key="frame" x="295" y="0.0" width="40" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="9h4-bK-dle"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                            <state key="normal" title="▶️"/>
+                                                            <state key="normal" image="playg.png"/>
                                                             <connections>
                                                                 <action selector="playRecordingTapped:" destination="Jau-su-4xW" eventType="touchUpInside" id="D8D-7h-KGd"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVd-8g-rQq">
+                                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVd-8g-rQq">
                                                             <rect key="frame" x="335" y="0.0" width="40" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="cpm-Wr-RO8"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                            <state key="normal" title="📤"/>
+                                                            <state key="normal" image="share.png"/>
                                                             <connections>
                                                                 <action selector="shareRecordingsTapped:" destination="Jau-su-4xW" eventType="touchUpInside" id="cm6-mj-l0b"/>
                                                             </connections>
@@ -240,8 +238,10 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
+                                            <outlet property="playAllBtn" destination="BR4-gE-2vs" id="J9p-DT-yzs"/>
                                             <outlet property="playPauseBtn" destination="BR4-gE-2vs" id="75D-Fg-qxj"/>
                                             <outlet property="sectionNameLbl" destination="Dh3-AB-ZcH" id="gDt-im-REH"/>
+                                            <outlet property="shareAllBtn" destination="lVd-8g-rQq" id="wMx-YC-ahc"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recordingCell" rowHeight="46" id="qGU-Yf-wBh" customClass="RecordingCell" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -254,11 +254,12 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Zv5-GT-FHF">
                                                     <rect key="frame" x="4" y="3" width="367" height="40"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52d-RJ-MZb" customClass="CheckBoxButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52d-RJ-MZb">
                                                             <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="bv1-GO-GDE"/>
                                                             </constraints>
+                                                            <state key="normal" backgroundImage="box.png"/>
                                                             <connections>
                                                                 <action selector="selectRecordingTapped:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="2if-Eb-H0C"/>
                                                             </connections>
@@ -272,31 +273,28 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="4aq-Hj-aQI">
                                                             <rect key="frame" x="227" y="0.0" width="140" height="40"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="44.5" height="40"/>
                                                                     <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                                                    <state key="normal" title="▶️"/>
+                                                                    <state key="normal" title="▶️" image="playg.png"/>
                                                                     <connections>
                                                                         <action selector="playRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="E4w-Zz-5Zc"/>
                                                                     </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-cm-fjw" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xna-0Q-hnQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                                     <rect key="frame" x="47.5" y="0.0" width="45" height="40"/>
                                                                     <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                                                    <state key="normal" title="🗑"/>
-                                                                    <connections>
-                                                                        <action selector="deleteRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="GkP-tb-PdW"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xna-0Q-hnQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                    <rect key="frame" x="95.5" y="0.0" width="44.5" height="40"/>
-                                                                    <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                                                    <state key="normal" title="📤"/>
+                                                                    <state key="normal" image="sshareg.png"/>
                                                                     <connections>
                                                                         <action selector="shareRecordingPressed:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="WPJ-Kw-yh0"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-cm-fjw" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                    <rect key="frame" x="95.5" y="0.0" width="44.5" height="40"/>
+                                                                    <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <state key="normal" image="delete.png"/>
+                                                                    <connections>
+                                                                        <action selector="deleteRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="GkP-tb-PdW"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -329,8 +327,11 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="checkBoxBtn" destination="52d-RJ-MZb" id="weB-SG-3hY"/>
+                                            <outlet property="deleteRecordingBtn" destination="ZOk-cm-fjw" id="8dG-9t-GFB"/>
                                             <outlet property="playPauseBtn" destination="GWU-N2-BwQ" id="bLu-7x-ga1"/>
+                                            <outlet property="playRecordningBtn" destination="GWU-N2-BwQ" id="ZuV-vj-d7D"/>
                                             <outlet property="recordingNameLbl" destination="eir-5C-wRp" id="HHh-Cg-zaG"/>
+                                            <outlet property="shareRecordingBtn" destination="xna-0Q-hnQ" id="QfF-gR-nEg"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -355,14 +356,13 @@
                                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWY-tR-IMK">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWY-tR-IMK">
                                                 <rect key="frame" x="294" y="0.0" width="81" height="49"/>
                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="81" id="bZA-p7-S9W"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="34"/>
-                                                <state key="normal" title="⭕️"/>
+                                                <state key="normal" image="recordf.png"/>
                                                 <connections>
                                                     <action selector="startRecordingPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qSY-Fq-E7g"/>
                                                 </connections>
@@ -380,21 +380,21 @@
                                 </constraints>
                             </view>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0tL-M8-dRP">
-                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qA-8f-df2">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qA-8f-df2">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="0.0"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="J3Z-Yy-qYk"/>
                                         </constraints>
-                                        <state key="normal" title="❌"/>
+                                        <state key="normal" image="close.png"/>
                                         <connections>
                                             <action selector="cancelSelectedTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="J4U-zM-V3y"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVR-g6-4WM">
-                                        <rect key="frame" x="60" y="0.0" width="255" height="40"/>
+                                        <rect key="frame" x="60" y="0.0" width="255" height="0.0"/>
                                         <color key="backgroundColor" red="0.85613167285919189" green="0.7660786509513855" blue="0.059069089591503143" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Export">
@@ -404,21 +404,20 @@
                                             <action selector="exportSelectedTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gvB-fS-OOp"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OuX-zo-6iH">
-                                        <rect key="frame" x="315" y="0.0" width="60" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OuX-zo-6iH">
+                                        <rect key="frame" x="315" y="0.0" width="60" height="0.0"/>
                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="8sE-in-wKt"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <state key="normal" title="▶️"/>
+                                        <state key="normal" image="playy.png"/>
                                         <connections>
                                             <action selector="playSelectedAudioTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UyN-Q9-2Hx"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="3V7-3U-IWY"/>
+                                    <constraint firstAttribute="height" id="3V7-3U-IWY"/>
                                 </constraints>
                             </stackView>
                         </subviews>
@@ -448,9 +447,17 @@
                     <connections>
                         <outlet property="adjustSpeakTimeBtn" destination="d2n-0g-Jvi" id="Eyq-4y-D2v"/>
                         <outlet property="adjustThinkTimeBtn" destination="uK6-KK-xud" id="FMc-1g-gPA"/>
+                        <outlet property="closeShareMenuBtn" destination="1qA-8f-df2" id="kgU-z7-tZ6"/>
                         <outlet property="exportMenuHeight" destination="3V7-3U-IWY" id="CtL-ea-d8M"/>
                         <outlet property="exportMenuStackView" destination="0tL-M8-dRP" id="WJ5-FL-yCE"/>
                         <outlet property="exportSelectedBtn" destination="hVR-g6-4WM" id="MV1-1Z-NII"/>
+                        <outlet property="loadNextFiftiethTopicBtn" destination="xfk-mu-sAd" id="qJ6-Aw-XSE"/>
+                        <outlet property="loadNextTenthTopicBtn" destination="vX7-Zw-csc" id="2Wt-yU-8mD"/>
+                        <outlet property="loadNextTopicBtn" destination="L5g-Zo-OZI" id="eI6-Nz-FCP"/>
+                        <outlet property="loadPreviousFiftiethTopicBtn" destination="7s3-J3-klY" id="ngt-O3-IwY"/>
+                        <outlet property="loadPreviousTenthTopicBtn" destination="Obt-De-gHj" id="7Qc-ee-Fvx"/>
+                        <outlet property="loadPreviousTopicBtn" destination="VMN-J2-UPn" id="Y58-tE-Spf"/>
+                        <outlet property="playSelectedBtn" destination="OuX-zo-6iH" id="ozU-nh-qRW"/>
                         <outlet property="recordBtn" destination="mWY-tR-IMK" id="GCC-O6-5Wm"/>
                         <outlet property="recordingTableView" destination="hIS-sg-tLL" id="8Id-9r-V8p"/>
                         <outlet property="topicLbl" destination="pr2-oc-9A7" id="yyI-v9-YrH"/>
@@ -462,4 +469,20 @@
             <point key="canvasLocation" x="133.59999999999999" y="126.38680659670166"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="box.png" width="448" height="512"/>
+        <image name="close.png" width="61" height="61"/>
+        <image name="delete.png" width="448" height="512"/>
+        <image name="dleft.png" width="448" height="512"/>
+        <image name="dright.png" width="448" height="512"/>
+        <image name="playg.png" width="448" height="512"/>
+        <image name="playy.png" width="448" height="512"/>
+        <image name="recordf.png" width="512" height="512"/>
+        <image name="share.png" width="576" height="512"/>
+        <image name="sleft.png" width="256" height="512"/>
+        <image name="sright.png" width="256" height="512"/>
+        <image name="sshareg.png" width="512" height="512"/>
+        <image name="tleft.png" width="611" height="327"/>
+        <image name="tright.png" width="611" height="327"/>
+    </resources>
 </document>

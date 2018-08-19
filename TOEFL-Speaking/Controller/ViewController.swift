@@ -31,6 +31,18 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var exportMenuStackView: UIStackView!
     
+    @IBOutlet weak var loadNextTopicBtn: RoundButton!
+    @IBOutlet weak var loadNextTenthTopicBtn: RoundButton!
+    @IBOutlet weak var loadNextFiftiethTopicBtn: RoundButton!
+    
+    @IBOutlet weak var loadPreviousTopicBtn: RoundButton!
+    @IBOutlet weak var loadPreviousTenthTopicBtn: RoundButton!
+    @IBOutlet weak var loadPreviousFiftiethTopicBtn: RoundButton!
+    
+    @IBOutlet weak var playSelectedBtn: UIButton!
+    
+    @IBOutlet weak var closeShareMenuBtn: UIButton!
+    
     let defaultThinkTime = 15
     let defaultSpeakTime = 45
    
@@ -73,9 +85,25 @@ class ViewController: UIViewController {
         readTopics()
         topicNumber = userDefaults.integer(forKey: "topicNumber")
         renderTopic(topicNumber: topicNumber, saveDefault: true)
+     
+        setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset + 3, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadPreviousTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadPreviousTenthTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadPreviousFiftiethTopicBtn , topPadding: buttonVerticalInset + 3, leftPadding: buttonHorizontalInset)
         
+        setBtnImgProp(button: playSelectedBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        
+        setBtnImgProp(button: recordBtn,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        
+        setBtnImgProp(button: closeShareMenuBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        recordingTableView.reloadData()
+    }
     
     func renderTopic(topicNumber: Int, saveDefault: Bool) {
         if saveDefault{
@@ -164,6 +192,13 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentEdgeInsets = UIEdgeInsetsMake(topPadding, leftPadding, topPadding, leftPadding)
+    }
+    
+    
     func parseDate(timeStamp: String) -> String {
         
         guard let ts = Double(timeStamp) else {
@@ -212,7 +247,7 @@ class ViewController: UIViewController {
     @objc func blinkRecordBtn(timer: Timer) {
         if speakTime > 0 {
             if !blinking {
-                recordBtn.setTitle("🔴", for: .normal)
+                setButtonBgImage(button: recordBtn, bgImage: recordIcon)
                 blinking = true
             } else {
                 recordBtn.setTitle("", for: .normal)
@@ -221,7 +256,6 @@ class ViewController: UIViewController {
         } else {
             adjustThinkTimeBtn.text = "\(defaultThinkTime)"
             adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
-            recordBtn.setTitle("⭕️", for: .normal)
             recording = false
             blinking = false
             
@@ -327,7 +361,7 @@ class ViewController: UIViewController {
             exportMenuHeight.constant = 40
             exportMenuStackView.isHidden = false
 
-            exportSelectedBtn.setTitle("Export \(exportSelected.count) recordings", for: .normal)
+            exportSelectedBtn.setTitle("Export \(exportSelected.count) recording(s)", for: .normal)
             
         } else {
             exportMenuHeight.constant = 0
@@ -377,17 +411,14 @@ class ViewController: UIViewController {
 
 extension ViewController: AVAudioPlayerDelegate {
     
-    
     func stopPlaying() {
        
-        
-        DispatchQueue.main.async {
-             self.playPauseButton?.setTitle("▶️", for: .normal)
+        if (playPauseButton != nil) {
+            setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
+            isPlaying = false
+            playingRecordingURL = nil
+            audioPlayer?.stop()
         }
-        
-        isPlaying = false
-        playingRecordingURL = nil
-        audioPlayer?.stop()
     }
     
     func playRecording(url: URL, button: UIButton){
@@ -399,12 +430,10 @@ extension ViewController: AVAudioPlayerDelegate {
                 playPauseButton = button
             }
             
-            DispatchQueue.main.async {
-                self.playPauseButton!.setTitle("▶️", for: .normal)
-                self.playPauseButton = button
-                self.playPauseButton!.setTitle("⏸", for: .normal)
-            }
-           
+            setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
+            playPauseButton = button
+            setButtonBgImage(button: self.playPauseButton!, bgImage: pauseBtnIcon)
+        
             isPlaying = true
             playingRecordingURL = url
             
@@ -426,31 +455,32 @@ extension ViewController: AVAudioPlayerDelegate {
             
             audioPlayer?.pause()
             isPlaying = false
+            setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
             
-            DispatchQueue.main.async {
-                self.playPauseButton!.setTitle("▶️", for: .normal)
-            }
             
         } else if (!isPlaying) {
 
             audioPlayer?.play()
             isPlaying = true
+            setButtonBgImage(button: self.playPauseButton!, bgImage: pauseBtnIcon)
             
-            DispatchQueue.main.async {
-                self.playPauseButton!.setTitle("⏸", for: .normal)
-            }
         }
         
     }
     
+    func setButtonBgImage(button: UIButton, bgImage: UIImage) {
+        
+        DispatchQueue.main.async {
+            button.setImage(bgImage, for: .normal)
+        }
+//        button.imageView?.contentMode = .scaleAspectFit
+//        button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset, buttonVerticalInset, buttonHorizontalInset)
+    }
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
         playingRecordingURL = nil
         isPlaying = false
-        
-        DispatchQueue.main.async {
-            self.playPauseButton!.setTitle("▶️", for: .normal)
-        }
+        setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
     }
     
     
@@ -507,8 +537,6 @@ extension ViewController: AVAudioRecorderDelegate {
         }
     }
 }
-
-
 
 extension ViewController:UITableViewDataSource,UITableViewDelegate {
     
@@ -569,5 +597,5 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
         }
         
     }
-
+    
 }

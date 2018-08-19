@@ -16,16 +16,19 @@ class SectionHeaderCell: UITableViewCell {
     var url = URL(fileURLWithPath: "")
     var date = ""
     
-    var isMerged = false
+    @IBOutlet weak var playAllBtn: UIButton!
+    
+    @IBOutlet weak var shareAllBtn: UIButton!
     
     
     @IBOutlet weak var sectionNameLbl: UILabel!
     
     @IBOutlet weak var playPauseBtn: UIButton!
     
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
@@ -44,6 +47,14 @@ class SectionHeaderCell: UITableViewCell {
     func configureCell(date:String) {
         sectionNameLbl.text = date
         self.date = date
+        
+        setButtonImageProperties(button: playAllBtn)
+        setButtonImageProperties(button: shareAllBtn)
+    }
+    
+    func setButtonImageProperties(button: UIButton) {
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset, buttonVerticalInset, buttonHorizontalInset)
     }
 
     func shareMergedAudio() {

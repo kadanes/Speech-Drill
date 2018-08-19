@@ -15,9 +15,12 @@ class RecordingCell: UITableViewCell {
     
     @IBOutlet weak var playPauseBtn: RoundButton!
     
-    
+    @IBOutlet weak var deleteRecordingBtn: RoundButton!
+    @IBOutlet weak var shareRecordingBtn: RoundButton!
+    @IBOutlet weak var playRecordningBtn: RoundButton!
+
     @IBOutlet weak var checkBoxBtn: CheckBoxButton!
-    
+
     weak var delegate: ViewController?
     var topicNumber = 0
     var timeStamp = 0
@@ -26,19 +29,37 @@ class RecordingCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
     }
 
-    
+   
     func configureCell(url:URL) {
         self.url = url
         getTopicNumber(url: "\(url)")
         recordingNameLbl.text = "Topic \(topicNumber)"
         
+        setButtonImageProperties(button: deleteRecordingBtn)
+        setButtonImageProperties(button: shareRecordingBtn)
+        setButtonImageProperties(button: playRecordningBtn)
+        
+        setCheckBoxProperties()
+    }
+    
+    func setButtonImageProperties(button: UIButton) {
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset, buttonVerticalInset, buttonHorizontalInset)
+    }
+    
+    func setCheckBoxProperties() {
+        
+        if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
+            checkBoxBg.contentMode = .scaleAspectFit
+        }
+        
     }
     
     func selectCheckBox() {
-        checkBoxBtn.setImage(#imageLiteral(resourceName: "tick.png"), for: .normal)
+        checkBoxBtn.setImage(checkMarkIcon, for: .normal)
         isRecordingSelected = true
     }
     
@@ -46,7 +67,6 @@ class RecordingCell: UITableViewCell {
         checkBoxBtn.setImage(nil, for: .normal)
         isRecordingSelected = false
     }
-    
     
     func getTopicNumber(url: String) {
 
@@ -112,11 +132,10 @@ class RecordingCell: UITableViewCell {
         if !isRecordingSelected {
             
             DispatchQueue.main.async {
-                sender.setImage(#imageLiteral(resourceName: "tick.png"), for: .normal)
+                sender.setImage(checkMarkIcon, for: .normal)
                 self.delegate?.stopPlaying()
             }
             
-        
             delegate?.addToExportList(url: url!)
             
         } else {
