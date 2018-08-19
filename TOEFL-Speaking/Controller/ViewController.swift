@@ -39,15 +39,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var loadPreviousTenthTopicBtn: RoundButton!
     @IBOutlet weak var loadPreviousFiftiethTopicBtn: RoundButton!
     
+    @IBOutlet weak var cancelRecordingBtn: UIButton!
+    
     @IBOutlet weak var playSelectedBtn: UIButton!
     
     @IBOutlet weak var closeShareMenuBtn: UIButton!
     
-    let defaultThinkTime = 15
-    let defaultSpeakTime = 45
+    let defaultThinkTime = 2
+    let defaultSpeakTime = 4
    
-    var thinkTime = 15
-    var speakTime = 45
+    var thinkTime = 2
+    var speakTime = 4
 
     var topicNumber = 0
     var topics: [String] = []
@@ -57,7 +59,7 @@ class ViewController: UIViewController {
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    
+    var audioSession: AVAudioSession!
     
     var dateSortedRecordingList: Dictionary<String,Array<URL>> = [:]
     
@@ -68,14 +70,18 @@ class ViewController: UIViewController {
     
     let userDefaults = UserDefaults.standard
     
-    
     var playingRecordingURL: URL?
     var playPauseButton: UIButton?
     var isPlaying = false
     var audioPlayer: AVAudioPlayer?
     
+    var thinkTimer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        resetRecordingState()
+
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
         updateURLList()
@@ -98,6 +104,9 @@ class ViewController: UIViewController {
         setBtnImgProp(button: recordBtn,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
         setBtnImgProp(button: closeShareMenuBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+    
+        setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -148,11 +157,92 @@ class ViewController: UIViewController {
     
     @IBAction func startRecordingPressed(_ sender: Any) {
         
+        stopPlaying()
+        
         if (!recording) {
             recording = true
-            let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
+            
+            cancelRecordingBtn.isHidden = false
+            
+            thinkTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
         }
     }
+    
+    
+    @IBAction func cancelRecordingTapped(_ sender: Any) {
+        
+        if (thinkTime > 0) {
+            
+            cancelRecordingBtn.isHidden = true
+
+            thinkTimer?.invalidate()
+            resetRecordingState()
+        }
+    }
+    
+    
+    @objc func decrementThinkTime(timer: Timer) {
+        if(thinkTime > 0) {
+            thinkTime -= 1
+            
+            adjustThinkTimeBtn.text = "\(thinkTime)"
+            
+        } else {
+            timer.invalidate()
+            cancelRecordingBtn.isHidden = true
+            
+            thinkTime = defaultThinkTime
+            recordAudio()
+            
+            let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
+            let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
+            
+        }
+    }
+    
+    @objc func decrementSpeakTime(timer: Timer) {
+        
+        if(speakTime > 0) {
+            speakTime -= 1
+            adjustSpeakTimeBtn.text = "\(speakTime)"
+        } else {
+            
+            
+            timer.invalidate()
+            speakTime = defaultSpeakTime
+            
+        }
+    }
+    
+    @objc func blinkRecordBtn(timer: Timer) {
+        if speakTime > 0 {
+            if !blinking {
+                setButtonBgImage(button: recordBtn, bgImage: recordIcon)
+                blinking = true
+            } else {
+                recordBtn.setImage(nil, for: .normal)
+                blinking = false
+            }
+        } else {
+            
+            timer.invalidate()
+            
+        }
+        
+    }
+    
+    func resetRecordingState() {
+        
+        setButtonBgImage(button: recordBtn, bgImage: recordIcon)
+
+        adjustThinkTimeBtn.text = "\(defaultThinkTime)"
+        adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
+        
+        recording = false
+        blinking = false
+        
+    }
+    
 
     func updateURLList() {
                 
@@ -192,12 +282,10 @@ class ViewController: UIViewController {
         }
     }
     
-    
     func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
         button.imageView?.contentMode = .scaleAspectFit
         button.contentEdgeInsets = UIEdgeInsetsMake(topPadding, leftPadding, topPadding, leftPadding)
     }
-    
     
     func parseDate(timeStamp: String) -> String {
         
@@ -215,62 +303,6 @@ class ViewController: UIViewController {
         return strDate
     }
     
-    @objc func decrementThinkTime(timer: Timer) {
-        if(thinkTime > 0) {
-            thinkTime -= 1
-            
-            adjustThinkTimeBtn.text = "\(thinkTime)"
-            
-        } else {
-            timer.invalidate()
-            thinkTime = defaultThinkTime
-            recordAudio()
-            
-            let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
-            let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
-
-        }
-    }
-    
-    @objc func decrementSpeakTime(timer: Timer) {
-        
-        if(speakTime > 0) {
-            speakTime -= 1
-            adjustSpeakTimeBtn.text = "\(speakTime)"
-        } else {
-            timer.invalidate()
-            speakTime = defaultSpeakTime
-            
-        }
-    }
-    
-    @objc func blinkRecordBtn(timer: Timer) {
-        if speakTime > 0 {
-            if !blinking {
-                setButtonBgImage(button: recordBtn, bgImage: recordIcon)
-                blinking = true
-            } else {
-                recordBtn.setTitle("", for: .normal)
-                blinking = false
-            }
-        } else {
-            adjustThinkTimeBtn.text = "\(defaultThinkTime)"
-            adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
-            recording = false
-            blinking = false
-            
-            timer.invalidate()
-            
-            updateURLList()
-            
-            topicNumber += 1
-            renderTopic(topicNumber: topicNumber, saveDefault: true)
-            
-            recordingTableView.reloadData()
-        }
-        
-    }
-    
     func getAudioFilesList(date: String) -> [URL] {
         
         guard let urlList = dateSortedRecordingList[date] else {return [URL]()}
@@ -282,10 +314,9 @@ class ViewController: UIViewController {
         
         do {
             try FileManager.default.removeItem(at: getMergedFileURL())
-            print("Deleted Old File")
             
         } catch let error as NSError {
-            print("Error: \(error.domain)")
+            print("Error Deleting Merged Audio:\n\(error.domain)")
         }
         
         let composition = AVMutableComposition()
@@ -303,7 +334,6 @@ class ViewController: UIViewController {
             
             do{
                 try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
-                
                 
                 let delimiterPath = Bundle.main.path(forResource: beepSoundFileName, ofType: recordingExtension)
                 
@@ -406,7 +436,7 @@ class ViewController: UIViewController {
     @IBAction func cancelSelectedTapped(_ sender: UIButton) {
         clearSelected()
     }
-    
+ 
 }
 
 extension ViewController: AVAudioPlayerDelegate {
@@ -423,6 +453,7 @@ extension ViewController: AVAudioPlayerDelegate {
     
     func playRecording(url: URL, button: UIButton){
         
+        if recording { return }
         
         if (url != playingRecordingURL) {
             
@@ -439,16 +470,22 @@ extension ViewController: AVAudioPlayerDelegate {
             
             do{
                 
+                audioSession = AVAudioSession.sharedInstance()
+                try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+                try audioSession.setActive(true)
+                
                 audioPlayer = try AVAudioPlayer(contentsOf: playingRecordingURL!)
                 audioPlayer?.delegate = self
                 
                 guard let audioPlayer = audioPlayer else { return }
+    
                 audioPlayer.prepareToPlay()
+    
                 audioPlayer.play()
                 
             } catch let error as NSError {
+                print("Error Playing\n",error.localizedDescription)
                 
-                print(error.localizedDescription)
             }
             
         } else if (isPlaying) {
@@ -457,15 +494,12 @@ extension ViewController: AVAudioPlayerDelegate {
             isPlaying = false
             setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
             
-            
         } else if (!isPlaying) {
 
             audioPlayer?.play()
             isPlaying = true
             setButtonBgImage(button: self.playPauseButton!, bgImage: pauseBtnIcon)
-            
         }
-        
     }
     
     func setButtonBgImage(button: UIButton, bgImage: UIImage) {
@@ -473,8 +507,6 @@ extension ViewController: AVAudioPlayerDelegate {
         DispatchQueue.main.async {
             button.setImage(bgImage, for: .normal)
         }
-//        button.imageView?.contentMode = .scaleAspectFit
-//        button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset, buttonVerticalInset, buttonHorizontalInset)
     }
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
@@ -489,17 +521,16 @@ extension ViewController: AVAudioPlayerDelegate {
         mergeAudioFiles(audioFileUrls: exportSelected) {
             self.playRecording(url: getMergedFileURL(), button: sender)
         }
-        
     }
-  
 }
 
 extension ViewController: AVAudioRecorderDelegate {
+    
     func recordAudio() {
         
         do {
-            let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSessionCategoryRecord)
             try audioSession.setActive(true)
             
             let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
@@ -535,6 +566,17 @@ extension ViewController: AVAudioRecorderDelegate {
             }
         } catch {
         }
+    }
+    
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        
+        updateURLList()
+        
+        topicNumber += 1
+        renderTopic(topicNumber: topicNumber, saveDefault: true)
+        recordingTableView.reloadData()
+        
+        resetRecordingState()
     }
 }
 
@@ -588,8 +630,6 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
             } else {
                 cell.deselectCheckBox()
             }
-            
-            
             return cell
             
         } else {

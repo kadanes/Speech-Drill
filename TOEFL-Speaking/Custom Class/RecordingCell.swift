@@ -52,6 +52,7 @@ class RecordingCell: UITableViewCell {
     
     func setCheckBoxProperties() {
         
+        
         if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
             checkBoxBg.contentMode = .scaleAspectFit
         }
@@ -104,7 +105,7 @@ class RecordingCell: UITableViewCell {
         
         if let url = url {
             delegate?.playRecording(url: url, button: playPauseBtn)
-            delegate?.renderTopic(topicNumber: topicNumber, saveDefault: false)
+            delegate?.renderTopic(topicNumber: topicNumber, saveDefault: true)
         }
         
     }
@@ -118,9 +119,8 @@ class RecordingCell: UITableViewCell {
             delegate?.recordingTableView.reloadData()
             
         } catch let error as NSError {
-            print("Could Not Delete File")
             
-            print(error.localizedDescription)
+            print("Could Not Delete File\n",error.localizedDescription)
             
         }
     }
