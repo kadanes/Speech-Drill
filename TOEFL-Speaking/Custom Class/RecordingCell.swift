@@ -24,6 +24,8 @@ class RecordingCell: UITableViewCell {
     weak var delegate: ViewController?
     var topicNumber = 0
     var timeStamp = 0
+    var thinkTime = 15
+    
     var url: URL?
     var isRecordingSelected = false
     
@@ -34,9 +36,30 @@ class RecordingCell: UITableViewCell {
 
    
     func configureCell(url:URL) {
+        
         self.url = url
-        getTopicNumber(url: "\(url)")
-        recordingNameLbl.text = "Topic \(topicNumber)"
+        
+        getFileDetails(url: "\(url)")
+        
+        if topicNumber != 0  {
+            recordingNameLbl.text = "Topic \(topicNumber)"
+        } else {
+            
+            var labelText = ""
+            switch thinkTime {
+                case 15:
+                labelText = "Independent"
+                case 20:
+                labelText = "Integrated B"
+                case 30:
+                labelText = "Integrated A"
+                default:
+                labelText = "Improper Think Time"
+            }
+            
+            recordingNameLbl.text = labelText
+            
+        }
         
         setButtonImageProperties(button: deleteRecordingBtn)
         setButtonImageProperties(button: shareRecordingBtn)
@@ -51,7 +74,6 @@ class RecordingCell: UITableViewCell {
     }
     
     func setCheckBoxProperties() {
-        
         
         if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
             checkBoxBg.contentMode = .scaleAspectFit
@@ -69,27 +91,9 @@ class RecordingCell: UITableViewCell {
         isRecordingSelected = false
     }
     
-    func getTopicNumber(url: String) {
+    func getFileDetails(url: String) {
 
-        let urlComponents = url.components(separatedBy: "/")
-        let fileName = urlComponents[urlComponents.count - 1]
-        
-        let fileNameComponents = fileName.components(separatedBy: ".")
-        
-        if fileNameComponents.indices.count > 0 {
-            
-            let recordingNameComponents = fileNameComponents[0].components(separatedBy: "_")
-            
-            if recordingNameComponents.count > 1 {
-                if let topicNumber = Int(recordingNameComponents[1]) {
-                    self.topicNumber = topicNumber
-                }
-            }
-            
-            if let timeStamp = Int(recordingNameComponents[0]) {
-                self.timeStamp = timeStamp
-            }
-        }
+       (timeStamp,topicNumber,thinkTime) = splitFileURL(url: url)
     }
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
@@ -104,6 +108,13 @@ class RecordingCell: UITableViewCell {
     @IBAction func playRecording(_ sender: UIButton) {
         
         if let url = url {
+            
+            if topicNumber == 0 {
+                delegate?.setToTestMode()
+            } else {
+                delegate?.setToPracticeMode()
+            }
+            
             delegate?.playRecording(url: url, button: playPauseBtn)
             delegate?.renderTopic(topicNumber: topicNumber, saveDefault: true)
         }

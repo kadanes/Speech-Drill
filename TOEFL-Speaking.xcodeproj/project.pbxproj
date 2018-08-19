@@ -226,7 +226,7 @@
 				B21ABB1B210FF664009C678C /* Sources */,
 				B21ABB1C210FF664009C678C /* Frameworks */,
 				B21ABB1D210FF664009C678C /* Resources */,
-				B21ABB34210FF673009C678C /* ShellScript */,
+				B21ABB34210FF673009C678C /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -308,18 +308,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B21ABB34210FF673009C678C /* ShellScript */ = {
+		B21ABB34210FF673009C678C /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/bash;
-			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"/Users/Parth/Documents/iOS Apps/TOEFL-Speaking/TOEFL-Speaking\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"/Users/Parth/Documents/iOS Apps/TOEFL-Speaking/TOEFL-Speaking\"";
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}";
 		};
 /* End PBXShellScriptBuildPhase section */
 

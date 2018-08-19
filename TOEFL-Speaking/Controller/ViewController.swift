@@ -16,20 +16,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var adjustThinkTimeBtn: UILabel!
     @IBOutlet weak var adjustSpeakTimeBtn: UILabel!
     
-    @IBOutlet weak var recordBtn: UIButton!
     
-    @IBOutlet weak var recordingTableView: UITableView!
+    @IBOutlet weak var thinkTimeChangeStackView: UIStackView!
+
+    @IBOutlet weak var switchModesBtn: RoundButton!
+    
+    @IBOutlet weak var recordBtn: UIButton!
+    @IBOutlet weak var cancelRecordingBtn: UIButton!
     
     @IBOutlet weak var topicLbl: UILabel!
     
     @IBOutlet weak var topicNumberLbl: UILabel!
     
-   
-    @IBOutlet weak var exportSelectedBtn: UIButton!
-    
-    @IBOutlet weak var exportMenuHeight: NSLayoutConstraint!
-    
-    @IBOutlet weak var exportMenuStackView: UIStackView!
+    @IBOutlet weak var changeTopicBtnsStackView: UIStackView!
     
     @IBOutlet weak var loadNextTopicBtn: RoundButton!
     @IBOutlet weak var loadNextTenthTopicBtn: RoundButton!
@@ -39,22 +38,31 @@ class ViewController: UIViewController {
     @IBOutlet weak var loadPreviousTenthTopicBtn: RoundButton!
     @IBOutlet weak var loadPreviousFiftiethTopicBtn: RoundButton!
     
-    @IBOutlet weak var cancelRecordingBtn: UIButton!
+    
+    @IBOutlet weak var recordingTableView: UITableView!
+    
+    @IBOutlet weak var exportSelectedBtn: UIButton!
+    
+    @IBOutlet weak var exportMenuHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var exportMenuStackView: UIStackView!
     
     @IBOutlet weak var playSelectedBtn: UIButton!
     
     @IBOutlet weak var closeShareMenuBtn: UIButton!
     
-    let defaultThinkTime = 2
-    let defaultSpeakTime = 4
-   
-    var thinkTime = 2
-    var speakTime = 4
+    var isTestMode = false
+    
+    var defaultThinkTime = 15
+    var defaultSpeakTime = 45
+
+    var thinkTime = 15
+    var speakTime = 45
 
     var topicNumber = 0
     var topics: [String] = []
     
-    var recording = false
+    var isRecording = false
     var blinking = true
     
     var recordingSession: AVAudioSession!
@@ -67,7 +75,6 @@ class ViewController: UIViewController {
 
     var mergeAudioURL: URL?
 
-    
     let userDefaults = UserDefaults.standard
     
     var playingRecordingURL: URL?
@@ -86,10 +93,10 @@ class ViewController: UIViewController {
         recordingTableView.delegate = self
         updateURLList()
         
-        recordingTableView.reloadData()
-        
         readTopics()
+        
         topicNumber = userDefaults.integer(forKey: "topicNumber")
+        
         renderTopic(topicNumber: topicNumber, saveDefault: true)
      
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -107,6 +114,8 @@ class ViewController: UIViewController {
     
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -118,6 +127,8 @@ class ViewController: UIViewController {
         if saveDefault{
             userDefaults.set(topicNumber, forKey: "topicNumber")
         }
+        
+        self.topicNumber = topicNumber
         
         UIView.animate(withDuration: 1) {
             
@@ -137,6 +148,33 @@ class ViewController: UIViewController {
             
         }
     }
+    
+    @IBAction func changeThinkTimeTapped(_ sender: RoundButton) {
+
+        if isRecording {return}
+        
+        switch sender.tag {
+            
+            case 15:
+                defaultThinkTime = 15
+                defaultSpeakTime = 45
+            case 20:
+                defaultThinkTime = 20
+                defaultSpeakTime = 60
+            case 30:
+                defaultThinkTime = 30
+                defaultSpeakTime = 60
+            default:
+                defaultThinkTime = 15
+                defaultSpeakTime = 45
+        }
+        
+        speakTime = defaultSpeakTime
+        thinkTime = defaultThinkTime
+        
+        resetRecordingState()
+    }
+    
     
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
         let increment = sender.tag
@@ -159,8 +197,8 @@ class ViewController: UIViewController {
         
         stopPlaying()
         
-        if (!recording) {
-            recording = true
+        if (!isRecording) {
+            isRecording = true
             
             cancelRecordingBtn.isHidden = false
             
@@ -180,6 +218,52 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func switchModesTapped(_ sender: UIButton) {
+       switchModes()
+    }
+    
+    func switchModes() {
+        
+        if isRecording {return}
+        
+        if isTestMode {
+
+            self.switchModesBtn.setTitle("Practice", for: .normal)
+            self.thinkTimeChangeStackView.isHidden = true
+            changeTopicBtnsStackView.isHidden = false
+        
+            renderTopic(topicNumber: topicNumber, saveDefault: true)
+            
+        } else {
+            
+            self.switchModesBtn.setTitle("Test", for: .normal)
+            self.thinkTimeChangeStackView.isHidden = false
+            changeTopicBtnsStackView.isHidden = true
+            
+            topicLbl.text = "TEST MODE"
+        }
+        
+        isTestMode = !isTestMode
+        
+        defaultThinkTime = 15
+        defaultSpeakTime = 45
+        thinkTime = defaultThinkTime
+        speakTime = defaultSpeakTime
+        
+        resetRecordingState()
+        
+    }
+    
+    func setToTestMode() {
+        isTestMode = false
+        switchModes()
+    }
+
+    func setToPracticeMode() {
+        isTestMode = true
+        switchModes()
+    }
     
     @objc func decrementThinkTime(timer: Timer) {
         if(thinkTime > 0) {
@@ -238,7 +322,7 @@ class ViewController: UIViewController {
         adjustThinkTimeBtn.text = "\(defaultThinkTime)"
         adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
         
-        recording = false
+        isRecording = false
         blinking = false
         
     }
@@ -453,7 +537,7 @@ extension ViewController: AVAudioPlayerDelegate {
     
     func playRecording(url: URL, button: UIButton){
         
-        if recording { return }
+        if isRecording { return }
         
         if (url != playingRecordingURL) {
             
@@ -537,7 +621,18 @@ extension ViewController: AVAudioRecorderDelegate {
             
             let timestamp = Int(round((NSDate().timeIntervalSince1970)))
             
-            let path =  "\(timestamp)_\(topicNumber)"+"."+recordingExtension
+            var path = ""
+            
+            print("Is test mode: \(isTestMode)")
+            
+            if isTestMode {
+                
+                path =  "\(timestamp)_0_\(thinkTime)."+recordingExtension
+
+            } else {
+                path =  "\(timestamp)_\(topicNumber)_\(thinkTime)."+recordingExtension
+            }
+            
             
             let fullRecordingPath = (documents as NSString).appendingPathComponent(path)
             
@@ -559,7 +654,6 @@ extension ViewController: AVAudioRecorderDelegate {
                 
                 audioRecorder.record(forDuration: Double(defaultSpeakTime))
                 
-                
             } catch let error as NSError {
                 print("Error with recording")
                 print(error.localizedDescription)
@@ -575,7 +669,8 @@ extension ViewController: AVAudioRecorderDelegate {
         topicNumber += 1
         renderTopic(topicNumber: topicNumber, saveDefault: true)
         recordingTableView.reloadData()
-        
+        recordingTableView.reloadData()
+
         resetRecordingState()
     }
 }
@@ -619,9 +714,20 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "recordingCell") as? RecordingCell {
             
-            let recordings = dateSortedRecordingList.sorted{ $0.0 > $1.0 }[indexPath.section]
+            let recordings = dateSortedRecordingList.sorted{$0.0 > $1.0}[indexPath.section]
             
-            let url = recordings.value[indexPath.row]
+            let url = recordings.value.sorted(by: { (url1, url2) -> Bool in
+                
+                var timeStamp1: Int
+                var timeStamp2: Int
+                
+                (timeStamp1,_,_) = splitFileURL(url: "\(url1)")
+                (timeStamp2,_,_) = splitFileURL(url: "\(url2)")
+                
+                return timeStamp1 > timeStamp2
+                
+            })[indexPath.row]
+            
             cell.configureCell(url: url )
             cell.delegate = self
             

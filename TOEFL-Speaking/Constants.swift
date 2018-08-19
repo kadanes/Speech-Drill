@@ -41,3 +41,38 @@ let pauseBtnIcon = UIImage(named: "pauseg.png")!
 let deleteBtnIcon = UIImage(named: "delete.png")!
 let checkMarkIcon = UIImage(named: "check.png")!
 let recordIcon = UIImage(named: "recordf.png")!
+
+
+
+func splitFileURL(url: String) -> (Int,Int,Int) {
+    
+    let urlComponents = url.components(separatedBy: "/")
+    
+    let fileName = urlComponents[urlComponents.count - 1]
+    
+    let fileNameComponents = fileName.components(separatedBy: ".")
+    
+    var timeStamp: Int = 0
+    var topicNumber: Int = 0
+    var thinkTime: Int = 0
+    
+    if fileNameComponents.indices.count > 0 {
+        
+        let recordingNameComponents = fileNameComponents[0].components(separatedBy: "_")
+        
+        if let thinkTimeUW = Int(recordingNameComponents[2]) {
+            thinkTime = thinkTimeUW
+        }
+        
+        if let topicNumberUW = Int(recordingNameComponents[1]) {
+            topicNumber = topicNumberUW
+        }
+        
+        if let timeStampUW = Int(recordingNameComponents[0]) {
+            timeStamp = timeStampUW
+        }
+        
+    }
+    
+    return (timeStamp,topicNumber,thinkTime)
+}
