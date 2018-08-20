@@ -41,38 +41,21 @@ let pauseBtnIcon = UIImage(named: "pauseg.png")!
 let deleteBtnIcon = UIImage(named: "delete.png")!
 let checkMarkIcon = UIImage(named: "check.png")!
 let recordIcon = UIImage(named: "recordf.png")!
+let emailIcon = UIImage(named: "email.png")!
+let githubIcon = UIImage(named: "github.png")!
+let doubleLeftIcon = UIImage(named: "dleft.png")!
+let singleLeftIcon = UIImage(named: "sleft.png")!
+let tripleLeftIcon = UIImage(named: "tleft.png")!
+let doubleRightIcon = UIImage(named: "dright.png")!
+let singleRightIcon = UIImage(named: "sright.png")!
+let tripleRightIcon = UIImage(named: "tright.png")!
+let closeIcon = UIImage(named: "close.png")!
+let boxIcon = UIImage(named: "box.png")!
+let deleteIcon = UIImage(named: "delete.png")!
+let checkIcon = UIImage(named: "check.png")!
+let infoIcon = UIImage(named: "info.png")!
+let shareIcon = UIImage(named: "share.png")!
+let singleShareIcon = UIImage(named: "sshareg.png")!
 
 
 
-func splitFileURL(url: String) -> (Int,Int,Int) {
-    
-    let urlComponents = url.components(separatedBy: "/")
-    
-    let fileName = urlComponents[urlComponents.count - 1]
-    
-    let fileNameComponents = fileName.components(separatedBy: ".")
-    
-    var timeStamp: Int = 0
-    var topicNumber: Int = 0
-    var thinkTime: Int = 0
-    
-    if fileNameComponents.indices.count > 0 {
-        
-        let recordingNameComponents = fileNameComponents[0].components(separatedBy: "_")
-        
-        if let thinkTimeUW = Int(recordingNameComponents[2]) {
-            thinkTime = thinkTimeUW
-        }
-        
-        if let topicNumberUW = Int(recordingNameComponents[1]) {
-            topicNumber = topicNumberUW
-        }
-        
-        if let timeStampUW = Int(recordingNameComponents[0]) {
-            timeStamp = timeStampUW
-        }
-        
-    }
-    
-    return (timeStamp,topicNumber,thinkTime)
-}

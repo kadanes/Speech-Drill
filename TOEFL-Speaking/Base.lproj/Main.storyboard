@@ -77,23 +77,23 @@
                                                 <rect key="frame" x="8" y="112" width="359" height="40"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmT-iq-GRk" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="316" height="40"/>
                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="100" id="bcr-Go-DxO"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                         <state key="normal" title="Practice">
-                                                            <color key="titleColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="titleColor" red="1" green="0.98431372549019602" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
                                                             <action selector="switchModesTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zcj-iv-o0x"/>
                                                         </connections>
                                                     </button>
                                                     <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
-                                                        <rect key="frame" x="-10" y="0.0" width="4" height="40"/>
+                                                        <rect key="frame" x="317.5" y="0.0" width="4" height="40"/>
                                                         <subviews>
-                                                            <button opaque="NO" tag="15" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                            <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="0.0" height="40"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -103,7 +103,7 @@
                                                                     <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9H3-7H-3kA"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" tag="30" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                            <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                                 <rect key="frame" x="2" y="0.0" width="0.0" height="40"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -113,7 +113,7 @@
                                                                     <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="afA-Gz-DHt"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" tag="20" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                            <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                                 <rect key="frame" x="4" y="0.0" width="0.0" height="40"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -125,6 +125,17 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-tb-mhP" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                        <rect key="frame" x="319" y="0.0" width="40" height="40"/>
+                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="40" id="Y2d-bk-fB8"/>
+                                                        </constraints>
+                                                        <state key="normal" image="info.png"/>
+                                                        <connections>
+                                                            <segue destination="4aH-TG-88i" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="mdO-Tc-dCK"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="AxY-Rv-mJw"/>
@@ -555,6 +566,7 @@
                         <outlet property="cancelRecordingBtn" destination="gRc-qg-QFf" id="aI4-zq-DuN"/>
                         <outlet property="changeTopicBtnsStackView" destination="M92-pP-niw" id="P5c-Ju-34c"/>
                         <outlet property="closeShareMenuBtn" destination="1qA-8f-df2" id="kgU-z7-tZ6"/>
+                        <outlet property="displayInfoBtn" destination="bfu-tb-mhP" id="6Jf-e6-2ZJ"/>
                         <outlet property="exportMenuHeight" destination="3V7-3U-IWY" id="CtL-ea-d8M"/>
                         <outlet property="exportMenuStackView" destination="0tL-M8-dRP" id="WJ5-FL-yCE"/>
                         <outlet property="exportSelectedBtn" destination="hVR-g6-4WM" id="MV1-1Z-NII"/>
@@ -577,21 +589,279 @@
             </objects>
             <point key="canvasLocation" x="133.59999999999999" y="126.38680659670166"/>
         </scene>
+        <!--InfoVC-->
+        <scene sceneID="Pcp-cQ-h9J">
+            <objects>
+                <viewController id="4aH-TG-88i" customClass="InfoVC" customModule="TOEFL_Speaking" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ItW-n7-qUC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oqp-hm-Sp5">
+                                <rect key="frame" x="20" y="131.5" width="335" height="424"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RqR-B5-Sag">
+                                        <rect key="frame" x="0.0" y="12" width="335" height="400"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fwH-64-28o">
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="180"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Ed4-ey-Ikb">
+                                                        <rect key="frame" x="8" y="0.0" width="319" height="180"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="GUC-qk-usd">
+                                                                <rect key="frame" x="0.0" y="0.0" width="319" height="100"/>
+                                                                <subviews>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqK-2l-ymI">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="219" height="100"/>
+                                                                        <subviews>
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3OX-sV-mrZ">
+                                                                                <rect key="frame" x="51" y="19.5" width="117" height="60"/>
+                                                                                <subviews>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Developed By " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGE-eA-Dfc">
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="117" height="30"/>
+                                                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                                                                        <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <nil key="highlightedColor"/>
+                                                                                    </label>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parth Tamane " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h05-h0-GiW">
+                                                                                        <rect key="frame" x="0.0" y="30" width="117" height="30"/>
+                                                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                                                        <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <nil key="highlightedColor"/>
+                                                                                    </label>
+                                                                                </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="trailing" secondItem="h05-h0-GiW" secondAttribute="trailing" id="ERd-cp-9CZ"/>
+                                                                                    <constraint firstAttribute="height" constant="60" id="L21-Sj-3fA"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="oGE-eA-Dfc" secondAttribute="trailing" id="SQI-s7-v1I"/>
+                                                                                    <constraint firstItem="oGE-eA-Dfc" firstAttribute="leading" secondItem="3OX-sV-mrZ" secondAttribute="leading" id="Xpl-Nc-fcp"/>
+                                                                                    <constraint firstItem="h05-h0-GiW" firstAttribute="leading" secondItem="3OX-sV-mrZ" secondAttribute="leading" id="gEx-8A-4m8"/>
+                                                                                </constraints>
+                                                                            </stackView>
+                                                                        </subviews>
+                                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <constraints>
+                                                                            <constraint firstItem="3OX-sV-mrZ" firstAttribute="centerX" secondItem="fqK-2l-ymI" secondAttribute="centerX" id="Eu5-Va-Ub2"/>
+                                                                            <constraint firstItem="3OX-sV-mrZ" firstAttribute="centerY" secondItem="fqK-2l-ymI" secondAttribute="centerY" id="UDe-wO-Dti"/>
+                                                                        </constraints>
+                                                                    </view>
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Me.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Knn-uF-HEp" customClass="RoundImage" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                        <rect key="frame" x="219" y="0.0" width="100" height="100"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="100" id="mhq-D1-Hbe"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="bottom" secondItem="fqK-2l-ymI" secondAttribute="bottom" id="2PV-gg-rT5"/>
+                                                                    <constraint firstItem="fqK-2l-ymI" firstAttribute="top" secondItem="GUC-qk-usd" secondAttribute="top" id="gpY-sK-FYC"/>
+                                                                    <constraint firstAttribute="height" constant="100" id="h50-5S-87Y"/>
+                                                                </constraints>
+                                                            </stackView>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qzS-rV-MC5">
+                                                                <rect key="frame" x="0.0" y="100" width="319" height="80"/>
+                                                                <subviews>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qqz-kM-OpR">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="157" height="80"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Raise Issue" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yiC-v4-Hg9">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="157" height="35.5"/>
+                                                                                <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="17"/>
+                                                                                <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkR-gD-ncx" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                <rect key="frame" x="0.0" y="40.5" width="157" height="39.5"/>
+                                                                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="40" id="PCn-5e-NWg"/>
+                                                                                </constraints>
+                                                                                <state key="normal" image="github.png"/>
+                                                                                <connections>
+                                                                                    <action selector="gitHubTapped:" destination="4aH-TG-88i" eventType="touchUpInside" id="WtH-rI-9TS"/>
+                                                                                </connections>
+                                                                            </button>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="KkX-Lr-3a6">
+                                                                        <rect key="frame" x="162" y="0.0" width="157" height="80"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report Bug" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJ0-7k-zXj">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="157" height="38.5"/>
+                                                                                <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="17"/>
+                                                                                <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lr9-oh-usT" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                <rect key="frame" x="0.0" y="40.5" width="157" height="39.5"/>
+                                                                                <color key="backgroundColor" red="0.58072251080000004" green="0.066734083" blue="0.0" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="40" id="wR5-uX-o7J"/>
+                                                                                </constraints>
+                                                                                <state key="normal" image="email.png"/>
+                                                                                <connections>
+                                                                                    <action selector="gmailTapped:" destination="4aH-TG-88i" eventType="touchUpInside" id="Qg3-at-gmm"/>
+                                                                                </connections>
+                                                                            </button>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="trailing" secondItem="GUC-qk-usd" secondAttribute="trailing" id="E8s-JY-JtG"/>
+                                                            <constraint firstAttribute="trailing" secondItem="qzS-rV-MC5" secondAttribute="trailing" id="L0S-9U-w8y"/>
+                                                            <constraint firstItem="qzS-rV-MC5" firstAttribute="leading" secondItem="Ed4-ey-Ikb" secondAttribute="leading" id="oGV-KG-9J2"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="Ed4-ey-Ikb" firstAttribute="leading" secondItem="fwH-64-28o" secondAttribute="leading" constant="8" id="5fw-X4-ZrX"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Ed4-ey-Ikb" secondAttribute="trailing" constant="8" id="LXV-KO-JsE"/>
+                                                    <constraint firstItem="Ed4-ey-Ikb" firstAttribute="top" secondItem="fwH-64-28o" secondAttribute="top" id="Nel-9l-vLr"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Ed4-ey-Ikb" secondAttribute="bottom" id="WBL-vL-TXR"/>
+                                                    <constraint firstAttribute="height" constant="180" id="XqS-tk-CFi"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f82-jJ-mnw">
+                                                <rect key="frame" x="8" y="185" width="327" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="U3v-fp-crX"/>
+                                                </constraints>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Thanks to Font Awesome for their amazing icons. The app looks 100 times better because of them! ">
+                                                        <attributes>
+                                                            <color key="NSColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <font key="NSFont" metaFont="system" size="17"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cJE-kR-SCr">
+                                                <rect key="frame" x="0.0" y="270" width="335" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="YuR-Fq-83r"/>
+                                                </constraints>
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZOM-At-iB4">
+                                                    <size key="itemSize" width="61" height="51"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" reuseIdentifier="IconCell" id="jQ6-v6-47y" customClass="IconCell" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="-5.5" width="61" height="51"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="61" height="51"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playg.png" translatesAutoresizingMaskIntoConstraints="NO" id="OsH-R2-tn3">
+                                                                    <rect key="frame" x="8" y="8" width="101" height="272"/>
+                                                                </imageView>
+                                                            </subviews>
+                                                        </view>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="OsH-R2-tn3" secondAttribute="bottom" constant="8" id="PHk-Yj-DrL"/>
+                                                            <constraint firstItem="OsH-R2-tn3" firstAttribute="top" secondItem="jQ6-v6-47y" secondAttribute="top" constant="8" id="inH-ux-g7Q"/>
+                                                            <constraint firstItem="OsH-R2-tn3" firstAttribute="leading" secondItem="jQ6-v6-47y" secondAttribute="leading" constant="8" id="s4a-M1-IcG"/>
+                                                            <constraint firstAttribute="trailing" secondItem="OsH-R2-tn3" secondAttribute="trailing" constant="8" id="sd2-gc-4TR"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <outlet property="iconImage" destination="OsH-R2-tn3" id="idN-Tw-LQg"/>
+                                                        </connections>
+                                                    </collectionViewCell>
+                                                </cells>
+                                            </collectionView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZO-5c-gq8" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="315" width="327" height="40"/>
+                                                <color key="backgroundColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="LMV-YJ-mvU"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <state key="normal" title="License">
+                                                    <color key="titleColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="showLicenseTapped:" destination="4aH-TG-88i" eventType="touchUpInside" id="g05-wE-qh4"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5a-DA-11q">
+                                                <rect key="frame" x="0.0" y="360" width="335" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="wsK-5R-4yC"/>
+                                                </constraints>
+                                                <state key="normal" image="close.png"/>
+                                                <connections>
+                                                    <action selector="closeInfoTapped:" destination="4aH-TG-88i" eventType="touchUpInside" id="2fT-xP-Xnq"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="cJE-kR-SCr" secondAttribute="trailing" id="5tx-Kt-TIP"/>
+                                            <constraint firstItem="f82-jJ-mnw" firstAttribute="leading" secondItem="RqR-B5-Sag" secondAttribute="leading" constant="8" id="DM6-3D-jgf"/>
+                                            <constraint firstAttribute="trailing" secondItem="f82-jJ-mnw" secondAttribute="trailing" constant="8" id="HXa-Cw-1h9"/>
+                                            <constraint firstAttribute="trailing" secondItem="k5a-DA-11q" secondAttribute="trailing" constant="8" id="QCI-nh-nNl"/>
+                                            <constraint firstAttribute="trailing" secondItem="zZO-5c-gq8" secondAttribute="trailing" constant="8" id="d2V-8K-alG"/>
+                                            <constraint firstItem="k5a-DA-11q" firstAttribute="leading" secondItem="RqR-B5-Sag" secondAttribute="leading" id="nmc-7p-XFY"/>
+                                            <constraint firstItem="cJE-kR-SCr" firstAttribute="leading" secondItem="RqR-B5-Sag" secondAttribute="leading" id="tA2-ho-mEL"/>
+                                            <constraint firstItem="zZO-5c-gq8" firstAttribute="leading" secondItem="RqR-B5-Sag" secondAttribute="leading" constant="8" id="tVN-bs-liG"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="RqR-B5-Sag" firstAttribute="top" secondItem="Oqp-hm-Sp5" secondAttribute="top" constant="12" id="2tk-9B-yG3"/>
+                                    <constraint firstAttribute="bottom" secondItem="RqR-B5-Sag" secondAttribute="bottom" constant="12" id="4LS-GE-5Mz"/>
+                                    <constraint firstAttribute="trailing" secondItem="RqR-B5-Sag" secondAttribute="trailing" id="sZx-0X-grW"/>
+                                    <constraint firstItem="RqR-B5-Sag" firstAttribute="leading" secondItem="Oqp-hm-Sp5" secondAttribute="leading" id="xGu-ez-kfa"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Oqp-hm-Sp5" firstAttribute="leading" secondItem="cQP-gh-0A2" secondAttribute="leading" constant="20" id="KWV-lr-sg4"/>
+                            <constraint firstItem="cQP-gh-0A2" firstAttribute="trailing" secondItem="Oqp-hm-Sp5" secondAttribute="trailing" constant="20" id="cb8-M4-PRa"/>
+                            <constraint firstItem="Oqp-hm-Sp5" firstAttribute="centerY" secondItem="cQP-gh-0A2" secondAttribute="centerY" id="rES-CZ-Dhb"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="cQP-gh-0A2"/>
+                    </view>
+                    <connections>
+                        <outlet property="closeInfoBtn" destination="k5a-DA-11q" id="wth-Tn-S0Z"/>
+                        <outlet property="githubBtn" destination="lkR-gD-ncx" id="3zH-Hl-YC1"/>
+                        <outlet property="gmailBtn" destination="lr9-oh-usT" id="e5l-Hq-bUg"/>
+                        <outlet property="iconCollectionView" destination="cJE-kR-SCr" id="a9N-dT-1yv"/>
+                        <outlet property="infoContainer" destination="Oqp-hm-Sp5" id="8HI-pA-dE4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nov-Eu-yzb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="807.20000000000005" y="126.38680659670166"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Me.jpg" width="1917" height="1918"/>
         <image name="box.png" width="448" height="512"/>
         <image name="close.png" width="61" height="61"/>
         <image name="delete.png" width="88" height="100"/>
-        <image name="dleft.png" width="448" height="512"/>
-        <image name="dright.png" width="448" height="512"/>
+        <image name="dleft.png" width="126" height="101"/>
+        <image name="dright.png" width="126" height="101"/>
+        <image name="email.png" width="200" height="150"/>
+        <image name="github.png" width="188" height="150"/>
+        <image name="info.png" width="192" height="512"/>
         <image name="playg.png" width="101" height="116"/>
         <image name="playy.png" width="101" height="116"/>
         <image name="recordf.png" width="512" height="512"/>
         <image name="share.png" width="114" height="101"/>
-        <image name="sleft.png" width="256" height="512"/>
-        <image name="sright.png" width="256" height="512"/>
+        <image name="sleft.png" width="66" height="101"/>
+        <image name="sright.png" width="66" height="101"/>
         <image name="sshareg.png" width="116" height="101"/>
-        <image name="tleft.png" width="611" height="327"/>
-        <image name="tright.png" width="611" height="327"/>
+        <image name="tleft.png" width="101" height="55"/>
+        <image name="tright.png" width="101" height="55"/>
     </resources>
 </document>

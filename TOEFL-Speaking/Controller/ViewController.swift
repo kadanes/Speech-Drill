@@ -21,6 +21,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var switchModesBtn: RoundButton!
     
+    @IBOutlet weak var displayInfoBtn: UIButton!
+    
     @IBOutlet weak var recordBtn: UIButton!
     @IBOutlet weak var cancelRecordingBtn: UIButton!
     
@@ -101,10 +103,10 @@ class ViewController: UIViewController {
      
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset + 3, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadPreviousTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadPreviousTenthTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        setBtnImgProp(button: loadPreviousFiftiethTopicBtn , topPadding: buttonVerticalInset + 3, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: loadPreviousFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
         setBtnImgProp(button: playSelectedBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
@@ -114,7 +116,7 @@ class ViewController: UIViewController {
     
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
-        
+        setBtnImgProp(button: displayInfoBtn, topPadding: 5, leftPadding: 5)
         
     }
     
@@ -364,11 +366,6 @@ class ViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
-        button.imageView?.contentMode = .scaleAspectFit
-        button.contentEdgeInsets = UIEdgeInsetsMake(topPadding, leftPadding, topPadding, leftPadding)
     }
     
     func parseDate(timeStamp: String) -> String {
