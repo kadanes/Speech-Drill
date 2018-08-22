@@ -61,9 +61,10 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
             playedRecordingID = id
             
             do{
+                checkIfSilent()
                 
                 audioSession = AVAudioSession.sharedInstance()
-                try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+                try audioSession.setCategory(AVAudioSessionCategoryAmbient)
                 try audioSession.setActive(true)
                 
                 audioPlayer = try AVAudioPlayer(contentsOf: playingRecordingURL!)
@@ -88,6 +89,8 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
             
         } else if (!isPlaying) {
             
+            
+            checkIfSilent()
             audioPlayer?.play()
             isPlaying = true
             setButtonBgImage(button: playPauseButton!, bgImage: getPauseBtnIcon(colorId: iconId))

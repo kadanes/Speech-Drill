@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainVC.swift
 //  TOEFL Speaking
 //
 //  Created by Parth Tamane on 31/07/18.
@@ -8,9 +8,9 @@
 
 import UIKit
 import AVFoundation
+import Mute
 
-
-class ViewController: UIViewController {
+class MainVC: UIViewController {
    
 
     @IBOutlet weak var adjustThinkTimeBtn: UILabel!
@@ -47,6 +47,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var exportMenuHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var exportSelectedActivityIndicator: UIActivityIndicatorView!
+    
+     @IBOutlet weak var playSelectedActivityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var exportMenuStackView: UIStackView!
     
     @IBOutlet weak var playSelectedBtn: UIButton!
@@ -80,6 +84,9 @@ class ViewController: UIViewController {
     
     var thinkTimer: Timer?
     
+    
+    private var audioPlayer: AVAudioPlayer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -90,6 +97,8 @@ class ViewController: UIViewController {
         updateURLList()
         
         readTopics()
+        
+        exportSelectedActivityIndicator.stopAnimating()
         
         topicNumber = userDefaults.integer(forKey: "topicNumber")
         
@@ -110,7 +119,7 @@ class ViewController: UIViewController {
     
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
-        setBtnImgProp(button: displayInfoBtn, topPadding: 5, leftPadding: 5)
+        setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
     }
     
@@ -271,6 +280,26 @@ class ViewController: UIViewController {
             cancelRecordingBtn.isHidden = true
             
             thinkTime = defaultThinkTime
+            
+            do{
+                let alertSound = URL(fileURLWithPath: getPath(fileName: "speak_now.mp3")!)
+        
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+                
+                try AVAudioSession.sharedInstance().setActive(true)
+                
+                try audioPlayer = AVAudioPlayer(contentsOf: alertSound)
+                audioPlayer!.prepareToPlay()
+                audioPlayer!.play()
+                checkIfSilent()
+                
+                while (audioPlayer?.isPlaying)! {
+                    
+                }
+            } catch let error as NSError {
+                print("Error Playing Speak Now:\n",error.localizedDescription)
+            }
+            
             recordAudio()
             
             let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
@@ -285,7 +314,6 @@ class ViewController: UIViewController {
             speakTime -= 1
             adjustSpeakTimeBtn.text = "\(speakTime)"
         } else {
-            
             
             timer.invalidate()
             speakTime = defaultSpeakTime
@@ -397,40 +425,88 @@ class ViewController: UIViewController {
     
     @IBAction func exportSelectedTapped(_ sender: UIButton) {
         
-        mergeAudioFiles(audioFileUrls: exportSelected) {
+        if (playSelectedActivityIndicator.isAnimating) {
+            return
+        }
+        
+        CentralAudioPlayer.player.stopPlaying()
+        
+        exportSelected = sortUrlList(recordingsURLList: exportSelected)
+        
+        exportSelectedActivityIndicator.startAnimating()
+        
+        if (exportSelected.count == 1) {
             
-            let activityVC = UIActivityViewController(activityItems: [getMergedFileURL()],applicationActivities: nil)
+            openShareSheet(url: exportSelected[0], activityIndicator: self.exportSelectedActivityIndicator)
             
-            activityVC.popoverPresentationController?.sourceView = self.view
+        } else {
             
-            self.present(activityVC, animated: true, completion: {
+            mergeAudioFiles(audioFileUrls: exportSelected) {
                 
-            })
+                self.openShareSheet(url: getMergedFileURL(), activityIndicator: self.exportSelectedActivityIndicator)
             
-            activityVC.completionWithItemsHandler = { activity, success, items, error in
-            
-                self.clearSelected()
             }
+        }
+    }
+    
+    
+    func openShareSheet(url: URL, activityIndicator: UIActivityIndicatorView) {
+        let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
+        
+        activityVC.popoverPresentationController?.sourceView = self.view
+        
+        self.present(activityVC, animated: true, completion: {
+            
+            activityIndicator.stopAnimating()
+        })
+        
+        activityVC.completionWithItemsHandler = { activity, success, items, error in
+            
+            if success {
+                Toast.show(message: "Shared successfully!", success: true)
+            } else {
+                Toast.show(message: "Cancelled share!", success: false)
+            }
+            
+            self.clearSelected()
         }
     }
     
     @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
         
-        if isRecording {return}
+        if isRecording || exportSelectedActivityIndicator.isAnimating {return}
         
-        mergeAudioFiles(audioFileUrls: exportSelected) {
+        playSelectedActivityIndicator.startAnimating()
+        
+        
+        if (exportSelected.count == 1) {
             
-            CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: selectedAudioId , button: sender, iconId: "y")
+            playSelectedActivityIndicator.stopAnimating()
+            
+            CentralAudioPlayer.player.playRecording(url: exportSelected[0], id: selectedAudioId , button: sender, iconId: "y")
+            
+        } else {
+            
+            mergeAudioFiles(audioFileUrls: exportSelected) {
+                
+                DispatchQueue.main.async {
+                    self.playSelectedActivityIndicator.stopAnimating()
+                }
+                
+                CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: selectedAudioId , button: sender, iconId: "y")
+            }
         }
+        
+        
     }
     
     @IBAction func cancelSelectedTapped(_ sender: UIButton) {
         clearSelected()
+        CentralAudioPlayer.player.stopPlaying()
     }
- 
 }
 
-extension ViewController: AVAudioRecorderDelegate {
+extension MainVC: AVAudioRecorderDelegate {
     
     func recordAudio() {
         
@@ -486,6 +562,8 @@ extension ViewController: AVAudioRecorderDelegate {
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         
+        Toast.show(message: "Recorded successfully!", success: true)
+        
         updateURLList()
         
         topicNumber += 1
@@ -497,7 +575,7 @@ extension ViewController: AVAudioRecorderDelegate {
     }
 }
 
-extension ViewController:UITableViewDataSource,UITableViewDelegate {
+extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return dateSortedRecordingList.count
@@ -514,9 +592,7 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
             
             let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
             
-            let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
-            
-            cell.configureCell(date: date, isPlaying: isPlaying)
+            cell.configureCell(date: date)
             
             cell.delegate = self
             
@@ -542,24 +618,9 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
             
             let recordings = dateSortedRecordingList.sorted{$0.0 > $1.0}[indexPath.section]
             
-            let url = recordings.value.sorted(by: { (url1, url2) -> Bool in
-                
-                var timeStamp1: Int
-                var timeStamp2: Int
-                
-                (timeStamp1,_,_) = splitFileURL(url: "\(url1)")
-                (timeStamp2,_,_) = splitFileURL(url: "\(url2)")
-                
-                return timeStamp1 > timeStamp2
-                
-            })[indexPath.row]
+            let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
             
-            
-            let recordingTimeStamp = splitFileURL(url: "\(url)").0
-            
-            let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(recordingTimeStamp)")
-            
-            cell.configureCell(url: url, isPlaying: isPlaying)
+            cell.configureCell(url: url)
             cell.delegate = self
             
             if(exportSelected.contains(url)) {
@@ -567,6 +628,7 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
             } else {
                 cell.deselectCheckBox()
             }
+            
             return cell
             
         } else {

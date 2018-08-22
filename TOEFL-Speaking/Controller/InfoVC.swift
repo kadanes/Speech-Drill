@@ -23,10 +23,11 @@ class InfoVC: UIViewController {
     
     let repoURL = URL(string: "https://github.com/parthv21/TOEFL-Speaking")
     
-    let licenseURL = URL(string: "https://fontawesome.com/license")
-    
     let reportBugURL = URL(string: "googlegmail:///co?to=parthv21@gmail.com&subject=Bug%20Report%20(Speaking%20App)&body=Hey%20I%20found%20a%20bug!")
     
+    let licenseURL = URL(string: "https://fontawesome.com/license")
+    
+    let ttsURL = URL(string: "http://www.fromtexttospeech.com")
     
     var icons: [UIImage] = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,recordIcon,deleteIcon,playBtnIcon,checkMarkIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon]
     
@@ -48,8 +49,6 @@ class InfoVC: UIViewController {
         
     }
 
-  
-    
     @IBAction func gitHubTapped(_ sender: UIButton) {
         openURL(url: repoURL)
     }
@@ -62,6 +61,9 @@ class InfoVC: UIViewController {
         openURL(url: licenseURL)
     }
     
+    @IBAction func fromTTSTapped(_ sender: UIButton) {
+        openURL(url: ttsURL)
+    }
     
     @IBAction func closeInfoTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

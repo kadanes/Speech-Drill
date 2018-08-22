@@ -21,19 +21,19 @@ class RecordingCell: UITableViewCell {
 
     @IBOutlet weak var checkBoxBtn: UIButton!
 
-    weak var delegate: ViewController?
+    weak var delegate: MainVC?
 
     var topicNumber = 0
     var timeStamp = 0
     var thinkTime = 15
 
     var isRecordningSelected = false
-    var url: URL?
+    var recordingURL: URL?
+    var isPlaying = false
     
-
-    func configureCell(url:URL, isPlaying: Bool) {
+    func configureCell(url:URL) {
         
-        self.url = url
+        self.recordingURL = url
         
         getFileDetails(url: "\(url)")
         
@@ -62,6 +62,7 @@ class RecordingCell: UITableViewCell {
         setButtonImageProperties(button: playRecordningBtn)
         
         setCheckBoxProperties()
+        updatePlayingState()
         
         if isPlaying {
             setButtonBgImage(button: playPauseBtn, bgImage: pauseBtnIcon)
@@ -97,20 +98,39 @@ class RecordingCell: UITableViewCell {
        (timeStamp,topicNumber,thinkTime) = splitFileURL(url: url)
     }
     
+    func updatePlayingState() {
+        
+        isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: "\(timeStamp)")
+    }
+    
     @IBAction func shareRecordingPressed(_ sender: Any) {
         
-        let activityVC = UIActivityViewController(activityItems: [url ?? URL(fileURLWithPath: "")],applicationActivities: nil)
+        CentralAudioPlayer.player.stopPlaying()
         
-        activityVC.popoverPresentationController?.sourceView = delegate?.view
+        let activityVC = UIActivityViewController(activityItems: [recordingURL as Any] ,applicationActivities: nil)
         
-        delegate?.present(activityVC, animated: true, completion: nil)
+        activityVC.popoverPresentationController?.sourceView = self.delegate?.view
+        
+        self.delegate?.present(activityVC, animated: true, completion: nil)
+        
+        activityVC.completionWithItemsHandler = { activity, success, items, error in
+            
+            if success {
+                Toast.show(message: "Shared successfully!", success: true)
+            } else {
+                Toast.show(message: "Cancelled share!", success: false)
+            }
+        }
+        
     }
     
     @IBAction func playRecording(_ sender: UIButton) {
+                
+        if (delegate?.isRecording)! {
+            return
+        }
         
-        if  (delegate?.isRecording)! {return}
-        
-        if let url = url {
+        if let url = recordingURL {
             
             if topicNumber == 0 {
                 delegate?.setToTestMode()
@@ -128,7 +148,7 @@ class RecordingCell: UITableViewCell {
     @IBAction func deleteRecording(_ sender: Any) {
         
         do{
-            try FileManager.default.removeItem(at: url!)
+            try FileManager.default.removeItem(at: recordingURL!)
             
             delegate?.updateURLList()
             delegate?.recordingTableView.reloadData()
@@ -142,19 +162,18 @@ class RecordingCell: UITableViewCell {
     
     @IBAction func selectRecordingTapped(_ sender: UIButton) {
         
-//        delegate?.renderTopic(topicNumber: topicNumber, saveDefault: false)
         
         if !(isRecordningSelected) {
             
             setButtonBgImage(button: sender, bgImage: checkMarkIcon)
             CentralAudioPlayer.player.stopPlaying()
-            delegate?.addToExportList(url: url!)
+            delegate?.addToExportList(url: recordingURL!)
             
         } else {
 
             setButtonBgImage(button: sender, bgImage: UIImage())
 
-            delegate?.removeFromExportList(url: url!)
+            delegate?.removeFromExportList(url: recordingURL!)
         }
         
         isRecordningSelected = !isRecordningSelected

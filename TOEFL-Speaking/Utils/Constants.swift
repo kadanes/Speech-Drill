@@ -11,8 +11,13 @@ import AVFoundation
 import UIKit
 
 let mergedFileName = "MergedAudio.m4a"
-let beepSoundFileName = "beep2"
+let beepSoundFileName = "beep2.m4a"
 let recordingExtension = "m4a"
+
+let independentT2S = "independent.mp3"
+let integratedAT2S = "integrated_a.mp3"
+let integratedBT2S = "integrated_b.mp3"
+let speakNowT2S = "speak_now.mp3"
 
 let outputFileType = AVFileType.m4a
 let presetName = AVAssetExportPresetAppleM4A
@@ -61,7 +66,7 @@ let singleShareIcon = UIImage(named: "sshareg.png")!
 
 
 //Recording ID
-
 let selectedAudioId = "SelectedAudio"
+
 
 

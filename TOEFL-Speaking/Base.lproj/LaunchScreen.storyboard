@@ -18,16 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowbg.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="zM8-ig-tZ1">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jLn-cB-ZKG">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Improve Your Speaking!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lq1-me-tZP">
-                                <rect key="frame" x="56" y="478.5" width="265" height="50"/>
+                                <rect key="frame" x="55" y="478.5" width="265" height="50"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Pm6-rf-aQx"/>
                                     <constraint firstAttribute="height" constant="50" id="bxo-8P-NM2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="27"/>
@@ -35,27 +29,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="penmic.png" translatesAutoresizingMaskIntoConstraints="NO" id="568-jy-uqM">
-                                <rect key="frame" x="112" y="228.5" width="150" height="150"/>
+                                <rect key="frame" x="112" y="268.5" width="150" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="meY-rZ-bMG"/>
-                                    <constraint firstAttribute="height" constant="150" id="qXa-K8-7Iy"/>
+                                    <constraint firstAttribute="width" constant="150" id="LEJ-ti-VNX"/>
+                                    <constraint firstAttribute="height" constant="150" id="smm-gO-z0U"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="zM8-ig-tZ1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="AeV-O3-ZKt"/>
-                            <constraint firstItem="jLn-cB-ZKG" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Cf8-fe-f5J"/>
-                            <constraint firstItem="zM8-ig-tZ1" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="IZO-3a-v7F"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jLn-cB-ZKG" secondAttribute="trailing" id="JGs-y3-NPz"/>
-                            <constraint firstItem="jLn-cB-ZKG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Pqc-Hm-uIR"/>
-                            <constraint firstItem="zM8-ig-tZ1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WbV-8r-wEi"/>
-                            <constraint firstItem="jLn-cB-ZKG" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="azT-PP-clr"/>
-                            <constraint firstItem="lq1-me-tZP" firstAttribute="top" secondItem="568-jy-uqM" secondAttribute="bottom" constant="100" id="coM-bZ-dFD"/>
-                            <constraint firstItem="568-jy-uqM" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="gBR-EF-OGb"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="zM8-ig-tZ1" secondAttribute="bottom" id="gxI-r7-bWd"/>
+                            <constraint firstItem="lq1-me-tZP" firstAttribute="top" secondItem="568-jy-uqM" secondAttribute="bottom" constant="60" id="1hD-pE-7cT"/>
+                            <constraint firstItem="568-jy-uqM" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="2fH-eg-uBf"/>
+                            <constraint firstItem="568-jy-uqM" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="dnz-bE-boc"/>
                             <constraint firstItem="lq1-me-tZP" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jpQ-Vw-Zvc"/>
-                            <constraint firstItem="568-jy-uqM" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-40" id="ofQ-BR-3up"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -67,6 +53,5 @@
     </scenes>
     <resources>
         <image name="penmic.png" width="913" height="973"/>
-        <image name="yellowbg.jpg" width="185" height="260"/>
     </resources>
 </document>

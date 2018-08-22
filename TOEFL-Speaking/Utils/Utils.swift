@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import AVFoundation
-
+import Mute
 
 func openURL(url: URL?) {
     
@@ -76,6 +76,24 @@ func parseDate(timeStamp: Int) -> String {
     return strDate
 }
 
+func checkIfSilent() {
+    
+    Mute.shared.isPaused = false
+
+    Mute.shared.checkInterval = 0.5
+    
+    Mute.shared.alwaysNotify = true
+    
+    Mute.shared.notify = { isMute in
+        
+        Mute.shared.isPaused = true
+   
+        if isMute {
+            Toast.show(message: "Please turn silent mode off!", success: false)
+        }
+    }
+}
+
 func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
     
     do {
@@ -87,37 +105,62 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
     
     let composition = AVMutableComposition()
     
+    var oldThinkTime: Int = 0
     
     for i in 0 ..< audioFileUrls.count {
         
         let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
         
-        let asset = AVURLAsset(url: (audioFileUrls[i]))
+        let currentURL = audioFileUrls[i]
         
-        let track = asset.tracks(withMediaType: AVMediaType.audio)[0]
+        let thinkTime = splitFileURL(url: "\(currentURL)").2
         
-        let timeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
+        let asset = AVURLAsset(url: currentURL)
+
+        let track: AVAssetTrack = asset.tracks(withMediaType: AVMediaType.audio)[0]
+
+        let timeRange: CMTimeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
+
+//        var track: AVAssetTrack
+//        var timeRange: CMTimeRange
+//        (track,timeRange) = getTrackAndTimeRange(url: currentURL)
         
         do{
-            try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
             
-            let delimiterPath = Bundle.main.path(forResource: beepSoundFileName, ofType: recordingExtension)
+            let delimiterPath: String?
             
-            if let path = delimiterPath {
-                let delimiterURL = URL(fileURLWithPath: path)
-                print(delimiterURL)
+            if oldThinkTime != thinkTime {
                 
-                let assetDelimiter = AVURLAsset(url: delimiterURL)
+                delimiterPath = seperatorPathFor(thinkTime: thinkTime)
+                oldThinkTime = thinkTime
+
+            } else {
                 
-                let trackDelimiter = assetDelimiter.tracks(withMediaType: AVMediaType.audio)[0]
-                
-                let timeRangeDelimiter = CMTimeRange(start: CMTimeMake(0, 600), duration: trackDelimiter.timeRange.duration)
-                
-                try compositionAudioTrack.insertTimeRange(timeRangeDelimiter, of: trackDelimiter, at: composition.duration)
+                delimiterPath = seperatorPathFor(thinkTime: 0)
             }
             
+            if let path = delimiterPath {
+                
+                let delimiterURL = URL(fileURLWithPath: path)
+                
+                let assetDelimiter = AVURLAsset(url: delimiterURL)
+
+                let trackDelimiter: AVAssetTrack = assetDelimiter.tracks(withMediaType: AVMediaType.audio)[0]
+
+                let timeRangeDelimiter: CMTimeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: trackDelimiter.timeRange.duration)
+//
+//                var trackDelimiter: AVAssetTrack
+//                var timeRangeDelimiter:CMTimeRange
+//                (trackDelimiter,timeRangeDelimiter) = getTrackAndTimeRange(url: delimiterURL)
+//
+                try compositionAudioTrack.insertTimeRange(timeRangeDelimiter, of: trackDelimiter, at: composition.duration)
+
+            }
+            try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
+            
+            
         } catch let error as NSError {
-            print("Error while inseting in composition for url: ",i+1)
+            print("Error while inserting ",i+1)
             print(error.localizedDescription)
             
         }
@@ -145,12 +188,56 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
             case AVAssetExportSessionStatus.exporting:
                 print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
             default:
-                print("Audio Concatenation Complete")
+                Toast.show(message: "Combined Recordings", success: true)
                 completion()
             }
     })
 }
 
+func getTrackAndTimeRange(url: URL)-> (AVAssetTrack,CMTimeRange) {
+    
+    let asset = AVURLAsset(url: url)
+    
+    let track = asset.tracks(withMediaType: AVMediaType.audio)[0]
+    
+    let timeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
+    
+    return (track,timeRange)
+}
+
+func seperatorPathFor(thinkTime: Int) -> String? {
+    
+    switch  thinkTime {
+    case 15:
+        return getPath(fileName: independentT2S)
+    case 20:
+        return getPath(fileName: integratedBT2S)
+    case 30:
+        return getPath(fileName: integratedAT2S)
+    default:
+        return getPath(fileName: beepSoundFileName)
+    }
+}
+
+func getPath(fileName: String ) -> String? {
+    
+    let path = Bundle.main.path(forResource: fileName, ofType: nil)
+    return path
+}
+
+func sortUrlList(recordingsURLList: [URL]) -> [URL] {
+    
+    let sortedRecordingsURLList = recordingsURLList.sorted(by: {(url1,url2)-> Bool in
+        
+        let timestamp1 = splitFileURL(url: "\(url1)").0
+        let timestamp2 = splitFileURL(url: "\(url2)").0
+        return timestamp1 > timestamp2
+        
+    })
+    
+    return sortedRecordingsURLList
+    
+}
 
 func setButtonBgImage(button: UIButton, bgImage: UIImage) {
     

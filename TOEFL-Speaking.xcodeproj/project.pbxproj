@@ -9,12 +9,11 @@
 /* Begin PBXBuildFile section */
 		B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204ECAF21134A2200A51E8B /* RecordingCell.swift */; };
 		B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB22210FF664009C678C /* AppDelegate.swift */; };
-		B21ABB25210FF664009C678C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB24210FF664009C678C /* ViewController.swift */; };
+		B21ABB25210FF664009C678C /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB24210FF664009C678C /* MainVC.swift */; };
 		B21ABB28210FF664009C678C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB26210FF664009C678C /* Main.storyboard */; };
 		B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB29210FF664009C678C /* Assets.xcassets */; };
 		B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */; };
 		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
-		B22C8139211413AD00104E02 /* topics.txt in Resources */ = {isa = PBXBuildFile; fileRef = B22C8138211413AD00104E02 /* topics.txt */; };
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
 		B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C813C2114809700104E02 /* SectionHeaderCell.swift */; };
 		B25F80B9211F4F3200AD786C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80B8211F4F3200AD786C /* Constants.swift */; };
@@ -23,10 +22,8 @@
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
 		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
 		B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ACC672212D0E16009AE30D /* RoundedImage.swift */; };
-		B2ACC675212D0EF4009AE30D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC674212D0EF3009AE30D /* logo.png */; };
 		B2ACC677212D0F59009AE30D /* blackbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC676212D0F58009AE30D /* blackbg.jpg */; };
 		B2ACC679212D11EB009AE30D /* yellowbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC678212D11EB009AE30D /* yellowbg.jpg */; };
-		B2ACC67B212D1234009AE30D /* penmic.png in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC67A212D1234009AE30D /* penmic.png */; };
 		B2DAB671212894190062ECDF /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB660212894160062ECDF /* check.png */; };
 		B2DAB672212894190062ECDF /* pauseg.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB661212894160062ECDF /* pauseg.png */; };
 		B2DAB676212894190062ECDF /* recordf.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB665212894170062ECDF /* recordf.png */; };
@@ -54,19 +51,28 @@
 		B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E5F5F1212B340D00FC7E28 /* IconCell.swift */; };
 		B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E5F5F3212B401B00FC7E28 /* RoundImage.swift */; };
 		B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E5F5F6212B420900FC7E28 /* ShuffleExtension.swift */; };
+		B2F01E17212D3244006D6D86 /* penmic.png in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E19212D3244006D6D86 /* penmic.png */; };
+		B2F01E1A212D324A006D6D86 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E1C212D324A006D6D86 /* logo.png */; };
+		B2F01E21212D3994006D6D86 /* speak_now.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E1D212D3993006D6D86 /* speak_now.mp3 */; };
+		B2F01E22212D3994006D6D86 /* integrated_a.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E1E212D3994006D6D86 /* integrated_a.mp3 */; };
+		B2F01E23212D3994006D6D86 /* independent.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E1F212D3994006D6D86 /* independent.mp3 */; };
+		B2F01E24212D3994006D6D86 /* integrated_b.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E20212D3994006D6D86 /* integrated_b.mp3 */; };
+		B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F01E25212D8C44006D6D86 /* Toast.swift */; };
+		C6D05DCAA034BD7548B558D4 /* Pods_TOEFL_Speaking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F2AD09C9611AD51D31B8DC1 /* Pods-TOEFL-Speaking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TOEFL-Speaking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking.debug.xcconfig"; sourceTree = "<group>"; };
+		7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TOEFL_Speaking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B204ECAF21134A2200A51E8B /* RecordingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
 		B21ABB1F210FF664009C678C /* TOEFL-Speaking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOEFL-Speaking.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B21ABB22210FF664009C678C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B21ABB24210FF664009C678C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B21ABB24210FF664009C678C /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		B21ABB27210FF664009C678C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B21ABB29210FF664009C678C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B21ABB2C210FF664009C678C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B21ABB2E210FF664009C678C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
-		B22C8138211413AD00104E02 /* topics.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.txt; sourceTree = "<group>"; };
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
 		B22C813C2114809700104E02 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		B25F80B8211F4F3200AD786C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -75,10 +81,8 @@
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
 		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
 		B2ACC672212D0E16009AE30D /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
-		B2ACC674212D0EF3009AE30D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
 		B2ACC676212D0F58009AE30D /* blackbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blackbg.jpg; sourceTree = "<group>"; };
 		B2ACC678212D11EB009AE30D /* yellowbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellowbg.jpg; sourceTree = "<group>"; };
-		B2ACC67A212D1234009AE30D /* penmic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = penmic.png; sourceTree = SOURCE_ROOT; };
 		B2DAB660212894160062ECDF /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		B2DAB661212894160062ECDF /* pauseg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pauseg.png; sourceTree = "<group>"; };
 		B2DAB665212894170062ECDF /* recordf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recordf.png; sourceTree = "<group>"; };
@@ -106,6 +110,14 @@
 		B2E5F5F1212B340D00FC7E28 /* IconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCell.swift; sourceTree = "<group>"; };
 		B2E5F5F3212B401B00FC7E28 /* RoundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImage.swift; sourceTree = "<group>"; };
 		B2E5F5F6212B420900FC7E28 /* ShuffleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleExtension.swift; sourceTree = "<group>"; };
+		B2F01E18212D3244006D6D86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Base; path = Base.lproj/penmic.png; sourceTree = "<group>"; };
+		B2F01E1B212D324A006D6D86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Base; path = Base.lproj/logo.png; sourceTree = "<group>"; };
+		B2F01E1D212D3993006D6D86 /* speak_now.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speak_now.mp3; sourceTree = "<group>"; };
+		B2F01E1E212D3994006D6D86 /* integrated_a.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = integrated_a.mp3; sourceTree = "<group>"; };
+		B2F01E1F212D3994006D6D86 /* independent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = independent.mp3; sourceTree = "<group>"; };
+		B2F01E20212D3994006D6D86 /* integrated_b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = integrated_b.mp3; sourceTree = "<group>"; };
+		B2F01E25212D8C44006D6D86 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		B47960409B4B75DC35695E1D /* Pods-TOEFL-Speaking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TOEFL-Speaking.release.xcconfig"; path = "Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,18 +125,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6D05DCAA034BD7548B558D4 /* Pods_TOEFL_Speaking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F8DF12821157B0A13C38B8E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B204ECAE211349FE00A51E8B /* Custom Class */ = {
 			isa = PBXGroup;
 			children = (
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
 				B22C813C2114809700104E02 /* SectionHeaderCell.swift */,
 				B2E5F5F1212B340D00FC7E28 /* IconCell.swift */,
+				B2F01E25212D8C44006D6D86 /* Toast.swift */,
 			);
 			path = "Custom Class";
 			sourceTree = "<group>";
@@ -134,6 +156,8 @@
 			children = (
 				B21ABB21210FF664009C678C /* TOEFL-Speaking */,
 				B21ABB20210FF664009C678C /* Products */,
+				C2DE69F64CE1AF011AEF432A /* Pods */,
+				9F8DF12821157B0A13C38B8E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -179,7 +203,10 @@
 			isa = PBXGroup;
 			children = (
 				B22C813A2114366E00104E02 /* topics.csv */,
-				B22C8138211413AD00104E02 /* topics.txt */,
+				B2F01E1F212D3994006D6D86 /* independent.mp3 */,
+				B2F01E1E212D3994006D6D86 /* integrated_a.mp3 */,
+				B2F01E20212D3994006D6D86 /* integrated_b.mp3 */,
+				B2F01E1D212D3993006D6D86 /* speak_now.mp3 */,
 				B25F80C3211F5B0700AD786C /* beep1.m4a */,
 				B25F80C5211F5BAA00AD786C /* beep2.m4a */,
 			);
@@ -189,7 +216,7 @@
 		B27F31372122025F00872047 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B21ABB24210FF664009C678C /* ViewController.swift */,
+				B21ABB24210FF664009C678C /* MainVC.swift */,
 				B2E5F5E7212B260C00FC7E28 /* InfoVC.swift */,
 			);
 			path = Controller;
@@ -209,10 +236,10 @@
 		B2DAB65421285C470062ECDF /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
-				B2ACC67A212D1234009AE30D /* penmic.png */,
+				B2F01E19212D3244006D6D86 /* penmic.png */,
 				B2ACC676212D0F58009AE30D /* blackbg.jpg */,
 				B2ACC678212D11EB009AE30D /* yellowbg.jpg */,
-				B2ACC674212D0EF3009AE30D /* logo.png */,
+				B2F01E1C212D324A006D6D86 /* logo.png */,
 				B2E5F5EB212B2E7600FC7E28 /* Me.jpg */,
 				B2E5F5ED212B318700FC7E28 /* email.png */,
 				B2E5F5EE212B318700FC7E28 /* github.png */,
@@ -246,6 +273,15 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		C2DE69F64CE1AF011AEF432A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1F2AD09C9611AD51D31B8DC1 /* Pods-TOEFL-Speaking.debug.xcconfig */,
+				B47960409B4B75DC35695E1D /* Pods-TOEFL-Speaking.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -253,10 +289,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B21ABB31210FF664009C678C /* Build configuration list for PBXNativeTarget "TOEFL-Speaking" */;
 			buildPhases = (
+				D5CDA80B74DFF63E0CD2E475 /* [CP] Check Pods Manifest.lock */,
 				B21ABB1B210FF664009C678C /* Sources */,
 				B21ABB1C210FF664009C678C /* Frameworks */,
 				B21ABB1D210FF664009C678C /* Resources */,
 				B21ABB34210FF673009C678C /* Increment Build */,
+				C5348A6DF832E98BE42079CE /* [CP] Embed Pods Frameworks */,
+				6EE7C239B56403EA996CA127 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -306,10 +345,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2DAB68F2129277A0062ECDF /* close.png in Resources */,
+				B2F01E22212D3994006D6D86 /* integrated_a.mp3 in Resources */,
 				B2DAB67A212894190062ECDF /* pausey.png in Resources */,
 				B2DAB671212894190062ECDF /* check.png in Resources */,
 				B2DAB698212929A70062ECDF /* sshareg.png in Resources */,
 				B2DAB6952129288F0062ECDF /* delete.png in Resources */,
+				B2F01E24212D3994006D6D86 /* integrated_b.mp3 in Resources */,
 				B2E5F5EF212B318700FC7E28 /* email.png in Resources */,
 				B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */,
 				B2DAB67F212894190062ECDF /* box.png in Resources */,
@@ -322,7 +363,7 @@
 				B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */,
 				B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */,
 				B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */,
-				B2ACC675212D0EF4009AE30D /* logo.png in Resources */,
+				B2F01E1A212D324A006D6D86 /* logo.png in Resources */,
 				B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */,
 				B2DAB699212929A70062ECDF /* share.png in Resources */,
 				B2E5F5EC212B2E7600FC7E28 /* Me.jpg in Resources */,
@@ -330,10 +371,11 @@
 				B2DAB67D212894190062ECDF /* info.png in Resources */,
 				B2E5F5E2212B1D1200FC7E28 /* sleft.png in Resources */,
 				B2E5F5F0212B318700FC7E28 /* github.png in Resources */,
-				B2ACC67B212D1234009AE30D /* penmic.png in Resources */,
+				B2F01E17212D3244006D6D86 /* penmic.png in Resources */,
 				B2DAB6932129282E0062ECDF /* playg.png in Resources */,
+				B2F01E23212D3994006D6D86 /* independent.mp3 in Resources */,
 				B2E5F5E0212B1D1200FC7E28 /* dright.png in Resources */,
-				B22C8139211413AD00104E02 /* topics.txt in Resources */,
+				B2F01E21212D3994006D6D86 /* speak_now.mp3 in Resources */,
 				B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */,
 				B2E5F5E1212B1D1200FC7E28 /* sright.png in Resources */,
 				B21ABB28210FF664009C678C /* Main.storyboard in Resources */,
@@ -343,6 +385,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6EE7C239B56403EA996CA127 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B21ABB34210FF673009C678C /* Increment Build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -357,6 +414,42 @@
 			shellPath = /bin/bash;
 			shellScript = "#!bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
+		C5348A6DF832E98BE42079CE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Mute/Mute.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mute.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D5CDA80B74DFF63E0CD2E475 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TOEFL-Speaking-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -367,7 +460,7 @@
 				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
 				B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */,
 				B2E5F5E8212B260C00FC7E28 /* InfoVC.swift in Sources */,
-				B21ABB25210FF664009C678C /* ViewController.swift in Sources */,
+				B21ABB25210FF664009C678C /* MainVC.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,
 				B2DAB689212896FB0062ECDF /* RowButtons.swift in Sources */,
@@ -379,6 +472,7 @@
 				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
 				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,
+				B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +494,22 @@
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
+		};
+		B2F01E19212D3244006D6D86 /* penmic.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2F01E18212D3244006D6D86 /* Base */,
+			);
+			name = penmic.png;
+			sourceTree = SOURCE_ROOT;
+		};
+		B2F01E1C212D324A006D6D86 /* logo.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2F01E1B212D324A006D6D86 /* Base */,
+			);
+			name = logo.png;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXVariantGroup section */
 
@@ -522,6 +632,7 @@
 		};
 		B21ABB32210FF664009C678C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F2AD09C9611AD51D31B8DC1 /* Pods-TOEFL-Speaking.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -541,6 +652,7 @@
 		};
 		B21ABB33210FF664009C678C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B47960409B4B75DC35695E1D /* Pods-TOEFL-Speaking.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
