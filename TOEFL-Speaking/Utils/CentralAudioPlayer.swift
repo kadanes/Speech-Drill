@@ -25,13 +25,12 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     static let player = CentralAudioPlayer()
     
     private override init() {
-        
     }
-    
     
     func stopPlaying() {
         
         if (playPauseButton != nil) {
+            
             setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
             isPlaying = false
             playingRecordingURL = nil
@@ -39,10 +38,10 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    ///Play or Pause or Start a recording
     func playRecording(url: URL,id: String, button: UIButton, iconId: String){
         
-        
-        if (url != playingRecordingURL || url == getMergedFileURL() && playedRecordingID != id ) {
+        if (url != playingRecordingURL || playedRecordingID != id ) {
             
             if (playPauseButton == nil ) {
                 playPauseButton = button
@@ -89,7 +88,6 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
             
         } else if (!isPlaying) {
             
-            
             checkIfSilent()
             audioPlayer?.play()
             isPlaying = true
@@ -97,23 +95,21 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    
+    ///Reset ui after playing recording(s)
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         
         playingRecordingURL = nil
         playedRecordingID = nil
-        
         isPlaying = false
+        
         setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
     }
-    
     
     func checkIfPlaying(url: URL,id: String) -> Bool {
         
         if (playingRecordingURL ==  url && playedRecordingID == id) {
             return isPlaying
         }
-        
         return false;
     }
     

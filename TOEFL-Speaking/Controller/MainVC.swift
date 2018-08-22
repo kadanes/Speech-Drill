@@ -12,7 +12,6 @@ import Mute
 
 class MainVC: UIViewController {
    
-
     @IBOutlet weak var adjustThinkTimeBtn: UILabel!
     @IBOutlet weak var adjustSpeakTimeBtn: UILabel!
     
@@ -102,7 +101,7 @@ class MainVC: UIViewController {
         
         topicNumber = userDefaults.integer(forKey: "topicNumber")
         
-        renderTopic(topicNumber: topicNumber, saveDefault: true)
+        renderTopic(topicNumber: topicNumber)
      
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -139,10 +138,9 @@ class MainVC: UIViewController {
         }
     }
     
-    func renderTopic(topicNumber: Int, saveDefault: Bool) {
-        if saveDefault{
-            userDefaults.set(topicNumber, forKey: "topicNumber")
-        }
+    func renderTopic(topicNumber: Int) {
+       
+        userDefaults.set(topicNumber, forKey: "topicNumber")
         
         self.topicNumber = topicNumber
         
@@ -167,8 +165,12 @@ class MainVC: UIViewController {
             self.switchModesBtn.setTitle("Practice", for: .normal)
             self.thinkTimeChangeStackView.isHidden = true
             changeTopicBtnsStackView.isHidden = false
+            renderTopic(topicNumber: topicNumber)
             
-            renderTopic(topicNumber: topicNumber, saveDefault: true)
+            defaultThinkTime = 15
+            defaultSpeakTime = 45
+            thinkTime = defaultThinkTime
+            speakTime = defaultSpeakTime
             
         } else {
             
@@ -177,14 +179,10 @@ class MainVC: UIViewController {
             changeTopicBtnsStackView.isHidden = true
             
             topicLbl.text = "TEST MODE"
+            
         }
         
         isTestMode = !isTestMode
-        
-        defaultThinkTime = 15
-        defaultSpeakTime = 45
-        thinkTime = defaultThinkTime
-        speakTime = defaultSpeakTime
         
         resetRecordingState()
         
@@ -226,23 +224,31 @@ class MainVC: UIViewController {
         resetRecordingState()
     }
     
+    ///Increment current displayed topic number by 1
+    func incrementTopicNumber() {
+        
+        topicNumber = topicNumber + 1 < topics.count ? topicNumber + 1 : topicNumber
+    }
     
+    ///Increment current displayed topic number base on button pressed
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
         let increment = sender.tag
         topicNumber = (topicNumber + increment < topics.count) ? topicNumber + increment : topics.count - 1
         
-        renderTopic(topicNumber: topicNumber, saveDefault: true)
+        renderTopic(topicNumber: topicNumber)
         
     }
     
+    ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
         let decrement = sender.tag
         topicNumber = (topicNumber - decrement > 0) ? topicNumber - decrement : 1
         
-        renderTopic(topicNumber: topicNumber, saveDefault: true)
+        renderTopic(topicNumber: topicNumber)
 
     }
     
+    ///Start recording of speech
     @IBAction func startRecordingPressed(_ sender: Any) {
         
         CentralAudioPlayer.player.stopPlaying()
@@ -256,7 +262,7 @@ class MainVC: UIViewController {
         }
     }
     
-    
+    ///Stop recording if within think time
     @IBAction func cancelRecordingTapped(_ sender: Any) {
         
         if (thinkTime > 0) {
@@ -268,7 +274,7 @@ class MainVC: UIViewController {
         }
     }
     
-    
+    ///Function to reduce and render think time
     @objc func decrementThinkTime(timer: Timer) {
         if(thinkTime > 0) {
             thinkTime -= 1
@@ -276,6 +282,7 @@ class MainVC: UIViewController {
             adjustThinkTimeBtn.text = "\(thinkTime)"
             
         } else {
+            
             timer.invalidate()
             cancelRecordingBtn.isHidden = true
             
@@ -283,15 +290,11 @@ class MainVC: UIViewController {
             
             do{
                 let alertSound = URL(fileURLWithPath: getPath(fileName: "speak_now.mp3")!)
-        
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-                
                 try AVAudioSession.sharedInstance().setActive(true)
-                
                 try audioPlayer = AVAudioPlayer(contentsOf: alertSound)
                 audioPlayer!.prepareToPlay()
                 audioPlayer!.play()
-                checkIfSilent()
                 
                 while (audioPlayer?.isPlaying)! {
                     
@@ -308,6 +311,7 @@ class MainVC: UIViewController {
         }
     }
     
+    ///Function to reduce and render speak time
     @objc func decrementSpeakTime(timer: Timer) {
         
         if(speakTime > 0) {
@@ -321,6 +325,7 @@ class MainVC: UIViewController {
         }
     }
     
+    ///Function to make recording logo blink
     @objc func blinkRecordBtn(timer: Timer) {
         if speakTime > 0 {
             if !blinking {
@@ -331,25 +336,22 @@ class MainVC: UIViewController {
                 blinking = false
             }
         } else {
-            
             timer.invalidate()
-            
         }
-        
     }
     
+    ///Reset display of think and speak time
     func resetRecordingState() {
         
         setButtonBgImage(button: recordBtn, bgImage: recordIcon)
-
         adjustThinkTimeBtn.text = "\(defaultThinkTime)"
         adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
         
         isRecording = false
         blinking = false
-        
     }
     
+    ///Update local list with newly added recording urls
     func updateURLList() {
                 
         dateSortedRecordingList.removeAll()
@@ -366,7 +368,6 @@ class MainVC: UIViewController {
 
                     if (recordingName != mergedFileName) {
                         
-                    
                         let timeStamp = splitFileURL(url: recordingName).0
                         
                         let date = parseDate(timeStamp: timeStamp)
@@ -382,12 +383,12 @@ class MainVC: UIViewController {
                         recordingURLs?.append(url)
                         dateSortedRecordingList[date] = recordingURLs
                     }
-            
                 }
             }
         }
     }
     
+    ///Fetch a list of recordings urls for a day
     func getAudioFilesList(date: String) -> [URL] {
         
         guard let urlList = dateSortedRecordingList[date] else {return [URL]()}
@@ -395,6 +396,7 @@ class MainVC: UIViewController {
         return urlList
     }
     
+    ///Show or Hide export menu
     func toggleExportMenu() {
         if exportSelected.count > 0 {
             exportMenuHeight.constant = 40
@@ -408,98 +410,59 @@ class MainVC: UIViewController {
         }
     }
     
-    
+    ///Add a recording url to list of recordings to export
     func addToExportList(url: URL) {
+        CentralAudioPlayer.player.stopPlaying()
         exportSelected.append(url)
     }
     
+    ///Remove a recording url to list of recordings to export
     func removeFromExportList(url: URL) {
+        CentralAudioPlayer.player.stopPlaying()
         exportSelected = exportSelected.filter {$0 != url}
     }
     
+    ///Remove all selected recordings and reset UI
     func clearSelected() {
         exportSelected.removeAll()
         toggleExportMenu()
         recordingTableView.reloadData()
     }
     
+    ///Export selected recordings
     @IBAction func exportSelectedTapped(_ sender: UIButton) {
         
         if (playSelectedActivityIndicator.isAnimating) {
             return
         }
         
-        CentralAudioPlayer.player.stopPlaying()
-        
-        exportSelected = sortUrlList(recordingsURLList: exportSelected)
-        
-        exportSelectedActivityIndicator.startAnimating()
-        
-        if (exportSelected.count == 1) {
-            
-            openShareSheet(url: exportSelected[0], activityIndicator: self.exportSelectedActivityIndicator)
-            
-        } else {
-            
-            mergeAudioFiles(audioFileUrls: exportSelected) {
+        processMultipleRecordings(recordingsList: exportSelected, activityIndicator: exportSelectedActivityIndicator) { (exportURL) in
+            CentralAudioPlayer.player.stopPlaying()
+
+            openShareSheet(url: exportURL, activityIndicator: self.exportSelectedActivityIndicator){
+                self.clearSelected()
                 
-                self.openShareSheet(url: getMergedFileURL(), activityIndicator: self.exportSelectedActivityIndicator)
-            
             }
         }
     }
     
-    
-    func openShareSheet(url: URL, activityIndicator: UIActivityIndicatorView) {
-        let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
-        
-        activityVC.popoverPresentationController?.sourceView = self.view
-        
-        self.present(activityVC, animated: true, completion: {
-            
-            activityIndicator.stopAnimating()
-        })
-        
-        activityVC.completionWithItemsHandler = { activity, success, items, error in
-            
-            if success {
-                Toast.show(message: "Shared successfully!", success: true)
-            } else {
-                Toast.show(message: "Cancelled share!", success: false)
-            }
-            
-            self.clearSelected()
-        }
-    }
-    
+    ///Play selected recordings
     @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
         
         if isRecording || exportSelectedActivityIndicator.isAnimating {return}
         
-        playSelectedActivityIndicator.startAnimating()
-        
-        
-        if (exportSelected.count == 1) {
+        processMultipleRecordings(recordingsList: exportSelected, activityIndicator: playSelectedActivityIndicator) { (playURL) in
             
-            playSelectedActivityIndicator.stopAnimating()
-            
-            CentralAudioPlayer.player.playRecording(url: exportSelected[0], id: selectedAudioId , button: sender, iconId: "y")
-            
-        } else {
-            
-            mergeAudioFiles(audioFileUrls: exportSelected) {
-                
-                DispatchQueue.main.async {
-                    self.playSelectedActivityIndicator.stopAnimating()
-                }
-                
-                CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: selectedAudioId , button: sender, iconId: "y")
+            DispatchQueue.main.async {
+                self.playSelectedActivityIndicator.stopAnimating()
             }
+            
+            CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId , button: sender, iconId: "y")
         }
-        
         
     }
     
+    ///Hide export menu
     @IBAction func cancelSelectedTapped(_ sender: UIButton) {
         clearSelected()
         CentralAudioPlayer.player.stopPlaying()
@@ -521,19 +484,13 @@ extension MainVC: AVAudioRecorderDelegate {
             
             var path = ""
             
-            print("Is test mode: \(isTestMode)")
-            
             if isTestMode {
-                
                 path =  "\(timestamp)_0_\(thinkTime)."+recordingExtension
-
             } else {
                 path =  "\(timestamp)_\(topicNumber)_\(thinkTime)."+recordingExtension
             }
             
-            
             let fullRecordingPath = (documents as NSString).appendingPathComponent(path)
-            
             
             let url = NSURL.fileURL(withPath: fullRecordingPath)
             
@@ -556,7 +513,8 @@ extension MainVC: AVAudioRecorderDelegate {
                 print("Error with recording")
                 print(error.localizedDescription)
             }
-        } catch {
+        } catch let error as NSError{
+            print(error.localizedDescription)
         }
     }
     
@@ -566,9 +524,14 @@ extension MainVC: AVAudioRecorderDelegate {
         
         updateURLList()
         
-        topicNumber += 1
-        renderTopic(topicNumber: topicNumber, saveDefault: true)
+        if !isTestMode {
+            
+            incrementTopicNumber()
+            renderTopic(topicNumber: topicNumber)
+        }
+        
         recordingTableView.reloadData()
+        //Possible fix for check box bg properties not reflecting
         recordingTableView.reloadData()
 
         resetRecordingState()
@@ -602,11 +565,9 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         return UITableViewCell()
     }
     
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return sectionHeaderHeight
     }
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return recordingCellHeight

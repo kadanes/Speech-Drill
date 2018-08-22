@@ -18,6 +18,8 @@ class SectionHeaderCell: UITableViewCell {
     var date = ""
     var isPlaying = false
     
+    var recordingsURL: URL?
+    
     @IBOutlet weak var playAllBtn: UIButton!
     
     @IBOutlet weak var shareAllBtn: UIButton!
@@ -34,41 +36,47 @@ class SectionHeaderCell: UITableViewCell {
     }
 
     func updatePlayingState() {
-         isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
+        
+        if let url = recordingsURL {
+           isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
+        } else {
+            isPlaying = false
+        }
     }
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
         
-        shareMergedAudio()
+        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) { (shareURL) in
+            
+            openShareSheet(url: shareURL, activityIndicator: self.mergingActivityIndicator, completion: {})
+        }
     }
-
+    
     @IBAction func playRecordingTapped(_ sender: UIButton) {
         
         updatePlayingState()
         
         if isPlaying || (delegate?.isRecording)! {
             
-            
             CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: self.date, button: sender, iconId: "g")
             
             return
         }
         
-        guard var list = delegate?.getAudioFilesList(date: date) else {return}
+        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playURL) in
+            
+            self.recordingsURL = playURL
         
-        list = sortUrlList(recordingsURLList: list)
-        
-        mergingActivityIndicator.startAnimating()
-        
-        mergeAudioFiles(audioFileUrls: list, completion: {
-
-            CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: self.date, button: sender, iconId: "g")
+            CentralAudioPlayer.player.playRecording(url: playURL, id: self.date, button: sender, iconId: "g")
+            
             DispatchQueue.main.async {
                 self.mergingActivityIndicator.stopAnimating()
+
             }
-        })
+        }
     }
     
+
     func configureCell(date:String) {
         sectionNameLbl.text = date
         self.date = date
@@ -84,28 +92,5 @@ class SectionHeaderCell: UITableViewCell {
         } else {
             setButtonBgImage(button: playPauseBtn, bgImage: playBtnIcon)
         }
-        
     }
-    
-    
-    func shareMergedAudio() {
-        
-        let mergedAudioURL = getMergedFileURL()
-        
-        let activityVC = UIActivityViewController(activityItems: [mergedAudioURL],applicationActivities: nil)
-        
-        activityVC.popoverPresentationController?.sourceView = self.delegate?.view
-        
-        self.delegate?.present(activityVC, animated: true, completion: nil)
-        
-        activityVC.completionWithItemsHandler = { activity, success, items, error in
-            
-            if success {
-                Toast.show(message: "Shared successfully!", success: true)
-            } else {
-                Toast.show(message: "Cancelled share!", success: false)
-            }
-        }
-    }
-
 }

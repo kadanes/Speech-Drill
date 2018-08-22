@@ -22,12 +22,17 @@ func openURL(url: URL?) {
     }
 }
 
-
 func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
     button.imageView?.contentMode = .scaleAspectFit
     button.contentEdgeInsets = UIEdgeInsetsMake(topPadding, leftPadding, topPadding, leftPadding)
 }
 
+func setButtonBgImage(button: UIButton, bgImage: UIImage) {
+    
+    DispatchQueue.main.async {
+        button.setImage(bgImage, for: .normal)
+    }
+}
 
 func splitFileURL(url: String) -> (Int,Int,Int) {
     
@@ -120,10 +125,6 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         let track: AVAssetTrack = asset.tracks(withMediaType: AVMediaType.audio)[0]
 
         let timeRange: CMTimeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
-
-//        var track: AVAssetTrack
-//        var timeRange: CMTimeRange
-//        (track,timeRange) = getTrackAndTimeRange(url: currentURL)
         
         do{
             
@@ -148,11 +149,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                 let trackDelimiter: AVAssetTrack = assetDelimiter.tracks(withMediaType: AVMediaType.audio)[0]
 
                 let timeRangeDelimiter: CMTimeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: trackDelimiter.timeRange.duration)
-//
-//                var trackDelimiter: AVAssetTrack
-//                var timeRangeDelimiter:CMTimeRange
-//                (trackDelimiter,timeRangeDelimiter) = getTrackAndTimeRange(url: delimiterURL)
-//
+
                 try compositionAudioTrack.insertTimeRange(timeRangeDelimiter, of: trackDelimiter, at: composition.duration)
 
             }
@@ -188,21 +185,10 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
             case AVAssetExportSessionStatus.exporting:
                 print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
             default:
-                Toast.show(message: "Combined Recordings", success: true)
+                print("Merged recordings successfully")
                 completion()
             }
     })
-}
-
-func getTrackAndTimeRange(url: URL)-> (AVAssetTrack,CMTimeRange) {
-    
-    let asset = AVURLAsset(url: url)
-    
-    let track = asset.tracks(withMediaType: AVMediaType.audio)[0]
-    
-    let timeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
-    
-    return (track,timeRange)
 }
 
 func seperatorPathFor(thinkTime: Int) -> String? {
@@ -225,6 +211,7 @@ func getPath(fileName: String ) -> String? {
     return path
 }
 
+///Function to sort list of recording urls by file name (timestamp)
 func sortUrlList(recordingsURLList: [URL]) -> [URL] {
     
     let sortedRecordingsURLList = recordingsURLList.sorted(by: {(url1,url2)-> Bool in
@@ -232,17 +219,68 @@ func sortUrlList(recordingsURLList: [URL]) -> [URL] {
         let timestamp1 = splitFileURL(url: "\(url1)").0
         let timestamp2 = splitFileURL(url: "\(url2)").0
         return timestamp1 > timestamp2
-        
     })
-    
     return sortedRecordingsURLList
-    
 }
 
-func setButtonBgImage(button: UIButton, bgImage: UIImage) {
+///Merge and return a new url of list of recordings or url of only recording in the list
+func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActivityIndicatorView? ,completion: @escaping (URL) -> ()) {
+    
+    if var sortedRecordingsList = recordingsList {
+        
+        if let activityIndicator = activityIndicator {
+            
+            DispatchQueue.main.async {
+                activityIndicator.startAnimating()
+            }
+        }
+        
+        sortedRecordingsList = sortUrlList(recordingsURLList: sortedRecordingsList)
+        
+        if sortedRecordingsList.count == 1 {
+            
+            completion(sortedRecordingsList[0])
+            
+        } else {
+            mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
+                
+                completion(getMergedFileURL())
+            }
+        }
+    }
+}
+
+///Open share sheet and share a recording
+func openShareSheet(url: URL,activityIndicator: UIActivityIndicatorView?, completion: @escaping()->()) {
+    let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
     
     DispatchQueue.main.async {
-        button.setImage(bgImage, for: .normal)
+        if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+                
+            }
+            
+            activityVC.popoverPresentationController?.sourceView = topController.view
+            
+            topController.present(activityVC, animated: true, completion: {
+                
+                if let activityIndicator = activityIndicator {
+                    activityIndicator.stopAnimating()
+                }
+            })
+            
+            activityVC.completionWithItemsHandler = { activity, success, items, error in
+                
+                if success {
+                    Toast.show(message: "Shared successfully!", success: true)
+                } else {
+                    Toast.show(message: "Cancelled share!", success: false)
+                }
+                
+                completion()
+            }
+        }
     }
 }
 

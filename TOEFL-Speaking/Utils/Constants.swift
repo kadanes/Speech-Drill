@@ -34,9 +34,7 @@ func getMergedFileURL() -> URL {
 let sectionHeaderHeight: CGFloat = 40.0
 let buttonVerticalInset: CGFloat = sectionHeaderHeight/4
 let buttonHorizontalInset: CGFloat = 5
-
 let recordingCellHeight: CGFloat = 60.0
-
 
 
 //Buttons

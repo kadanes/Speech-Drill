@@ -12,7 +12,6 @@ class IconCell: UICollectionViewCell {
     
     @IBOutlet weak var iconImage: UIImageView!
     
-    
     func configureCell(icon: UIImage) {
         iconImage.image = icon
     }

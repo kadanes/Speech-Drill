@@ -30,7 +30,6 @@
 		B2DAB67A212894190062ECDF /* pausey.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB669212894180062ECDF /* pausey.png */; };
 		B2DAB67D212894190062ECDF /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB66C212894180062ECDF /* info.png */; };
 		B2DAB67F212894190062ECDF /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB66E212894190062ECDF /* box.png */; };
-		B2DAB689212896FB0062ECDF /* RowButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DAB688212896FB0062ECDF /* RowButtons.swift */; };
 		B2DAB68F2129277A0062ECDF /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB68E212927790062ECDF /* close.png */; };
 		B2DAB6922129282E0062ECDF /* playy.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB6902129282E0062ECDF /* playy.png */; };
 		B2DAB6932129282E0062ECDF /* playg.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB6912129282E0062ECDF /* playg.png */; };
@@ -89,7 +88,6 @@
 		B2DAB669212894180062ECDF /* pausey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pausey.png; sourceTree = "<group>"; };
 		B2DAB66C212894180062ECDF /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
 		B2DAB66E212894190062ECDF /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
-		B2DAB688212896FB0062ECDF /* RowButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowButtons.swift; sourceTree = "<group>"; };
 		B2DAB68E212927790062ECDF /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		B2DAB6902129282E0062ECDF /* playy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playy.png; sourceTree = "<group>"; };
 		B2DAB6912129282E0062ECDF /* playg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playg.png; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 			children = (
 				B22C81362114133300104E02 /* RoundButton.swift */,
 				B25F80C7211F667500AD786C /* RoundLabel.swift */,
-				B2DAB688212896FB0062ECDF /* RowButtons.swift */,
 				B2E5F5F3212B401B00FC7E28 /* RoundImage.swift */,
 				B2ACC672212D0E16009AE30D /* RoundedImage.swift */,
 			);
@@ -227,8 +224,8 @@
 			children = (
 				B25F80B8211F4F3200AD786C /* Constants.swift */,
 				B2E5F5E9212B2C5900FC7E28 /* Utils.swift */,
-				B21ABB22210FF664009C678C /* AppDelegate.swift */,
 				B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */,
+				B21ABB22210FF664009C678C /* AppDelegate.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -463,7 +460,6 @@
 				B21ABB25210FF664009C678C /* MainVC.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,
-				B2DAB689212896FB0062ECDF /* RowButtons.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B25F80B9211F4F3200AD786C /* Constants.swift in Sources */,

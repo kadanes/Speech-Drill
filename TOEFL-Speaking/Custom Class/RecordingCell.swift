@@ -107,20 +107,7 @@ class RecordingCell: UITableViewCell {
         
         CentralAudioPlayer.player.stopPlaying()
         
-        let activityVC = UIActivityViewController(activityItems: [recordingURL as Any] ,applicationActivities: nil)
-        
-        activityVC.popoverPresentationController?.sourceView = self.delegate?.view
-        
-        self.delegate?.present(activityVC, animated: true, completion: nil)
-        
-        activityVC.completionWithItemsHandler = { activity, success, items, error in
-            
-            if success {
-                Toast.show(message: "Shared successfully!", success: true)
-            } else {
-                Toast.show(message: "Cancelled share!", success: false)
-            }
-        }
+        openShareSheet(url: recordingURL!, activityIndicator: nil, completion:{})
         
     }
     
@@ -140,7 +127,7 @@ class RecordingCell: UITableViewCell {
             
             CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)", button: playPauseBtn, iconId: "g")
             
-            delegate?.renderTopic(topicNumber: topicNumber, saveDefault: true)
+            delegate?.renderTopic(topicNumber: topicNumber)
         }
         
     }
@@ -162,23 +149,17 @@ class RecordingCell: UITableViewCell {
     
     @IBAction func selectRecordingTapped(_ sender: UIButton) {
         
-        
         if !(isRecordningSelected) {
             
             setButtonBgImage(button: sender, bgImage: checkMarkIcon)
-            CentralAudioPlayer.player.stopPlaying()
             delegate?.addToExportList(url: recordingURL!)
-            
         } else {
-
             setButtonBgImage(button: sender, bgImage: UIImage())
-
             delegate?.removeFromExportList(url: recordingURL!)
         }
         
         isRecordningSelected = !isRecordningSelected
         delegate?.toggleExportMenu()
-        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

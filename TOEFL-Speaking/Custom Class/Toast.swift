@@ -15,12 +15,9 @@ class Toast {
             if var topController = UIApplication.shared.keyWindow?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
-                    
                 }
-                
                 presentToast(message: message, controller: topController, success: success)
             }
-            
         }
     }
     
@@ -59,7 +56,7 @@ class Toast {
         let c3 = NSLayoutConstraint(item: toastContainer, attribute: .bottom, relatedBy: .equal, toItem: controller.view, attribute: .bottom, multiplier: 1, constant: -45)
         controller.view.addConstraints([c1, c2, c3])
         
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1, delay: 0.0, options: .curveEaseIn, animations: {
             toastContainer.alpha = 1.0
         }, completion: { _ in
             UIView.animate(withDuration: 0.5, delay: 1.5, options: .curveEaseOut, animations: {
