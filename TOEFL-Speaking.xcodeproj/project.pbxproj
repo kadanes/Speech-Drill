@@ -21,7 +21,12 @@
 		B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C3211F5B0700AD786C /* beep1.m4a */; };
 		B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C5211F5BAA00AD786C /* beep2.m4a */; };
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
-		B27F31332121F6A200872047 /* CheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F31322121F6A200872047 /* CheckBoxButton.swift */; };
+		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
+		B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ACC672212D0E16009AE30D /* RoundedImage.swift */; };
+		B2ACC675212D0EF4009AE30D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC674212D0EF3009AE30D /* logo.png */; };
+		B2ACC677212D0F59009AE30D /* blackbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC676212D0F58009AE30D /* blackbg.jpg */; };
+		B2ACC679212D11EB009AE30D /* yellowbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC678212D11EB009AE30D /* yellowbg.jpg */; };
+		B2ACC67B212D1234009AE30D /* penmic.png in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC67A212D1234009AE30D /* penmic.png */; };
 		B2DAB671212894190062ECDF /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB660212894160062ECDF /* check.png */; };
 		B2DAB672212894190062ECDF /* pauseg.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB661212894160062ECDF /* pauseg.png */; };
 		B2DAB676212894190062ECDF /* recordf.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB665212894170062ECDF /* recordf.png */; };
@@ -68,7 +73,12 @@
 		B25F80C3211F5B0700AD786C /* beep1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep1.m4a; sourceTree = "<group>"; };
 		B25F80C5211F5BAA00AD786C /* beep2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep2.m4a; sourceTree = "<group>"; };
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
-		B27F31322121F6A200872047 /* CheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxButton.swift; sourceTree = "<group>"; };
+		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
+		B2ACC672212D0E16009AE30D /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
+		B2ACC674212D0EF3009AE30D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
+		B2ACC676212D0F58009AE30D /* blackbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blackbg.jpg; sourceTree = "<group>"; };
+		B2ACC678212D11EB009AE30D /* yellowbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellowbg.jpg; sourceTree = "<group>"; };
+		B2ACC67A212D1234009AE30D /* penmic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = penmic.png; sourceTree = SOURCE_ROOT; };
 		B2DAB660212894160062ECDF /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		B2DAB661212894160062ECDF /* pauseg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pauseg.png; sourceTree = "<group>"; };
 		B2DAB665212894170062ECDF /* recordf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recordf.png; sourceTree = "<group>"; };
@@ -114,7 +124,6 @@
 			children = (
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
 				B22C813C2114809700104E02 /* SectionHeaderCell.swift */,
-				B27F31322121F6A200872047 /* CheckBoxButton.swift */,
 				B2E5F5F1212B340D00FC7E28 /* IconCell.swift */,
 			);
 			path = "Custom Class";
@@ -140,7 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				B2DAB65D21285C780062ECDF /* Extension */,
-				B2DAB65421285C470062ECDF /* Icons */,
+				B2DAB65421285C470062ECDF /* Image Assets */,
 				B23F5FEA211EFA68006034EC /* Assets */,
 				B27F31372122025F00872047 /* Controller */,
 				B204ECAE211349FE00A51E8B /* Custom Class */,
@@ -161,6 +170,7 @@
 				B25F80C7211F667500AD786C /* RoundLabel.swift */,
 				B2DAB688212896FB0062ECDF /* RowButtons.swift */,
 				B2E5F5F3212B401B00FC7E28 /* RoundImage.swift */,
+				B2ACC672212D0E16009AE30D /* RoundedImage.swift */,
 			);
 			path = "Custom View";
 			sourceTree = "<group>";
@@ -191,13 +201,18 @@
 				B25F80B8211F4F3200AD786C /* Constants.swift */,
 				B2E5F5E9212B2C5900FC7E28 /* Utils.swift */,
 				B21ABB22210FF664009C678C /* AppDelegate.swift */,
+				B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		B2DAB65421285C470062ECDF /* Icons */ = {
+		B2DAB65421285C470062ECDF /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
+				B2ACC67A212D1234009AE30D /* penmic.png */,
+				B2ACC676212D0F58009AE30D /* blackbg.jpg */,
+				B2ACC678212D11EB009AE30D /* yellowbg.jpg */,
+				B2ACC674212D0EF3009AE30D /* logo.png */,
 				B2E5F5EB212B2E7600FC7E28 /* Me.jpg */,
 				B2E5F5ED212B318700FC7E28 /* email.png */,
 				B2E5F5EE212B318700FC7E28 /* github.png */,
@@ -220,7 +235,7 @@
 				B2DAB669212894180062ECDF /* pausey.png */,
 				B2DAB665212894170062ECDF /* recordf.png */,
 			);
-			path = Icons;
+			path = "Image Assets";
 			sourceTree = "<group>";
 		};
 		B2DAB65D21285C780062ECDF /* Extension */ = {
@@ -300,18 +315,22 @@
 				B2DAB67F212894190062ECDF /* box.png in Resources */,
 				B2DAB672212894190062ECDF /* pauseg.png in Resources */,
 				B2DAB6922129282E0062ECDF /* playy.png in Resources */,
+				B2ACC679212D11EB009AE30D /* yellowbg.jpg in Resources */,
 				B2DAB676212894190062ECDF /* recordf.png in Resources */,
 				B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */,
 				B22C813B2114366E00104E02 /* topics.csv in Resources */,
 				B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */,
 				B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */,
 				B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */,
+				B2ACC675212D0EF4009AE30D /* logo.png in Resources */,
 				B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */,
 				B2DAB699212929A70062ECDF /* share.png in Resources */,
 				B2E5F5EC212B2E7600FC7E28 /* Me.jpg in Resources */,
+				B2ACC677212D0F59009AE30D /* blackbg.jpg in Resources */,
 				B2DAB67D212894190062ECDF /* info.png in Resources */,
 				B2E5F5E2212B1D1200FC7E28 /* sleft.png in Resources */,
 				B2E5F5F0212B318700FC7E28 /* github.png in Resources */,
+				B2ACC67B212D1234009AE30D /* penmic.png in Resources */,
 				B2DAB6932129282E0062ECDF /* playg.png in Resources */,
 				B2E5F5E0212B1D1200FC7E28 /* dright.png in Resources */,
 				B22C8139211413AD00104E02 /* topics.txt in Resources */,
@@ -347,7 +366,6 @@
 			files = (
 				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
 				B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */,
-				B27F31332121F6A200872047 /* CheckBoxButton.swift in Sources */,
 				B2E5F5E8212B260C00FC7E28 /* InfoVC.swift in Sources */,
 				B21ABB25210FF664009C678C /* ViewController.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
@@ -358,7 +376,9 @@
 				B25F80B9211F4F3200AD786C /* Constants.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,
+				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
+				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,7 +532,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.parthtamane.TOEFL-Speaking";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.parthtamane.TOEFL-Speech-Trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -531,7 +551,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.parthtamane.TOEFL-Speaking";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.parthtamane.TOEFL-Speech-Trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

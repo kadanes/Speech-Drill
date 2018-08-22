@@ -62,3 +62,100 @@ func splitFileURL(url: String) -> (Int,Int,Int) {
     return (timeStamp,topicNumber,thinkTime)
 }
 
+func parseDate(timeStamp: Int) -> String {
+    
+    let ts = Double(timeStamp)
+    
+    let date = Date(timeIntervalSince1970: ts)
+    let dateFormatter = DateFormatter()
+    
+    dateFormatter.locale = NSLocale.current
+    dateFormatter.dateFormat = "dd/MM/yyyy"
+    let strDate = dateFormatter.string(from: date)
+    
+    return strDate
+}
+
+func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
+    
+    do {
+        try FileManager.default.removeItem(at: getMergedFileURL())
+        
+    } catch let error as NSError {
+        print("Error Deleting Merged Audio:\n\(error.domain)")
+    }
+    
+    let composition = AVMutableComposition()
+    
+    
+    for i in 0 ..< audioFileUrls.count {
+        
+        let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
+        
+        let asset = AVURLAsset(url: (audioFileUrls[i]))
+        
+        let track = asset.tracks(withMediaType: AVMediaType.audio)[0]
+        
+        let timeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
+        
+        do{
+            try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
+            
+            let delimiterPath = Bundle.main.path(forResource: beepSoundFileName, ofType: recordingExtension)
+            
+            if let path = delimiterPath {
+                let delimiterURL = URL(fileURLWithPath: path)
+                print(delimiterURL)
+                
+                let assetDelimiter = AVURLAsset(url: delimiterURL)
+                
+                let trackDelimiter = assetDelimiter.tracks(withMediaType: AVMediaType.audio)[0]
+                
+                let timeRangeDelimiter = CMTimeRange(start: CMTimeMake(0, 600), duration: trackDelimiter.timeRange.duration)
+                
+                try compositionAudioTrack.insertTimeRange(timeRangeDelimiter, of: trackDelimiter, at: composition.duration)
+            }
+            
+        } catch let error as NSError {
+            print("Error while inseting in composition for url: ",i+1)
+            print(error.localizedDescription)
+            
+        }
+    }
+    
+    let assetExport = AVAssetExportSession(asset: composition, presetName: presetName)
+    
+    assetExport?.outputFileType = outputFileType
+    
+    assetExport?.outputURL = getMergedFileURL()
+    
+    assetExport?.exportAsynchronously(completionHandler:
+        {
+            
+            switch assetExport!.status
+            {
+            case AVAssetExportSessionStatus.failed:
+                print("failed \(assetExport?.error ?? "FAILED" as! Error)")
+            case AVAssetExportSessionStatus.cancelled:
+                print("cancelled \(assetExport?.error ?? "CANCELLED" as! Error)")
+            case AVAssetExportSessionStatus.unknown:
+                print("unknown\(assetExport?.error ?? "UNKNOWN" as! Error)")
+            case AVAssetExportSessionStatus.waiting:
+                print("waiting\(assetExport?.error ?? "WAITING" as! Error)")
+            case AVAssetExportSessionStatus.exporting:
+                print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
+            default:
+                print("Audio Concatenation Complete")
+                completion()
+            }
+    })
+}
+
+
+func setButtonBgImage(button: UIButton, bgImage: UIImage) {
+    
+    DispatchQueue.main.async {
+        button.setImage(bgImage, for: .normal)
+    }
+}
+

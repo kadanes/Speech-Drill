@@ -67,7 +67,6 @@ class ViewController: UIViewController {
     var isRecording = false
     var blinking = true
     
-    var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var audioSession: AVAudioSession!
     
@@ -78,11 +77,6 @@ class ViewController: UIViewController {
     var mergeAudioURL: URL?
 
     let userDefaults = UserDefaults.standard
-    
-    var playingRecordingURL: URL?
-    var playPauseButton: UIButton?
-    var isPlaying = false
-    var audioPlayer: AVAudioPlayer?
     
     var thinkTimer: Timer?
     
@@ -125,6 +119,17 @@ class ViewController: UIViewController {
         recordingTableView.reloadData()
     }
     
+    func readTopics() {
+        do{
+            let fileURL = Bundle.main.url(forResource: "topics", withExtension: "csv")
+            let content = try String(contentsOf: fileURL!, encoding: String.Encoding.utf8)
+            topics = content.components(separatedBy:"\n").map{$0}
+            
+        } catch {
+            
+        }
+    }
+    
     func renderTopic(topicNumber: Int, saveDefault: Bool) {
         if saveDefault{
             userDefaults.set(topicNumber, forKey: "topicNumber")
@@ -140,15 +145,50 @@ class ViewController: UIViewController {
        
     }
     
-    func readTopics() {
-        do{
-            let fileURL = Bundle.main.url(forResource: "topics", withExtension: "csv")
-            let content = try String(contentsOf: fileURL!, encoding: String.Encoding.utf8)
-            topics = content.components(separatedBy:"\n").map{$0}
+    @IBAction func switchModesTapped(_ sender: UIButton) {
+        switchModes()
+    }
+    
+    func switchModes() {
+        
+        if isRecording {return}
+        
+        if isTestMode {
             
-        } catch {
+            self.switchModesBtn.setTitle("Practice", for: .normal)
+            self.thinkTimeChangeStackView.isHidden = true
+            changeTopicBtnsStackView.isHidden = false
             
+            renderTopic(topicNumber: topicNumber, saveDefault: true)
+            
+        } else {
+            
+            self.switchModesBtn.setTitle("Test", for: .normal)
+            self.thinkTimeChangeStackView.isHidden = false
+            changeTopicBtnsStackView.isHidden = true
+            
+            topicLbl.text = "TEST MODE"
         }
+        
+        isTestMode = !isTestMode
+        
+        defaultThinkTime = 15
+        defaultSpeakTime = 45
+        thinkTime = defaultThinkTime
+        speakTime = defaultSpeakTime
+        
+        resetRecordingState()
+        
+    }
+    
+    func setToTestMode() {
+        isTestMode = false
+        switchModes()
+    }
+    
+    func setToPracticeMode() {
+        isTestMode = true
+        switchModes()
     }
     
     @IBAction func changeThinkTimeTapped(_ sender: RoundButton) {
@@ -194,10 +234,9 @@ class ViewController: UIViewController {
 
     }
     
-    
     @IBAction func startRecordingPressed(_ sender: Any) {
         
-        stopPlaying()
+        CentralAudioPlayer.player.stopPlaying()
         
         if (!isRecording) {
             isRecording = true
@@ -220,52 +259,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
-    @IBAction func switchModesTapped(_ sender: UIButton) {
-       switchModes()
-    }
-    
-    func switchModes() {
-        
-        if isRecording {return}
-        
-        if isTestMode {
-
-            self.switchModesBtn.setTitle("Practice", for: .normal)
-            self.thinkTimeChangeStackView.isHidden = true
-            changeTopicBtnsStackView.isHidden = false
-        
-            renderTopic(topicNumber: topicNumber, saveDefault: true)
-            
-        } else {
-            
-            self.switchModesBtn.setTitle("Test", for: .normal)
-            self.thinkTimeChangeStackView.isHidden = false
-            changeTopicBtnsStackView.isHidden = true
-            
-            topicLbl.text = "TEST MODE"
-        }
-        
-        isTestMode = !isTestMode
-        
-        defaultThinkTime = 15
-        defaultSpeakTime = 45
-        thinkTime = defaultThinkTime
-        speakTime = defaultSpeakTime
-        
-        resetRecordingState()
-        
-    }
-    
-    func setToTestMode() {
-        isTestMode = false
-        switchModes()
-    }
-
-    func setToPracticeMode() {
-        isTestMode = true
-        switchModes()
-    }
     
     @objc func decrementThinkTime(timer: Timer) {
         if(thinkTime > 0) {
@@ -329,7 +322,6 @@ class ViewController: UIViewController {
         
     }
     
-
     func updateURLList() {
                 
         dateSortedRecordingList.removeAll()
@@ -345,11 +337,11 @@ class ViewController: UIViewController {
                 if recordingName.hasSuffix("."+recordingExtension) {
 
                     if (recordingName != mergedFileName) {
-                        let fileName = recordingName.components(separatedBy: ".")
                         
-                        let fileNameComponents = fileName[0].components(separatedBy: "_")
+                    
+                        let timeStamp = splitFileURL(url: recordingName).0
                         
-                        let date = parseDate(timeStamp: fileNameComponents[0])
+                        let date = parseDate(timeStamp: timeStamp)
                         
                         let url = URL(fileURLWithPath: documents+"/"+"\(file)")
                         
@@ -368,104 +360,12 @@ class ViewController: UIViewController {
         }
     }
     
-    func parseDate(timeStamp: String) -> String {
-        
-        guard let ts = Double(timeStamp) else {
-            return "NIL"
-        }
-        
-        let date = Date(timeIntervalSince1970: ts)
-        let dateFormatter = DateFormatter()
-
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        let strDate = dateFormatter.string(from: date)
-        
-        return strDate
-    }
-    
     func getAudioFilesList(date: String) -> [URL] {
         
         guard let urlList = dateSortedRecordingList[date] else {return [URL]()}
         
         return urlList
     }
-    
-    func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
-        
-        do {
-            try FileManager.default.removeItem(at: getMergedFileURL())
-            
-        } catch let error as NSError {
-            print("Error Deleting Merged Audio:\n\(error.domain)")
-        }
-        
-        let composition = AVMutableComposition()
-        
-        
-        for i in 0 ..< audioFileUrls.count {
-            
-            let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
-            
-            let asset = AVURLAsset(url: (audioFileUrls[i]))
-            
-            let track = asset.tracks(withMediaType: AVMediaType.audio)[0]
-            
-            let timeRange = CMTimeRange(start: CMTimeMake(0, 600), duration: track.timeRange.duration)
-            
-            do{
-                try compositionAudioTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
-                
-                let delimiterPath = Bundle.main.path(forResource: beepSoundFileName, ofType: recordingExtension)
-                
-                if let path = delimiterPath {
-                    let delimiterURL = URL(fileURLWithPath: path)
-                    print(delimiterURL)
-                    
-                    let assetDelimiter = AVURLAsset(url: delimiterURL)
-                    
-                    let trackDelimiter = assetDelimiter.tracks(withMediaType: AVMediaType.audio)[0]
-                    
-                    let timeRangeDelimiter = CMTimeRange(start: CMTimeMake(0, 600), duration: trackDelimiter.timeRange.duration)
-                    
-                    try compositionAudioTrack.insertTimeRange(timeRangeDelimiter, of: trackDelimiter, at: composition.duration)
-                }
-                
-            } catch let error as NSError {
-                print("Error while inseting in composition for url: ",i+1)
-                print(error.localizedDescription)
-                
-            }
-        }
-        
-        let assetExport = AVAssetExportSession(asset: composition, presetName: presetName)
-        
-        assetExport?.outputFileType = outputFileType
-        
-        assetExport?.outputURL = getMergedFileURL()
-        
-        assetExport?.exportAsynchronously(completionHandler:
-            {
-            
-                switch assetExport!.status
-                {
-                case AVAssetExportSessionStatus.failed:
-                    print("failed \(assetExport?.error ?? "FAILED" as! Error)")
-                case AVAssetExportSessionStatus.cancelled:
-                    print("cancelled \(assetExport?.error ?? "CANCELLED" as! Error)")
-                case AVAssetExportSessionStatus.unknown:
-                    print("unknown\(assetExport?.error ?? "UNKNOWN" as! Error)")
-                case AVAssetExportSessionStatus.waiting:
-                    print("waiting\(assetExport?.error ?? "WAITING" as! Error)")
-                case AVAssetExportSessionStatus.exporting:
-                    print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
-                default:
-                    print("Audio Concatenation Complete")
-                    completion()   
-                }
-            })
-    }
-    
     
     func toggleExportMenu() {
         if exportSelected.count > 0 {
@@ -514,95 +414,20 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
+        
+        if isRecording {return}
+        
+        mergeAudioFiles(audioFileUrls: exportSelected) {
+            
+            CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: selectedAudioId , button: sender, iconId: "y")
+        }
+    }
+    
     @IBAction func cancelSelectedTapped(_ sender: UIButton) {
         clearSelected()
     }
  
-}
-
-extension ViewController: AVAudioPlayerDelegate {
-    
-    func stopPlaying() {
-       
-        if (playPauseButton != nil) {
-            setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
-            isPlaying = false
-            playingRecordingURL = nil
-            audioPlayer?.stop()
-        }
-    }
-    
-    func playRecording(url: URL, button: UIButton){
-        
-        if isRecording { return }
-        
-        if (url != playingRecordingURL) {
-            
-            if (playPauseButton == nil ) {
-                playPauseButton = button
-            }
-            
-            setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
-            playPauseButton = button
-            setButtonBgImage(button: self.playPauseButton!, bgImage: pauseBtnIcon)
-        
-            isPlaying = true
-            playingRecordingURL = url
-            
-            do{
-                
-                audioSession = AVAudioSession.sharedInstance()
-                try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-                try audioSession.setActive(true)
-                
-                audioPlayer = try AVAudioPlayer(contentsOf: playingRecordingURL!)
-                audioPlayer?.delegate = self
-                
-                guard let audioPlayer = audioPlayer else { return }
-    
-                audioPlayer.prepareToPlay()
-    
-                audioPlayer.play()
-                
-            } catch let error as NSError {
-                print("Error Playing\n",error.localizedDescription)
-                
-            }
-            
-        } else if (isPlaying) {
-            
-            audioPlayer?.pause()
-            isPlaying = false
-            setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
-            
-        } else if (!isPlaying) {
-
-            audioPlayer?.play()
-            isPlaying = true
-            setButtonBgImage(button: self.playPauseButton!, bgImage: pauseBtnIcon)
-        }
-    }
-    
-    func setButtonBgImage(button: UIButton, bgImage: UIImage) {
-        
-        DispatchQueue.main.async {
-            button.setImage(bgImage, for: .normal)
-        }
-    }
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        
-        playingRecordingURL = nil
-        isPlaying = false
-        setButtonBgImage(button: self.playPauseButton!, bgImage: playBtnIcon)
-    }
-    
-    
-    @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
-        
-        mergeAudioFiles(audioFileUrls: exportSelected) {
-            self.playRecording(url: getMergedFileURL(), button: sender)
-        }
-    }
 }
 
 extension ViewController: AVAudioRecorderDelegate {
@@ -688,7 +513,11 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as? SectionHeaderCell {
             
             let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
-            cell.configureCell(date: date)
+            
+            let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
+            
+            cell.configureCell(date: date, isPlaying: isPlaying)
+            
             cell.delegate = self
             
             return cell
@@ -725,7 +554,12 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
                 
             })[indexPath.row]
             
-            cell.configureCell(url: url )
+            
+            let recordingTimeStamp = splitFileURL(url: "\(url)").0
+            
+            let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(recordingTimeStamp)")
+            
+            cell.configureCell(url: url, isPlaying: isPlaying)
             cell.delegate = self
             
             if(exportSelected.contains(url)) {
@@ -740,5 +574,4 @@ extension ViewController:UITableViewDataSource,UITableViewDelegate {
         }
         
     }
-    
 }

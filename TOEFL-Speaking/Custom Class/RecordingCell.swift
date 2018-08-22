@@ -19,23 +19,19 @@ class RecordingCell: UITableViewCell {
     @IBOutlet weak var shareRecordingBtn: RoundButton!
     @IBOutlet weak var playRecordningBtn: RoundButton!
 
-    @IBOutlet weak var checkBoxBtn: CheckBoxButton!
+    @IBOutlet weak var checkBoxBtn: UIButton!
 
     weak var delegate: ViewController?
+
     var topicNumber = 0
     var timeStamp = 0
     var thinkTime = 15
-    
-    var url: URL?
-    var isRecordingSelected = false
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-    }
 
-   
-    func configureCell(url:URL) {
+    var isRecordningSelected = false
+    var url: URL?
+    
+
+    func configureCell(url:URL, isPlaying: Bool) {
         
         self.url = url
         
@@ -66,6 +62,13 @@ class RecordingCell: UITableViewCell {
         setButtonImageProperties(button: playRecordningBtn)
         
         setCheckBoxProperties()
+        
+        if isPlaying {
+            setButtonBgImage(button: playPauseBtn, bgImage: pauseBtnIcon)
+        } else {
+            setButtonBgImage(button: playPauseBtn, bgImage: playBtnIcon)
+        }
+        
     }
     
     func setButtonImageProperties(button: UIButton) {
@@ -83,12 +86,10 @@ class RecordingCell: UITableViewCell {
     
     func selectCheckBox() {
         checkBoxBtn.setImage(checkMarkIcon, for: .normal)
-        isRecordingSelected = true
     }
     
     func deselectCheckBox() {
         checkBoxBtn.setImage(nil, for: .normal)
-        isRecordingSelected = false
     }
     
     func getFileDetails(url: String) {
@@ -107,6 +108,8 @@ class RecordingCell: UITableViewCell {
     
     @IBAction func playRecording(_ sender: UIButton) {
         
+        if  (delegate?.isRecording)! {return}
+        
         if let url = url {
             
             if topicNumber == 0 {
@@ -115,7 +118,8 @@ class RecordingCell: UITableViewCell {
                 delegate?.setToPracticeMode()
             }
             
-            delegate?.playRecording(url: url, button: playPauseBtn)
+            CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)", button: playPauseBtn, iconId: "g")
+            
             delegate?.renderTopic(topicNumber: topicNumber, saveDefault: true)
         }
         
@@ -138,26 +142,22 @@ class RecordingCell: UITableViewCell {
     
     @IBAction func selectRecordingTapped(_ sender: UIButton) {
         
-        delegate?.renderTopic(topicNumber: topicNumber, saveDefault: false)
+//        delegate?.renderTopic(topicNumber: topicNumber, saveDefault: false)
         
-        if !isRecordingSelected {
+        if !(isRecordningSelected) {
             
-            DispatchQueue.main.async {
-                sender.setImage(checkMarkIcon, for: .normal)
-                self.delegate?.stopPlaying()
-            }
-            
+            setButtonBgImage(button: sender, bgImage: checkMarkIcon)
+            CentralAudioPlayer.player.stopPlaying()
             delegate?.addToExportList(url: url!)
             
         } else {
-            DispatchQueue.main.async {
-                sender.setImage(nil, for: .normal)
-            }
-            
+
+            setButtonBgImage(button: sender, bgImage: UIImage())
+
             delegate?.removeFromExportList(url: url!)
         }
         
-        isRecordingSelected = !isRecordingSelected
+        isRecordningSelected = !isRecordningSelected
         delegate?.toggleExportMenu()
         
     }
@@ -165,7 +165,6 @@ class RecordingCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
 
 }

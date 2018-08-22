@@ -38,6 +38,8 @@ let recordingCellHeight: CGFloat = 60.0
 
 let playBtnIcon = UIImage(named: "playg.png")!
 let pauseBtnIcon = UIImage(named: "pauseg.png")!
+let playBtnYellowIcon = UIImage(named: "playy.png")!
+let pauseBtnYellowIcon = UIImage(named: "pausey.png")!
 let deleteBtnIcon = UIImage(named: "delete.png")!
 let checkMarkIcon = UIImage(named: "check.png")!
 let recordIcon = UIImage(named: "recordf.png")!
@@ -57,5 +59,9 @@ let infoIcon = UIImage(named: "info.png")!
 let shareIcon = UIImage(named: "share.png")!
 let singleShareIcon = UIImage(named: "sshareg.png")!
 
+
+//Recording ID
+
+let selectedAudioId = "SelectedAudio"
 
 

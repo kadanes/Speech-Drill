@@ -20,11 +20,9 @@ class SectionHeaderCell: UITableViewCell {
     
     @IBOutlet weak var shareAllBtn: UIButton!
     
-    
     @IBOutlet weak var sectionNameLbl: UILabel!
     
     @IBOutlet weak var playPauseBtn: UIButton!
-    
     
     
     override func awakeFromNib() {
@@ -39,17 +37,26 @@ class SectionHeaderCell: UITableViewCell {
     @IBAction func playRecordingTapped(_ sender: UIButton) {
         
         guard let list = delegate?.getAudioFilesList(date: date) else {return}
-        delegate?.mergeAudioFiles(audioFileUrls: list, completion: {
-            self.delegate?.playRecording(url: getMergedFileURL(), button: sender)
+        mergeAudioFiles(audioFileUrls: list, completion: {
+
+            CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: self.date, button: sender, iconId: "g")
+            
         })
     }
     
-    func configureCell(date:String) {
+    func configureCell(date:String, isPlaying: Bool) {
         sectionNameLbl.text = date
         self.date = date
         
         setButtonImageProperties(button: playAllBtn)
         setButtonImageProperties(button: shareAllBtn)
+        
+        if isPlaying {
+            setButtonBgImage(button: playPauseBtn, bgImage: pauseBtnIcon)
+        } else {
+            setButtonBgImage(button: playPauseBtn, bgImage: playBtnIcon)
+        }
+        
     }
     
     func setButtonImageProperties(button: UIButton) {
