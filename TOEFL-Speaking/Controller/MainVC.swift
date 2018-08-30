@@ -15,7 +15,6 @@ class MainVC: UIViewController {
     @IBOutlet weak var adjustThinkTimeBtn: UILabel!
     @IBOutlet weak var adjustSpeakTimeBtn: UILabel!
     
-    
     @IBOutlet weak var thinkTimeChangeStackView: UIStackView!
 
     @IBOutlet weak var switchModesBtn: RoundButton!
@@ -38,7 +37,6 @@ class MainVC: UIViewController {
     @IBOutlet weak var loadPreviousTopicBtn: RoundButton!
     @IBOutlet weak var loadPreviousTenthTopicBtn: RoundButton!
     @IBOutlet weak var loadPreviousFiftiethTopicBtn: RoundButton!
-    
     
     @IBOutlet weak var recordingTableView: UITableView!
     
@@ -75,10 +73,11 @@ class MainVC: UIViewController {
     
     var dateSortedRecordingList: Dictionary<String,Array<URL>> = [:]
     
+    var hiddenSections = [String]()
+    var visibleSections = [String]()
+    
     var exportSelected = [URL]()
-
-    var mergeAudioURL: URL?
-
+    
     let userDefaults = UserDefaults.standard
     
     var thinkTimer: Timer?
@@ -120,6 +119,8 @@ class MainVC: UIViewController {
         
         setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         
+        setHiddenVisibleSectionList()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -140,6 +141,10 @@ class MainVC: UIViewController {
     
     func renderTopic(topicNumber: Int) {
        
+        if ( topicNumber > topics.count - 1) {
+            return
+        }
+        
         userDefaults.set(topicNumber, forKey: "topicNumber")
         
         self.topicNumber = topicNumber
@@ -388,6 +393,48 @@ class MainVC: UIViewController {
         }
     }
     
+    func setHiddenVisibleSectionList() {
+        print("LIST: \n",dateSortedRecordingList.keys.sorted(by: >))
+        
+        let dateSortedKeys = dateSortedRecordingList.keys.sorted(by: >)
+        
+        if (dateSortedKeys.count > 0 && visibleSections.count == 0) {
+            visibleSections.append(dateSortedKeys[0])
+            
+            for ind in 1..<dateSortedKeys.count {
+                
+                hiddenSections.append(dateSortedKeys[ind])
+            }
+        }
+    }
+    
+    func toggleSection(date: String) {
+        
+        if visibleSections.contains(date) {
+            hideSection(date: date)
+        } else {
+            showSection(date: date)
+        }
+        
+        UIView.animate(withDuration: 0.5) {
+            self.recordingTableView.reloadData()
+        }
+    }
+    
+    func hideSection(date: String) {
+        visibleSections = visibleSections.filter {$0 != date}
+        hiddenSections.append(date)
+    }
+    
+    func showSection(date: String) {
+        hiddenSections = hiddenSections.filter{$0 != date}
+        visibleSections.append(date)
+    }
+    
+    func checkIfHidden(date:String) -> Bool {
+        return hiddenSections .contains(date)
+    }
+    
     ///Fetch a list of recordings urls for a day
     func getAudioFilesList(date: String) -> [URL] {
         
@@ -530,23 +577,32 @@ extension MainVC: AVAudioRecorderDelegate {
             renderTopic(topicNumber: topicNumber)
         }
         
+        setHiddenVisibleSectionList()
         recordingTableView.reloadData()
-        //Possible fix for check box bg properties not reflecting
-        recordingTableView.reloadData()
-
+//        recordingTableView.reloadData()
         resetRecordingState()
     }
 }
 
 extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
+    func reloadData() {
+        DispatchQueue.main.async {
+             self.recordingTableView.reloadData()
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return dateSortedRecordingList.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let recordingsURLMap = dateSortedRecordingList.sorted{ $0.0 > $1.0}
         
-        return dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].value.count
+        if (visibleSections.contains(recordingsURLMap[section].key)){
+            return dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].value.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -555,9 +611,9 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
             
             let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
             
-            cell.configureCell(date: date)
-            
             cell.delegate = self
+            
+            cell.configureCell(date: date)
             
             return cell
         }

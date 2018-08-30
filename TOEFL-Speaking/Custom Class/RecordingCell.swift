@@ -100,7 +100,7 @@ class RecordingCell: UITableViewCell {
     
     func updatePlayingState() {
         
-        isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: "\(timeStamp)")
+        isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordingURL!, id: "\(timeStamp)")
     }
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
@@ -128,8 +128,10 @@ class RecordingCell: UITableViewCell {
             CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)", button: playPauseBtn, iconId: "g")
             
             delegate?.renderTopic(topicNumber: topicNumber)
+            
+            delegate?.reloadData()
+
         }
-        
     }
     
     @IBAction func deleteRecording(_ sender: Any) {

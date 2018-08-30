@@ -41,18 +41,22 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     ///Play or Pause or Start a recording
     func playRecording(url: URL,id: String, button: UIButton, iconId: String){
         
+//        print("Passed: ",url,"\n",id)
+//        print("Stored: ",playingRecordingURL,"\n",playedRecordingID)
+
         if (url != playingRecordingURL || playedRecordingID != id ) {
+            
             
             if (playPauseButton == nil ) {
                 playPauseButton = button
             }
             
-            setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
+            //setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
             
             playPauseButton = button
             oldPlayPauseIconId = iconId
             
-            setButtonBgImage(button: playPauseButton!, bgImage: getPauseBtnIcon(colorId: iconId))
+            //setButtonBgImage(button: playPauseButton!, bgImage: getPauseBtnIcon(colorId: iconId))
             
             isPlaying = true
             
@@ -81,17 +85,17 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
         } else if (isPlaying) {
-            
+            print("Pausing")
             audioPlayer?.pause()
             isPlaying = false
-            setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: iconId))
+            //setButtonBgImage(button: button, bgImage: getPlayBtnIcon(colorId: iconId))
             
         } else if (!isPlaying) {
-            
+            print("Playing")
             checkIfSilent()
             audioPlayer?.play()
             isPlaying = true
-            setButtonBgImage(button: playPauseButton!, bgImage: getPauseBtnIcon(colorId: iconId))
+            //setButtonBgImage(button: button, bgImage: getPauseBtnIcon(colorId: iconId))
         }
     }
     
@@ -106,6 +110,9 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func checkIfPlaying(url: URL,id: String) -> Bool {
+        
+        //print("Passed:",url,id)
+        //print("Stored:",playingRecordingURL,playedRecordingID)
         
         if (playingRecordingURL ==  url && playedRecordingID == id) {
             return isPlaying

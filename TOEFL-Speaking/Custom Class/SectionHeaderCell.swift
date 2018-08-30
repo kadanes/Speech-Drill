@@ -26,7 +26,7 @@ class SectionHeaderCell: UITableViewCell {
     
     @IBOutlet weak var sectionNameLbl: UILabel!
     
-    @IBOutlet weak var playPauseBtn: UIButton!
+    @IBOutlet weak var hideSectionBtn: UIButton!
     
     @IBOutlet weak var mergingActivityIndicator: UIActivityIndicatorView!
     
@@ -38,9 +38,31 @@ class SectionHeaderCell: UITableViewCell {
     func updatePlayingState() {
         
         if let url = recordingsURL {
+            print("1) URL:",recordingsURL," ID:",date)
            isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
+            print(isPlaying)
         } else {
-            isPlaying = false
+            
+            let recordedURLS = sortUrlList(recordingsURLList: (delegate?.getAudioFilesList(date: date))!)
+
+            if recordedURLS.count > 1 {
+                
+                recordingsURL = getMergedFileURL()
+                print("2) URL:",recordingsURL," ID:",date)
+                
+            isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
+                print(isPlaying)
+
+                
+            } else if recordedURLS.count == 1 {
+                recordingsURL = recordedURLS[0]
+                print("2) URL:",recordingsURL," ID:",date)
+
+                isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordedURLS[0], id: date)
+                print(isPlaying)
+
+            }
+            
         }
     }
 
@@ -54,25 +76,24 @@ class SectionHeaderCell: UITableViewCell {
     
     @IBAction func playRecordingTapped(_ sender: UIButton) {
         
-        updatePlayingState()
-        
-        if isPlaying || (delegate?.isRecording)! {
-            
-            CentralAudioPlayer.player.playRecording(url: getMergedFileURL(), id: self.date, button: sender, iconId: "g")
-            
-            return
-        }
-        
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playURL) in
             
             self.recordingsURL = playURL
-        
-            CentralAudioPlayer.player.playRecording(url: playURL, id: self.date, button: sender, iconId: "g")
+            
+            self.updatePlayingState()
+            
+            if (self.delegate?.isRecording)! {
+                return
+            }
+            
+            CentralAudioPlayer.player.playRecording(url: playURL, id: self.date, button: self.playAllBtn, iconId: "g")
             
             DispatchQueue.main.async {
                 self.mergingActivityIndicator.stopAnimating()
 
             }
+            
+            self.delegate?.reloadData()
         }
     }
     
@@ -83,14 +104,33 @@ class SectionHeaderCell: UITableViewCell {
         
         setButtonImageProperties(button: playAllBtn)
         setButtonImageProperties(button: shareAllBtn)
+        
         mergingActivityIndicator.stopAnimating()
-
+        
         updatePlayingState()
+        updateToggleBtnIcon()
+        
         
         if isPlaying {
-            setButtonBgImage(button: playPauseBtn, bgImage: pauseBtnIcon)
+            setButtonBgImage(button: playAllBtn, bgImage: pauseBtnIcon)
         } else {
-            setButtonBgImage(button: playPauseBtn, bgImage: playBtnIcon)
+            setButtonBgImage(button: playAllBtn, bgImage: playBtnIcon)
         }
     }
+    
+    
+    @IBAction func toggleSection(_ sender: UIButton) {
+        delegate?.toggleSection(date: date)
+        updateToggleBtnIcon()
+    }
+    
+    func updateToggleBtnIcon() {
+        
+        if ((delegate?.checkIfHidden(date: date))!) {
+            hideSectionBtn.setTitle("💢", for: .normal)
+        } else {
+            hideSectionBtn.setTitle("⛔️", for: .normal)
+        }
+    }
+    
 }
