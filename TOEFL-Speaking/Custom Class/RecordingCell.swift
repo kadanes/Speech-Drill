@@ -39,6 +39,8 @@ class RecordingCell: UITableViewCell {
     var recordingURL: URL?
     var isPlaying = false
     
+    var playBackTimer: Timer?
+    
     func configureCell(url:URL) {
         
         self.recordingURL = url
@@ -68,6 +70,8 @@ class RecordingCell: UITableViewCell {
         
         setCheckBoxProperties()
         updatePlayingState()
+        
+        configurePlayBackSeeker()
         
         if isPlaying {
             setButtonBgImage(button: playPauseBtn, bgImage: pauseBtnIcon)
@@ -128,7 +132,7 @@ class RecordingCell: UITableViewCell {
             } else {
                 delegate?.setToPracticeMode()
             }
-            CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)", button: playPauseBtn, iconId: "g")
+            CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)")
             
             delegate?.renderTopic(topicNumber: topicNumber)
             
@@ -137,6 +141,60 @@ class RecordingCell: UITableViewCell {
         }
     }
     
+    func configurePlayBackSeeker() {
+        
+        if isPlaying {
+            seekerView.isHidden = false
+            playingSeeker.setThumbImage(sliderThumbIcon, for: .normal)
+            
+            let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
+            let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
+            
+            playingSeeker.maximumValue = Float(totalTime)
+            playingSeeker.minimumValue = Float(0.0)
+            
+            currentPlayTimeLbl.text = "\(Int(currentTime))"
+            
+            totalPlayTimeLbl.text = "\(Int(round(totalTime)))"
+            
+            playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updatePlaybackTime), userInfo: nil, repeats: true)
+            
+        } else {
+             seekerView.isHidden = true
+        }
+    }
+    
+    @objc func updatePlaybackTime(timer: Timer) {
+        let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
+        currentPlayTimeLbl.text = "\(Int(currentTime))"
+        playingSeeker.value = Float(currentTime)
+        
+        updatePlayingState()
+        
+        if !isPlaying {
+            delegate?.reloadData()
+        }
+    }
+    
+    @IBAction func stopPlaybackUIUpdate(_ sender: UISlider) {
+        playBackTimer?.invalidate()
+    }
+    
+    @IBAction func updatePlaybackTimeWithSlider(_ sender: UISlider) {
+        
+        let playbackTime = Double(sender.value)
+        
+        currentPlayTimeLbl.text = "\(Int(playbackTime))"
+        CentralAudioPlayer.player.setPlaybackTime(playTime: playbackTime)
+        
+    }
+    
+    
+    @IBAction func startPlaybackUIUpdate(_ sender: UISlider) {
+        
+        configurePlayBackSeeker()
+    }
+
     @IBAction func deleteRecording(_ sender: Any) {
         
         if let url = recordingURL {

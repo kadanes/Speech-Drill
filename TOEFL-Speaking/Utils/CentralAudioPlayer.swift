@@ -31,32 +31,18 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         
         if (playPauseButton != nil) {
             
-            setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
             isPlaying = false
             playingRecordingURL = nil
+            playedRecordingID = nil
             audioPlayer?.stop()
         }
     }
     
     ///Play or Pause or Start a recording
-    func playRecording(url: URL,id: String, button: UIButton, iconId: String){
-        
-//        print("Passed: ",url,"\n",id)
-//        print("Stored: ",playingRecordingURL,"\n",playedRecordingID)
+    func playRecording(url: URL,id: String){
+  
 
         if (url != playingRecordingURL || playedRecordingID != id ) {
-            
-            
-            if (playPauseButton == nil ) {
-                playPauseButton = button
-            }
-            
-            //setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
-            
-            playPauseButton = button
-            oldPlayPauseIconId = iconId
-            
-            //setButtonBgImage(button: playPauseButton!, bgImage: getPauseBtnIcon(colorId: iconId))
             
             isPlaying = true
             
@@ -85,17 +71,15 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
         } else if (isPlaying) {
-            print("Pausing")
+         
             audioPlayer?.pause()
             isPlaying = false
-            //setButtonBgImage(button: button, bgImage: getPlayBtnIcon(colorId: iconId))
             
         } else if (!isPlaying) {
-            print("Playing")
+      
             checkIfSilent()
             audioPlayer?.play()
             isPlaying = true
-            //setButtonBgImage(button: button, bgImage: getPauseBtnIcon(colorId: iconId))
         }
     }
     
@@ -106,7 +90,6 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         playedRecordingID = nil
         isPlaying = false
         
-        setButtonBgImage(button: playPauseButton!, bgImage: getPlayBtnIcon(colorId: oldPlayPauseIconId))
     }
     
     func checkIfPlaying(url: URL,id: String) -> Bool {
@@ -117,31 +100,24 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         return false;
     }
     
-    
-    
-    
-    func getPlayBtnIcon(colorId: String) -> UIImage{
-        switch colorId {
-        case "g":
-            return playBtnIcon
-        case "y":
-            return playBtnYellowIcon
-        default:
-            return playBtnIcon
-            
+    func getPlayBackDuration() -> Double{
+        if let playBackDuration = audioPlayer?.duration {
+            return playBackDuration
         }
+        return 0.0
     }
     
-    func getPauseBtnIcon(colorId: String) -> UIImage{
-        switch colorId {
-        case "g":
-            return pauseBtnIcon
-        case "y":
-            return pauseBtnYellowIcon
-        default:
-            return pauseBtnIcon
+    func getPlayBackCurrentTime() -> Double{
+        if let playBackCurrentTime = audioPlayer?.currentTime {
+            return playBackCurrentTime
         }
+        return 0.0
     }
     
+    func setPlaybackTime(playTime: Double) {
+       
+       audioPlayer?.currentTime = playTime
+        
+    }
 }
 

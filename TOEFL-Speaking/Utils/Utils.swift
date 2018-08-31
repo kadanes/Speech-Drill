@@ -148,7 +148,7 @@ func setButtonBgImage(button: UIButton, bgImage: UIImage) {
     }
 }
 
-func splitFileURL(url: String) -> (Int,Int,Int) {
+func splitFileURL(url: String) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
     
     let urlComponents = url.components(separatedBy: "/")
     

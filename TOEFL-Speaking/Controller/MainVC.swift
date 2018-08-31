@@ -95,7 +95,6 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
         resetRecordingState()
 
         recordingTableView.dataSource = self
@@ -117,13 +116,7 @@ class MainVC: UIViewController {
         setHiddenVisibleSectionList()
         
     }
-   
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        recordingTableView.estimatedRowHeight = 30
-        recordingTableView.rowHeight = UITableViewAutomaticDimension
-    }
-    
+  
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         recordingTableView.reloadData()
@@ -528,7 +521,7 @@ class MainVC: UIViewController {
                 self.playSelectedActivityIndicator.stopAnimating()
             }
             
-            CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId , button: sender, iconId: "y")
+            CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId)
             
             if (CentralAudioPlayer.player.checkIfPlaying(url: playURL, id: selectedAudioId)) {
                 setButtonBgImage(button: sender, bgImage: pauseBtnYellowIcon)
@@ -657,9 +650,22 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         return sectionHeaderHeight
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return recordingCellHeight
-//    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        let recordings = dateSortedRecordingList.sorted{$0.0 > $1.0}[indexPath.section]
+        
+        let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
+        
+        let timeStamp = splitFileURL(url: "\(url)").timeStamp
+       
+        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(timeStamp)")
+        
+        if isPlaying {
+            return 2 * recordingCellHeight
+        }
+        
+        return recordingCellHeight
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

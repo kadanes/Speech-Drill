@@ -86,7 +86,7 @@ class SectionHeaderCell: UITableViewCell {
                 return
             }
             
-            CentralAudioPlayer.player.playRecording(url: playURL, id: self.date, button: self.playAllBtn, iconId: "g")
+            CentralAudioPlayer.player.playRecording(url: playURL, id: self.date)
             
             DispatchQueue.main.async {
                 self.mergingActivityIndicator.stopAnimating()
