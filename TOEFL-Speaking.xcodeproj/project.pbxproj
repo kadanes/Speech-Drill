@@ -21,6 +21,8 @@
 		B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C5211F5BAA00AD786C /* beep2.m4a */; };
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
 		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
+		B2752D342137FD6300054ACF /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = B2752D322137FD6200054ACF /* plus.png */; };
+		B2752D352137FD6300054ACF /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = B2752D332137FD6300054ACF /* minus.png */; };
 		B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ACC672212D0E16009AE30D /* RoundedImage.swift */; };
 		B2ACC677212D0F59009AE30D /* blackbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC676212D0F58009AE30D /* blackbg.jpg */; };
 		B2ACC679212D11EB009AE30D /* yellowbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC678212D11EB009AE30D /* yellowbg.jpg */; };
@@ -79,6 +81,8 @@
 		B25F80C5211F5BAA00AD786C /* beep2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep2.m4a; sourceTree = "<group>"; };
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
 		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
+		B2752D322137FD6200054ACF /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		B2752D332137FD6300054ACF /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
 		B2ACC672212D0E16009AE30D /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
 		B2ACC676212D0F58009AE30D /* blackbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blackbg.jpg; sourceTree = "<group>"; };
 		B2ACC678212D11EB009AE30D /* yellowbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellowbg.jpg; sourceTree = "<group>"; };
@@ -233,6 +237,8 @@
 		B2DAB65421285C470062ECDF /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
+				B2752D332137FD6300054ACF /* minus.png */,
+				B2752D322137FD6200054ACF /* plus.png */,
 				B2F01E19212D3244006D6D86 /* penmic.png */,
 				B2ACC676212D0F58009AE30D /* blackbg.jpg */,
 				B2ACC678212D11EB009AE30D /* yellowbg.jpg */,
@@ -352,6 +358,7 @@
 				B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */,
 				B2DAB67F212894190062ECDF /* box.png in Resources */,
 				B2DAB672212894190062ECDF /* pauseg.png in Resources */,
+				B2752D342137FD6300054ACF /* plus.png in Resources */,
 				B2DAB6922129282E0062ECDF /* playy.png in Resources */,
 				B2ACC679212D11EB009AE30D /* yellowbg.jpg in Resources */,
 				B2DAB676212894190062ECDF /* recordf.png in Resources */,
@@ -368,6 +375,7 @@
 				B2DAB67D212894190062ECDF /* info.png in Resources */,
 				B2E5F5E2212B1D1200FC7E28 /* sleft.png in Resources */,
 				B2E5F5F0212B318700FC7E28 /* github.png in Resources */,
+				B2752D352137FD6300054ACF /* minus.png in Resources */,
 				B2F01E17212D3244006D6D86 /* penmic.png in Resources */,
 				B2DAB6932129282E0062ECDF /* playg.png in Resources */,
 				B2F01E23212D3994006D6D86 /* independent.mp3 in Resources */,
@@ -634,7 +642,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U4985LT7P8;
 				INFOPLIST_FILE = "TOEFL-Speaking/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -654,7 +662,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U4985LT7P8;
 				INFOPLIST_FILE = "TOEFL-Speaking/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

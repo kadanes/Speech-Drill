@@ -20,7 +20,15 @@ class RecordingCell: UITableViewCell {
     @IBOutlet weak var playRecordningBtn: RoundButton!
 
     @IBOutlet weak var checkBoxBtn: UIButton!
-
+    
+    @IBOutlet weak var seekerView: UIView!
+    
+    @IBOutlet weak var currentPlayTimeLbl: UILabel!
+    
+    @IBOutlet weak var playingSeeker: UISlider!
+    
+    @IBOutlet weak var totalPlayTimeLbl: UILabel!
+    
     weak var delegate: MainVC?
 
     var topicNumber = 0
@@ -37,10 +45,9 @@ class RecordingCell: UITableViewCell {
         
         getFileDetails(url: "\(url)")
         
-        if topicNumber != 0  {
-            recordingNameLbl.text = "Topic \(topicNumber)"
+        if topicNumber != 999  {
+            recordingNameLbl.text = "Topic \(topicNumber+1)"
         } else {
-            
             var labelText = ""
             switch thinkTime {
                 case 15:
@@ -50,11 +57,9 @@ class RecordingCell: UITableViewCell {
                 case 30:
                 labelText = "Integrated A"
                 default:
-                labelText = "Improper Think Time"
+                labelText = "NA"
             }
-            
             recordingNameLbl.text = labelText
-            
         }
         
         setButtonImageProperties(button: deleteRecordingBtn)
@@ -69,7 +74,6 @@ class RecordingCell: UITableViewCell {
         } else {
             setButtonBgImage(button: playPauseBtn, bgImage: playBtnIcon)
         }
-        
     }
     
     func setButtonImageProperties(button: UIButton) {
@@ -124,7 +128,6 @@ class RecordingCell: UITableViewCell {
             } else {
                 delegate?.setToPracticeMode()
             }
-            
             CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)", button: playPauseBtn, iconId: "g")
             
             delegate?.renderTopic(topicNumber: topicNumber)
@@ -136,16 +139,9 @@ class RecordingCell: UITableViewCell {
     
     @IBAction func deleteRecording(_ sender: Any) {
         
-        do{
-            try FileManager.default.removeItem(at: recordingURL!)
-            
-            delegate?.updateURLList()
-            delegate?.recordingTableView.reloadData()
-            
-        } catch let error as NSError {
-            
-            print("Could Not Delete File\n",error.localizedDescription)
-            
+        if let url = recordingURL {
+            deleteStoredRecording(recordingURL: url)
+            delegate?.reloadData()
         }
     }
     

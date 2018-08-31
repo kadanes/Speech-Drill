@@ -61,7 +61,8 @@ let checkIcon = UIImage(named: "check.png")!
 let infoIcon = UIImage(named: "info.png")!
 let shareIcon = UIImage(named: "share.png")!
 let singleShareIcon = UIImage(named: "sshareg.png")!
-
+let plusIcon = UIImage(named: "plus.png")!
+let minusIcon = UIImage(named: "minus.png")!
 
 //Recording ID
 let selectedAudioId = "SelectedAudio"

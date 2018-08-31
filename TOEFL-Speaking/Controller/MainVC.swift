@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import Mute
+import CallKit
+import CoreTelephony
 
 class MainVC: UIViewController {
    
@@ -67,6 +69,8 @@ class MainVC: UIViewController {
     
     var isRecording = false
     var blinking = true
+    var cancelledRecording = false
+    var currentRecordingURL: URL?
     
     var audioRecorder: AVAudioRecorder!
     var audioSession: AVAudioSession!
@@ -81,17 +85,23 @@ class MainVC: UIViewController {
     let userDefaults = UserDefaults.standard
     
     var thinkTimer: Timer?
-    
+    var speakTimer: Timer?
+    var blinkTimer: Timer?
     
     private var audioPlayer: AVAudioPlayer?
     
+    var callObserver = CXCallObserver()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    
         resetRecordingState()
 
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
+        callObserver.setDelegate(self, queue: nil)
+
         updateURLList()
         
         readTopics()
@@ -102,30 +112,35 @@ class MainVC: UIViewController {
         
         renderTopic(topicNumber: topicNumber)
      
+        setUIButtonsProperty()
+        
+        setHiddenVisibleSectionList()
+        
+    }
+   
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        recordingTableView.estimatedRowHeight = 30
+        recordingTableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        recordingTableView.reloadData()
+    }
+    
+    func setUIButtonsProperty() {
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadPreviousTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadPreviousTenthTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadPreviousFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        
         setBtnImgProp(button: playSelectedBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        
         setBtnImgProp(button: recordBtn,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        
         setBtnImgProp(button: closeShareMenuBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-    
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        
         setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        
-        setHiddenVisibleSectionList()
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        recordingTableView.reloadData()
     }
     
     func readTopics() {
@@ -152,7 +167,7 @@ class MainVC: UIViewController {
         UIView.animate(withDuration: 1) {
             
             self.topicLbl.text = self.topics[topicNumber]
-            self.topicNumberLbl.text = "\(topicNumber)"
+            self.topicNumberLbl.text = "\(topicNumber+1)"
         }
        
     }
@@ -231,7 +246,6 @@ class MainVC: UIViewController {
     
     ///Increment current displayed topic number by 1
     func incrementTopicNumber() {
-        
         topicNumber = topicNumber + 1 < topics.count ? topicNumber + 1 : topicNumber
     }
     
@@ -239,7 +253,6 @@ class MainVC: UIViewController {
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
         let increment = sender.tag
         topicNumber = (topicNumber + increment < topics.count) ? topicNumber + increment : topics.count - 1
-        
         renderTopic(topicNumber: topicNumber)
         
     }
@@ -247,10 +260,8 @@ class MainVC: UIViewController {
     ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
         let decrement = sender.tag
-        topicNumber = (topicNumber - decrement > 0) ? topicNumber - decrement : 1
-        
+        topicNumber = (topicNumber - decrement >= 0) ? topicNumber - decrement : 0
         renderTopic(topicNumber: topicNumber)
-
     }
     
     ///Start recording of speech
@@ -259,22 +270,29 @@ class MainVC: UIViewController {
         CentralAudioPlayer.player.stopPlaying()
         
         if (!isRecording) {
-            isRecording = true
             
             cancelRecordingBtn.isHidden = false
-            
             thinkTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
         }
     }
     
-    ///Stop recording if within think time
+    ///Stop recording 
     @IBAction func cancelRecordingTapped(_ sender: Any) {
-        
-        if (thinkTime > 0) {
+        cancelRecording()
+    }
+    
+    func cancelRecording() {
+        if isRecording {
             
-            cancelRecordingBtn.isHidden = true
-
-            thinkTimer?.invalidate()
+            audioRecorder.stop()
+            resetRecordingState()
+            cancelledRecording = true
+            
+            if let url = currentRecordingURL {
+                deleteStoredRecording(recordingURL: url)
+                reloadData()
+            }
+        } else {
             resetRecordingState()
         }
     }
@@ -283,14 +301,10 @@ class MainVC: UIViewController {
     @objc func decrementThinkTime(timer: Timer) {
         if(thinkTime > 0) {
             thinkTime -= 1
-            
             adjustThinkTimeBtn.text = "\(thinkTime)"
-            
         } else {
             
             timer.invalidate()
-            cancelRecordingBtn.isHidden = true
-            
             thinkTime = defaultThinkTime
             
             do{
@@ -310,23 +324,20 @@ class MainVC: UIViewController {
             
             recordAudio()
             
-            let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
-            let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
+            speakTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
+            blinkTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
             
         }
     }
     
     ///Function to reduce and render speak time
     @objc func decrementSpeakTime(timer: Timer) {
-        
         if(speakTime > 0) {
             speakTime -= 1
             adjustSpeakTimeBtn.text = "\(speakTime)"
         } else {
-            
             timer.invalidate()
             speakTime = defaultSpeakTime
-            
         }
     }
     
@@ -348,9 +359,17 @@ class MainVC: UIViewController {
     ///Reset display of think and speak time
     func resetRecordingState() {
         
+        thinkTime = defaultThinkTime
+        speakTime = defaultSpeakTime
+        
         setButtonBgImage(button: recordBtn, bgImage: recordIcon)
         adjustThinkTimeBtn.text = "\(defaultThinkTime)"
         adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
+        cancelRecordingBtn.isHidden = true
+
+        thinkTimer?.invalidate()
+        speakTimer?.invalidate()
+        blinkTimer?.invalidate()
         
         isRecording = false
         blinking = false
@@ -394,33 +413,42 @@ class MainVC: UIViewController {
     }
     
     func setHiddenVisibleSectionList() {
-        print("LIST: \n",dateSortedRecordingList.keys.sorted(by: >))
-        
         let dateSortedKeys = dateSortedRecordingList.keys.sorted(by: >)
         
-        if (dateSortedKeys.count > 0 && visibleSections.count == 0) {
+        if dateSortedKeys.count == 0 {return}
+        
+        if visibleSections.count == 0 {
             visibleSections.append(dateSortedKeys[0])
-            
             for ind in 1..<dateSortedKeys.count {
-                
                 hiddenSections.append(dateSortedKeys[ind])
+            }
+        } else {
+            if !visibleSections.contains(dateSortedKeys[0]) {
+                showSection(date: dateSortedKeys[0])
             }
         }
     }
     
     func toggleSection(date: String) {
-        
         if visibleSections.contains(date) {
             hideSection(date: date)
         } else {
             showSection(date: date)
         }
         
-        UIView.animate(withDuration: 0.5) {
-            self.recordingTableView.reloadData()
+        reloadData()
+        
+        if visibleSections.contains(date) {
+            DispatchQueue.main.async {
+                
+                let dateSortedKeys = self.dateSortedRecordingList.keys.sorted(by: >)
+                guard let sectionInd = dateSortedKeys.index(of : date) else { return }
+                let indexPath = IndexPath(row: 0, section: sectionInd)
+                self.recordingTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
         }
     }
-    
+
     func hideSection(date: String) {
         visibleSections = visibleSections.filter {$0 != date}
         hiddenSections.append(date)
@@ -432,14 +460,12 @@ class MainVC: UIViewController {
     }
     
     func checkIfHidden(date:String) -> Bool {
-        return hiddenSections .contains(date)
+        return hiddenSections.contains(date)
     }
     
     ///Fetch a list of recordings urls for a day
     func getAudioFilesList(date: String) -> [URL] {
-        
         guard let urlList = dateSortedRecordingList[date] else {return [URL]()}
-        
         return urlList
     }
     
@@ -448,9 +474,7 @@ class MainVC: UIViewController {
         if exportSelected.count > 0 {
             exportMenuHeight.constant = 40
             exportMenuStackView.isHidden = false
-
             exportSelectedBtn.setTitle("Export \(exportSelected.count) recording(s)", for: .normal)
-            
         } else {
             exportMenuHeight.constant = 0
             exportMenuStackView.isHidden = true
@@ -473,7 +497,7 @@ class MainVC: UIViewController {
     func clearSelected() {
         exportSelected.removeAll()
         toggleExportMenu()
-        recordingTableView.reloadData()
+        reloadData()
     }
     
     ///Export selected recordings
@@ -505,8 +529,13 @@ class MainVC: UIViewController {
             }
             
             CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId , button: sender, iconId: "y")
+            
+            if (CentralAudioPlayer.player.checkIfPlaying(url: playURL, id: selectedAudioId)) {
+                setButtonBgImage(button: sender, bgImage: pauseBtnYellowIcon)
+            } else {
+                setButtonBgImage(button: sender, bgImage: playBtnYellowIcon)
+            }
         }
-        
     }
     
     ///Hide export menu
@@ -528,11 +557,10 @@ extension MainVC: AVAudioRecorderDelegate {
             let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
             
             let timestamp = Int(round((NSDate().timeIntervalSince1970)))
-            
             var path = ""
             
             if isTestMode {
-                path =  "\(timestamp)_0_\(thinkTime)."+recordingExtension
+                path =  "\(timestamp)_999_\(thinkTime)."+recordingExtension
             } else {
                 path =  "\(timestamp)_\(topicNumber)_\(thinkTime)."+recordingExtension
             }
@@ -540,6 +568,8 @@ extension MainVC: AVAudioRecorderDelegate {
             let fullRecordingPath = (documents as NSString).appendingPathComponent(path)
             
             let url = NSURL.fileURL(withPath: fullRecordingPath)
+            
+            currentRecordingURL = url
             
             let recordSettings = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -549,14 +579,15 @@ extension MainVC: AVAudioRecorderDelegate {
                 ] as [String : Any]
             
             do{
+                isRecording = true
                 audioRecorder = try AVAudioRecorder(url:url, settings: recordSettings)
                 audioRecorder.delegate = self
-                
                 audioRecorder.prepareToRecord()
-                
                 audioRecorder.record(forDuration: Double(defaultSpeakTime))
-                
+            
             } catch let error as NSError {
+                resetRecordingState()
+               
                 print("Error with recording")
                 print(error.localizedDescription)
             }
@@ -567,19 +598,19 @@ extension MainVC: AVAudioRecorderDelegate {
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         
-        Toast.show(message: "Recorded successfully!", success: true)
-        
-        updateURLList()
-        
-        if !isTestMode {
-            
-            incrementTopicNumber()
-            renderTopic(topicNumber: topicNumber)
+        if !cancelledRecording{
+            Toast.show(message: "Recorded successfully!", success: true)
+            if !isTestMode {
+                incrementTopicNumber()
+                renderTopic(topicNumber: topicNumber)
+            }
+        } else {
+            cancelledRecording = false
         }
         
+        updateURLList()
         setHiddenVisibleSectionList()
-        recordingTableView.reloadData()
-//        recordingTableView.reloadData()
+        reloadData()
         resetRecordingState()
     }
 }
@@ -587,6 +618,7 @@ extension MainVC: AVAudioRecorderDelegate {
 extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
     func reloadData() {
+        updateURLList()
         DispatchQueue.main.async {
              self.recordingTableView.reloadData()
         }
@@ -625,9 +657,9 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         return sectionHeaderHeight
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return recordingCellHeight
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return recordingCellHeight
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -651,6 +683,26 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         } else {
             return UITableViewCell()
         }
-        
     }
 }
+
+extension MainVC: CXCallObserverDelegate {
+    
+    func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+        
+        if call.hasEnded == true {
+            print("Disconnected")
+        }
+        if call.isOutgoing == true && call.hasConnected == false {
+            print("Dialing")
+        }
+        if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
+             cancelRecording()
+        }
+        
+        if call.hasConnected == true && call.hasEnded == false {
+            print("Connected")
+        }
+    }
+}
+

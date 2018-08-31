@@ -110,15 +110,15 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func checkIfPlaying(url: URL,id: String) -> Bool {
-        
-        //print("Passed:",url,id)
-        //print("Stored:",playingRecordingURL,playedRecordingID)
-        
+    
         if (playingRecordingURL ==  url && playedRecordingID == id) {
             return isPlaying
         }
         return false;
     }
+    
+    
+    
     
     func getPlayBtnIcon(colorId: String) -> UIImage{
         switch colorId {

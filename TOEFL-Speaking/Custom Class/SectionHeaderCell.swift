@@ -30,17 +30,15 @@ class SectionHeaderCell: UITableViewCell {
     
     @IBOutlet weak var mergingActivityIndicator: UIActivityIndicatorView!
     
-    func setButtonImageProperties(button: UIButton) {
+    func setButtonImageProperties(button: UIButton,offset: CGFloat) {
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset, buttonVerticalInset, buttonHorizontalInset)
+        button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset + offset, buttonVerticalInset, buttonHorizontalInset + offset)
     }
 
     func updatePlayingState() {
         
         if let url = recordingsURL {
-            print("1) URL:",recordingsURL," ID:",date)
            isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
-            print(isPlaying)
         } else {
             
             let recordedURLS = sortUrlList(recordingsURLList: (delegate?.getAudioFilesList(date: date))!)
@@ -48,26 +46,24 @@ class SectionHeaderCell: UITableViewCell {
             if recordedURLS.count > 1 {
                 
                 recordingsURL = getMergedFileURL()
-                print("2) URL:",recordingsURL," ID:",date)
                 
             isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
-                print(isPlaying)
-
                 
             } else if recordedURLS.count == 1 {
                 recordingsURL = recordedURLS[0]
-                print("2) URL:",recordingsURL," ID:",date)
-
+                
                 isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordedURLS[0], id: date)
-                print(isPlaying)
 
             }
-            
         }
     }
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
         
+        if mergingActivityIndicator.isAnimating {
+            return
+        }
+
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) { (shareURL) in
             
             openShareSheet(url: shareURL, activityIndicator: self.mergingActivityIndicator, completion: {})
@@ -75,6 +71,10 @@ class SectionHeaderCell: UITableViewCell {
     }
     
     @IBAction func playRecordingTapped(_ sender: UIButton) {
+        
+        if mergingActivityIndicator.isAnimating {
+            return
+        }
         
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playURL) in
             
@@ -90,34 +90,30 @@ class SectionHeaderCell: UITableViewCell {
             
             DispatchQueue.main.async {
                 self.mergingActivityIndicator.stopAnimating()
-
             }
-            
             self.delegate?.reloadData()
         }
     }
-    
 
     func configureCell(date:String) {
         sectionNameLbl.text = date
         self.date = date
         
-        setButtonImageProperties(button: playAllBtn)
-        setButtonImageProperties(button: shareAllBtn)
+        setButtonImageProperties(button: playAllBtn, offset: 0)
+        setButtonImageProperties(button: shareAllBtn, offset: 0)
+        updateToggleBtnIcon()
         
         mergingActivityIndicator.stopAnimating()
         
         updatePlayingState()
         updateToggleBtnIcon()
-        
-        
+    
         if isPlaying {
             setButtonBgImage(button: playAllBtn, bgImage: pauseBtnIcon)
         } else {
             setButtonBgImage(button: playAllBtn, bgImage: playBtnIcon)
         }
     }
-    
     
     @IBAction func toggleSection(_ sender: UIButton) {
         delegate?.toggleSection(date: date)
@@ -127,9 +123,11 @@ class SectionHeaderCell: UITableViewCell {
     func updateToggleBtnIcon() {
         
         if ((delegate?.checkIfHidden(date: date))!) {
-            hideSectionBtn.setTitle("💢", for: .normal)
+             hideSectionBtn.setImage(plusIcon, for: .normal)
+            setButtonImageProperties(button: hideSectionBtn, offset: 2)
         } else {
-            hideSectionBtn.setTitle("⛔️", for: .normal)
+            hideSectionBtn.setImage(minusIcon, for: .normal)
+            setButtonImageProperties(button: hideSectionBtn, offset: 5)
         }
     }
     

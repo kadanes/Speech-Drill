@@ -109,8 +109,17 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         })
         
     }
-    
-    
+}
+
+func deleteStoredRecording(recordingURL: URL) {
+    do{
+        try FileManager.default.removeItem(at: recordingURL)
+        
+    } catch let error as NSError {
+        
+        print("Could Not Delete File\n",error.localizedDescription)
+        
+    }
 }
 
 
@@ -133,7 +142,9 @@ func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) 
 func setButtonBgImage(button: UIButton, bgImage: UIImage) {
     
     DispatchQueue.main.async {
-        button.setImage(bgImage, for: .normal)
+        UIView.transition(with: button, duration: 0.3, options: .curveEaseIn, animations: {
+            button.setImage(bgImage, for: .normal)
+        }, completion: nil)
     }
 }
 
