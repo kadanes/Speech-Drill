@@ -47,7 +47,7 @@ class RecordingCell: UITableViewCell {
         
         getFileDetails(url: "\(url)")
         
-        if topicNumber != 999  {
+        if topicNumber != testModeId  {
             recordingNameLbl.text = "Topic \(topicNumber+1)"
         } else {
             var labelText = ""
@@ -90,7 +90,6 @@ class RecordingCell: UITableViewCell {
         if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
             checkBoxBg.contentMode = .scaleAspectFit
         }
-        
     }
     
     func selectCheckBox() {
@@ -107,37 +106,27 @@ class RecordingCell: UITableViewCell {
     }
     
     func updatePlayingState() {
-        
         isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordingURL!, id: "\(timeStamp)")
     }
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
-        
         CentralAudioPlayer.player.stopPlaying()
-        
         openShareSheet(url: recordingURL!, activityIndicator: nil, completion:{})
-        
     }
     
     @IBAction func playRecording(_ sender: UIButton) {
-                
         if (delegate?.isRecording)! {
             return
         }
-        
         if let url = recordingURL {
-            
-            if topicNumber == 0 {
+            if topicNumber == testModeId {
                 delegate?.setToTestMode()
             } else {
                 delegate?.setToPracticeMode()
+                delegate?.renderTopic(topicNumber: topicNumber)
             }
             CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)")
-            
-            delegate?.renderTopic(topicNumber: topicNumber)
-            
             delegate?.reloadData()
-
         }
     }
     
@@ -145,7 +134,8 @@ class RecordingCell: UITableViewCell {
         
         if isPlaying {
             seekerView.isHidden = false
-            playingSeeker.setThumbImage(sliderThumbIcon, for: .normal)
+            playingSeeker.setThumbImage(drawSliderThumb(diameter: 15), for: .normal)
+            playingSeeker.setThumbImage(drawSliderThumb(diameter: 20), for: .highlighted)
             
             let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
             let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
@@ -153,12 +143,12 @@ class RecordingCell: UITableViewCell {
             playingSeeker.maximumValue = Float(totalTime)
             playingSeeker.minimumValue = Float(0.0)
             
-            currentPlayTimeLbl.text = "\(Int(currentTime))"
+            currentPlayTimeLbl.text = convertToMins(seconds: currentTime)
+            totalPlayTimeLbl.text = convertToMins(seconds: totalTime)
             
-            totalPlayTimeLbl.text = "\(Int(round(totalTime)))"
-            
-            playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updatePlaybackTime), userInfo: nil, repeats: true)
-            
+            DispatchQueue.main.async {
+                 self.playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
+            }
         } else {
              seekerView.isHidden = true
         }
@@ -166,7 +156,7 @@ class RecordingCell: UITableViewCell {
     
     @objc func updatePlaybackTime(timer: Timer) {
         let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
-        currentPlayTimeLbl.text = "\(Int(currentTime))"
+        currentPlayTimeLbl.text = convertToMins(seconds: currentTime)
         playingSeeker.value = Float(currentTime)
         
         updatePlayingState()
@@ -181,22 +171,18 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func updatePlaybackTimeWithSlider(_ sender: UISlider) {
-        
         let playbackTime = Double(sender.value)
-        
-        currentPlayTimeLbl.text = "\(Int(playbackTime))"
+        currentPlayTimeLbl.text = convertToMins(seconds: playbackTime)
         CentralAudioPlayer.player.setPlaybackTime(playTime: playbackTime)
-        
     }
     
     
     @IBAction func startPlaybackUIUpdate(_ sender: UISlider) {
-        
         configurePlayBackSeeker()
     }
 
     @IBAction func deleteRecording(_ sender: Any) {
-        
+        CentralAudioPlayer.player.stopPlaying()
         if let url = recordingURL {
             deleteStoredRecording(recordingURL: url)
             delegate?.reloadData()

@@ -88,10 +88,10 @@
                                                         </connections>
                                                     </button>
                                                     <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
-                                                        <rect key="frame" x="317.5" y="0.0" width="4" height="40"/>
+                                                        <rect key="frame" x="317.5" y="0.0" width="140" height="40"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="45.5" height="40"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -101,7 +101,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                <rect key="frame" x="2" y="0.0" width="0.0" height="40"/>
+                                                                <rect key="frame" x="47.5" y="0.0" width="45" height="40"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -111,7 +111,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                <rect key="frame" x="4" y="0.0" width="0.0" height="40"/>
+                                                                <rect key="frame" x="94.5" y="0.0" width="45.5" height="40"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -121,6 +121,9 @@
                                                                 </connections>
                                                             </button>
                                                         </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="140" id="UsW-fp-OlX"/>
+                                                        </constraints>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-tb-mhP" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="319" y="0.0" width="40" height="40"/>
@@ -185,7 +188,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M92-pP-niw">
                                                 <rect key="frame" x="0.0" y="124" width="359" height="40"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s3-J3-klY" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                    <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s3-J3-klY" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="47" height="40"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -194,7 +197,7 @@
                                                             <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qCq-1H-cxt"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="52" y="0.0" width="47" height="40"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -203,7 +206,7 @@
                                                             <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPd-46-T2X"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="104" y="0.0" width="47" height="40"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -220,7 +223,7 @@
                                                         <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Zo-OZI" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Zo-OZI" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="208" y="0.0" width="47" height="40"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="1" green="0.98431372549019602" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -229,7 +232,7 @@
                                                             <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GdI-5q-fC5"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="260" y="0.0" width="47" height="40"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -238,7 +241,7 @@
                                                             <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H43-KQ-wlH"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                    <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
                                                         <rect key="frame" x="312" y="0.0" width="47" height="40"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -497,6 +500,8 @@
                                                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Spb-z7-yvX">
                                                                             <rect key="frame" x="48" y="0.0" width="263" height="23"/>
                                                                             <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <color key="minimumTrackTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <color key="maximumTrackTintColor" red="0.37055522200000002" green="0.37056469920000001" blue="0.37055957319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <color key="thumbTintColor" red="0.47450980392156861" green="0.47450980392156861" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <connections>
                                                                                 <action selector="startPlaybackUIUpdate:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="N3N-HS-4h6"/>

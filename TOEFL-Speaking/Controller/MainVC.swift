@@ -148,21 +148,19 @@ class MainVC: UIViewController {
     }
     
     func renderTopic(topicNumber: Int) {
-       
+        var topicNumberToShow = 0
         if ( topicNumber > topics.count - 1) {
-            return
+            topicNumberToShow = topics.count - 1
+        } else {
+            topicNumberToShow = topicNumber
         }
         
-        userDefaults.set(topicNumber, forKey: "topicNumber")
-        
-        self.topicNumber = topicNumber
-        
+        userDefaults.set(topicNumberToShow, forKey: "topicNumber")
+        self.topicNumber = topicNumberToShow
         UIView.animate(withDuration: 1) {
-            
-            self.topicLbl.text = self.topics[topicNumber]
-            self.topicNumberLbl.text = "\(topicNumber+1)"
+            self.topicLbl.text = self.topics[topicNumberToShow]
+            self.topicNumberLbl.text = "\(topicNumberToShow+1)"
         }
-       
     }
     
     @IBAction func switchModesTapped(_ sender: UIButton) {
@@ -406,8 +404,11 @@ class MainVC: UIViewController {
     }
     
     func setHiddenVisibleSectionList() {
-        let dateSortedKeys = dateSortedRecordingList.keys.sorted(by: >)
-        
+        let dateSortedKeys = dateSortedRecordingList.keys.sorted { (date1, date2) -> Bool in
+            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+            return convertedDate1 > convertedDate2
+        }
         if dateSortedKeys.count == 0 {return}
         
         if visibleSections.count == 0 {
@@ -428,13 +429,18 @@ class MainVC: UIViewController {
         } else {
             showSection(date: date)
         }
-        
         reloadData()
         
         if visibleSections.contains(date) {
             DispatchQueue.main.async {
                 
-                let dateSortedKeys = self.dateSortedRecordingList.keys.sorted(by: >)
+                let dateSortedKeys = self.dateSortedRecordingList.keys.sorted { (date1, date2) -> Bool in
+                    guard let convertedDate1 = convertToDate(date: date1) else { return false }
+                    guard let convertedDate2 = convertToDate(date: date2) else { return false }
+                    
+                    return convertedDate1 > convertedDate2
+                }
+                
                 guard let sectionInd = dateSortedKeys.index(of : date) else { return }
                 let indexPath = IndexPath(row: 0, section: sectionInd)
                 self.recordingTableView.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -553,7 +559,7 @@ extension MainVC: AVAudioRecorderDelegate {
             var path = ""
             
             if isTestMode {
-                path =  "\(timestamp)_999_\(thinkTime)."+recordingExtension
+                path =  "\(timestamp)_\(testModeId)_\(thinkTime)."+recordingExtension
             } else {
                 path =  "\(timestamp)_\(topicNumber)_\(thinkTime)."+recordingExtension
             }
@@ -606,6 +612,10 @@ extension MainVC: AVAudioRecorderDelegate {
         reloadData()
         resetRecordingState()
     }
+    
+    func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
+        cancelRecording()
+    }
 }
 
 extension MainVC:UITableViewDataSource,UITableViewDelegate {
@@ -622,19 +632,35 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let recordingsURLMap = dateSortedRecordingList.sorted{ $0.0 > $1.0}
+        let recordingsURLMap = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
+            let (date1, _) = arg0
+            let (date2, _) = arg1
+            
+            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+            
+            return convertedDate1 > convertedDate2
+        }
         
         if (visibleSections.contains(recordingsURLMap[section].key)){
-            return dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].value.count
+            return recordingsURLMap[section].value.count
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as? SectionHeaderCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? SectionHeaderCell {
             
-            let date = dateSortedRecordingList.sorted{ $0.0 > $1.0}[section].key
+            let date = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
+                let (date1, _) = arg0
+                let (date2, _) = arg1
+                
+                guard let convertedDate1 = convertToDate(date: date1) else { return false }
+                guard let convertedDate2 = convertToDate(date: date2) else { return false }
+                
+                return convertedDate1 > convertedDate2
+                }[section].key
             
             cell.delegate = self
             
@@ -652,7 +678,15 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let recordings = dateSortedRecordingList.sorted{$0.0 > $1.0}[indexPath.section]
+        let recordings = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
+            let (date1, _) = arg0
+            let (date2, _) = arg1
+            
+            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+            
+            return convertedDate1 > convertedDate2
+            }[indexPath.section]
         
         let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
         
@@ -661,17 +695,24 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(timeStamp)")
         
         if isPlaying {
-            return 2 * recordingCellHeight
+            return expandedRecordingCellHeight
         }
-        
         return recordingCellHeight
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "recordingCell") as? RecordingCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell {
             
-            let recordings = dateSortedRecordingList.sorted{$0.0 > $1.0}[indexPath.section]
+            let recordings = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
+                let (date1, _) = arg0
+                let (date2, _) = arg1
+                
+                guard let convertedDate1 = convertToDate(date: date1) else { return false }
+                guard let convertedDate2 = convertToDate(date: date2) else { return false }
+                
+                return convertedDate1 > convertedDate2
+                }[indexPath.section]
             
             let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
             
@@ -690,10 +731,18 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
             return UITableViewCell()
         }
     }
+    
+    ///Stoppping the running timers in recording cell
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell{
+            cell.playBackTimer?.invalidate()
+            cell.playBackTimer = nil
+        }
+    }
 }
 
 extension MainVC: CXCallObserverDelegate {
-    
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
         
         if call.hasEnded == true {
@@ -705,7 +754,6 @@ extension MainVC: CXCallObserverDelegate {
         if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
              cancelRecording()
         }
-        
         if call.hasConnected == true && call.hasEnded == false {
             print("Connected")
         }

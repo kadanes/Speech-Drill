@@ -40,7 +40,6 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     ///Play or Pause or Start a recording
     func playRecording(url: URL,id: String){
-  
 
         if (url != playingRecordingURL || playedRecordingID != id ) {
             
@@ -85,11 +84,9 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     ///Reset ui after playing recording(s)
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        
         playingRecordingURL = nil
         playedRecordingID = nil
         isPlaying = false
-        
     }
     
     func checkIfPlaying(url: URL,id: String) -> Bool {
@@ -114,10 +111,12 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         return 0.0
     }
     
+    ///Set the current playing audio time to new time
     func setPlaybackTime(playTime: Double) {
-       
-       audioPlayer?.currentTime = playTime
-        
+        audioPlayer?.stop()
+        audioPlayer?.currentTime = playTime
+        audioPlayer?.prepareToPlay()
+        audioPlayer?.play()
     }
 }
 

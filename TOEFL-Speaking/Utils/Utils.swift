@@ -195,6 +195,12 @@ func parseDate(timeStamp: Int) -> String {
     return strDate
 }
 
+func convertToDate(date: String) -> Date? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd/MM/yyyy"
+    return formatter.date(from: date)
+}
+
 func checkIfSilent() {
     
     Mute.shared.isPaused = false
@@ -235,9 +241,7 @@ func getPath(fileName: String ) -> String? {
 
 ///Function to sort list of recording urls by file name (timestamp)
 func sortUrlList(recordingsURLList: [URL]) -> [URL] {
-    
     let sortedRecordingsURLList = recordingsURLList.sorted(by: {(url1,url2)-> Bool in
-        
         let timestamp1 = splitFileURL(url: "\(url1)").0
         let timestamp2 = splitFileURL(url: "\(url2)").0
         return timestamp1 > timestamp2
@@ -306,3 +310,26 @@ func openShareSheet(url: URL,activityIndicator: UIActivityIndicatorView?, comple
     }
 }
 
+///Get time in mins and seconds format from total seconds
+func convertToMins(seconds: Double) -> String {
+    let playbackTime = Int(round(seconds))
+    let mins = Int(playbackTime / 60)
+    let sec = playbackTime - (mins * 60)
+    let minsAndSec = "\(mins):\(String(format: "%02d", sec))"
+    return minsAndSec
+}
+
+///Draw a circle of given diameter and return it as image
+func drawSliderThumb(diameter: CGFloat) -> UIImage {
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: diameter, height: diameter))
+    let img = renderer.image { ctx in
+        ctx.cgContext.setFillColor(UIColor.white.cgColor)
+    
+        let rectangle = CGRect(x: 0, y: 0, width: diameter, height: diameter)
+        
+        ctx.cgContext.setShadow(offset: CGSize(width: 20, height: 20 ), blur: 10.0, color: UIColor.purple.cgColor)
+        ctx.cgContext.addEllipse(in: rectangle)
+        ctx.cgContext.drawPath(using: .fill)
+    }
+    return img
+}

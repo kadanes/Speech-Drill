@@ -10,6 +10,7 @@ import Foundation
 import AVFoundation
 import UIKit
 
+let testModeId = 999
 let mergedFileName = "MergedAudio.m4a"
 let beepSoundFileName = "beep2.m4a"
 let recordingExtension = "m4a"
@@ -31,11 +32,14 @@ func getMergedFileURL() -> URL {
 }
 
 
-let sectionHeaderHeight: CGFloat = 40.0
+let sectionHeaderHeight: CGFloat = 40
 let buttonVerticalInset: CGFloat = sectionHeaderHeight/4
 let buttonHorizontalInset: CGFloat = 5
-let recordingCellHeight: CGFloat = 45.0
+let recordingCellHeight: CGFloat = 50
+let expandedRecordingCellHeight: CGFloat = 90
 
+let recordingCellId = "recordingCell"
+let headerCellId = "headerCell"
 //Buttons
 
 let playBtnIcon = UIImage(named: "playg.png")!
