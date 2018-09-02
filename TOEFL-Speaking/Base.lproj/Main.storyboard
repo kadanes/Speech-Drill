@@ -19,177 +19,210 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jgd-R0-zAP">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="147"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hBF-rV-uWp">
-                                        <rect key="frame" x="0.0" y="35" width="375" height="157"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="hBF-rV-uWp">
+                                        <rect key="frame" x="8" y="1" width="359" height="138"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="vmM-Nk-wo1">
-                                                <rect key="frame" x="8" y="0.0" width="359" height="117"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vmM-Nk-wo1">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="100"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="OHb-sh-E4g">
-                                                        <rect key="frame" x="0.0" y="0.0" width="177" height="117"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="169.5" height="100"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uK6-KK-xud">
-                                                                <rect key="frame" x="0.0" y="0.0" width="177" height="84"/>
-                                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="169.5" height="67"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="45"/>
                                                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Think" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEf-Rq-Cmi">
-                                                                <rect key="frame" x="0.0" y="87" width="177" height="30"/>
-                                                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <rect key="frame" x="0.0" y="70" width="169.5" height="30"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="30" id="s3J-R1-ZpU"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                                <color key="textColor" red="0.99953407049999998" green="0.98835557699999999" blue="0.47265523669999998" alpha="0.54665931748466257" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="textColor" red="0.99953407049999998" green="0.98835557699999999" blue="0.47265523669999998" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="URo-eL-u48">
-                                                        <rect key="frame" x="182" y="0.0" width="177" height="117"/>
+                                                        <rect key="frame" x="189.5" y="0.0" width="169.5" height="100"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2n-0g-Jvi">
-                                                                <rect key="frame" x="0.0" y="0.0" width="177" height="84"/>
-                                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="169.5" height="67"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="45"/>
                                                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speak" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdp-fr-WWn">
-                                                                <rect key="frame" x="0.0" y="87" width="177" height="30"/>
-                                                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <rect key="frame" x="0.0" y="70" width="169.5" height="30"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="30" id="fIa-NS-xMk"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                                <color key="textColor" red="0.99953407049999998" green="0.98835557699999999" blue="0.47265523669999998" alpha="0.54665931748466257" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="textColor" red="0.99953407049999998" green="0.98835557699999999" blue="0.47265523669999998" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="WMf-f6-9Cm"/>
+                                                </constraints>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="8xX-4V-3hO">
-                                                <rect key="frame" x="8" y="117" width="359" height="40"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nLG-AB-a8Q">
+                                                <rect key="frame" x="0.0" y="101" width="359" height="1"/>
+                                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="fpO-Bs-RWh"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="8xX-4V-3hO">
+                                                <rect key="frame" x="0.0" y="103" width="359" height="35"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmT-iq-GRk" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="316" height="40"/>
-                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                                        <state key="normal" title="Practice">
-                                                            <color key="titleColor" red="1" green="0.98431372549019602" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="switchModesTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zcj-iv-o0x"/>
-                                                        </connections>
-                                                    </button>
-                                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
-                                                        <rect key="frame" x="317.5" y="0.0" width="140" height="40"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXD-f4-MJ0">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="35"/>
                                                         <subviews>
-                                                            <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="45.5" height="40"/>
-                                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <state key="normal" title="15"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmT-iq-GRk">
+                                                                <rect key="frame" x="0.0" y="0.0" width="359" height="35"/>
+                                                                <state key="normal" title="Practice">
+                                                                    <color key="titleColor" red="1" green="0.98431372549019602" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
                                                                 <connections>
-                                                                    <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9H3-7H-3kA"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                <rect key="frame" x="47.5" y="0.0" width="45" height="40"/>
-                                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <state key="normal" title="30"/>
-                                                                <connections>
-                                                                    <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="afA-Gz-DHt"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                <rect key="frame" x="94.5" y="0.0" width="45.5" height="40"/>
-                                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <state key="normal" title="20"/>
-                                                                <connections>
-                                                                    <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E0A-Jh-5Km"/>
+                                                                    <action selector="switchModesTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zcj-iv-o0x"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="140" id="UsW-fp-OlX"/>
+                                                            <constraint firstItem="lmT-iq-GRk" firstAttribute="leading" secondItem="RXD-f4-MJ0" secondAttribute="leading" id="8UW-UT-tg1"/>
+                                                            <constraint firstAttribute="bottom" secondItem="lmT-iq-GRk" secondAttribute="bottom" id="QFG-Tg-caw"/>
+                                                            <constraint firstAttribute="height" constant="35" id="Qs0-FX-buc"/>
+                                                            <constraint firstAttribute="trailing" secondItem="lmT-iq-GRk" secondAttribute="trailing" id="WTD-Hm-7Wj"/>
+                                                            <constraint firstItem="lmT-iq-GRk" firstAttribute="top" secondItem="RXD-f4-MJ0" secondAttribute="top" id="wnr-ei-GVW"/>
                                                         </constraints>
-                                                    </stackView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-tb-mhP" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="319" y="0.0" width="40" height="40"/>
-                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </view>
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="enb-4l-fAg">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="1"/>
+                                                        <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="40" id="Y2d-bk-fB8"/>
+                                                            <constraint firstAttribute="height" constant="1" id="BKG-FH-isP"/>
                                                         </constraints>
-                                                        <state key="normal" image="info.png"/>
-                                                        <connections>
-                                                            <segue destination="4aH-TG-88i" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="mdO-Tc-dCK"/>
-                                                        </connections>
-                                                    </button>
+                                                    </view>
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I98-OU-b7x">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
+                                                                <rect key="frame" x="0.0" y="-1" width="359" height="32"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="119" height="32"/>
+                                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                                        <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <state key="normal" title="15"/>
+                                                                        <connections>
+                                                                            <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9H3-7H-3kA"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO">
+                                                                        <rect key="frame" x="120" y="0.0" width="119" height="32"/>
+                                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                                        <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <state key="normal" title="30"/>
+                                                                        <connections>
+                                                                            <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="afA-Gz-DHt"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ">
+                                                                        <rect key="frame" x="240" y="0.0" width="119" height="32"/>
+                                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                                        <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <state key="normal" title="20"/>
+                                                                        <connections>
+                                                                            <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E0A-Jh-5Km"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstItem="8cz-N2-gIK" firstAttribute="centerY" secondItem="I98-OU-b7x" secondAttribute="centerY" id="Q6k-de-rlB"/>
+                                                            <constraint firstAttribute="height" constant="30" id="RFM-OJ-Meo"/>
+                                                            <constraint firstItem="8cz-N2-gIK" firstAttribute="leading" secondItem="I98-OU-b7x" secondAttribute="leading" id="TBa-YA-hHC"/>
+                                                            <constraint firstAttribute="trailing" secondItem="8cz-N2-gIK" secondAttribute="trailing" id="cu9-tu-Knd"/>
+                                                            <constraint firstItem="8cz-N2-gIK" firstAttribute="centerX" secondItem="I98-OU-b7x" secondAttribute="centerX" id="maR-bc-XdJ"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="AxY-Rv-mJw"/>
+                                                    <constraint firstAttribute="trailing" secondItem="RXD-f4-MJ0" secondAttribute="trailing" id="Gfg-iQ-fZB"/>
+                                                    <constraint firstItem="RXD-f4-MJ0" firstAttribute="leading" secondItem="8xX-4V-3hO" secondAttribute="leading" id="sRv-Kh-d1C"/>
                                                 </constraints>
                                             </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="8xX-4V-3hO" firstAttribute="top" secondItem="vmM-Nk-wo1" secondAttribute="bottom" id="AQb-KJ-033"/>
-                                            <constraint firstItem="vmM-Nk-wo1" firstAttribute="leading" secondItem="hBF-rV-uWp" secondAttribute="leading" constant="8" id="K7I-hO-Lwu"/>
-                                            <constraint firstAttribute="trailing" secondItem="8xX-4V-3hO" secondAttribute="trailing" constant="8" id="M2s-G7-FeE"/>
-                                            <constraint firstAttribute="trailing" secondItem="vmM-Nk-wo1" secondAttribute="trailing" constant="8" id="PA0-0k-IKm"/>
-                                            <constraint firstItem="8xX-4V-3hO" firstAttribute="leading" secondItem="hBF-rV-uWp" secondAttribute="leading" constant="8" id="ggF-8h-mMm"/>
+                                            <constraint firstItem="vmM-Nk-wo1" firstAttribute="leading" secondItem="hBF-rV-uWp" secondAttribute="leading" id="2x7-jZ-HW3"/>
+                                            <constraint firstItem="8xX-4V-3hO" firstAttribute="leading" secondItem="hBF-rV-uWp" secondAttribute="leading" id="VqW-MX-5fz"/>
+                                            <constraint firstAttribute="trailing" secondItem="8xX-4V-3hO" secondAttribute="trailing" id="hd2-FP-yce"/>
+                                            <constraint firstAttribute="trailing" secondItem="vmM-Nk-wo1" secondAttribute="trailing" id="pcN-lc-Veh"/>
+                                            <constraint firstItem="nLG-AB-a8Q" firstAttribute="leading" secondItem="hBF-rV-uWp" secondAttribute="leading" id="uKE-GV-Leq"/>
+                                            <constraint firstAttribute="trailing" secondItem="nLG-AB-a8Q" secondAttribute="trailing" id="wd0-2m-PiY"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="aLe-Ak-T5b"/>
-                                    <constraint firstItem="hBF-rV-uWp" firstAttribute="top" secondItem="Jgd-R0-zAP" secondAttribute="top" constant="35" id="b18-lP-WaB"/>
-                                    <constraint firstItem="hBF-rV-uWp" firstAttribute="leading" secondItem="Jgd-R0-zAP" secondAttribute="leading" id="bny-TU-16w"/>
+                                    <constraint firstItem="hBF-rV-uWp" firstAttribute="top" secondItem="Jgd-R0-zAP" secondAttribute="top" constant="1" id="b18-lP-WaB"/>
+                                    <constraint firstItem="hBF-rV-uWp" firstAttribute="leading" secondItem="Jgd-R0-zAP" secondAttribute="leading" constant="8" id="bny-TU-16w"/>
                                     <constraint firstAttribute="bottom" secondItem="hBF-rV-uWp" secondAttribute="bottom" constant="8" id="qHD-Kb-wgz"/>
-                                    <constraint firstAttribute="trailing" secondItem="hBF-rV-uWp" secondAttribute="trailing" id="yl1-CG-lLH"/>
+                                    <constraint firstAttribute="trailing" secondItem="hBF-rV-uWp" secondAttribute="trailing" constant="8" id="yl1-CG-lLH"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5HR-uQ-1Xg">
-                                <rect key="frame" x="0.0" y="200" width="375" height="180"/>
+                                <rect key="frame" x="0.0" y="167" width="375" height="161"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ocM-Bo-dCG">
-                                        <rect key="frame" x="8" y="8" width="359" height="164"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="145"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rLn-6E-DJS">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="114"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="100"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Topic" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="pr2-oc-9A7">
-                                                        <rect key="frame" x="8" y="8" width="343" height="98"/>
-                                                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                        <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FUT-Qg-h89">
+                                                        <rect key="frame" x="8" y="8" width="343" height="84"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="TOPICS">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    </textView>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="pr2-oc-9A7" secondAttribute="trailing" constant="8" id="C3M-xf-hW3"/>
-                                                    <constraint firstItem="pr2-oc-9A7" firstAttribute="leading" secondItem="rLn-6E-DJS" secondAttribute="leading" constant="8" id="Rgv-ey-QgW"/>
-                                                    <constraint firstAttribute="bottom" secondItem="pr2-oc-9A7" secondAttribute="bottom" constant="8" id="rfx-Ev-LZc"/>
-                                                    <constraint firstItem="pr2-oc-9A7" firstAttribute="top" secondItem="rLn-6E-DJS" secondAttribute="top" constant="8" id="xqb-ii-9XL"/>
+                                                    <constraint firstItem="FUT-Qg-h89" firstAttribute="leading" secondItem="rLn-6E-DJS" secondAttribute="leading" constant="8" id="Hne-PV-RwB"/>
+                                                    <constraint firstItem="FUT-Qg-h89" firstAttribute="top" secondItem="rLn-6E-DJS" secondAttribute="top" constant="8" id="PT8-O0-tuP"/>
+                                                    <constraint firstAttribute="bottom" secondItem="FUT-Qg-h89" secondAttribute="bottom" constant="8" id="Uoy-fb-0La"/>
+                                                    <constraint firstAttribute="height" constant="100" id="auZ-Cp-Jsq"/>
+                                                    <constraint firstAttribute="trailing" secondItem="FUT-Qg-h89" secondAttribute="trailing" constant="8" id="gSl-VG-6Wi"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M92-pP-niw">
-                                                <rect key="frame" x="0.0" y="124" width="359" height="40"/>
+                                                <rect key="frame" x="0.0" y="110" width="359" height="35"/>
                                                 <subviews>
                                                     <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s3-J3-klY" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="tleft.png"/>
@@ -198,7 +231,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="52" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="52" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="dleft.png"/>
@@ -207,7 +240,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="104" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="104" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="sleft.png"/>
@@ -216,7 +249,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DMH-43-8Hn" customClass="RoundLabel" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="156" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="156" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="22"/>
@@ -224,7 +257,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Zo-OZI" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="208" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="208" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="1" green="0.98431372549019602" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="sright.png"/>
@@ -233,7 +266,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="260" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="260" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="dright.png"/>
@@ -242,7 +275,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                        <rect key="frame" x="312" y="0.0" width="47" height="40"/>
+                                                        <rect key="frame" x="312" y="0.0" width="47" height="35"/>
                                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="tright.png"/>
@@ -252,7 +285,7 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="mkK-AA-3YS"/>
+                                                    <constraint firstAttribute="height" constant="35" id="mkK-AA-3YS"/>
                                                 </constraints>
                                             </stackView>
                                         </subviews>
@@ -263,19 +296,18 @@
                                     <constraint firstItem="ocM-Bo-dCG" firstAttribute="top" secondItem="5HR-uQ-1Xg" secondAttribute="top" constant="8" id="5ic-ec-eza"/>
                                     <constraint firstAttribute="bottom" secondItem="ocM-Bo-dCG" secondAttribute="bottom" constant="8" id="F9k-Ly-cyf"/>
                                     <constraint firstItem="ocM-Bo-dCG" firstAttribute="leading" secondItem="5HR-uQ-1Xg" secondAttribute="leading" constant="8" id="PLw-6S-XRK"/>
-                                    <constraint firstAttribute="height" constant="180" id="SET-Zb-anJ"/>
                                     <constraint firstAttribute="trailing" secondItem="ocM-Bo-dCG" secondAttribute="trailing" constant="8" id="vKc-wF-WWO"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YjK-Rj-zih">
-                                <rect key="frame" x="0.0" y="380" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="328" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="IuH-il-wmQ"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hIS-sg-tLL">
-                                <rect key="frame" x="0.0" y="431" width="375" height="236"/>
+                                <rect key="frame" x="0.0" y="379" width="375" height="288"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="100" id="Jau-su-4xW" customClass="SectionHeaderCell" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -627,20 +659,24 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GXv-Yh-rDT">
-                                <rect key="frame" x="0.0" y="381" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="329" width="375" height="50"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yV3-bp-z7b">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jnz-V2-6ss">
-                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-tb-mhP">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="49"/>
+                                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" id="YQ0-RX-rN1"/>
+                                                    <constraint firstAttribute="width" constant="50" id="Y2d-bk-fB8"/>
                                                 </constraints>
-                                            </view>
+                                                <state key="normal" image="info.png"/>
+                                                <connections>
+                                                    <segue destination="4aH-TG-88i" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="mdO-Tc-dCK"/>
+                                                </connections>
+                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recordings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfV-Pb-qa9">
-                                                <rect key="frame" x="0.0" y="0.0" width="325" height="49"/>
+                                                <rect key="frame" x="50" y="0.0" width="275" height="49"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -743,6 +779,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
+                        <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Jgd-R0-zAP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5iQ-Ud-nd1"/>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="9WK-2d-W8S"/>
@@ -760,9 +797,9 @@
                             <constraint firstItem="5HR-uQ-1Xg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="frP-nB-4tZ"/>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="top" secondItem="GXv-Yh-rDT" secondAttribute="bottom" id="hAO-tj-ysr"/>
                             <constraint firstItem="0tL-M8-dRP" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="qBO-CE-PLu"/>
-                            <constraint firstItem="Jgd-R0-zAP" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="r5G-nr-lqf"/>
                             <constraint firstItem="YjK-Rj-zih" firstAttribute="top" secondItem="5HR-uQ-1Xg" secondAttribute="bottom" id="rWr-cR-TBa"/>
                             <constraint firstItem="hIS-sg-tLL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="s1I-Yi-HRL"/>
+                            <constraint firstItem="Jgd-R0-zAP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="u5J-qu-c7R"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -789,8 +826,10 @@
                         <outlet property="recordingTableView" destination="hIS-sg-tLL" id="8Id-9r-V8p"/>
                         <outlet property="switchModesBtn" destination="lmT-iq-GRk" id="KMv-eJ-Hs7"/>
                         <outlet property="thinkTimeChangeStackView" destination="8cz-N2-gIK" id="Pg0-9z-5aa"/>
-                        <outlet property="topicLbl" destination="pr2-oc-9A7" id="yyI-v9-YrH"/>
+                        <outlet property="thinkTimeChangeStackViewContainer" destination="I98-OU-b7x" id="vsI-0h-Tao"/>
+                        <outlet property="thinkTimeChangeStackViewSeperator" destination="enb-4l-fAg" id="4gr-lD-ZUJ"/>
                         <outlet property="topicNumberLbl" destination="DMH-43-8Hn" id="un6-hV-Ll7"/>
+                        <outlet property="topicTxtView" destination="FUT-Qg-h89" id="1Mi-I5-CWO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

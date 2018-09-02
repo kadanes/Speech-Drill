@@ -17,6 +17,10 @@ class MainVC: UIViewController {
     @IBOutlet weak var adjustThinkTimeBtn: UILabel!
     @IBOutlet weak var adjustSpeakTimeBtn: UILabel!
     
+    @IBOutlet weak var thinkTimeChangeStackViewSeperator: UIView!
+    
+    @IBOutlet weak var thinkTimeChangeStackViewContainer: UIView!
+    
     @IBOutlet weak var thinkTimeChangeStackView: UIStackView!
 
     @IBOutlet weak var switchModesBtn: RoundButton!
@@ -26,7 +30,7 @@ class MainVC: UIViewController {
     @IBOutlet weak var recordBtn: UIButton!
     @IBOutlet weak var cancelRecordingBtn: UIButton!
     
-    @IBOutlet weak var topicLbl: UILabel!
+    @IBOutlet weak var topicTxtView: UITextView!
     
     @IBOutlet weak var topicNumberLbl: UILabel!
     
@@ -157,7 +161,7 @@ class MainVC: UIViewController {
         userDefaults.set(topicNumberToShow, forKey: "topicNumber")
         self.topicNumber = topicNumberToShow
         UIView.animate(withDuration: 1) {
-            self.topicLbl.text = self.topics[topicNumberToShow]
+            self.topicTxtView.text = self.topics[topicNumberToShow]
             self.topicNumberLbl.text = "\(topicNumberToShow+1)"
         }
     }
@@ -171,9 +175,9 @@ class MainVC: UIViewController {
         if isRecording {return}
         
         if isTestMode {
-            
-            self.switchModesBtn.setTitle("Practice", for: .normal)
-            self.thinkTimeChangeStackView.isHidden = true
+            thinkTimeChangeStackViewContainer.isHidden = true
+            thinkTimeChangeStackViewSeperator.isHidden = true
+            switchModesBtn.setTitle("Practice", for: .normal)
             changeTopicBtnsStackView.isHidden = false
             renderTopic(topicNumber: topicNumber)
             
@@ -183,19 +187,14 @@ class MainVC: UIViewController {
             speakTime = defaultSpeakTime
             
         } else {
-            
-            self.switchModesBtn.setTitle("Test", for: .normal)
-            self.thinkTimeChangeStackView.isHidden = false
+            thinkTimeChangeStackViewContainer.isHidden = false
+            thinkTimeChangeStackViewSeperator.isHidden = false
+            switchModesBtn.setTitle("Test", for: .normal)
             changeTopicBtnsStackView.isHidden = true
-            
-            topicLbl.text = "TEST MODE"
-            
+            topicTxtView.text = "TEST MODE"
         }
-        
         isTestMode = !isTestMode
-        
         resetRecordingState()
-        
     }
     
     func setToTestMode() {
