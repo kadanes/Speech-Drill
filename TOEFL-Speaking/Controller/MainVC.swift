@@ -154,7 +154,6 @@ class MainVC: UIViewController {
         } else {
             topicNumberToShow = topicNumber
         }
-        
         userDefaults.set(topicNumberToShow, forKey: "topicNumber")
         self.topicNumber = topicNumberToShow
         UIView.animate(withDuration: 1) {
@@ -410,7 +409,7 @@ class MainVC: UIViewController {
             return convertedDate1 > convertedDate2
         }
         if dateSortedKeys.count == 0 {return}
-        
+
         if visibleSections.count == 0 {
             visibleSections.append(dateSortedKeys[0])
             for ind in 1..<dateSortedKeys.count {
@@ -649,9 +648,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? SectionHeaderCell {
-            
             let date = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
                 let (date1, _) = arg0
                 let (date2, _) = arg1
@@ -661,11 +658,8 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
                 
                 return convertedDate1 > convertedDate2
                 }[section].key
-            
             cell.delegate = self
-            
             cell.configureCell(date: date)
-            
             return cell
         }
         
@@ -673,6 +667,26 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        let dateSortedKeys = dateSortedRecordingList.keys.sorted { (date1, date2) -> Bool in
+            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+            return convertedDate1 > convertedDate2
+        }
+        
+        let date = dateSortedKeys[section]
+        var isSectionRecordingsPlaying = false
+        
+        if dateSortedRecordingList[date]?.count == 1 {
+            guard let url = dateSortedRecordingList[date]?[0] else { return sectionHeaderHeight }
+            isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
+        } else {
+             isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
+        }
+       
+        if isSectionRecordingsPlaying {
+            return expandedSectionHeaderHeight
+        }
         return sectionHeaderHeight
     }
     
@@ -736,8 +750,11 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell{
-            cell.playBackTimer?.invalidate()
-            cell.playBackTimer = nil
+            cell.disableTimer()
+        }
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? RecordingCell{
+            cell.disableTimer()
         }
     }
 }

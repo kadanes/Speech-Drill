@@ -22,11 +22,8 @@ class RecordingCell: UITableViewCell {
     @IBOutlet weak var checkBoxBtn: UIButton!
     
     @IBOutlet weak var seekerView: UIView!
-    
     @IBOutlet weak var currentPlayTimeLbl: UILabel!
-    
     @IBOutlet weak var playingSeeker: UISlider!
-    
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
     weak var delegate: MainVC?
@@ -39,7 +36,7 @@ class RecordingCell: UITableViewCell {
     var recordingURL: URL?
     var isPlaying = false
     
-    var playBackTimer: Timer?
+    private var playBackTimer: Timer?
     
     func configureCell(url:URL) {
         
@@ -70,7 +67,6 @@ class RecordingCell: UITableViewCell {
         
         setCheckBoxProperties()
         updatePlayingState()
-        
         configurePlayBackSeeker()
         
         if isPlaying {
@@ -131,24 +127,21 @@ class RecordingCell: UITableViewCell {
     }
     
     func configurePlayBackSeeker() {
-        
         if isPlaying {
             seekerView.isHidden = false
-            playingSeeker.setThumbImage(drawSliderThumb(diameter: 15), for: .normal)
-            playingSeeker.setThumbImage(drawSliderThumb(diameter: 20), for: .highlighted)
-            
+            playingSeeker.setThumbImage(drawSliderThumb(diameter: 15, backgroundColor: UIColor.white), for: .normal)
+            playingSeeker.setThumbImage(drawSliderThumb(diameter: 25, backgroundColor: UIColor.yellow), for: .highlighted)
+    
             let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
             let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
             
             playingSeeker.maximumValue = Float(totalTime)
             playingSeeker.minimumValue = Float(0.0)
-            
+            playingSeeker.value = Float(currentTime)
             currentPlayTimeLbl.text = convertToMins(seconds: currentTime)
             totalPlayTimeLbl.text = convertToMins(seconds: totalTime)
             
-            DispatchQueue.main.async {
-                 self.playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
-            }
+            playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         } else {
              seekerView.isHidden = true
         }
@@ -158,27 +151,31 @@ class RecordingCell: UITableViewCell {
         let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
         currentPlayTimeLbl.text = convertToMins(seconds: currentTime)
         playingSeeker.value = Float(currentTime)
-        
         updatePlayingState()
-        
         if !isPlaying {
+            timer.invalidate()
             delegate?.reloadData()
         }
     }
     
+    ///On slider touchdown invalidate the update timer
     @IBAction func stopPlaybackUIUpdate(_ sender: UISlider) {
         playBackTimer?.invalidate()
+        sender.minimumTrackTintColor = UIColor.yellow
     }
     
+    ///On value change play to new time
     @IBAction func updatePlaybackTimeWithSlider(_ sender: UISlider) {
         let playbackTime = Double(sender.value)
         currentPlayTimeLbl.text = convertToMins(seconds: playbackTime)
         CentralAudioPlayer.player.setPlaybackTime(playTime: playbackTime)
+        sender.minimumTrackTintColor = UIColor.yellow
     }
     
-    
+    ///On touch up fire the playback time update timer
     @IBAction func startPlaybackUIUpdate(_ sender: UISlider) {
-        configurePlayBackSeeker()
+        playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
+        sender.minimumTrackTintColor = UIColor.white
     }
 
     @IBAction func deleteRecording(_ sender: Any) {
@@ -190,18 +187,20 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func selectRecordingTapped(_ sender: UIButton) {
-        
         if !(isRecordningSelected) {
-            
             setButtonBgImage(button: sender, bgImage: checkMarkIcon)
             delegate?.addToExportList(url: recordingURL!)
         } else {
             setButtonBgImage(button: sender, bgImage: UIImage())
             delegate?.removeFromExportList(url: recordingURL!)
         }
-        
         isRecordningSelected = !isRecordningSelected
         delegate?.toggleExportMenu()
+    }
+    
+    func disableTimer() {
+        playBackTimer?.invalidate()
+        playBackTimer = nil
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
