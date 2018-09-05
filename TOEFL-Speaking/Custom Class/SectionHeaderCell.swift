@@ -17,6 +17,7 @@ class SectionHeaderCell: UITableViewCell {
     var url = URL(fileURLWithPath: "")
     var date = ""
     var isPlaying = false
+    var isMerging = false
     
     var recordingsURL: URL?
     
@@ -31,7 +32,7 @@ class SectionHeaderCell: UITableViewCell {
     @IBOutlet weak var headerPlayingSeeker: UISlider!
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
-    private var playBackTimer: Timer?
+    private var headerPlayBackTimer: Timer?
 
     func setButtonImageProperties(button: UIButton,offset: CGFloat) {
         button.imageView?.contentMode = .scaleAspectFit
@@ -62,7 +63,8 @@ class SectionHeaderCell: UITableViewCell {
     }
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
-        if mergingActivityIndicator.isAnimating {
+        
+        if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) { (shareURL) in
@@ -72,18 +74,16 @@ class SectionHeaderCell: UITableViewCell {
     }
     
     @IBAction func playRecordingTapped(_ sender: UIButton) {
-        if mergingActivityIndicator.isAnimating {
+        if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playURL) in
-            
-            self.recordingsURL = playURL
-            
-            self.updatePlayingState()
-            
             if (self.delegate?.isRecording)! {
                 return
             }
+            self.recordingsURL = playURL
+            self.updatePlayingState()
+            
             CentralAudioPlayer.player.playRecording(url: playURL, id: self.date)
             DispatchQueue.main.async {
                 self.mergingActivityIndicator.stopAnimating()
@@ -98,11 +98,18 @@ class SectionHeaderCell: UITableViewCell {
 
         setButtonImageProperties(button: playAllBtn, offset: 0)
         setButtonImageProperties(button: shareAllBtn, offset: 0)
-        mergingActivityIndicator.stopAnimating()
-
+        
+        print(checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!))
+        
+        if checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!) {
+            mergingActivityIndicator.startAnimating()
+        } else {
+            mergingActivityIndicator.stopAnimating()
+        }
+        
         updatePlayingState()
         updateToggleBtnIcon()
-        configurePlayBackSeeker()
+        configureHeaderPlayBackSeeker()
         
         if isPlaying {
             setButtonBgImage(button: playAllBtn, bgImage: pauseBtnIcon)
@@ -114,9 +121,14 @@ class SectionHeaderCell: UITableViewCell {
     @IBAction func toggleSection(_ sender: UIButton) {
         delegate?.toggleSection(date: date)
         updateToggleBtnIcon()
+        delegate?.reloadData()
+        
     }
     
     func updateToggleBtnIcon() {
+//
+//        let pulse = Pulsing(numberOfPulses: 1, radius: hideSectionBtn.layer.bounds.width, position: CGPoint(x:hideSectionBtn.bounds.width/2, y:hideSectionBtn.bounds.height/2 - 5))
+//        hideSectionBtn.layer.addSublayer(pulse)
         
         if ((delegate?.checkIfHidden(date: date))!) {
              hideSectionBtn.setImage(plusIcon, for: .normal)
@@ -124,16 +136,16 @@ class SectionHeaderCell: UITableViewCell {
         } else {
             hideSectionBtn.setImage(minusIcon, for: .normal)
             setButtonImageProperties(button: hideSectionBtn, offset: 5)
+            
         }
     }
     
-    
     //MARK :- Playback Seeker
-    func configurePlayBackSeeker() {
+    func configureHeaderPlayBackSeeker() {
         if isPlaying {
             seekerView.isHidden = false
-            headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: 15, backgroundColor: UIColor.white), for: .normal)
-            headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: 25, backgroundColor: UIColor.yellow), for: .highlighted)
+            headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: normalThumbDiameter, backgroundColor: UIColor.white), for: .normal)
+            headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: UIColor.yellow), for: .highlighted)
             
             let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
             let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
@@ -144,7 +156,7 @@ class SectionHeaderCell: UITableViewCell {
             headerCurrentPlayTimeLbl.text = convertToMins(seconds: currentTime)
             totalPlayTimeLbl.text = convertToMins(seconds: totalTime)
             
-            playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
+            headerPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         } else {
             seekerView.isHidden = true
         }
@@ -163,7 +175,7 @@ class SectionHeaderCell: UITableViewCell {
     
     ///On slider touchdown invalidate the update timer
     @IBAction func headerStopPlaybackUIUpdate(_ sender: UISlider) {
-        playBackTimer?.invalidate()
+        headerPlayBackTimer?.invalidate()
         sender.minimumTrackTintColor = UIColor.yellow
     }
     
@@ -177,12 +189,12 @@ class SectionHeaderCell: UITableViewCell {
     
     ///On touch up fire the playback time update timer
     @IBAction func headerStartPlaybackUIUpdate(_ sender: UISlider) {
-        playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
+        headerPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         sender.minimumTrackTintColor = UIColor.white
     }
     
     func disableTimer() {
-        playBackTimer?.invalidate()
-        playBackTimer = nil
+        headerPlayBackTimer?.invalidate()
+        headerPlayBackTimer = nil
     }
 }

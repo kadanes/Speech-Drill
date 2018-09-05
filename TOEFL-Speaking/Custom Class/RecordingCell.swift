@@ -36,7 +36,7 @@ class RecordingCell: UITableViewCell {
     var recordingURL: URL?
     var isPlaying = false
     
-    private var playBackTimer: Timer?
+    private var recordingPlayBackTimer: Timer?
     
     func configureCell(url:URL) {
         
@@ -45,7 +45,7 @@ class RecordingCell: UITableViewCell {
         getFileDetails(url: "\(url)")
         
         if topicNumber != testModeId  {
-            recordingNameLbl.text = "Topic \(topicNumber+1)"
+            recordingNameLbl.text = "Topic \(topicNumber)"
         } else {
             var labelText = ""
             switch thinkTime {
@@ -67,7 +67,7 @@ class RecordingCell: UITableViewCell {
         
         setCheckBoxProperties()
         updatePlayingState()
-        configurePlayBackSeeker()
+        configureRecordingPlayBackSeeker()
         
         if isPlaying {
             setButtonBgImage(button: playPauseBtn, bgImage: pauseBtnIcon)
@@ -82,22 +82,22 @@ class RecordingCell: UITableViewCell {
     }
     
     func setCheckBoxProperties() {
-        
         if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
             checkBoxBg.contentMode = .scaleAspectFit
         }
     }
     
     func selectCheckBox() {
+        isRecordningSelected = true
         checkBoxBtn.setImage(checkMarkIcon, for: .normal)
     }
     
     func deselectCheckBox() {
+        isRecordningSelected = false
         checkBoxBtn.setImage(nil, for: .normal)
     }
     
     func getFileDetails(url: String) {
-
        (timeStamp,topicNumber,thinkTime) = splitFileURL(url: url)
     }
     
@@ -111,9 +111,10 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func playRecording(_ sender: UIButton) {
-        if (delegate?.isRecording)! {
+        if (delegate?.checkIfRecordingIsOn())! {
             return
         }
+        
         if let url = recordingURL {
             if topicNumber == testModeId {
                 delegate?.setToTestMode()
@@ -126,14 +127,14 @@ class RecordingCell: UITableViewCell {
         }
     }
     
-    func configurePlayBackSeeker() {
+    func configureRecordingPlayBackSeeker() {
         if isPlaying {
             seekerView.isHidden = false
-            playingSeeker.setThumbImage(drawSliderThumb(diameter: 15, backgroundColor: UIColor.white), for: .normal)
-            playingSeeker.setThumbImage(drawSliderThumb(diameter: 25, backgroundColor: UIColor.yellow), for: .highlighted)
+            playingSeeker.setThumbImage(drawSliderThumb(diameter: normalThumbDiameter, backgroundColor: UIColor.white), for: .normal)
+            playingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: UIColor.yellow), for: .highlighted)
     
-            let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
-            let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
+            let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime()
+            let totalTime = CentralAudioPlayer.player.getPlayBackDuration()
             
             playingSeeker.maximumValue = Float(totalTime)
             playingSeeker.minimumValue = Float(0.0)
@@ -141,7 +142,7 @@ class RecordingCell: UITableViewCell {
             currentPlayTimeLbl.text = convertToMins(seconds: currentTime)
             totalPlayTimeLbl.text = convertToMins(seconds: totalTime)
             
-            playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
+            recordingPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         } else {
              seekerView.isHidden = true
         }
@@ -160,7 +161,7 @@ class RecordingCell: UITableViewCell {
     
     ///On slider touchdown invalidate the update timer
     @IBAction func stopPlaybackUIUpdate(_ sender: UISlider) {
-        playBackTimer?.invalidate()
+        recordingPlayBackTimer?.invalidate()
         sender.minimumTrackTintColor = UIColor.yellow
     }
     
@@ -174,7 +175,7 @@ class RecordingCell: UITableViewCell {
     
     ///On touch up fire the playback time update timer
     @IBAction func startPlaybackUIUpdate(_ sender: UISlider) {
-        playBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
+        recordingPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         sender.minimumTrackTintColor = UIColor.white
     }
 
@@ -195,17 +196,15 @@ class RecordingCell: UITableViewCell {
             delegate?.removeFromExportList(url: recordingURL!)
         }
         isRecordningSelected = !isRecordningSelected
-        delegate?.toggleExportMenu()
     }
     
     func disableTimer() {
-        playBackTimer?.invalidate()
-        playBackTimer = nil
+        recordingPlayBackTimer?.invalidate()
+        recordingPlayBackTimer = nil
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
     }
-
 }

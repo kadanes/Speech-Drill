@@ -46,32 +46,32 @@ class MainVC: UIViewController {
     
     @IBOutlet weak var recordingTableView: UITableView!
     
-    @IBOutlet weak var exportSelectedBtn: UIButton!
-    
+    //Export Menu
+    @IBOutlet weak var exportMenuView: UIView!
     @IBOutlet weak var exportMenuHeight: NSLayoutConstraint!
-    
+    @IBOutlet weak var exportSelectedBtn: UIButton!
     @IBOutlet weak var exportSelectedActivityIndicator: UIActivityIndicatorView!
-    
-     @IBOutlet weak var playSelectedActivityIndicator: UIActivityIndicatorView!
-    
-    @IBOutlet weak var exportMenuStackView: UIStackView!
-    
     @IBOutlet weak var playSelectedBtn: UIButton!
-    
+    @IBOutlet weak var playSelectedActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var exportMenuStackView: UIStackView!
     @IBOutlet weak var closeShareMenuBtn: UIButton!
+    @IBOutlet weak var exportSeekerView: UIView!
+    @IBOutlet weak var exportCurrentPlayTimeLbl: UILabel!
+    @IBOutlet weak var exportPlayingSeeker: UISlider!
+    @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
     var isTestMode = false
-    
     var defaultThinkTime = 15
     var defaultSpeakTime = 45
-
     var thinkTime = 15
     var speakTime = 45
 
     var topicNumber = 0
     var topics: [String] = []
     
+    var isPlaying = false
     var isRecording = false
+    var isThinking = false
     var blinking = true
     var cancelledRecording = false
     var currentRecordingURL: URL?
@@ -79,18 +79,19 @@ class MainVC: UIViewController {
     var audioRecorder: AVAudioRecorder!
     var audioSession: AVAudioSession!
     
-    var dateSortedRecordingList: Dictionary<String,Array<URL>> = [:]
+    var recordingUrlsDict: Dictionary<String,Array<URL>> = [:]
     
     var hiddenSections = [String]()
     var visibleSections = [String]()
     
-    var exportSelected = [URL]()
+    private var recordingUrlsListToExport = [URL]()
     
     let userDefaults = UserDefaults.standard
     
     var thinkTimer: Timer?
     var speakTimer: Timer?
     var blinkTimer: Timer?
+    weak var exportPlayBackTimer: Timer?
     
     private var audioPlayer: AVAudioPlayer?
     
@@ -99,26 +100,22 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        resetRecordingState()
-
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
         callObserver.setDelegate(self, queue: nil)
+        
+        resetRecordingState()
 
         updateURLList()
-        
         readTopics()
+        topicNumber = userDefaults.integer(forKey: "topicNumber")
+        renderTopic(topicNumber: topicNumber)
         
         exportSelectedActivityIndicator.stopAnimating()
         
-        topicNumber = userDefaults.integer(forKey: "topicNumber")
-        
-        renderTopic(topicNumber: topicNumber)
-     
         setUIButtonsProperty()
-        
         setHiddenVisibleSectionList()
-        
+        toggleExportMenu()
     }
   
     override func viewDidAppear(_ animated: Bool) {
@@ -145,28 +142,28 @@ class MainVC: UIViewController {
             let fileURL = Bundle.main.url(forResource: "topics", withExtension: "csv")
             let content = try String(contentsOf: fileURL!, encoding: String.Encoding.utf8)
             topics = content.components(separatedBy:"\n").map{$0}
-            
         } catch {
             
         }
     }
     
     func renderTopic(topicNumber: Int) {
-        var topicNumberToShow = 0
+        var topicNumberToShow = 1
         if ( topicNumber > topics.count - 1) {
             topicNumberToShow = topics.count - 1
         } else {
             topicNumberToShow = topicNumber
         }
+        topicTxtView.setContentOffset(.zero, animated: true)
         userDefaults.set(topicNumberToShow, forKey: "topicNumber")
         self.topicNumber = topicNumberToShow
-        UIView.animate(withDuration: 1) {
-            self.topicTxtView.text = self.topics[topicNumberToShow]
-            self.topicNumberLbl.text = "\(topicNumberToShow+1)"
-        }
+        topicTxtView.text = topics[topicNumberToShow]
+        topicNumberLbl.text = "\(topicNumberToShow)"
     }
     
     @IBAction func switchModesTapped(_ sender: UIButton) {
+        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: sender.center)
+        sender.layer.addSublayer(pulse)
         switchModes()
     }
     
@@ -177,10 +174,10 @@ class MainVC: UIViewController {
         if isTestMode {
             thinkTimeChangeStackViewContainer.isHidden = true
             thinkTimeChangeStackViewSeperator.isHidden = true
+            
             switchModesBtn.setTitle("Practice", for: .normal)
             changeTopicBtnsStackView.isHidden = false
-            renderTopic(topicNumber: topicNumber)
-            
+            renderTopic(topicNumber: self.topicNumber)
             defaultThinkTime = 15
             defaultSpeakTime = 45
             thinkTime = defaultThinkTime
@@ -189,9 +186,10 @@ class MainVC: UIViewController {
         } else {
             thinkTimeChangeStackViewContainer.isHidden = false
             thinkTimeChangeStackViewSeperator.isHidden = false
-            switchModesBtn.setTitle("Test", for: .normal)
-            changeTopicBtnsStackView.isHidden = true
-            topicTxtView.text = "TEST MODE"
+            
+            self.switchModesBtn.setTitle("Test", for: .normal)
+            self.changeTopicBtnsStackView.isHidden = true
+            self.topicTxtView.text = "TEST MODE"
         }
         isTestMode = !isTestMode
         resetRecordingState()
@@ -209,8 +207,12 @@ class MainVC: UIViewController {
     
     @IBAction func changeThinkTimeTapped(_ sender: RoundButton) {
 
-        if isRecording {return}
-        
+        if checkIfRecordingIsOn() {return}
+       
+        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: CGPoint(x: sender.bounds.width/2, y: sender.bounds.height/2))
+        sender.layer.addSublayer(pulse)
+       
+
         switch sender.tag {
             
             case 15:
@@ -240,16 +242,21 @@ class MainVC: UIViewController {
     
     ///Increment current displayed topic number base on button pressed
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
+        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
+        sender.layer.addSublayer(pulse)
+        
         let increment = sender.tag
         topicNumber = (topicNumber + increment < topics.count) ? topicNumber + increment : topics.count - 1
         renderTopic(topicNumber: topicNumber)
-        
     }
     
     ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
+        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
+        sender.layer.addSublayer(pulse)
+        
         let decrement = sender.tag
-        topicNumber = (topicNumber - decrement >= 0) ? topicNumber - decrement : 0
+        topicNumber = (topicNumber - decrement >= 1) ? topicNumber - decrement : 1
         renderTopic(topicNumber: topicNumber)
     }
     
@@ -258,7 +265,7 @@ class MainVC: UIViewController {
         
         CentralAudioPlayer.player.stopPlaying()
         
-        if (!isRecording) {
+        if (!checkIfRecordingIsOn()) {
             
             cancelRecordingBtn.isHidden = false
             thinkTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
@@ -289,6 +296,7 @@ class MainVC: UIViewController {
     ///Function to reduce and render think time
     @objc func decrementThinkTime(timer: Timer) {
         if(thinkTime > 0) {
+            isThinking = true
             thinkTime -= 1
             adjustThinkTimeBtn.text = "\(thinkTime)"
         } else {
@@ -311,11 +319,11 @@ class MainVC: UIViewController {
                 print("Error Playing Speak Now:\n",error.localizedDescription)
             }
             
+            isThinking = false
             recordAudio()
             
             speakTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
             blinkTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
-            
         }
     }
     
@@ -361,13 +369,19 @@ class MainVC: UIViewController {
         blinkTimer?.invalidate()
         
         isRecording = false
+        isThinking = false
         blinking = false
+    }
+    
+    ///Check if user is recording a topic
+    func checkIfRecordingIsOn()->Bool{
+        return isThinking || isRecording
     }
     
     ///Update local list with newly added recording urls
     func updateURLList() {
                 
-        dateSortedRecordingList.removeAll()
+        recordingUrlsDict.removeAll()
         
         let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
         
@@ -387,14 +401,20 @@ class MainVC: UIViewController {
                         
                         let url = URL(fileURLWithPath: documents+"/"+"\(file)")
                         
-                        var recordingURLs = dateSortedRecordingList[date]
+                        var recordingURLs = recordingUrlsDict[date]
                         
                         if recordingURLs == nil {
                             recordingURLs = [URL]()
                         }
                         
-                        recordingURLs?.append(url)
-                        dateSortedRecordingList[date] = recordingURLs
+                        if (url == currentRecordingURL && !isRecording || url != currentRecordingURL){
+                            recordingURLs?.append(url)
+                        }
+                        
+                        if (recordingURLs?.count)! > 0 {
+                            recordingUrlsDict[date] = recordingURLs
+                        }
+                        
                     }
                 }
             }
@@ -402,7 +422,7 @@ class MainVC: UIViewController {
     }
     
     func setHiddenVisibleSectionList() {
-        let dateSortedKeys = dateSortedRecordingList.keys.sorted { (date1, date2) -> Bool in
+        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
             guard let convertedDate1 = convertToDate(date: date1) else { return false }
             guard let convertedDate2 = convertToDate(date: date2) else { return false }
             return convertedDate1 > convertedDate2
@@ -431,11 +451,9 @@ class MainVC: UIViewController {
         
         if visibleSections.contains(date) {
             DispatchQueue.main.async {
-                
-                let dateSortedKeys = self.dateSortedRecordingList.keys.sorted { (date1, date2) -> Bool in
+                let dateSortedKeys = self.recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
                     guard let convertedDate1 = convertToDate(date: date1) else { return false }
                     guard let convertedDate2 = convertToDate(date: date2) else { return false }
-                    
                     return convertedDate1 > convertedDate2
                 }
                 
@@ -462,83 +480,8 @@ class MainVC: UIViewController {
     
     ///Fetch a list of recordings urls for a day
     func getAudioFilesList(date: String) -> [URL] {
-        guard let urlList = dateSortedRecordingList[date] else {return [URL]()}
+        guard let urlList = recordingUrlsDict[date] else {return [URL]()}
         return urlList
-    }
-    
-    ///Show or Hide export menu
-    func toggleExportMenu() {
-        if exportSelected.count > 0 {
-            exportMenuHeight.constant = 40
-            exportMenuStackView.isHidden = false
-            exportSelectedBtn.setTitle("Export \(exportSelected.count) recording(s)", for: .normal)
-        } else {
-            exportMenuHeight.constant = 0
-            exportMenuStackView.isHidden = true
-        }
-    }
-    
-    ///Add a recording url to list of recordings to export
-    func addToExportList(url: URL) {
-        CentralAudioPlayer.player.stopPlaying()
-        exportSelected.append(url)
-    }
-    
-    ///Remove a recording url to list of recordings to export
-    func removeFromExportList(url: URL) {
-        CentralAudioPlayer.player.stopPlaying()
-        exportSelected = exportSelected.filter {$0 != url}
-    }
-    
-    ///Remove all selected recordings and reset UI
-    func clearSelected() {
-        exportSelected.removeAll()
-        toggleExportMenu()
-        reloadData()
-    }
-    
-    ///Export selected recordings
-    @IBAction func exportSelectedTapped(_ sender: UIButton) {
-        
-        if (playSelectedActivityIndicator.isAnimating) {
-            return
-        }
-        
-        processMultipleRecordings(recordingsList: exportSelected, activityIndicator: exportSelectedActivityIndicator) { (exportURL) in
-            CentralAudioPlayer.player.stopPlaying()
-
-            openShareSheet(url: exportURL, activityIndicator: self.exportSelectedActivityIndicator){
-                self.clearSelected()
-                
-            }
-        }
-    }
-    
-    ///Play selected recordings
-    @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
-        
-        if isRecording || exportSelectedActivityIndicator.isAnimating {return}
-        
-        processMultipleRecordings(recordingsList: exportSelected, activityIndicator: playSelectedActivityIndicator) { (playURL) in
-            
-            DispatchQueue.main.async {
-                self.playSelectedActivityIndicator.stopAnimating()
-            }
-            
-            CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId)
-            
-            if (CentralAudioPlayer.player.checkIfPlaying(url: playURL, id: selectedAudioId)) {
-                setButtonBgImage(button: sender, bgImage: pauseBtnYellowIcon)
-            } else {
-                setButtonBgImage(button: sender, bgImage: playBtnYellowIcon)
-            }
-        }
-    }
-    
-    ///Hide export menu
-    @IBAction func cancelSelectedTapped(_ sender: UIButton) {
-        clearSelected()
-        CentralAudioPlayer.player.stopPlaying()
     }
 }
 
@@ -605,10 +548,10 @@ extension MainVC: AVAudioRecorderDelegate {
             cancelledRecording = false
         }
         
+        resetRecordingState()
         updateURLList()
         setHiddenVisibleSectionList()
         reloadData()
-        resetRecordingState()
     }
     
     func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
@@ -626,37 +569,20 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dateSortedRecordingList.count
+        return recordingUrlsDict.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let recordingsURLMap = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
-            let (date1, _) = arg0
-            let (date2, _) = arg1
-            
-            guard let convertedDate1 = convertToDate(date: date1) else { return false }
-            guard let convertedDate2 = convertToDate(date: date2) else { return false }
-            
-            return convertedDate1 > convertedDate2
-        }
-        
-        if (visibleSections.contains(recordingsURLMap[section].key)){
-            return recordingsURLMap[section].value.count
+        let sortedRecordingUrls = sortDict(recordingUrlsDict: recordingUrlsDict)
+        if (visibleSections.contains(sortedRecordingUrls[section].key)){
+            return sortedRecordingUrls[section].value.count
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? SectionHeaderCell {
-            let date = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
-                let (date1, _) = arg0
-                let (date2, _) = arg1
-                
-                guard let convertedDate1 = convertToDate(date: date1) else { return false }
-                guard let convertedDate2 = convertToDate(date: date2) else { return false }
-                
-                return convertedDate1 > convertedDate2
-                }[section].key
+            let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
             cell.delegate = self
             cell.configureCell(date: date)
             return cell
@@ -667,7 +593,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        let dateSortedKeys = dateSortedRecordingList.keys.sorted { (date1, date2) -> Bool in
+        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
             guard let convertedDate1 = convertToDate(date: date1) else { return false }
             guard let convertedDate2 = convertToDate(date: date2) else { return false }
             return convertedDate1 > convertedDate2
@@ -676,8 +602,8 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         let date = dateSortedKeys[section]
         var isSectionRecordingsPlaying = false
         
-        if dateSortedRecordingList[date]?.count == 1 {
-            guard let url = dateSortedRecordingList[date]?[0] else { return sectionHeaderHeight }
+        if recordingUrlsDict[date]?.count == 1 {
+            guard let url = recordingUrlsDict[date]?[0] else { return sectionHeaderHeight }
             isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
         } else {
              isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
@@ -691,22 +617,11 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let recordings = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
-            let (date1, _) = arg0
-            let (date2, _) = arg1
-            
-            guard let convertedDate1 = convertToDate(date: date1) else { return false }
-            guard let convertedDate2 = convertToDate(date: date2) else { return false }
-            
-            return convertedDate1 > convertedDate2
-            }[indexPath.section]
-        
+        let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
         let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
-        
         let timeStamp = splitFileURL(url: "\(url)").timeStamp
        
         let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(timeStamp)")
-        
         if isPlaying {
             return expandedRecordingCellHeight
         }
@@ -714,50 +629,36 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell {
             
-            let recordings = dateSortedRecordingList.sorted { (arg0, arg1) -> Bool in
-                let (date1, _) = arg0
-                let (date2, _) = arg1
-                
-                guard let convertedDate1 = convertToDate(date: date1) else { return false }
-                guard let convertedDate2 = convertToDate(date: date2) else { return false }
-                
-                return convertedDate1 > convertedDate2
-                }[indexPath.section]
-            
+            let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
             let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
             
             cell.configureCell(url: url)
             cell.delegate = self
             
-            if(exportSelected.contains(url)) {
+            if(recordingUrlsListToExport.contains(url)) {
                 cell.selectCheckBox()
             } else {
                 cell.deselectCheckBox()
             }
-            
             return cell
-            
-        } else {
-            return UITableViewCell()
         }
+        return UITableViewCell()
     }
     
     ///Stoppping the running timers in recording cell
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell{
             cell.disableTimer()
         }
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? RecordingCell{
             cell.disableTimer()
         }
     }
 }
 
+//MARK :- Check for call interrupt
 extension MainVC: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
         
@@ -772,6 +673,175 @@ extension MainVC: CXCallObserverDelegate {
         }
         if call.hasConnected == true && call.hasEnded == false {
             print("Connected")
+        }
+    }
+}
+
+//MARK:- Export Menu
+extension MainVC {
+    
+    ///Show or Hide export menu
+    func toggleExportMenu() {
+        if recordingUrlsListToExport.count > 0 {
+            DispatchQueue.main.async {
+                self.exportMenuStackView.isHidden = false
+                self.exportSelectedBtn.setTitle("Export \(self.recordingUrlsListToExport.count) recording(s)", for: .normal)
+                self.toggleSeeker()
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.exportSeekerView.isHidden = true
+                self.exportMenuStackView.isHidden = true
+            }
+        }
+    }
+    
+    func toggleSeeker() {
+        isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: selectedAudioId)
+        if isPlaying {
+            DispatchQueue.main.async {
+                self.exportSeekerView.isHidden = false
+            }
+            configureExportMenuPlayBackSeeker()
+            setButtonBgImage(button: playSelectedBtn, bgImage: pauseBtnYellowIcon)
+        } else {
+            DispatchQueue.main.async {
+                self.exportSeekerView.isHidden = true
+            }
+            setButtonBgImage(button: playSelectedBtn, bgImage: playBtnYellowIcon)
+            if let _ = exportPlayBackTimer {
+                exportPlayBackTimer?.invalidate()
+                exportPlayBackTimer = nil
+            }
+        }
+    }
+    
+    ///Add a recording url to list of recordings to export
+    func addToExportList(url: URL) {
+        CentralAudioPlayer.player.stopPlaying()
+        recordingUrlsListToExport.append(url)
+        toggleExportMenu()
+    }
+    
+    ///Remove a recording url to list of recordings to export
+    func removeFromExportList(url: URL) {
+        CentralAudioPlayer.player.stopPlaying()
+        recordingUrlsListToExport = recordingUrlsListToExport.filter {$0 != url}
+        toggleExportMenu()
+    }
+    
+    ///Remove all selected recordings and reset UI
+    func clearSelected() {
+        recordingUrlsListToExport.removeAll()
+        toggleExportMenu()
+        reloadData()
+    }
+    
+    ///Export selected recordings
+    @IBAction func exportSelectedTapped(_ sender: UIButton) {
+        if (playSelectedActivityIndicator.isAnimating) {
+            return
+        }
+        
+        processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: exportSelectedActivityIndicator) { (exportURL) in
+            CentralAudioPlayer.player.stopPlaying()
+            openShareSheet(url: exportURL, activityIndicator: self.exportSelectedActivityIndicator){
+                self.clearSelected()
+            }
+        }
+    }
+    
+    ///Play selected recordings
+    @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
+        
+        if isRecording || exportSelectedActivityIndicator.isAnimating {return}
+        
+        processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: playSelectedActivityIndicator) { (playURL) in
+            
+            DispatchQueue.main.async {
+                self.playSelectedActivityIndicator.stopAnimating()
+            }
+            
+            CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId)
+            self.isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: playURL, id: selectedAudioId)
+            if (self.isPlaying) {
+                setButtonBgImage(button: sender, bgImage: pauseBtnYellowIcon)
+            } else {
+                setButtonBgImage(button: sender, bgImage: playBtnYellowIcon)
+            }
+            self.toggleSeeker()
+        }
+    }
+    
+    ///Hide export menu
+    @IBAction func cancelSelectedTapped(_ sender: UIButton) {
+        CentralAudioPlayer.player.stopPlaying()
+        clearSelected()
+    }
+    
+    ///Set properties of playback seeker view
+    func configureExportMenuPlayBackSeeker() {
+        if isPlaying {
+            
+            DispatchQueue.main.async {
+                self.exportSeekerView.isHidden = false
+                self.exportPlayingSeeker.setThumbImage(drawSliderThumb(diameter: normalThumbDiameter, backgroundColor: UIColor.white), for: .normal)
+                self.exportPlayingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: UIColor.yellow), for: .highlighted)
+                
+                let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
+                let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
+                
+                self.exportPlayingSeeker.maximumValue = Float(totalTime)
+                self.exportPlayingSeeker.minimumValue = Float(0.0)
+                self.exportPlayingSeeker.value = Float(currentTime)
+                self.exportCurrentPlayTimeLbl.text = convertToMins(seconds: currentTime)
+                self.totalPlayTimeLbl.text = convertToMins(seconds: totalTime)
+                
+                self.exportPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateExportPlaybackTime), userInfo: nil, repeats: true)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.exportSeekerView.isHidden = true
+            }
+        }
+    }
+    
+    @objc func updateExportPlaybackTime(timer: Timer) {
+        
+        if !CentralAudioPlayer.player.checkIfPlaying(id: selectedAudioId) {
+            timer.invalidate()
+            toggleSeeker()
+        }
+        let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
+        
+        DispatchQueue.main.async {
+            self.exportCurrentPlayTimeLbl.text = convertToMins(seconds: currentTime)
+            self.exportPlayingSeeker.value = Float(currentTime)
+        }
+    }
+    
+    ///On slider touchdown invalidate the update timer
+    @IBAction func headerStopPlaybackUIUpdate(_ sender: UISlider) {
+        exportPlayBackTimer?.invalidate()
+        exportPlayBackTimer = nil
+        sender.minimumTrackTintColor = UIColor.yellow
+    }
+    
+    ///On value change play to new time
+    @IBAction func headerUpdatePlaybackTimeWithSlider(_ sender: UISlider) {
+        let playbackTime = Double(sender.value)
+        DispatchQueue.main.async {
+            self.exportCurrentPlayTimeLbl.text = convertToMins(seconds: playbackTime)
+            CentralAudioPlayer.player.setPlaybackTime(playTime: playbackTime)
+            sender.minimumTrackTintColor = UIColor.yellow
+        }
+    }
+    
+    ///On touch up fire the playback time update timer
+    @IBAction func headerStartPlaybackUIUpdate(_ sender: UISlider) {
+        exportPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateExportPlaybackTime), userInfo: nil, repeats: true)
+        DispatchQueue.main.async {
+            sender.minimumTrackTintColor = UIColor.white
         }
     }
 }

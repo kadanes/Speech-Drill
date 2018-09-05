@@ -28,6 +28,7 @@
 		B2ACC679212D11EB009AE30D /* yellowbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC678212D11EB009AE30D /* yellowbg.jpg */; };
 		B2BC4A38213C535E00EDEB74 /* IconMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A37213C535E00EDEB74 /* IconMaker.swift */; };
 		B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */; };
+		B2BF9F08214009820015F330 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BF9F07214009820015F330 /* Pulsing.swift */; };
 		B2D7B68E2139D3980047D684 /* slider-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = B2D7B68D2139D3980047D684 /* slider-thumb.png */; };
 		B2DAB671212894190062ECDF /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB660212894160062ECDF /* check.png */; };
 		B2DAB672212894190062ECDF /* pauseg.png in Resources */ = {isa = PBXBuildFile; fileRef = B2DAB661212894160062ECDF /* pauseg.png */; };
@@ -91,6 +92,7 @@
 		B2ACC678212D11EB009AE30D /* yellowbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellowbg.jpg; sourceTree = "<group>"; };
 		B2BC4A37213C535E00EDEB74 /* IconMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconMaker.swift; sourceTree = "<group>"; };
 		B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingsMerger.swift; sourceTree = "<group>"; };
+		B2BF9F07214009820015F330 /* Pulsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
 		B2D7B68D2139D3980047D684 /* slider-thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-thumb.png"; sourceTree = "<group>"; };
 		B2DAB660212894160062ECDF /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		B2DAB661212894160062ECDF /* pauseg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pauseg.png; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				B25F80C7211F667500AD786C /* RoundLabel.swift */,
 				B2E5F5F3212B401B00FC7E28 /* RoundImage.swift */,
 				B2ACC672212D0E16009AE30D /* RoundedImage.swift */,
+				B2BF9F07214009820015F330 /* Pulsing.swift */,
 			);
 			path = "Custom View";
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
+				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
 				B25F80B9211F4F3200AD786C /* Constants.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,

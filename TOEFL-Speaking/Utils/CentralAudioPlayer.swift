@@ -12,41 +12,40 @@ import UIKit
 
 class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
-    var playingRecordingURL: URL?
-    var playedRecordingID: String?
+    private var playingRecordingURL: URL?
+    private var playingRecordingID: String?
     
-    var playPauseButton: UIButton?
-    var oldPlayPauseIconId = "g"
-    
-    var isPlaying = false
-    var audioPlayer: AVAudioPlayer?
-    var audioSession: AVAudioSession!
+    private var isPlaying = false
+    private var audioPlayer: AVAudioPlayer?
+    private var audioSession: AVAudioSession!
     
     static let player = CentralAudioPlayer()
     
     private override init() {
     }
     
+    ///Return ID of currently playing recording 
+    func getPlayingRecordingId() -> String {
+        return playingRecordingID ?? ""
+    }
+    
+    ///Stop playback and return player to default state
     func stopPlaying() {
-        
-        if (playPauseButton != nil) {
-            
-            isPlaying = false
-            playingRecordingURL = nil
-            playedRecordingID = nil
-            audioPlayer?.stop()
-        }
+        isPlaying = false
+        playingRecordingURL = nil
+        playingRecordingID = nil
+        audioPlayer?.stop()
     }
     
     ///Play or Pause or Start a recording
     func playRecording(url: URL,id: String){
 
-        if (url != playingRecordingURL || playedRecordingID != id ) {
+        if (url != playingRecordingURL || playingRecordingID != id ) {
             
             isPlaying = true
             
             playingRecordingURL = url
-            playedRecordingID = id
+            playingRecordingID = id
             
             do{
                 checkIfSilent()
@@ -85,13 +84,22 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     ///Reset ui after playing recording(s)
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         playingRecordingURL = nil
-        playedRecordingID = nil
+        playingRecordingID = nil
         isPlaying = false
     }
     
+    func checkIfPlaying(id: String) -> Bool {
+        
+        if playingRecordingID == id {
+            return isPlaying
+        }
+        return false;
+    }
+    
+    
     func checkIfPlaying(url: URL,id: String) -> Bool {
     
-        if (playingRecordingURL ==  url && playedRecordingID == id) {
+        if (playingRecordingURL ==  url && playingRecordingID == id) {
             return isPlaying
         }
         return false;

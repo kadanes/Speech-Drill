@@ -128,6 +128,17 @@ func sortUrlList(recordingsURLList: [URL]) -> [URL] {
     return sortedRecordingsURLList
 }
 
+///Sort doctionary of recording urls by date
+func sortDict(recordingUrlsDict: Dictionary<String,Array<URL>>) -> [(key:String,value:Array<URL>)] {
+    return recordingUrlsDict.sorted { (arg0, arg1) -> Bool in
+        let (date1, _) = arg0
+        let (date2, _) = arg1
+        guard let convertedDate1 = convertToDate(date: date1) else { return false }
+        guard let convertedDate2 = convertToDate(date: date2) else { return false }
+        return convertedDate1 > convertedDate2
+    }
+}
+
 ///Merge and return a new url of list of recordings or url of only recording in the list
 func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActivityIndicatorView? ,completion: @escaping (URL) -> ()) {
     

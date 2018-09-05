@@ -38,6 +38,9 @@ let buttonVerticalInset: CGFloat = sectionHeaderHeight/4
 let buttonHorizontalInset: CGFloat = 5
 let recordingCellHeight: CGFloat = 50
 let expandedRecordingCellHeight: CGFloat = 90
+let normalThumbDiameter: CGFloat = 10
+let highlightedThumbDiameter: CGFloat = 25
+
 
 let recordingCellId = "recordingCell"
 let headerCellId = "headerCell"

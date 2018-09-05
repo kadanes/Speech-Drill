@@ -9,14 +9,26 @@
 import Foundation
 import AVFoundation
 
-var previouslyMergedURLList = [URL]()
+private var previouslyMergedUrlsList = [URL]()
+private var currentlyMergingUrlsList = [URL]()
+private var isMerging = false
+
+func checkIfMerging() -> Bool {
+    return isMerging
+}
+
+func checkIfMerging(audioFileUrls: [URL]) -> Bool {
+    print("Old: ",previouslyMergedUrlsList,"\nNew: ",audioFileUrls,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    return audioFileUrls == previouslyMergedUrlsList && isMerging
+}
 
 func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
     
-    if previouslyMergedURLList == audioFileUrls {
+    if previouslyMergedUrlsList == audioFileUrls {
         completion()
     } else {
-        previouslyMergedURLList = audioFileUrls
+        isMerging = true
+        previouslyMergedUrlsList = audioFileUrls
         do {
             try FileManager.default.removeItem(at: getMergedFileURL())
             
@@ -87,7 +99,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         
         assetExport?.exportAsynchronously(completionHandler:
             {
-                
+                isMerging = false
                 switch assetExport!.status
                 {
                 case AVAssetExportSessionStatus.failed:
