@@ -88,6 +88,10 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         isPlaying = false
     }
     
+    func checkIfPlaying() -> Bool {
+        return isPlaying
+    }
+
     func checkIfPlaying(id: String) -> Bool {
         
         if playingRecordingID == id {

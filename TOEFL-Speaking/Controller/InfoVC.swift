@@ -16,6 +16,8 @@ class InfoVC: UIViewController {
     
     @IBOutlet weak var gmailBtn: UIButton!
     
+    @IBOutlet weak var twitterBtn: RoundButton!
+    
     @IBOutlet weak var iconCollectionView: UICollectionView!
     
     @IBOutlet weak var closeInfoBtn: UIButton!
@@ -29,8 +31,7 @@ class InfoVC: UIViewController {
     
     let ttsURL = URL(string: "http://www.fromtexttospeech.com")
     
-    var icons: [UIImage] = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,recordIcon,deleteIcon,playBtnIcon,checkMarkIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon]
-    
+    var icons: [UIImage] = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,recordIcon,deleteIcon,playBtnIcon,checkMarkIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon,plusIcon,minusIcon]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +39,7 @@ class InfoVC: UIViewController {
         setBtnImgProp(button: githubBtn, topPadding: 5, leftPadding: 1)
         setBtnImgProp(button: gmailBtn, topPadding: 5, leftPadding: 1)
         setBtnImgProp(button: closeInfoBtn, topPadding: 5, leftPadding: 1)
+        setBtnImgProp(button: twitterBtn, topPadding: 5, leftPadding: 1)
         
         infoContainer.layer.cornerRadius = 5
         infoContainer.layer.masksToBounds = true
@@ -55,6 +57,21 @@ class InfoVC: UIViewController {
     
     @IBAction func gmailTapped(_ sender: UIButton) {
         openURL(url: reportBugURL)
+    }
+    
+    @IBAction func twitterTapped(_ sender: Any) {
+        
+        let screenName =  "parthv21"
+        let appURL = NSURL(string: "twitter://user?screen_name=\(screenName)")!
+        let webURL = NSURL(string: "https://twitter.com/\(screenName)")!
+        
+        let application = UIApplication.shared
+        
+        if application.canOpenURL(appURL as URL) {
+            application.open(appURL as URL)
+        } else {
+            application.open(webURL as URL)
+        }
     }
     
     @IBAction func showLicenseTapped(_ sender: UIButton) {

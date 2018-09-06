@@ -10,7 +10,6 @@ import Foundation
 import AVFoundation
 
 private var previouslyMergedUrlsList = [URL]()
-private var currentlyMergingUrlsList = [URL]()
 private var isMerging = false
 
 func checkIfMerging() -> Bool {
@@ -18,20 +17,34 @@ func checkIfMerging() -> Bool {
 }
 
 func checkIfMerging(audioFileUrls: [URL]) -> Bool {
-    print("Old: ",previouslyMergedUrlsList,"\nNew: ",audioFileUrls,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    return audioFileUrls == previouslyMergedUrlsList && isMerging
+    return sortUrlList(recordingsUrlList: audioFileUrls)  == sortUrlList(recordingsUrlList: previouslyMergedUrlsList)  && isMerging
+}
+
+///Check if the urls in list being merged belongs to this date
+func checkIfMerging(date: String) -> Bool {
+    if previouslyMergedUrlsList.count == 0 {
+        return false
+    }
+    
+    let firstUrl = previouslyMergedUrlsList[0]
+    let mergingUrlsTimestamp = splitFileURL(url: firstUrl).timeStamp
+    let mergingUrlsDate = parseDate(timeStamp: mergingUrlsTimestamp)
+    
+    if mergingUrlsDate == date {
+        return isMerging
+    } else {
+        return false
+    }
 }
 
 func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
-    
     if previouslyMergedUrlsList == audioFileUrls {
         completion()
     } else {
         isMerging = true
         previouslyMergedUrlsList = audioFileUrls
         do {
-            try FileManager.default.removeItem(at: getMergedFileURL())
-            
+            try FileManager.default.removeItem(at: getMergedFileUrl())
         } catch let error as NSError {
             print("Error Deleting Merged Audio:\n\(error.domain)")
         }
@@ -46,7 +59,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
             
             let currentURL = audioFileUrls[i]
             
-            let thinkTime = splitFileURL(url: "\(currentURL)").2
+            let thinkTime = splitFileURL(url: currentURL).2
             
             let asset = AVURLAsset(url: currentURL)
             
@@ -95,11 +108,11 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         
         assetExport?.outputFileType = outputFileType
         
-        assetExport?.outputURL = getMergedFileURL()
+        assetExport?.outputURL = getMergedFileUrl()
         
         assetExport?.exportAsynchronously(completionHandler:
             {
-                isMerging = false
+               
                 switch assetExport!.status
                 {
                 case AVAssetExportSessionStatus.failed:
@@ -114,6 +127,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                     print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
                 default:
                     print("Merged recordings successfully")
+                    isMerging = false
                     completion()
                 }
         })

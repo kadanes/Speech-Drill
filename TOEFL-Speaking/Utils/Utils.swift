@@ -11,8 +11,6 @@ import UIKit
 import AVFoundation
 import Mute
 
-
-
 func deleteStoredRecording(recordingURL: URL) {
     do{
         try FileManager.default.removeItem(at: recordingURL)
@@ -23,11 +21,7 @@ func deleteStoredRecording(recordingURL: URL) {
 
 func openURL(url: URL?) {
     guard let url = url else {return }
-    if #available(iOS 10.0, *) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    } else {
-        UIApplication.shared.openURL(url)
-    }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
 }
 
 func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
@@ -35,17 +29,21 @@ func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) 
     button.contentEdgeInsets = UIEdgeInsetsMake(topPadding, leftPadding, topPadding, leftPadding)
 }
 
-func setButtonBgImage(button: UIButton, bgImage: UIImage) {
+func setButtonBgImage(button: UIButton, bgImage: UIImage,tintColor color: UIColor) {
+    let buttonImg = bgImage.withRenderingMode(.alwaysTemplate)
     DispatchQueue.main.async {
         UIView.transition(with: button, duration: 0.3, options: .curveEaseIn, animations: {
-            button.setImage(bgImage, for: .normal)
+            button.setImage(buttonImg, for: .normal)
+            button.tintColor = color
         }, completion: nil)
     }
 }
 
-func splitFileURL(url: String) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
+func splitFileURL(url: URL) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
     
-    let urlComponents = url.components(separatedBy: "/")
+    let urlStr = "\(url)"
+    
+    let urlComponents = urlStr.components(separatedBy: "/")
     let fileName = urlComponents[urlComponents.count - 1]
     let fileNameComponents = fileName.components(separatedBy: ".")
     
@@ -119,13 +117,13 @@ func getPath(fileName: String ) -> String? {
 }
 
 ///Function to sort list of recording urls by file name (timestamp)
-func sortUrlList(recordingsURLList: [URL]) -> [URL] {
-    let sortedRecordingsURLList = recordingsURLList.sorted(by: {(url1,url2)-> Bool in
-        let timestamp1 = splitFileURL(url: "\(url1)").0
-        let timestamp2 = splitFileURL(url: "\(url2)").0
+func sortUrlList(recordingsUrlList: [URL]) -> [URL] {
+    let sortedRecordingsUrlList = recordingsUrlList.sorted(by: {(url1,url2)-> Bool in
+        let timestamp1 = splitFileURL(url: url1).0
+        let timestamp2 = splitFileURL(url: url2).0
         return timestamp1 > timestamp2
     })
-    return sortedRecordingsURLList
+    return sortedRecordingsUrlList
 }
 
 ///Sort doctionary of recording urls by date
@@ -149,12 +147,12 @@ func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActiv
             }
         }
         
-        sortedRecordingsList = sortUrlList(recordingsURLList: sortedRecordingsList)
+        sortedRecordingsList = sortUrlList(recordingsUrlList: sortedRecordingsList)
         if sortedRecordingsList.count == 1 {
             completion(sortedRecordingsList[0])
         } else {
             mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
-                completion(getMergedFileURL())
+                completion(getMergedFileUrl())
             }
         }
     }

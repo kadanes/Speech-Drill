@@ -14,7 +14,7 @@ class Pulsing: CALayer {
     
     var initialPulseScale:TimeInterval = 0
     var nextPulseAfter:TimeInterval = 0
-    var animationDuration:TimeInterval = 1.5
+    var animationDuration:TimeInterval = 0.8
     var radius:CGFloat = 200
     var numberOfPulses:Float = Float.infinity
     
@@ -26,18 +26,18 @@ class Pulsing: CALayer {
         super.init(coder: aDecoder)
     }
     
-    init(numberOfPulses: Float = Float.infinity, radius: CGFloat, position: CGPoint) {
+    init(numberOfPulses: Float = Float.infinity, diameter: CGFloat, position: CGPoint) {
         super.init()
         
-        self.backgroundColor = UIColor.yellow.cgColor
+        self.backgroundColor = accentColor.cgColor
         self.contentsScale = UIScreen.main.scale
         self.opacity = 0
-        self.radius = radius
+        self.radius = diameter/2
         self.numberOfPulses = numberOfPulses
         self.position = position
         
-        self.bounds = CGRect(x: 0, y: 0, width: radius * 2, height: radius * 2)
-        self.cornerRadius = radius
+        self.bounds = CGRect(x: 0, y: 0, width: diameter * 2, height: diameter * 2)
+        self.cornerRadius = diameter
         
         
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {

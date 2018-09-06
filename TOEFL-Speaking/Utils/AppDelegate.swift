@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let topicNumber  = UserDefaults.standard.integer(forKey: "topicNumber")
         if (topicNumber == 0) {
-            UserDefaults.standard.set(0, forKey: "topicNumber")
+            UserDefaults.standard.set(1, forKey: "topicNumber")
         }
         
         return true

@@ -14,8 +14,17 @@ import CoreTelephony
 
 class MainVC: UIViewController {
    
-    @IBOutlet weak var adjustThinkTimeBtn: UILabel!
-    @IBOutlet weak var adjustSpeakTimeBtn: UILabel!
+    @IBOutlet weak var thinkTimeLbl: UILabel!
+    
+    @IBOutlet weak var thinkTimeInfoView: UIView!
+    @IBOutlet weak var thinkLbl: UILabel!
+    @IBOutlet weak var thinkInfoImgView: UIImageView!
+    
+    @IBOutlet weak var speakTimeLbl: UILabel!
+    
+    @IBOutlet weak var speakTimeInfoView: UIView!
+    @IBOutlet weak var speakLbl: UILabel!
+    @IBOutlet weak var speakInfoImgView: UIImageView!
     
     @IBOutlet weak var thinkTimeChangeStackViewSeperator: UIView!
     
@@ -113,7 +122,9 @@ class MainVC: UIViewController {
         
         exportSelectedActivityIndicator.stopAnimating()
         
+        setBtnImage()
         setUIButtonsProperty()
+        
         setHiddenVisibleSectionList()
         toggleExportMenu()
     }
@@ -124,6 +135,7 @@ class MainVC: UIViewController {
     }
     
     func setUIButtonsProperty() {
+
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -134,7 +146,60 @@ class MainVC: UIViewController {
         setBtnImgProp(button: recordBtn,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: closeShareMenuBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset - 5, leftPadding: buttonHorizontalInset - 5)
+    }
+    
+    func setBtnImage() {
+        
+        
+        thinkTimeLbl.textColor = accentColor
+        speakTimeLbl.textColor = accentColor
+        
+        thinkLbl.textColor = accentColor
+        thinkInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
+        thinkInfoImgView.tintColor = accentColor
+        thinkTimeInfoView.clipsToBounds = true
+        
+        var thinkTapGesture = UITapGestureRecognizer()
+        thinkTapGesture = UITapGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
+        thinkTapGesture.numberOfTapsRequired = 1
+        thinkTimeInfoView.isUserInteractionEnabled = true
+        thinkTimeInfoView.addGestureRecognizer(thinkTapGesture)
+        
+        speakLbl.textColor = accentColor
+        speakInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
+        speakInfoImgView.tintColor = accentColor
+        speakTimeInfoView.clipsToBounds = true
+        
+        var speakTapGesture = UITapGestureRecognizer()
+        
+        speakTapGesture = UITapGestureRecognizer(target: self, action: #selector(MainVC.pulseSpeakInfoView))
+        speakTapGesture.numberOfTapsRequired = 1
+        speakTimeInfoView.isUserInteractionEnabled = true
+        speakTimeInfoView.addGestureRecognizer(speakTapGesture)
+        
+        playSelectedActivityIndicator.color = accentColor
+        exportSelectedActivityIndicator.color = accentColor
+        
+        setButtonBgImage(button: displayInfoBtn, bgImage: infoIcon, tintColor: accentColor)
+        
+        setButtonBgImage(button: loadNextTopicBtn, bgImage: singleRightIcon , tintColor: accentColor)
+        setButtonBgImage(button: loadNextTenthTopicBtn, bgImage: doubleRightIcon , tintColor: accentColor)
+        setButtonBgImage(button: loadNextFiftiethTopicBtn, bgImage: tripleRightIcon , tintColor: accentColor)
+        
+        setButtonBgImage(button: loadPreviousTopicBtn, bgImage: singleLeftIcon , tintColor: accentColor)
+        setButtonBgImage(button: loadPreviousTenthTopicBtn, bgImage: doubleLeftIcon , tintColor: accentColor)
+        setButtonBgImage(button: loadPreviousFiftiethTopicBtn, bgImage: tripleLeftIcon , tintColor: accentColor)
+        
+        setButtonBgImage(button: cancelRecordingBtn, bgImage: closeIcon, tintColor: enabledRed)
+        
+        setButtonBgImage(button: closeShareMenuBtn, bgImage: closeIcon, tintColor: enabledRed)
+        
+        DispatchQueue.main.async {
+            self.exportSelectedBtn.setTitleColor(accentColor, for: .normal)
+        }
+        
+        setButtonBgImage(button: playSelectedBtn, bgImage: playBtnIcon, tintColor: accentColor)
     }
     
     func readTopics() {
@@ -154,22 +219,71 @@ class MainVC: UIViewController {
         } else {
             topicNumberToShow = topicNumber
         }
-        topicTxtView.setContentOffset(.zero, animated: true)
         userDefaults.set(topicNumberToShow, forKey: "topicNumber")
         self.topicNumber = topicNumberToShow
         topicTxtView.text = topics[topicNumberToShow]
         topicNumberLbl.text = "\(topicNumberToShow)"
     }
     
+    
+    @objc func pulseThinkInfoView() {
+
+        if isPlaying || checkIfRecordingIsOn() {
+            return
+        }
+        
+        let pulse = Pulsing(numberOfPulses: 1, diameter: thinkTimeInfoView.bounds.width, position: CGPoint(x:thinkTimeInfoView.bounds.width/2,y: thinkTimeInfoView.bounds.height/2))
+        
+        thinkTimeInfoView.layer.addSublayer(pulse)
+        displayInfo()
+    }
+    
+    @objc func pulseSpeakInfoView() {
+        
+        if isPlaying || checkIfRecordingIsOn() {
+            return
+        }
+        
+        let pulse = Pulsing(numberOfPulses: 1, diameter: speakTimeInfoView.bounds.width, position: CGPoint(x:speakTimeInfoView.bounds.width/2,y: speakTimeInfoView.bounds.height/2))
+        
+        speakTimeInfoView.layer.addSublayer(pulse)
+        displayInfo()
+    }
+    
+    func displayInfo() {
+       
+        if isPlaying || checkIfRecordingIsOn() {
+            return
+        }
+        
+        var infoText = ""
+        switch thinkTime {
+        case 15:
+            infoText = "This is the first type of speaking question in the test. You have to talk on a topic by giving your personal opinion. You will have 15 seconds to prepare and 45 seconds to answer. You can practice with the provided topics or use the test mode to record speaking questions from mock tests."
+        case 30:
+            infoText = "This is an integrated speaking task. It comes after independent speaking. In this question you have to read a short passage for around 45 seconds. Then you will listen to a talk about it after which you have to answer a question asked related to what you read and heard. You will get 30 seconds to prepare and 60 seconds to answer. Use this mode to record answers from mock tests."
+        case 20:
+            infoText = "This is the second integrated speaking task. In this you will listen to a short conversation between 2 students or a professor giving a lecture. Then you have to answer a question related to it. Use this mode to record answers from mock tests."
+            
+        default:
+            infoText = ""
+        }
+        
+        if infoText != "" {
+            topicTxtView.text = infoText
+        }
+    }
+    
     @IBAction func switchModesTapped(_ sender: UIButton) {
-        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: sender.center)
+    
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: sender.center)
         sender.layer.addSublayer(pulse)
         switchModes()
     }
     
     func switchModes() {
         
-        if isRecording {return}
+        if checkIfRecordingIsOn() {return}
         
         if isTestMode {
             thinkTimeChangeStackViewContainer.isHidden = true
@@ -209,10 +323,9 @@ class MainVC: UIViewController {
 
         if checkIfRecordingIsOn() {return}
        
-        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: CGPoint(x: sender.bounds.width/2, y: sender.bounds.height/2))
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x: sender.bounds.width/2, y: sender.bounds.height/2))
         sender.layer.addSublayer(pulse)
        
-
         switch sender.tag {
             
             case 15:
@@ -233,6 +346,7 @@ class MainVC: UIViewController {
         thinkTime = defaultThinkTime
         
         resetRecordingState()
+        displayInfo()
     }
     
     ///Increment current displayed topic number by 1
@@ -242,7 +356,7 @@ class MainVC: UIViewController {
     
     ///Increment current displayed topic number base on button pressed
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
-        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
         sender.layer.addSublayer(pulse)
         
         let increment = sender.tag
@@ -252,7 +366,7 @@ class MainVC: UIViewController {
     
     ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
-        let pulse = Pulsing(numberOfPulses: 1, radius: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
         sender.layer.addSublayer(pulse)
         
         let decrement = sender.tag
@@ -268,6 +382,11 @@ class MainVC: UIViewController {
         if (!checkIfRecordingIsOn()) {
             
             cancelRecordingBtn.isHidden = false
+            
+            DispatchQueue.main.async {
+                self.thinkTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+            }
+            
             thinkTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
         }
     }
@@ -298,7 +417,8 @@ class MainVC: UIViewController {
         if(thinkTime > 0) {
             isThinking = true
             thinkTime -= 1
-            adjustThinkTimeBtn.text = "\(thinkTime)"
+            thinkTimeLbl.text = "\(thinkTime)"
+            
         } else {
             
             timer.invalidate()
@@ -315,12 +435,23 @@ class MainVC: UIViewController {
                 while (audioPlayer?.isPlaying)! {
                     
                 }
+                
+                DispatchQueue.main.async {
+                    self.thinkTimeInfoView.backgroundColor = .clear
+                }
+                
+                
+                
             } catch let error as NSError {
                 print("Error Playing Speak Now:\n",error.localizedDescription)
             }
             
             isThinking = false
             recordAudio()
+            
+            DispatchQueue.main.async {
+                self.speakTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+            }
             
             speakTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
             blinkTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
@@ -331,10 +462,14 @@ class MainVC: UIViewController {
     @objc func decrementSpeakTime(timer: Timer) {
         if(speakTime > 0) {
             speakTime -= 1
-            adjustSpeakTimeBtn.text = "\(speakTime)"
+            speakTimeLbl.text = "\(speakTime)"
+            
         } else {
             timer.invalidate()
             speakTime = defaultSpeakTime
+            DispatchQueue.main.async {
+                self.speakTimeInfoView.backgroundColor = .clear
+            }
         }
     }
     
@@ -342,7 +477,7 @@ class MainVC: UIViewController {
     @objc func blinkRecordBtn(timer: Timer) {
         if speakTime > 0 {
             if !blinking {
-                setButtonBgImage(button: recordBtn, bgImage: recordIcon)
+                setButtonBgImage(button: recordBtn, bgImage: recordIcon, tintColor: .red)
                 blinking = true
             } else {
                 recordBtn.setImage(nil, for: .normal)
@@ -359,9 +494,9 @@ class MainVC: UIViewController {
         thinkTime = defaultThinkTime
         speakTime = defaultSpeakTime
         
-        setButtonBgImage(button: recordBtn, bgImage: recordIcon)
-        adjustThinkTimeBtn.text = "\(defaultThinkTime)"
-        adjustSpeakTimeBtn.text = "\(defaultSpeakTime)"
+        setButtonBgImage(button: recordBtn, bgImage: recordIcon, tintColor: .red)
+        thinkTimeLbl.text = "\(defaultThinkTime)"
+        speakTimeLbl.text = "\(defaultSpeakTime)"
         cancelRecordingBtn.isHidden = true
 
         thinkTimer?.invalidate()
@@ -371,6 +506,11 @@ class MainVC: UIViewController {
         isRecording = false
         isThinking = false
         blinking = false
+        
+        DispatchQueue.main.async {
+            self.speakTimeInfoView.backgroundColor = .clear
+            self.thinkTimeInfoView.backgroundColor = .clear
+        }
     }
     
     ///Check if user is recording a topic
@@ -387,15 +527,17 @@ class MainVC: UIViewController {
         
         if let files = FileManager.default.enumerator(atPath: "\(documents)") {
 
-            for file in files {
-
+            for file in files  {
+                
+                guard let fileUrl = URL(string: "\(file)") else { break }
+                
                 let recordingName = "\(file)"
 
                 if recordingName.hasSuffix("."+recordingExtension) {
 
                     if (recordingName != mergedFileName) {
                         
-                        let timeStamp = splitFileURL(url: recordingName).0
+                        let timeStamp = splitFileURL(url: fileUrl).0
                         
                         let date = parseDate(timeStamp: timeStamp)
                         
@@ -606,7 +748,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
             guard let url = recordingUrlsDict[date]?[0] else { return sectionHeaderHeight }
             isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
         } else {
-             isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
+             isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileUrl(), id: date)
         }
        
         if isSectionRecordingsPlaying {
@@ -618,8 +760,8 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
-        let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
-        let timeStamp = splitFileURL(url: "\(url)").timeStamp
+        let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
+        let timeStamp = splitFileURL(url: url).timeStamp
        
         let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(timeStamp)")
         if isPlaying {
@@ -632,7 +774,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell {
             
             let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
-            let url = sortUrlList(recordingsURLList: recordings.value)[indexPath.row]
+            let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
             
             cell.configureCell(url: url)
             cell.delegate = self
@@ -703,12 +845,12 @@ extension MainVC {
                 self.exportSeekerView.isHidden = false
             }
             configureExportMenuPlayBackSeeker()
-            setButtonBgImage(button: playSelectedBtn, bgImage: pauseBtnYellowIcon)
+            setButtonBgImage(button: playSelectedBtn, bgImage: pauseBtnIcon, tintColor: accentColor)
         } else {
             DispatchQueue.main.async {
                 self.exportSeekerView.isHidden = true
             }
-            setButtonBgImage(button: playSelectedBtn, bgImage: playBtnYellowIcon)
+            setButtonBgImage(button: playSelectedBtn, bgImage: playBtnIcon, tintColor: accentColor)
             if let _ = exportPlayBackTimer {
                 exportPlayBackTimer?.invalidate()
                 exportPlayBackTimer = nil
@@ -739,7 +881,7 @@ extension MainVC {
     
     ///Export selected recordings
     @IBAction func exportSelectedTapped(_ sender: UIButton) {
-        if (playSelectedActivityIndicator.isAnimating) {
+        if checkIfRecordingIsOn() || checkIfMerging() {
             return
         }
         
@@ -754,7 +896,7 @@ extension MainVC {
     ///Play selected recordings
     @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
         
-        if isRecording || exportSelectedActivityIndicator.isAnimating {return}
+        if checkIfRecordingIsOn() || checkIfMerging() { return }
         
         processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: playSelectedActivityIndicator) { (playURL) in
             
@@ -765,9 +907,9 @@ extension MainVC {
             CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId)
             self.isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: playURL, id: selectedAudioId)
             if (self.isPlaying) {
-                setButtonBgImage(button: sender, bgImage: pauseBtnYellowIcon)
+                setButtonBgImage(button: sender, bgImage: pauseBtnIcon, tintColor: accentColor)
             } else {
-                setButtonBgImage(button: sender, bgImage: playBtnYellowIcon)
+                setButtonBgImage(button: sender, bgImage: playBtnIcon, tintColor: accentColor)
             }
             self.toggleSeeker()
         }
@@ -786,7 +928,7 @@ extension MainVC {
             DispatchQueue.main.async {
                 self.exportSeekerView.isHidden = false
                 self.exportPlayingSeeker.setThumbImage(drawSliderThumb(diameter: normalThumbDiameter, backgroundColor: UIColor.white), for: .normal)
-                self.exportPlayingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: UIColor.yellow), for: .highlighted)
+                self.exportPlayingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: accentColor), for: .highlighted)
                 
                 let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
                 let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
@@ -824,7 +966,7 @@ extension MainVC {
     @IBAction func headerStopPlaybackUIUpdate(_ sender: UISlider) {
         exportPlayBackTimer?.invalidate()
         exportPlayBackTimer = nil
-        sender.minimumTrackTintColor = UIColor.yellow
+        sender.minimumTrackTintColor = accentColor
     }
     
     ///On value change play to new time
@@ -833,7 +975,7 @@ extension MainVC {
         DispatchQueue.main.async {
             self.exportCurrentPlayTimeLbl.text = convertToMins(seconds: playbackTime)
             CentralAudioPlayer.player.setPlaybackTime(playTime: playbackTime)
-            sender.minimumTrackTintColor = UIColor.yellow
+            sender.minimumTrackTintColor = accentColor
         }
     }
     

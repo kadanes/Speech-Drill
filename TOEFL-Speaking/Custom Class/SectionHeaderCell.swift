@@ -19,7 +19,7 @@ class SectionHeaderCell: UITableViewCell {
     var isPlaying = false
     var isMerging = false
     
-    var recordingsURL: URL?
+    var recordingsUrl: URL?
     
     @IBOutlet weak var playAllBtn: UIButton!
     @IBOutlet weak var shareAllBtn: UIButton!
@@ -34,42 +34,88 @@ class SectionHeaderCell: UITableViewCell {
     
     private var headerPlayBackTimer: Timer?
 
-    func setButtonImageProperties(button: UIButton,offset: CGFloat) {
+    
+    func configureCell(date:String) {
+        
+        sectionNameLbl.text = date
+        self.date = date
+       
+        isMerging = checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!)
+        if  isMerging{
+            mergingActivityIndicator.startAnimating()
+        } else {
+            mergingActivityIndicator.stopAnimating()
+        }
+        
+        updatePlayingState()
+        isMerging = checkIfMerging()
+        setBtnImage()
+        setBtnProperty()
+        configureHeaderPlayBackSeeker()
+    }
+    
+    func setBtnImage() {
+        
+        if isPlaying {
+            setButtonBgImage(button: playAllBtn, bgImage: pauseBtnIcon, tintColor: enabledGray)
+        } else {
+            setButtonBgImage(button: playAllBtn, bgImage: playBtnIcon, tintColor: enabledGray)
+        }
+        
+        if isMerging {
+            playAllBtn.imageView?.tintColor = disabledGray
+             setButtonBgImage(button: shareAllBtn, bgImage: shareIcon , tintColor: disabledGray)
+        } else {
+            playAllBtn.imageView?.tintColor = enabledGray
+            setButtonBgImage(button: shareAllBtn, bgImage: shareIcon , tintColor: enabledGray)
+        }
+        
+    
+        if ((delegate?.checkIfHidden(date: date))!) {
+            setButtonBgImage(button: hideSectionBtn, bgImage: plusIcon, tintColor: enabledGray)
+        } else {
+            setButtonBgImage(button: hideSectionBtn, bgImage: minusIcon, tintColor: enabledGray)
+        }
+    }
+    
+    func setBtnProperty() {
+        setBtnPropWithCutomOffset(button: playAllBtn, offset: 0)
+        setBtnPropWithCutomOffset(button: shareAllBtn, offset: 0)
+        
+        if ((delegate?.checkIfHidden(date: date))!) {
+            setBtnPropWithCutomOffset(button: hideSectionBtn, offset: 2)
+        } else {
+            setBtnPropWithCutomOffset(button: hideSectionBtn, offset: 5)
+        }
+    }
+    
+    
+    func setBtnPropWithCutomOffset(button: UIButton,offset: CGFloat) {
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsetsMake(buttonVerticalInset, buttonHorizontalInset + offset, buttonVerticalInset, buttonHorizontalInset + offset)
     }
 
+    ///Check if contents of this section are playing
     func updatePlayingState() {
-        
-        if let url = recordingsURL {
-           isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
-        } else {
-            
-            let recordedURLS = sortUrlList(recordingsURLList: (delegate?.getAudioFilesList(date: date))!)
-
-            if recordedURLS.count > 1 {
-                
-                recordingsURL = getMergedFileURL()
-                
-            isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileURL(), id: date)
-                
-            } else if recordedURLS.count == 1 {
-                recordingsURL = recordedURLS[0]
-                
-                isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordedURLS[0], id: date)
-
+        if let recordedUrls = delegate?.getAudioFilesList(date: date) {
+            if recordedUrls.count > 1 {
+                recordingsUrl = getMergedFileUrl()
+                isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileUrl(), id: date)
+            } else if recordedUrls.count == 1 {
+                recordingsUrl = recordedUrls[0]
+                isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordedUrls[0], id: date)
             }
+        } else {
+            isPlaying = false
         }
     }
 
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
-        
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
-        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) { (shareURL) in
-            
-            openShareSheet(url: shareURL, activityIndicator: self.mergingActivityIndicator, completion: {})
+        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) { (shareUrl) in
+            openShareSheet(url: shareUrl, activityIndicator: self.mergingActivityIndicator, completion: {})
         }
     }
     
@@ -77,75 +123,27 @@ class SectionHeaderCell: UITableViewCell {
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
-        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playURL) in
-            if (self.delegate?.isRecording)! {
-                return
-            }
-            self.recordingsURL = playURL
-            self.updatePlayingState()
-            
-            CentralAudioPlayer.player.playRecording(url: playURL, id: self.date)
-            DispatchQueue.main.async {
-                self.mergingActivityIndicator.stopAnimating()
-            }
+        delegate?.reloadData()
+        
+        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playUrl) in
+           
+            self.recordingsUrl = playUrl
+            CentralAudioPlayer.player.playRecording(url: playUrl, id: self.date)
             self.delegate?.reloadData()
-        }
-    }
-
-    func configureCell(date:String) {
-        sectionNameLbl.text = date
-        self.date = date
-
-        setButtonImageProperties(button: playAllBtn, offset: 0)
-        setButtonImageProperties(button: shareAllBtn, offset: 0)
-        
-        print(checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!))
-        
-        if checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!) {
-            mergingActivityIndicator.startAnimating()
-        } else {
-            mergingActivityIndicator.stopAnimating()
-        }
-        
-        updatePlayingState()
-        updateToggleBtnIcon()
-        configureHeaderPlayBackSeeker()
-        
-        if isPlaying {
-            setButtonBgImage(button: playAllBtn, bgImage: pauseBtnIcon)
-        } else {
-            setButtonBgImage(button: playAllBtn, bgImage: playBtnIcon)
         }
     }
     
     @IBAction func toggleSection(_ sender: UIButton) {
         delegate?.toggleSection(date: date)
-        updateToggleBtnIcon()
-        delegate?.reloadData()
-        
-    }
-    
-    func updateToggleBtnIcon() {
-//
-//        let pulse = Pulsing(numberOfPulses: 1, radius: hideSectionBtn.layer.bounds.width, position: CGPoint(x:hideSectionBtn.bounds.width/2, y:hideSectionBtn.bounds.height/2 - 5))
-//        hideSectionBtn.layer.addSublayer(pulse)
-        
-        if ((delegate?.checkIfHidden(date: date))!) {
-             hideSectionBtn.setImage(plusIcon, for: .normal)
-            setButtonImageProperties(button: hideSectionBtn, offset: 2)
-        } else {
-            hideSectionBtn.setImage(minusIcon, for: .normal)
-            setButtonImageProperties(button: hideSectionBtn, offset: 5)
-            
-        }
     }
     
     //MARK :- Playback Seeker
     func configureHeaderPlayBackSeeker() {
         if isPlaying {
+                
             seekerView.isHidden = false
             headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: normalThumbDiameter, backgroundColor: UIColor.white), for: .normal)
-            headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: UIColor.yellow), for: .highlighted)
+            headerPlayingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: accentColor), for: .highlighted)
             
             let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime();
             let totalTime = CentralAudioPlayer.player.getPlayBackDuration();
@@ -176,7 +174,7 @@ class SectionHeaderCell: UITableViewCell {
     ///On slider touchdown invalidate the update timer
     @IBAction func headerStopPlaybackUIUpdate(_ sender: UISlider) {
         headerPlayBackTimer?.invalidate()
-        sender.minimumTrackTintColor = UIColor.yellow
+        sender.minimumTrackTintColor = accentColor
     }
     
     ///On value change play to new time
@@ -184,7 +182,7 @@ class SectionHeaderCell: UITableViewCell {
         let playbackTime = Double(sender.value)
         headerCurrentPlayTimeLbl.text = convertToMins(seconds: playbackTime)
         CentralAudioPlayer.player.setPlaybackTime(playTime: playbackTime)
-        sender.minimumTrackTintColor = UIColor.yellow
+        sender.minimumTrackTintColor = accentColor
     }
     
     ///On touch up fire the playback time update timer
