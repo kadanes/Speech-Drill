@@ -221,7 +221,7 @@ class RecordingCell: UITableViewCell {
     
     @IBAction func selectRecordingTapped(_ sender: UIButton) {
         if !(isRecordningSelected) {
-            setButtonBgImage(button: sender, bgImage: checkMarkIcon, tintColor: accentColor)
+            setButtonBgImage(button: sender, bgImage: checkIcon, tintColor: accentColor)
             delegate?.addToExportList(url: recordingURL!)
         } else {
             setButtonBgImage(button: sender, bgImage: UIImage(), tintColor: .clear)

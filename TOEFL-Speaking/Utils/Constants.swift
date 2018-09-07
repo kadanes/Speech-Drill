@@ -49,7 +49,6 @@ let headerCellId = "headerCell"
 let playBtnIcon = UIImage(named: "playg.png")!
 let pauseBtnIcon = UIImage(named: "pauseg.png")!
 let deleteBtnIcon = UIImage(named: "delete.png")!
-let checkMarkIcon = UIImage(named: "check.png")!
 let recordIcon = drawSliderThumb(diameter: 40, backgroundColor: enabledRed)
 let emailIcon = UIImage(named: "email.png")!
 let githubIcon = UIImage(named: "github.png")!
@@ -84,6 +83,6 @@ let disabledGray = UIColor.darkGray
 //#8E0000
 let enabledRed = UIColor.red
 let disabledRed =  UIColor(red:0.56, green:0.00, blue:0.00, alpha:1.0)
-let accentColor = UIColor.yellow
+let accentColor = UIColor(red:1.00, green:0.82, blue:0.00, alpha:1.0)
 //#008080
 //let accentColor = UIColor(red:0.00, green:0.50, blue:0.50, alpha:1.0)

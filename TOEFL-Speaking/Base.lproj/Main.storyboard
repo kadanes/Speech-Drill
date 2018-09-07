@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -170,19 +170,19 @@
                                                         </constraints>
                                                     </view>
                                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="enb-4l-fAg">
-                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="1"/>
+                                                        <rect key="frame" x="0.0" y="-148" width="359" height="1"/>
                                                         <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="BKG-FH-isP"/>
                                                         </constraints>
                                                     </view>
                                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I98-OU-b7x">
-                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
+                                                        <rect key="frame" x="0.0" y="-145.66666666666666" width="359" height="30"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
                                                                 <rect key="frame" x="0.0" y="-2.3333333333333428" width="359" height="35"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu">
+                                                                    <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu">
                                                                         <rect key="frame" x="0.0" y="0.0" width="119" height="35"/>
                                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
@@ -193,7 +193,7 @@
                                                                             <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9H3-7H-3kA"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" clipsSubviews="YES" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO">
+                                                                    <button opaque="NO" clipsSubviews="YES" tag="30" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO">
                                                                         <rect key="frame" x="120" y="0.0" width="119" height="35"/>
                                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
@@ -204,7 +204,7 @@
                                                                             <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="afA-Gz-DHt"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" clipsSubviews="YES" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ">
+                                                                    <button opaque="NO" clipsSubviews="YES" tag="20" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ">
                                                                         <rect key="frame" x="240" y="0.0" width="119" height="35"/>
                                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
@@ -408,7 +408,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gRc-qg-QFf">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="47"/>
+                                                                        <rect key="frame" x="-325" y="0.0" width="50" height="47"/>
                                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="50" id="h1q-6w-3rE"/>
@@ -1355,10 +1355,12 @@
                     </view>
                     <connections>
                         <outlet property="closeInfoBtn" destination="k5a-DA-11q" id="wth-Tn-S0Z"/>
+                        <outlet property="fABtn" destination="zZO-5c-gq8" id="JBq-3O-mgv"/>
                         <outlet property="githubBtn" destination="lkR-gD-ncx" id="3zH-Hl-YC1"/>
                         <outlet property="gmailBtn" destination="lr9-oh-usT" id="e5l-Hq-bUg"/>
                         <outlet property="iconCollectionView" destination="cJE-kR-SCr" id="a9N-dT-1yv"/>
                         <outlet property="infoContainer" destination="Oqp-hm-Sp5" id="8HI-pA-dE4"/>
+                        <outlet property="tTSBtn" destination="Oeb-uw-jm9" id="GBm-On-Ku5"/>
                         <outlet property="twitterBtn" destination="btf-CQ-qdV" id="034-J8-0rU"/>
                     </connections>
                 </viewController>

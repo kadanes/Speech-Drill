@@ -11,14 +11,15 @@ import UIKit
 class InfoVC: UIViewController {
 
     @IBOutlet weak var infoContainer: UIView!
-    
+
     @IBOutlet weak var githubBtn: UIButton!
-    
     @IBOutlet weak var gmailBtn: UIButton!
-    
     @IBOutlet weak var twitterBtn: RoundButton!
-    
+    @IBOutlet weak var fABtn: UIButton!
+    @IBOutlet weak var tTSBtn: UIButton!
     @IBOutlet weak var iconCollectionView: UICollectionView!
+    
+    
     
     @IBOutlet weak var closeInfoBtn: UIButton!
     
@@ -31,8 +32,11 @@ class InfoVC: UIViewController {
     
     let ttsURL = URL(string: "http://www.fromtexttospeech.com")
     
-    var icons: [UIImage] = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,recordIcon,deleteIcon,playBtnIcon,checkMarkIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon,plusIcon,minusIcon]
+    var icons = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,recordIcon,deleteIcon,playBtnIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon,plusIcon,minusIcon]
     
+    var redIcons = [deleteIcon,closeIcon]
+    
+    var accentedIcons = [checkIcon,singleLeftIcon,singleRightIcon,doubleLeftIcon,doubleRightIcon,tripleLeftIcon,tripleRightIcon,infoIcon]
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,6 +44,9 @@ class InfoVC: UIViewController {
         setBtnImgProp(button: gmailBtn, topPadding: 5, leftPadding: 1)
         setBtnImgProp(button: closeInfoBtn, topPadding: 5, leftPadding: 1)
         setBtnImgProp(button: twitterBtn, topPadding: 5, leftPadding: 1)
+        
+        fABtn.setTitleColor(accentColor, for: .normal)
+        tTSBtn.setTitleColor(accentColor, for: .normal)
         
         infoContainer.layer.cornerRadius = 5
         infoContainer.layer.masksToBounds = true
@@ -97,7 +104,15 @@ extension InfoVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
         
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "IconCell", for: indexPath) as? IconCell {
             
-            cell.configureCell(icon: icons[indexPath.row])
+            let cellImg = icons[indexPath.row]
+            if accentedIcons.contains(cellImg) {
+                cell.configureCell(icon: cellImg, tintColor: accentColor)
+            } else if redIcons.contains(cellImg) {
+                cell.configureCell(icon: cellImg, tintColor: enabledRed)
+            } else {
+                cell.configureCell(icon: icons[indexPath.row], tintColor: nil)
+            }
+            
             return cell
         }
         
