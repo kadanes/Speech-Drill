@@ -19,6 +19,10 @@ class RecordingCell: UITableViewCell {
     @IBOutlet weak var shareRecordingBtn: RoundButton!
     @IBOutlet weak var playRecordningBtn: RoundButton!
 
+    @IBOutlet weak var confirmDeleteBtn: RoundButton!
+    
+    @IBOutlet weak var cancelDeleteBtn: RoundButton!
+    
     @IBOutlet weak var checkBoxBtn: UIButton!
     
     @IBOutlet weak var seekerView: UIView!
@@ -49,9 +53,17 @@ class RecordingCell: UITableViewCell {
         isMerging = checkIfMerging()
         setBtnImage()
         setBtnProperty()
+        hideDeleteMenu()
         configureRecordingPlayBackSeeker()
         
     }
+    
+    
+    @IBAction func startPulsing(_ sender: UIButton) {
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.layer.bounds.width/2,y: sender.layer.bounds.height/2))
+        sender.layer.addSublayer(pulse)
+    }
+    
     
     ///Set topic label to topic number or speaking topic type
     func setTopicLblTxt() {
@@ -96,6 +108,8 @@ class RecordingCell: UITableViewCell {
             setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: enabledGray)
         }
         
+        setButtonBgImage(button: confirmDeleteBtn, bgImage: checkIcon, tintColor: confirmGreen)
+        setButtonBgImage(button: cancelDeleteBtn, bgImage: closeIcon, tintColor: confirmGreen)
         
     }
     
@@ -103,6 +117,8 @@ class RecordingCell: UITableViewCell {
         setBtnImgProp(button: deleteRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: shareRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: playRecordningBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: confirmDeleteBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setBtnImgProp(button: cancelDeleteBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset+5)
         
         if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
             checkBoxBg.contentMode = .scaleAspectFit
@@ -148,8 +164,25 @@ class RecordingCell: UITableViewCell {
                 delegate?.setToPracticeMode()
                 delegate?.renderTopic(topicNumber: topicNumber)
             }
+            
             CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)")
-            delegate?.reloadData()
+            
+            //delegate?.reloadData()
+            delegate?.reloadRow(url: recordingURL!)
+//            var previousPlayingId = CentralAudioPlayer.player.getPlayingRecordingId()
+//
+//
+//
+//            if previousPlayingId == "" {
+//
+//                delegate?.reloadRow(url: recordingURL!)
+//                return
+//            }
+//
+//            if previousPlayingId != selectedAudioId || checkIfDate(date: previousPlayingId) {
+//               previousPlayingId = CentralAudioPlayer.player.getPlayingRecordingUrl()
+//            }
+//            delegate?.togglePlayIconsFor(previouslyPlayingId: previousPlayingId, nowPlayingId: "\(recordingURL!)")
         }
     }
     
@@ -181,7 +214,8 @@ class RecordingCell: UITableViewCell {
         updatePlayingState()
         if !isPlaying {
             timer.invalidate()
-            delegate?.reloadData()
+//            delegate?.reloadData()
+            delegate?.reloadRow(url: recordingURL!)
         }
     }
     
@@ -204,8 +238,64 @@ class RecordingCell: UITableViewCell {
         recordingPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         sender.minimumTrackTintColor = UIColor.white
     }
+    
+    func showDeleteMenu() {
+        
+//        UIView.animate(withDuration: 0.3) {
+//
+//            self.deleteRecordingBtn.imageView?.tintColor = disabledRed
+//            self.confirmDeleteBtn.isHidden = false
+//            self.cancelDeleteBtn.isHidden = false
+//            self.playPauseBtn.isHidden = true
+//            self.shareRecordingBtn.isHidden = true
+//        }
+        
+        UIView.animate(withDuration: 0.15, animations: {
+            self.playPauseBtn.isHidden = true
+            
+            self.confirmDeleteBtn.isHidden = false
+        }) { (completed) in
+            if completed {
+                UIView.animate(withDuration: 0.15, animations: {
+                    self.shareRecordingBtn.isHidden = true
+                    self.cancelDeleteBtn.isHidden = false
+                    self.deleteRecordingBtn.imageView?.tintColor = enabledRed
+                    
+                })
+            }
+        }
+    }
 
+    func hideDeleteMenu() {
+        self.playPauseBtn.isHidden = false
+        self.cancelDeleteBtn.isHidden = true
+        self.shareRecordingBtn.isHidden = false
+        self.deleteRecordingBtn.imageView?.tintColor = enabledRed
+        self.confirmDeleteBtn.isHidden = true
+    }
+    func hideDeleteMenuAnimated() {
+        
+        UIView.animate(withDuration: 0.15, animations: {
+            
+            self.shareRecordingBtn.isHidden = false
+            self.cancelDeleteBtn.isHidden = true
+
+        }) { (completed) in
+            if completed {
+                UIView.animate(withDuration: 0.15, animations: {
+                    self.confirmDeleteBtn.isHidden = true
+                    self.playPauseBtn.isHidden = false
+                    self.deleteRecordingBtn.imageView?.tintColor = enabledRed
+                })
+            }
+        }
+    }
+    
     @IBAction func deleteRecording(_ sender: Any) {
+        showDeleteMenu()
+    }
+    
+    @IBAction func confirmDelete(_ sender: Any) {
         let date = parseDate(timeStamp: timeStamp)
         let isRecordingUsedInMerging = checkIfMerging(date: date)
         if isRecordingUsedInMerging { return }
@@ -217,6 +307,10 @@ class RecordingCell: UITableViewCell {
                 delegate?.deleteRow(with: url)
             }
         }
+    }
+    
+    @IBAction func cancelDelete(_ sender: Any) {
+        hideDeleteMenuAnimated()
     }
     
     @IBAction func selectRecordingTapped(_ sender: UIButton) {

@@ -163,23 +163,21 @@ class MainVC: UIViewController {
         thinkInfoImgView.tintColor = accentColor
         thinkTimeInfoView.clipsToBounds = true
         
-        var thinkTapGesture = UITapGestureRecognizer()
-        thinkTapGesture = UITapGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
-        thinkTapGesture.numberOfTapsRequired = 1
+      
+        let thinkPressGesture =  UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
+        thinkPressGesture.minimumPressDuration = 0
         thinkTimeInfoView.isUserInteractionEnabled = true
-        thinkTimeInfoView.addGestureRecognizer(thinkTapGesture)
+        thinkTimeInfoView.addGestureRecognizer(thinkPressGesture)
         
         speakLbl.textColor = accentColor
         speakInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
         speakInfoImgView.tintColor = accentColor
         speakTimeInfoView.clipsToBounds = true
         
-        var speakTapGesture = UITapGestureRecognizer()
-        
-        speakTapGesture = UITapGestureRecognizer(target: self, action: #selector(MainVC.pulseSpeakInfoView))
-        speakTapGesture.numberOfTapsRequired = 1
+        let speakPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseSpeakInfoView))
+        speakPressGesture.minimumPressDuration = 0
         speakTimeInfoView.isUserInteractionEnabled = true
-        speakTimeInfoView.addGestureRecognizer(speakTapGesture)
+        speakTimeInfoView.addGestureRecognizer(speakPressGesture)
         
         playSelectedActivityIndicator.color = accentColor
         exportSelectedActivityIndicator.color = accentColor
@@ -205,6 +203,12 @@ class MainVC: UIViewController {
         setButtonBgImage(button: playSelectedBtn, bgImage: playBtnIcon, tintColor: accentColor)
     }
     
+    
+    @IBAction func startPulsing(_ sender: UIButton) {
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.layer.bounds.width/2,y: sender.layer.bounds.height/2))
+        sender.layer.addSublayer(pulse)
+    }
+    
     func readTopics() {
         do{
             let fileURL = Bundle.main.url(forResource: "topics", withExtension: "csv")
@@ -228,28 +232,38 @@ class MainVC: UIViewController {
         topicNumberLbl.text = "\(topicNumberToShow)"
     }
     
-    @objc func pulseThinkInfoView() {
+    @objc func pulseThinkInfoView(gesture: UILongPressGestureRecognizer) {
 
         if isPlaying || checkIfRecordingIsOn() {
             return
         }
-        
-        let pulse = Pulsing(numberOfPulses: 1, diameter: thinkTimeInfoView.bounds.width, position: CGPoint(x:thinkTimeInfoView.bounds.width/2,y: thinkTimeInfoView.bounds.height/2))
-        
-        thinkTimeInfoView.layer.addSublayer(pulse)
-        displayInfo()
+
+        if gesture.state == .began {
+            let pulse = Pulsing(numberOfPulses: 1, diameter: thinkTimeInfoView.bounds.width, position: CGPoint(x:thinkTimeInfoView.bounds.width/2,y: thinkTimeInfoView.bounds.height/2))
+            thinkTimeInfoView.layer.addSublayer(pulse)
+            
+        } else if gesture.state == .ended {
+            displayInfo()
+            thinkTimeInfoView.layer.removeAllAnimations()
+        }
     }
     
-    @objc func pulseSpeakInfoView() {
+    @objc func pulseSpeakInfoView(gesture: UILongPressGestureRecognizer) {
         
         if isPlaying || checkIfRecordingIsOn() {
             return
         }
         
-        let pulse = Pulsing(numberOfPulses: 1, diameter: speakTimeInfoView.bounds.width, position: CGPoint(x:speakTimeInfoView.bounds.width/2,y: speakTimeInfoView.bounds.height/2))
+        if gesture.state == .began {
+            let pulse = Pulsing(numberOfPulses: 1, diameter: speakTimeInfoView.bounds.width, position: CGPoint(x:speakTimeInfoView.bounds.width/2,y: speakTimeInfoView.bounds.height/2))
+            speakTimeInfoView.layer.addSublayer(pulse)
+            
+            
+        } else if gesture.state == .ended {
+            displayInfo()
+        }
         
-        speakTimeInfoView.layer.addSublayer(pulse)
-        displayInfo()
+        
     }
     
     func displayInfo() {
@@ -277,8 +291,6 @@ class MainVC: UIViewController {
     }
     
     @IBAction func switchModesTapped(_ sender: UIButton) {
-        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: sender.center)
-        sender.layer.addSublayer(pulse)
         switchModes()
     }
     
@@ -324,9 +336,6 @@ class MainVC: UIViewController {
 
         if checkIfRecordingIsOn() {return}
        
-        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x: sender.bounds.width/2, y: sender.bounds.height/2))
-        sender.layer.addSublayer(pulse)
-       
         switch sender.tag {
             
             case 15:
@@ -357,9 +366,7 @@ class MainVC: UIViewController {
     
     ///Increment current displayed topic number base on button pressed
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
-        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
-        sender.layer.addSublayer(pulse)
-        
+    
         let increment = sender.tag
         topicNumber = (topicNumber + increment < topics.count) ? topicNumber + increment : topics.count - 1
         renderTopic(topicNumber: topicNumber)
@@ -367,8 +374,6 @@ class MainVC: UIViewController {
     
     ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
-        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.bounds.width/2, y:sender.bounds.height/2))
-        sender.layer.addSublayer(pulse)
         
         let decrement = sender.tag
         topicNumber = (topicNumber - decrement >= 1) ? topicNumber - decrement : 1
@@ -569,6 +574,7 @@ class MainVC: UIViewController {
     }
     
     func setHiddenVisibleSectionList() {
+        
         let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
             guard let convertedDate1 = convertToDate(date: date1) else { return false }
             guard let convertedDate2 = convertToDate(date: date2) else { return false }
@@ -594,7 +600,7 @@ class MainVC: UIViewController {
         } else {
             showSection(date: date)
         }
-        reloadData()
+        updateRowsFor(recordingsOn: date)
         
         if visibleSections.contains(date) {
             DispatchQueue.main.async {
@@ -611,12 +617,22 @@ class MainVC: UIViewController {
         }
     }
 
+    func updateRowsFor(recordingsOn date: String) {
+        
+        findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
+            
+            self.recordingTableView.reloadSections([section], with: .automatic)
+        }
+    }
+    
     func hideSection(date: String) {
+        if hiddenSections.contains(date) {return}
         visibleSections = visibleSections.filter {$0 != date}
         hiddenSections.append(date)
     }
     
     func showSection(date: String) {
+        if visibleSections.contains(date) {return}
         hiddenSections = hiddenSections.filter{$0 != date}
         visibleSections.append(date)
     }
@@ -699,9 +715,7 @@ extension MainVC: AVAudioRecorderDelegate {
         }
         
         resetRecordingState()
-        //updateUrlList()
         setHiddenVisibleSectionList()
-        //reloadData()
     }
     
     func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
@@ -728,65 +742,100 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
             urls.insert(url, at: 0)
             recordingUrlsDict[date] = urls
             recordingTableView.insertSections([0], with: .automatic)
-            
             visibleSections.append(date)
             
         } else {
-            var indicesToAdd = [IndexPath]()
-            let sortedRecordingUrlsDict = sortDict(recordingUrlsDict: recordingUrlsDict)
-    
-            for section in 0..<sortedRecordingUrlsDict.count {
-                if sortedRecordingUrlsDict[section].key == date {
-                    
-                    if hiddenSections.contains(date) {
-                        hiddenSections = hiddenSections.filter{ $0 != date }
-                        visibleSections.append(date)
-                        
-                        for index in 0..<(recordingUrlsDict[date]?.count)! {
-                            let indexPath = IndexPath(row: index+1, section: section)
-                            indicesToAdd.append(indexPath)
-                        }
-                    }
-                    
-                    let indexPath = IndexPath(row: 0, section: section)
-                    indicesToAdd.append(indexPath)
-                    recordingUrlsDict[date]?.insert(url, at: 0)
-                   
-                    recordingTableView.insertRows(at: indicesToAdd, with:.automatic)
-                    recordingTableView.reloadSections([section], with: .automatic)
-                    return
-                }
+            
+            findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section,_) in
+                self.showSection(date: date)
+                self.recordingUrlsDict[date]?.insert(url, at: 0)
+                self.recordingTableView.reloadSections([section], with: .automatic)
+                
             }
         }
     }
     
     ///Delete a row refering to the recording url
     func deleteRow(with url: URL) {
+        removeFromExportList(url: url)
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
-        let sortedRecordingUrlsDict = sortDict(recordingUrlsDict: recordingUrlsDict)
         
-        for section in 0..<sortedRecordingUrlsDict.count {
-            if sortedRecordingUrlsDict[section].key == date {
-                var urls = sortedRecordingUrlsDict[section].value
-                urls = sortUrlList(recordingsUrlList: urls)
+        findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, containedUrls) in
+            var urls = containedUrls
+            
+            if let row = urls.firstIndex(of: url) {
                 
-                if let row = urls.firstIndex(of: url) {
-                    print("Deleting row: ",row)
-                    let indexPath = IndexPath(item: row, section: section)
+                let indexPath = IndexPath(item: row, section: section)
+                
+                if let numberOfRecordingsInSection = self.recordingUrlsDict[date]?.count {
                     
-                    if let numberOfRecordingsInSection = recordingUrlsDict[date]?.count {
-                        
-                        if numberOfRecordingsInSection == 1 {
-                            recordingUrlsDict.removeValue(forKey: date)
-                            recordingTableView.deleteSections([section], with: .automatic)
-                            return
-                        } else {
-                            urls.remove(at: row)
-                            recordingUrlsDict[date] = urls
-                            recordingTableView.deleteRows(at: [indexPath], with: .automatic)
-                            return
-                        }
+                    if numberOfRecordingsInSection == 1 {
+                        self.recordingUrlsDict.removeValue(forKey: date)
+                        self.recordingTableView.deleteSections([section], with: .automatic)
+                        return
+                    } else {
+                        urls.remove(at: row)
+                        self.recordingUrlsDict[date] = urls
+                        self.recordingTableView.deleteRows(at: [indexPath], with: .automatic)
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
+    func reloadRow(url: URL) {
+        let timestamp = splitFileURL(url:url).timeStamp
+        let date = parseDate(timeStamp: timestamp)
+        findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
+            if let row = urls.firstIndex(of: url) {
+                let indexPath = IndexPath(row: row, section: section)
+                self.recordingTableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
+    
+    func reloadSection(date: String) {
+        findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, _) in
+            self.recordingTableView.reloadSections([section], with: .automatic)
+        }
+    }
+    
+    func togglePlayIconsFor(previouslyPlayingId: String, nowPlayingId: String) {
+        reloadPlayedRow(playingId: previouslyPlayingId, pause: true) {
+            //self.reloadPlayedRow(playingId: nowPlayingId, pause: false) {}
+        }
+    }
+    
+   
+    func reloadPlayedRow(playingId: String, pause: Bool, completion: @escaping ()->()) {
+        if checkIfDate(date: playingId) {
+            findAndUpdateSection(date: playingId, recordingUrlsDict: recordingUrlsDict) { (section, _) in
+                self.recordingTableView.reloadSections([section], with: .none)
+                completion()
+            }
+        } else if playingId == selectedAudioId {
+            if pause {
+                setButtonBgImage(button: playSelectedBtn, bgImage: pauseBtnIcon, tintColor: accentColor)
+                isPlaying = false
+                completion()
+            } else {
+                setButtonBgImage(button: playSelectedBtn, bgImage: playBtnIcon, tintColor: accentColor)
+                isPlaying = true
+                completion()
+            }
+        } else {
+            
+            if let url = URL(string: playingId) {
+                let timestamp = splitFileURL(url:url).timeStamp
+                let date = parseDate(timeStamp: timestamp)
+                findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
+                    
+                    if let row = urls.firstIndex(of: url) {
+                        let indexPath = IndexPath(row: row, section: section)
+                        self.recordingTableView.reloadRows(at: [indexPath], with: .automatic)
+                        completion()
                     }
                 }
             }

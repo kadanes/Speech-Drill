@@ -52,6 +52,12 @@ class SectionHeaderXIB: UITableViewHeaderFooterView {
         configureHeaderPlayBackSeeker()
     }
     
+    @IBAction func startPulsing(_ sender: UIButton) {
+        let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.layer.bounds.width/2,y: sender.layer.bounds.height/2))
+        sender.layer.addSublayer(pulse)
+    }
+    
+    
     func setBtnImage() {
         
         if isPlaying {
@@ -120,13 +126,14 @@ class SectionHeaderXIB: UITableViewHeaderFooterView {
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
-        delegate?.reloadData()
+        //delegate?.reloadData()
         
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playUrl) in
             
             self.recordingsUrl = playUrl
             CentralAudioPlayer.player.playRecording(url: playUrl, id: self.date)
-            self.delegate?.reloadData()
+            //self.delegate?.reloadData()
+            self.delegate?.reloadSection(date: self.date)
         }
     }
     
@@ -164,7 +171,8 @@ class SectionHeaderXIB: UITableViewHeaderFooterView {
         updatePlayingState()
         if !isPlaying {
             timer.invalidate()
-            delegate?.reloadData()
+        
+            delegate?.reloadSection(date: date)
         }
     }
     

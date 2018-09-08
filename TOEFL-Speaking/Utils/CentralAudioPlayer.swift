@@ -24,9 +24,19 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     private override init() {
     }
     
+    
     ///Return ID of currently playing recording 
     func getPlayingRecordingId() -> String {
         return playingRecordingID ?? ""
+    }
+    
+    ///Return URL of recording
+    func getPlayingRecordingUrl() -> String {
+        if let url = playingRecordingURL {
+             return "\(url)"
+        } else {
+            return ""
+        }
     }
     
     ///Stop playback and return player to default state

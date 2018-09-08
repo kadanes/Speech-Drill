@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -156,6 +156,7 @@
                                                                     <color key="titleColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
+                                                                    <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="dIa-Dr-XJe"/>
                                                                     <action selector="switchModesTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zcj-iv-o0x"/>
                                                                 </connections>
                                                             </button>
@@ -170,19 +171,19 @@
                                                         </constraints>
                                                     </view>
                                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="enb-4l-fAg">
-                                                        <rect key="frame" x="0.0" y="-148" width="359" height="1"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="1"/>
                                                         <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="BKG-FH-isP"/>
                                                         </constraints>
                                                     </view>
                                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I98-OU-b7x">
-                                                        <rect key="frame" x="0.0" y="-145.66666666666666" width="359" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8cz-N2-gIK">
                                                                 <rect key="frame" x="0.0" y="-2.3333333333333428" width="359" height="35"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu">
+                                                                    <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3km-Q0-9iu">
                                                                         <rect key="frame" x="0.0" y="0.0" width="119" height="35"/>
                                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
@@ -191,9 +192,10 @@
                                                                         </state>
                                                                         <connections>
                                                                             <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9H3-7H-3kA"/>
+                                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="fH2-oJ-lyf"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" clipsSubviews="YES" tag="30" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO">
+                                                                    <button opaque="NO" clipsSubviews="YES" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yx-fV-UkO">
                                                                         <rect key="frame" x="120" y="0.0" width="119" height="35"/>
                                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
@@ -202,9 +204,10 @@
                                                                         </state>
                                                                         <connections>
                                                                             <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="afA-Gz-DHt"/>
+                                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="OiG-93-cEj"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" clipsSubviews="YES" tag="20" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ">
+                                                                    <button opaque="NO" clipsSubviews="YES" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-kp-GIJ">
                                                                         <rect key="frame" x="240" y="0.0" width="119" height="35"/>
                                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
@@ -213,6 +216,7 @@
                                                                         </state>
                                                                         <connections>
                                                                             <action selector="changeThinkTimeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E0A-Jh-5Km"/>
+                                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="ry6-jQ-OTX"/>
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
@@ -296,6 +300,7 @@
                                                         <state key="normal" image="tleft.png"/>
                                                         <connections>
                                                             <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qCq-1H-cxt"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="bRd-EM-QGR"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obt-De-gHj" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -305,6 +310,7 @@
                                                         <state key="normal" image="dleft.png"/>
                                                         <connections>
                                                             <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPd-46-T2X"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="Lne-Q2-q95"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMN-J2-UPn" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -314,6 +320,7 @@
                                                         <state key="normal" image="sleft.png"/>
                                                         <connections>
                                                             <action selector="previousQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H1N-tw-QQg"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="wdD-V7-9BA"/>
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DMH-43-8Hn" customClass="RoundLabel" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -331,6 +338,7 @@
                                                         <state key="normal" image="sright.png"/>
                                                         <connections>
                                                             <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GdI-5q-fC5"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="fuh-aI-SMF"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vX7-Zw-csc" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -340,6 +348,7 @@
                                                         <state key="normal" image="dright.png"/>
                                                         <connections>
                                                             <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H43-KQ-wlH"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="g6u-nE-9ht"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfk-mu-sAd" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -349,6 +358,7 @@
                                                         <state key="normal" image="tright.png"/>
                                                         <connections>
                                                             <action selector="nextQuestionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="058-DA-CaD"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="Hii-Vw-EJY"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -396,7 +406,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="0lg-La-H8H">
                                                                 <rect key="frame" x="325" y="0.0" width="50" height="47"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWY-tR-IMK">
+                                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWY-tR-IMK">
                                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="47"/>
                                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
@@ -404,11 +414,12 @@
                                                                         </constraints>
                                                                         <state key="normal" image="recordf.png"/>
                                                                         <connections>
+                                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="2Zd-d1-A2X"/>
                                                                             <action selector="startRecordingPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qSY-Fq-E7g"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gRc-qg-QFf">
-                                                                        <rect key="frame" x="-325" y="0.0" width="50" height="47"/>
+                                                                    <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gRc-qg-QFf">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="47"/>
                                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="50" id="h1q-6w-3rE"/>
@@ -416,6 +427,7 @@
                                                                         <state key="normal" image="close.png"/>
                                                                         <connections>
                                                                             <action selector="cancelRecordingTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fxG-TF-tq6"/>
+                                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="fw0-VQ-Ede"/>
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
@@ -638,6 +650,7 @@
                                                                                     <state key="normal" backgroundImage="box.png"/>
                                                                                     <connections>
                                                                                         <action selector="selectRecordingTapped:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="2if-Eb-H0C"/>
+                                                                                        <action selector="startPulsing:" destination="qGU-Yf-wBh" eventType="touchDown" id="2Pp-ct-lcq"/>
                                                                                     </connections>
                                                                                 </button>
                                                                             </subviews>
@@ -649,17 +662,17 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Sh6-PT-tRv">
-                                                                            <rect key="frame" x="60" y="0.0" width="139" height="53"/>
+                                                                            <rect key="frame" x="60" y="0.0" width="147" height="53"/>
                                                                             <subviews>
                                                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ady-wv-bO8">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="139" height="40"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="147" height="40"/>
                                                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="40" id="lMs-ua-bCl"/>
                                                                                     </constraints>
                                                                                 </view>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eir-5C-wRp">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="139" height="53"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="147" height="53"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="QZw-1V-aEx"/>
                                                                                     </constraints>
@@ -669,45 +682,64 @@
                                                                                 </label>
                                                                             </subviews>
                                                                         </stackView>
-                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZWA-dg-mum">
-                                                                            <rect key="frame" x="209" y="0.0" width="158" height="53"/>
+                                                                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZWA-dg-mum">
+                                                                            <rect key="frame" x="217" y="0.0" width="150" height="53"/>
                                                                             <subviews>
-                                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="4aq-Hj-aQI">
-                                                                                    <rect key="frame" x="0.0" y="6.6666666666666679" width="150" height="40"/>
+                                                                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="4aq-Hj-aQI">
+                                                                                    <rect key="frame" x="0.0" y="6.6666666666666679" width="142" height="40"/>
                                                                                     <subviews>
-                                                                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="48" height="40"/>
+                                                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="26" height="40"/>
                                                                                             <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <state key="normal" title="▶️" image="playg.png"/>
                                                                                             <connections>
                                                                                                 <action selector="playRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="E4w-Zz-5Zc"/>
+                                                                                                <action selector="startPulsing:" destination="qGU-Yf-wBh" eventType="touchDown" id="6Qr-XC-8n1"/>
                                                                                             </connections>
                                                                                         </button>
-                                                                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xna-0Q-hnQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                                            <rect key="frame" x="51" y="0.0" width="48" height="40"/>
+                                                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xna-0Q-hnQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                            <rect key="frame" x="29" y="0.0" width="26" height="40"/>
                                                                                             <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <state key="normal" image="sshareg.png"/>
                                                                                             <connections>
                                                                                                 <action selector="shareRecordingPressed:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="WPJ-Kw-yh0"/>
+                                                                                                <action selector="startPulsing:" destination="qGU-Yf-wBh" eventType="touchDown" id="bX9-hk-0BQ"/>
                                                                                             </connections>
                                                                                         </button>
-                                                                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-cm-fjw" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                                            <rect key="frame" x="102" y="0.0" width="48" height="40"/>
+                                                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-cm-fjw" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                            <rect key="frame" x="58" y="0.0" width="26" height="40"/>
                                                                                             <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112730061347" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <state key="normal" image="delete.png"/>
                                                                                             <connections>
                                                                                                 <action selector="deleteRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="GkP-tb-PdW"/>
                                                                                             </connections>
                                                                                         </button>
+                                                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J48-I5-Av3" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                            <rect key="frame" x="87" y="0.0" width="26" height="40"/>
+                                                                                            <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112729999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                            <state key="normal" image="check.png"/>
+                                                                                            <connections>
+                                                                                                <action selector="confirmDelete:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="Qg5-Fy-aHU"/>
+                                                                                                <action selector="deleteRecording:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="flb-IW-Ll7"/>
+                                                                                            </connections>
+                                                                                        </button>
+                                                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gnr-6n-cgb" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                                                                            <rect key="frame" x="116" y="0.0" width="26" height="40"/>
+                                                                                            <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="0.66907112729999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                            <state key="normal" image="close.png"/>
+                                                                                            <connections>
+                                                                                                <action selector="cancelDelete:" destination="qGU-Yf-wBh" eventType="touchUpInside" id="OML-wc-gpR"/>
+                                                                                            </connections>
+                                                                                        </button>
                                                                                     </subviews>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="40" id="EAx-03-aeK"/>
-                                                                                        <constraint firstAttribute="width" constant="150" id="vHX-rp-5Ej"/>
                                                                                     </constraints>
                                                                                 </stackView>
                                                                             </subviews>
                                                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <constraints>
+                                                                                <constraint firstAttribute="width" constant="150" id="7dq-6K-Z0x"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="4aq-Hj-aQI" secondAttribute="trailing" constant="8" id="AtB-ds-slH"/>
                                                                                 <constraint firstItem="4aq-Hj-aQI" firstAttribute="leading" secondItem="ZWA-dg-mum" secondAttribute="leading" id="Rph-wI-lBW"/>
                                                                                 <constraint firstItem="4aq-Hj-aQI" firstAttribute="centerY" secondItem="ZWA-dg-mum" secondAttribute="centerY" id="b39-NV-Tmi"/>
@@ -809,7 +841,9 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <connections>
+                                            <outlet property="cancelDeleteBtn" destination="gnr-6n-cgb" id="JJX-rr-k1k"/>
                                             <outlet property="checkBoxBtn" destination="52d-RJ-MZb" id="weB-SG-3hY"/>
+                                            <outlet property="confirmDeleteBtn" destination="J48-I5-Av3" id="zxH-Gp-9QZ"/>
                                             <outlet property="currentPlayTimeLbl" destination="ZRe-21-pj2" id="dpo-3g-Aqh"/>
                                             <outlet property="deleteRecordingBtn" destination="ZOk-cm-fjw" id="8dG-9t-GFB"/>
                                             <outlet property="playPauseBtn" destination="GWU-N2-BwQ" id="bLu-7x-ga1"/>
@@ -840,7 +874,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="0tL-M8-dRP">
                                                 <rect key="frame" x="0.0" y="2" width="375" height="45"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qA-8f-df2">
+                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qA-8f-df2">
                                                         <rect key="frame" x="0.0" y="0.0" width="60" height="45"/>
                                                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
@@ -849,6 +883,7 @@
                                                         <state key="normal" image="close.png"/>
                                                         <connections>
                                                             <action selector="cancelSelectedTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="J4U-zM-V3y"/>
+                                                            <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="paC-l7-Ruv"/>
                                                         </connections>
                                                     </button>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwL-04-xF6">
@@ -862,6 +897,7 @@
                                                                 </state>
                                                                 <connections>
                                                                     <action selector="exportSelectedTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gvB-fS-OOp"/>
+                                                                    <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="vhr-iY-kqp"/>
                                                                 </connections>
                                                             </button>
                                                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hSA-uk-ATw">
@@ -877,15 +913,16 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EEz-E7-7Jj">
                                                         <rect key="frame" x="275" y="0.0" width="100" height="45"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OuX-zo-6iH">
+                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OuX-zo-6iH">
                                                                 <rect key="frame" x="0.0" y="0.0" width="60" height="45"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="60" id="8sE-in-wKt"/>
                                                                 </constraints>
-                                                                <state key="normal" image="playy.png"/>
+                                                                <state key="normal" image="playg.png"/>
                                                                 <connections>
                                                                     <action selector="playSelectedAudioTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UyN-Q9-2Hx"/>
+                                                                    <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="mpz-Jb-nOo"/>
                                                                 </connections>
                                                             </button>
                                                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="yLL-rT-Qpv">
@@ -981,6 +1018,7 @@
                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="info.png"/>
                                 <connections>
+                                    <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="31i-Hj-BCe"/>
                                     <segue destination="4aH-TG-88i" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="mdO-Tc-dCK"/>
                                 </connections>
                             </button>
@@ -1372,6 +1410,7 @@
     <resources>
         <image name="Me.jpg" width="1917" height="1918"/>
         <image name="box.png" width="448" height="512"/>
+        <image name="check.png" width="512" height="512"/>
         <image name="close.png" width="61" height="61"/>
         <image name="delete.png" width="88" height="100"/>
         <image name="dleft.png" width="126" height="101"/>
@@ -1380,7 +1419,6 @@
         <image name="github.png" width="188" height="150"/>
         <image name="info.png" width="192" height="512"/>
         <image name="playg.png" width="101" height="116"/>
-        <image name="playy.png" width="101" height="116"/>
         <image name="plus.png" width="100" height="100"/>
         <image name="recordf.png" width="512" height="512"/>
         <image name="share.png" width="114" height="101"/>

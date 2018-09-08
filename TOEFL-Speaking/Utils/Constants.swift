@@ -85,5 +85,7 @@ let disabledGray = UIColor.darkGray
 let enabledRed = UIColor.red
 let disabledRed =  UIColor(red:0.56, green:0.00, blue:0.00, alpha:1.0)
 let accentColor = UIColor(red:1.00, green:0.82, blue:0.00, alpha:1.0)
-//#008080
+//#008080(teal)
 //let accentColor = UIColor(red:0.00, green:0.50, blue:0.50, alpha:1.0)
+//00B765
+let confirmGreen = UIColor(red:0.00, green:0.72, blue:0.40, alpha:1.0)

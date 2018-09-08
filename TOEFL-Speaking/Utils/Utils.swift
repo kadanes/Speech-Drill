@@ -12,16 +12,29 @@ import AVFoundation
 import Mute
 
 func deleteStoredRecording(recordingURL: URL) -> Bool {
-    do{
-        let (timestamp,topicNumber,_) = splitFileURL(url: recordingURL)
-        print("Deleting: ",timestamp," ",topicNumber)
-        
+    do{        
         try FileManager.default.removeItem(at: recordingURL)
         return true
     } catch let error as NSError {
         print("Could Not Delete File\n",error.localizedDescription)
         return false
     }
+}
+
+func findAndUpdateSection(date: String, recordingUrlsDict:Dictionary<String,Array<URL>>, completion: @escaping (Int,Array<URL>)->()) {
+    
+    let sortedRecordingUrlsDict = sortDict(recordingUrlsDict: recordingUrlsDict)
+    
+    for section in 0..<sortedRecordingUrlsDict.count {
+        if sortedRecordingUrlsDict[section].key == date {
+            var urls = sortedRecordingUrlsDict[section].value
+            urls = sortUrlList(recordingsUrlList: urls)
+            
+            completion(section,urls)
+            
+        }
+    }
+    
 }
 
 func openURL(url: URL?) {
@@ -71,6 +84,16 @@ func splitFileURL(url: URL) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
     return (timeStamp,topicNumber,thinkTime)
 }
 
+func checkIfDate(date: String) -> Bool {
+    let dateFormatterGet = DateFormatter()
+    dateFormatterGet.dateFormat = "dd/MM/yyyy"
+
+    if dateFormatterGet.date(from: date) != nil {
+        return true
+    } else {
+        return false
+    }
+}
 func parseDate(timeStamp: Int) -> String {
     let ts = Double(timeStamp)
     let date = Date(timeIntervalSince1970: ts)
