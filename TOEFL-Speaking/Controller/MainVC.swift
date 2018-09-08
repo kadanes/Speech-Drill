@@ -70,7 +70,7 @@ class MainVC: UIViewController {
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
     var isTestMode = false
-    var reducedTime = true
+    var reducedTime = false
     
     var defaultThinkTime = 15
     var defaultSpeakTime = 45
