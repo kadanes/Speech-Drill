@@ -70,6 +70,8 @@ class MainVC: UIViewController {
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
     var isTestMode = false
+    var reducedTime = true
+    
     var defaultThinkTime = 15
     var defaultSpeakTime = 45
     var thinkTime = 15
@@ -111,11 +113,13 @@ class MainVC: UIViewController {
         
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
+        recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerNibCellId)
+        
         callObserver.setDelegate(self, queue: nil)
         
         resetRecordingState()
 
-        updateURLList()
+        updateUrlList()
         readTopics()
         topicNumber = userDefaults.integer(forKey: "topicNumber")
         renderTopic(topicNumber: topicNumber)
@@ -150,7 +154,6 @@ class MainVC: UIViewController {
     }
     
     func setBtnImage() {
-        
         
         thinkTimeLbl.textColor = accentColor
         speakTimeLbl.textColor = accentColor
@@ -225,7 +228,6 @@ class MainVC: UIViewController {
         topicNumberLbl.text = "\(topicNumberToShow)"
     }
     
-    
     @objc func pulseThinkInfoView() {
 
         if isPlaying || checkIfRecordingIsOn() {
@@ -275,7 +277,6 @@ class MainVC: UIViewController {
     }
     
     @IBAction func switchModesTapped(_ sender: UIButton) {
-    
         let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: sender.center)
         sender.layer.addSublayer(pulse)
         switchModes()
@@ -404,7 +405,7 @@ class MainVC: UIViewController {
             cancelledRecording = true
             
             if let url = currentRecordingURL {
-                deleteStoredRecording(recordingURL: url)
+                let _ = deleteStoredRecording(recordingURL: url)
                 reloadData()
             }
         } else {
@@ -424,26 +425,25 @@ class MainVC: UIViewController {
             timer.invalidate()
             thinkTime = defaultThinkTime
             
-            do{
-                let alertSound = URL(fileURLWithPath: getPath(fileName: "speak_now.mp3")!)
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-                try AVAudioSession.sharedInstance().setActive(true)
-                try audioPlayer = AVAudioPlayer(contentsOf: alertSound)
-                audioPlayer!.prepareToPlay()
-                audioPlayer!.play()
-                
-                while (audioPlayer?.isPlaying)! {
+            if !reducedTime {
+                do {
+                    let alertSound = URL(fileURLWithPath: getPath(fileName: "speak_now.mp3")!)
+                    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+                    try AVAudioSession.sharedInstance().setActive(true)
+                    try audioPlayer = AVAudioPlayer(contentsOf: alertSound)
+                    audioPlayer!.prepareToPlay()
+                    audioPlayer!.play()
                     
+                    while (audioPlayer?.isPlaying)! {
+                        
+                    }
+                } catch let error as NSError {
+                    print("Error Playing Speak Now:\n",error.localizedDescription)
                 }
-                
-                DispatchQueue.main.async {
-                    self.thinkTimeInfoView.backgroundColor = .clear
-                }
-                
-                
-                
-            } catch let error as NSError {
-                print("Error Playing Speak Now:\n",error.localizedDescription)
+            }
+            
+            DispatchQueue.main.async {
+                self.thinkTimeInfoView.backgroundColor = .clear
             }
             
             isThinking = false
@@ -491,9 +491,14 @@ class MainVC: UIViewController {
     ///Reset display of think and speak time
     func resetRecordingState() {
         
+        if reducedTime {
+            defaultSpeakTime = 2
+            defaultThinkTime = 2
+        }
+        
         thinkTime = defaultThinkTime
         speakTime = defaultSpeakTime
-        
+    
         setButtonBgImage(button: recordBtn, bgImage: recordIcon, tintColor: .red)
         thinkTimeLbl.text = "\(defaultThinkTime)"
         speakTimeLbl.text = "\(defaultSpeakTime)"
@@ -519,7 +524,7 @@ class MainVC: UIViewController {
     }
     
     ///Update local list with newly added recording urls
-    func updateURLList() {
+    func updateUrlList() {
                 
         recordingUrlsDict.removeAll()
         
@@ -682,6 +687,9 @@ extension MainVC: AVAudioRecorderDelegate {
         
         if !cancelledRecording{
             Toast.show(message: "Recorded successfully!", success: true)
+            if let url = currentRecordingURL {
+                insertRow(with: url)
+            }
             if !isTestMode {
                 incrementTopicNumber()
                 renderTopic(topicNumber: topicNumber)
@@ -691,9 +699,9 @@ extension MainVC: AVAudioRecorderDelegate {
         }
         
         resetRecordingState()
-        updateURLList()
+        //updateUrlList()
         setHiddenVisibleSectionList()
-        reloadData()
+        //reloadData()
     }
     
     func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
@@ -704,9 +712,84 @@ extension MainVC: AVAudioRecorderDelegate {
 extension MainVC:UITableViewDataSource,UITableViewDelegate {
     
     func reloadData() {
-        updateURLList()
+        updateUrlList()
         DispatchQueue.main.async {
              self.recordingTableView.reloadData()
+        }
+    }
+    
+    func insertRow(with url:URL ) {
+    
+        let timestamp = splitFileURL(url: url).timeStamp
+        let date = parseDate(timeStamp: timestamp)
+        
+        if !recordingUrlsDict.keys.contains(date) {
+            var urls = [URL]()
+            urls.insert(url, at: 0)
+            recordingUrlsDict[date] = urls
+            recordingTableView.insertSections([0], with: .automatic)
+            
+            visibleSections.append(date)
+            
+        } else {
+            var indicesToAdd = [IndexPath]()
+            let sortedRecordingUrlsDict = sortDict(recordingUrlsDict: recordingUrlsDict)
+    
+            for section in 0..<sortedRecordingUrlsDict.count {
+                if sortedRecordingUrlsDict[section].key == date {
+                    
+                    if hiddenSections.contains(date) {
+                        hiddenSections = hiddenSections.filter{ $0 != date }
+                        visibleSections.append(date)
+                        
+                        for index in 0..<(recordingUrlsDict[date]?.count)! {
+                            let indexPath = IndexPath(row: index+1, section: section)
+                            indicesToAdd.append(indexPath)
+                        }
+                    }
+                    
+                    let indexPath = IndexPath(row: 0, section: section)
+                    indicesToAdd.append(indexPath)
+                    recordingUrlsDict[date]?.insert(url, at: 0)
+                   
+                    recordingTableView.insertRows(at: indicesToAdd, with:.automatic)
+                    recordingTableView.reloadSections([section], with: .automatic)
+                    return
+                }
+            }
+        }
+    }
+    
+    ///Delete a row refering to the recording url
+    func deleteRow(with url: URL) {
+        let timestamp = splitFileURL(url: url).timeStamp
+        let date = parseDate(timeStamp: timestamp)
+        let sortedRecordingUrlsDict = sortDict(recordingUrlsDict: recordingUrlsDict)
+        
+        for section in 0..<sortedRecordingUrlsDict.count {
+            if sortedRecordingUrlsDict[section].key == date {
+                var urls = sortedRecordingUrlsDict[section].value
+                urls = sortUrlList(recordingsUrlList: urls)
+                
+                if let row = urls.firstIndex(of: url) {
+                    print("Deleting row: ",row)
+                    let indexPath = IndexPath(item: row, section: section)
+                    
+                    if let numberOfRecordingsInSection = recordingUrlsDict[date]?.count {
+                        
+                        if numberOfRecordingsInSection == 1 {
+                            recordingUrlsDict.removeValue(forKey: date)
+                            recordingTableView.deleteSections([section], with: .automatic)
+                            return
+                        } else {
+                            urls.remove(at: row)
+                            recordingUrlsDict[date] = urls
+                            recordingTableView.deleteRows(at: [indexPath], with: .automatic)
+                            return
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -723,11 +806,18 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? SectionHeaderCell {
+//        if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? SectionHeaderCell {
+//            let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
+//            cell.delegate = self
+//            cell.configureCell(date: date)
+//            return cell
+//        }
+        
+        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerNibCellId) as? SectionHeaderXIB {
             let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
-            cell.delegate = self
-            cell.configureCell(date: date)
-            return cell
+            headerView.delegate = self
+            headerView.configureCell(date: date)
+            return headerView
         }
         
         return UITableViewCell()

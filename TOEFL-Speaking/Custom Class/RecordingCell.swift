@@ -208,14 +208,14 @@ class RecordingCell: UITableViewCell {
     @IBAction func deleteRecording(_ sender: Any) {
         let date = parseDate(timeStamp: timeStamp)
         let isRecordingUsedInMerging = checkIfMerging(date: date)
-        if isRecordingUsedInMerging {
-            return
-        }
+        if isRecordingUsedInMerging { return }
         
         CentralAudioPlayer.player.stopPlaying()
         if let url = recordingURL {
-            deleteStoredRecording(recordingURL: url)
-            delegate?.reloadData()
+            let deleted = deleteStoredRecording(recordingURL: url)
+            if deleted {
+                delegate?.deleteRow(with: url)
+            }
         }
     }
     

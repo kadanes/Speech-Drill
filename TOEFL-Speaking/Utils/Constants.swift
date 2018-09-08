@@ -44,6 +44,7 @@ let highlightedThumbDiameter: CGFloat = 25
 
 let recordingCellId = "recordingCell"
 let headerCellId = "headerCell"
+let headerNibCellId = "headerNibCell"
 //Buttons
 
 let playBtnIcon = UIImage(named: "playg.png")!

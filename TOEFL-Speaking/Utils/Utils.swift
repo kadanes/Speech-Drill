@@ -11,11 +11,16 @@ import UIKit
 import AVFoundation
 import Mute
 
-func deleteStoredRecording(recordingURL: URL) {
+func deleteStoredRecording(recordingURL: URL) -> Bool {
     do{
+        let (timestamp,topicNumber,_) = splitFileURL(url: recordingURL)
+        print("Deleting: ",timestamp," ",topicNumber)
+        
         try FileManager.default.removeItem(at: recordingURL)
+        return true
     } catch let error as NSError {
         print("Could Not Delete File\n",error.localizedDescription)
+        return false
     }
 }
 
