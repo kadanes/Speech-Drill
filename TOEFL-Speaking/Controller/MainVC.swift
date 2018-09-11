@@ -855,17 +855,14 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        if let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId) as? SectionHeaderCell {
-//            let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
-//            cell.delegate = self
-//            cell.configureCell(date: date)
-//            return cell
-//        }
         
         if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerCellId) as? SectionHeader {
             let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
             headerView.delegate = self
             headerView.configureCell(date: date)
+            headerView.playAllBtn.addTarget(headerView, action: #selector(SectionHeader.startPulsing(_:)), for: .touchDown)
+            headerView.playAllBtn.addTarget(headerView, action: #selector(SectionHeader.playRecordingTapped(_:)), for: .touchUpInside)
+            
             return headerView
         }
         

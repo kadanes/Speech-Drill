@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SectionHeader: UITableViewHeaderFooterView {
+class SectionHeader:UITableViewHeaderFooterView{
 
     weak var delegate: MainVC?
     
@@ -116,7 +116,7 @@ class SectionHeader: UITableViewHeaderFooterView {
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
-        //delegate?.reloadData()
+//        delegate?.reloadData()
         
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){
             
@@ -129,8 +129,13 @@ class SectionHeader: UITableViewHeaderFooterView {
     @IBAction func toggleSection(_ sender: UIButton) {
         delegate?.toggleSection(date: date)
     }
-    
-    //MARK :- Playback Seeker
+   
+}
+
+
+ //MARK :- Playback Seeker
+extension SectionHeader {
+
     func configureHeaderPlayBackSeeker() {
         if isPlaying {
             
