@@ -702,7 +702,7 @@ extension MainVC: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         
         if !cancelledRecording{
-            Toast.show(message: "Recorded successfully!", success: true)
+            Toast.show(message: "Recorded successfully!",type: .Success)
             if let url = currentRecordingURL {
                 insertRow(with: url)
             }

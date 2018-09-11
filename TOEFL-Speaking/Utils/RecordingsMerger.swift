@@ -55,6 +55,10 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         
         for i in 0 ..< audioFileUrls.count {
             
+            if (i+1).quotientAndRemainder(dividingBy: 4).remainder == 0 {
+                Toast.show(message: "Merging \(i+1) of \(audioFileUrls.count)", type: .Info)
+            }
+            
             let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
             
             let currentURL = audioFileUrls[i]
@@ -126,7 +130,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                 case AVAssetExportSessionStatus.exporting:
                     print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
                 default:
-                    print("Merged recordings successfully")
+                    Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
                     isMerging = false
                     completion()
                 }

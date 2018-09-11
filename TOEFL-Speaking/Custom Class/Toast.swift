@@ -9,21 +9,30 @@
 import UIKit
 
 class Toast {
-    static func show(message: String,success: Bool) {
+    static func show(message: String,type: NotificationType) {
     
         DispatchQueue.main.async {
             if var topController = UIApplication.shared.keyWindow?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
-                presentToast(message: message, controller: topController, success: success)
+                presentToast(message: message, controller: topController, type: type)
             }
         }
     }
     
-    private static func presentToast(message: String,controller: UIViewController, success: Bool ) {
+    private static func presentToast(message: String,controller: UIViewController, type: NotificationType) {
         
-        let bgColor = success ? UIColor.green : UIColor.red
+        var bgColor: UIColor
+        
+        switch type {
+        case .Failure:
+            bgColor = enabledRed
+        case .Success:
+            bgColor = confirmGreen
+        case .Info:
+            bgColor = infoBlue
+        }
         
         let toastContainer = UIView(frame: CGRect())
         toastContainer.backgroundColor = bgColor.withAlphaComponent(0.6)

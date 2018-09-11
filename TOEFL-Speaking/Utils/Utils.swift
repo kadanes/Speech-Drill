@@ -120,7 +120,7 @@ func checkIfSilent() {
     Mute.shared.notify = { isMute in
         Mute.shared.isPaused = true
         if isMute {
-            Toast.show(message: "Please turn silent mode off!", success: false)
+            Toast.show(message: "Please turn silent mode off!", type: .Failure)
         }
     }
 }
@@ -205,9 +205,9 @@ func openShareSheet(url: URL,activityIndicator: UIActivityIndicatorView?, comple
             
             activityVC.completionWithItemsHandler = { activity, success, items, error in
                 if success {
-                    Toast.show(message: "Shared successfully!", success: true)
+                    Toast.show(message: "Shared successfully!", type: .Success)
                 } else {
-                    Toast.show(message: "Cancelled share!", success: false)
+                    Toast.show(message: "Cancelled share!", type: .Failure)
                 }
                 completion()
             }
