@@ -37,6 +37,13 @@ func checkIfMerging(date: String) -> Bool {
     }
 }
 
+func getMergedFileUrl() -> URL {
+    let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! as NSURL
+    let mergeAudioURL = documentDirectoryURL.appendingPathComponent(mergedFileName)!
+    
+    return mergeAudioURL
+}
+
 func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
     if previouslyMergedUrlsList == audioFileUrls {
         completion()

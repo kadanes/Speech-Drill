@@ -16,7 +16,11 @@
 		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
 		B232A5672142207400417DA5 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B232A5662142207400417DA5 /* logo.png */; };
-		B25F80B9211F4F3200AD786C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80B8211F4F3200AD786C /* Constants.swift */; };
+		B23F7F1021483AA6009B6ECA /* UIColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F0F21483AA6009B6ECA /* UIColors.swift */; };
+		B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1121483AD1009B6ECA /* UIIcons.swift */; };
+		B23F7F1421483B02009B6ECA /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1321483B02009B6ECA /* IDs.swift */; };
+		B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1521483BA5009B6ECA /* UIConstraints.swift */; };
+		B25F80B9211F4F3200AD786C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80B8211F4F3200AD786C /* Enums.swift */; };
 		B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C3211F5B0700AD786C /* beep1.m4a */; };
 		B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C5211F5BAA00AD786C /* beep2.m4a */; };
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
@@ -77,7 +81,11 @@
 		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
 		B232A5662142207400417DA5 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
-		B25F80B8211F4F3200AD786C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B23F7F0F21483AA6009B6ECA /* UIColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColors.swift; sourceTree = "<group>"; };
+		B23F7F1121483AD1009B6ECA /* UIIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIcons.swift; sourceTree = "<group>"; };
+		B23F7F1321483B02009B6ECA /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
+		B23F7F1521483BA5009B6ECA /* UIConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstraints.swift; sourceTree = "<group>"; };
+		B25F80B8211F4F3200AD786C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		B25F80C3211F5B0700AD786C /* beep1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep1.m4a; sourceTree = "<group>"; };
 		B25F80C5211F5BAA00AD786C /* beep2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep2.m4a; sourceTree = "<group>"; };
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
@@ -182,6 +190,7 @@
 				B27F31372122025F00872047 /* Controller */,
 				B204ECAE211349FE00A51E8B /* Custom Class */,
 				B21ABB35210FFA19009C678C /* Custom View */,
+				B23F7F0E21483A94009B6ECA /* Conatants */,
 				B27F31382122027700872047 /* Utils */,
 				B21ABB2E210FF664009C678C /* Info.plist */,
 				B2FFE74321438AE600484AFA /* SectionHeader.xib */,
@@ -218,6 +227,18 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		B23F7F0E21483A94009B6ECA /* Conatants */ = {
+			isa = PBXGroup;
+			children = (
+				B23F7F0F21483AA6009B6ECA /* UIColors.swift */,
+				B23F7F1121483AD1009B6ECA /* UIIcons.swift */,
+				B23F7F1321483B02009B6ECA /* IDs.swift */,
+				B23F7F1521483BA5009B6ECA /* UIConstraints.swift */,
+				B25F80B8211F4F3200AD786C /* Enums.swift */,
+			);
+			path = Conatants;
+			sourceTree = "<group>";
+		};
 		B27F31372122025F00872047 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,7 +251,6 @@
 		B27F31382122027700872047 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				B25F80B8211F4F3200AD786C /* Constants.swift */,
 				B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */,
 				B2BC4A37213C535E00EDEB74 /* IconMaker.swift */,
 				B2E5F5E9212B2C5900FC7E28 /* Utils.swift */,
@@ -470,16 +490,20 @@
 				B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,
+				B23F7F1421483B02009B6ECA /* IDs.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
-				B25F80B9211F4F3200AD786C /* Constants.swift in Sources */,
+				B25F80B9211F4F3200AD786C /* Enums.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,
 				B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */,
+				B23F7F1021483AA6009B6ECA /* UIColors.swift in Sources */,
 				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
+				B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */,
 				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,
+				B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */,
 				B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
