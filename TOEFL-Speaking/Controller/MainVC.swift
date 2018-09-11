@@ -881,14 +881,8 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         }
         
         let date = dateSortedKeys[section]
-        var isSectionRecordingsPlaying = false
         
-        if recordingUrlsDict[date]?.count == 1 {
-            guard let url = recordingUrlsDict[date]?[0] else { return sectionHeaderHeight }
-            isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: date)
-        } else {
-             isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileUrl(), id: date)
-        }
+        let  isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(id: date)
        
         if isSectionRecordingsPlaying {
             return expandedSectionHeaderHeight
@@ -902,7 +896,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
         let timeStamp = splitFileURL(url: url).timeStamp
        
-        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: url, id: "\(timeStamp)")
+        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
         if isPlaying {
             return expandedRecordingCellHeight
         }
@@ -1024,9 +1018,9 @@ extension MainVC {
             return
         }
         
-        processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: exportSelectedActivityIndicator) { (exportURL) in
+        processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: exportSelectedActivityIndicator) {
             CentralAudioPlayer.player.stopPlaying()
-            openShareSheet(url: exportURL, activityIndicator: self.exportSelectedActivityIndicator){
+            openShareSheet(url: getMergedFileUrl(), activityIndicator: self.exportSelectedActivityIndicator){
                 self.clearSelected()
             }
         }
@@ -1037,14 +1031,14 @@ extension MainVC {
         
         if checkIfRecordingIsOn() || checkIfMerging() { return }
         
-        processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: playSelectedActivityIndicator) { (playURL) in
+        processMultipleRecordings(recordingsList: recordingUrlsListToExport, activityIndicator: playSelectedActivityIndicator) {
             
             DispatchQueue.main.async {
                 self.playSelectedActivityIndicator.stopAnimating()
             }
             
-            CentralAudioPlayer.player.playRecording(url: playURL, id: selectedAudioId)
-            self.isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: playURL, id: selectedAudioId)
+            CentralAudioPlayer.player.playRecording(url: getMergedFileUrl(), id: selectedAudioId)
+            self.isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: selectedAudioId)
             if (self.isPlaying) {
                 setButtonBgImage(button: sender, bgImage: pauseBtnIcon, tintColor: accentColor)
             } else {

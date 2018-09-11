@@ -141,7 +141,7 @@ class RecordingCell: UITableViewCell {
     }
     
     func updatePlayingState() {
-        isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordingURL!, id: "\(timeStamp)")
+        isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
     }
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
@@ -303,7 +303,7 @@ class RecordingCell: UITableViewCell {
         CentralAudioPlayer.player.stopPlaying()
         if let url = recordingURL {
             let deleted = deleteStoredRecording(recordingURL: url)
-            if deleted {
+            if deleted == .Success {
                 delegate?.deleteRow(with: url)
             }
         }

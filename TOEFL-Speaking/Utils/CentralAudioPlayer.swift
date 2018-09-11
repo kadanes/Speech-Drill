@@ -110,14 +110,14 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         return false;
     }
     
-    
-    func checkIfPlaying(url: URL,id: String) -> Bool {
-    
-        if (playingRecordingURL ==  url && playingRecordingID == id) {
-            return isPlaying
-        }
-        return false;
-    }
+//    
+//    func checkIfPlaying(url: URL,id: String) -> Bool {
+//    
+//        if (playingRecordingURL ==  url && playingRecordingID == id) {
+//            return isPlaying
+//        }
+//        return false;
+//    }
     
     func getPlayBackDuration() -> Double{
         if let playBackDuration = audioPlayer?.duration {

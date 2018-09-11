@@ -6,7 +6,7 @@
 //  Copyright © 2018 Parth Tamane. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 let sectionHeaderHeight: CGFloat = 40
 let expandedSectionHeaderHeight: CGFloat = 80

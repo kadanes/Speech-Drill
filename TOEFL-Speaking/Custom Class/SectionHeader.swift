@@ -100,25 +100,15 @@ class SectionHeader: UITableViewHeaderFooterView {
     
     ///Check if contents of this section are playing
     func updatePlayingState() {
-        if let recordedUrls = delegate?.getAudioFilesList(date: date) {
-            if recordedUrls.count > 1 {
-                recordingsUrl = getMergedFileUrl()
-                isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: getMergedFileUrl(), id: date)
-            } else if recordedUrls.count == 1 {
-                recordingsUrl = recordedUrls[0]
-                isPlaying = CentralAudioPlayer.player.checkIfPlaying(url: recordedUrls[0], id: date)
-            }
-        } else {
-            isPlaying = false
-        }
+        isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: date)
     }
     
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
-        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) { (shareUrl) in
-            openShareSheet(url: shareUrl, activityIndicator: self.mergingActivityIndicator, completion: {})
+        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator) {
+            openShareSheet(url: getMergedFileUrl(), activityIndicator: self.mergingActivityIndicator, completion: {})
         }
     }
     
@@ -128,10 +118,10 @@ class SectionHeader: UITableViewHeaderFooterView {
         }
         //delegate?.reloadData()
         
-        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){ (playUrl) in
+        processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){
             
-            self.recordingsUrl = playUrl
-            CentralAudioPlayer.player.playRecording(url: playUrl, id: self.date)
+            self.recordingsUrl = getMergedFileUrl()
+            CentralAudioPlayer.player.playRecording(url: getMergedFileUrl(), id: self.date)
             self.delegate?.reloadData()
         }
     }

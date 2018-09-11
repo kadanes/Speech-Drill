@@ -14,3 +14,9 @@ case Success
 case Failure
 case Info
 }
+
+enum DeleteResult {
+case Success
+case FileNotFound
+case Failed
+}

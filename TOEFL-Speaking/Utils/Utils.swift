@@ -11,13 +11,22 @@ import UIKit
 import AVFoundation
 import Mute
 
-func deleteStoredRecording(recordingURL: URL) -> Bool {
-    do{        
-        try FileManager.default.removeItem(at: recordingURL)
-        return true
-    } catch let error as NSError {
-        print("Could Not Delete File\n",error.localizedDescription)
-        return false
+func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
+    
+    let fileManager = FileManager()
+    
+    let path = "\(recordingURL)".replacingOccurrences(of: "file:///", with: "/")
+    
+    if fileManager.fileExists(atPath: path) {
+        do{
+            try FileManager.default.removeItem(at: recordingURL)
+            return .Success
+        } catch let error as NSError {
+            print("Could Not Delete File\n",error.localizedDescription)
+            return .Failed
+        }
+    } else {
+       return .FileNotFound
     }
 }
 
@@ -166,7 +175,7 @@ func sortDict(recordingUrlsDict: Dictionary<String,Array<URL>>) -> [(key:String,
 }
 
 ///Merge and return a new url of list of recordings or url of only recording in the list
-func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActivityIndicatorView? ,completion: @escaping (URL) -> ()) {
+func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActivityIndicatorView? ,completion: @escaping () -> ()) {
     
     if var sortedRecordingsList = recordingsList {
         if let activityIndicator = activityIndicator {
@@ -175,12 +184,29 @@ func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActiv
             }
         }
         
-        sortedRecordingsList = sortUrlList(recordingsUrlList: sortedRecordingsList)
-        if sortedRecordingsList.count == 1 {
-            completion(sortedRecordingsList[0])
-        } else {
-            mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
-                completion(getMergedFileUrl())
+        let deleteStatus = deleteStoredRecording(recordingURL: getMergedFileUrl())
+        
+        if deleteStatus == .Success || deleteStatus == .FileNotFound {
+            
+            sortedRecordingsList = sortUrlList(recordingsUrlList: sortedRecordingsList)
+            if sortedRecordingsList.count == 1 {
+                let url = sortedRecordingsList[0]
+                
+                let fileManager = FileManager()
+                
+                do {
+                    
+                    try fileManager.copyItem(at: url, to: getMergedFileUrl())
+                    completion()
+                } catch let error as NSError {
+                    print("Error copying file")
+                    print(error.localizedFailureReason ?? "ERROR COPYING")
+                }
+                
+            } else {
+                mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
+                    completion()
+                }
             }
         }
     }
