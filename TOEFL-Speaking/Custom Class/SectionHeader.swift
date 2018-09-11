@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SectionHeaderXIB: UITableViewHeaderFooterView {
+class SectionHeader: UITableViewHeaderFooterView {
 
     weak var delegate: MainVC?
     
@@ -132,8 +132,7 @@ class SectionHeaderXIB: UITableViewHeaderFooterView {
             
             self.recordingsUrl = playUrl
             CentralAudioPlayer.player.playRecording(url: playUrl, id: self.date)
-            //self.delegate?.reloadData()
-            self.delegate?.reloadSection(date: self.date)
+            self.delegate?.reloadData()
         }
     }
     
@@ -171,8 +170,7 @@ class SectionHeaderXIB: UITableViewHeaderFooterView {
         updatePlayingState()
         if !isPlaying {
             timer.invalidate()
-        
-            delegate?.reloadSection(date: date)
+            delegate?.reloadData()
         }
     }
     

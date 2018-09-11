@@ -15,7 +15,6 @@
 		B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */; };
 		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
-		B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C813C2114809700104E02 /* SectionHeaderCell.swift */; };
 		B232A5672142207400417DA5 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B232A5662142207400417DA5 /* logo.png */; };
 		B25F80B9211F4F3200AD786C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80B8211F4F3200AD786C /* Constants.swift */; };
 		B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C3211F5B0700AD786C /* beep1.m4a */; };
@@ -60,7 +59,7 @@
 		B2F01E24212D3994006D6D86 /* integrated_b.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F01E20212D3994006D6D86 /* integrated_b.mp3 */; };
 		B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F01E25212D8C44006D6D86 /* Toast.swift */; };
 		B2FFE74421438AE600484AFA /* SectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2FFE74321438AE600484AFA /* SectionHeader.xib */; };
-		B2FFE74621438C7B00484AFA /* SectionHeaderXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FFE74521438C7B00484AFA /* SectionHeaderXIB.swift */; };
+		B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FFE74521438C7B00484AFA /* SectionHeader.swift */; };
 		C6D05DCAA034BD7548B558D4 /* Pods_TOEFL_Speaking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,7 +76,6 @@
 		B21ABB2E210FF664009C678C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
-		B22C813C2114809700104E02 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		B232A5662142207400417DA5 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
 		B25F80B8211F4F3200AD786C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B25F80C3211F5B0700AD786C /* beep1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep1.m4a; sourceTree = "<group>"; };
@@ -122,7 +120,7 @@
 		B2F01E20212D3994006D6D86 /* integrated_b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = integrated_b.mp3; sourceTree = "<group>"; };
 		B2F01E25212D8C44006D6D86 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		B2FFE74321438AE600484AFA /* SectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionHeader.xib; sourceTree = "<group>"; };
-		B2FFE74521438C7B00484AFA /* SectionHeaderXIB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderXIB.swift; sourceTree = "<group>"; };
+		B2FFE74521438C7B00484AFA /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		B47960409B4B75DC35695E1D /* Pods-TOEFL-Speaking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TOEFL-Speaking.release.xcconfig"; path = "Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,8 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
-				B2FFE74521438C7B00484AFA /* SectionHeaderXIB.swift */,
-				B22C813C2114809700104E02 /* SectionHeaderCell.swift */,
+				B2FFE74521438C7B00484AFA /* SectionHeader.swift */,
 				B2E5F5F1212B340D00FC7E28 /* IconCell.swift */,
 				B2F01E25212D8C44006D6D86 /* Toast.swift */,
 			);
@@ -467,7 +464,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
-				B22C813D2114809700104E02 /* SectionHeaderCell.swift in Sources */,
 				B2E5F5E8212B260C00FC7E28 /* InfoVC.swift in Sources */,
 				B2BC4A38213C535E00EDEB74 /* IconMaker.swift in Sources */,
 				B21ABB25210FF664009C678C /* MainVC.swift in Sources */,
@@ -480,7 +476,7 @@
 				B25F80B9211F4F3200AD786C /* Constants.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,
-				B2FFE74621438C7B00484AFA /* SectionHeaderXIB.swift in Sources */,
+				B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */,
 				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
 				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,

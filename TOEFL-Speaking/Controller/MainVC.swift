@@ -113,7 +113,7 @@ class MainVC: UIViewController {
         
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
-        recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerNibCellId)
+        recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerCellId)
         
         callObserver.setDelegate(self, queue: nil)
         
@@ -862,7 +862,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
 //            return cell
 //        }
         
-        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerNibCellId) as? SectionHeaderXIB {
+        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerCellId) as? SectionHeader {
             let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
             headerView.delegate = self
             headerView.configureCell(date: date)
