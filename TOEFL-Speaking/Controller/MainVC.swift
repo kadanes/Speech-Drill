@@ -131,6 +131,7 @@ class MainVC: UIViewController {
         
         setHiddenVisibleSectionList()
         toggleExportMenu()
+        
     }
   
     override func viewDidAppear(_ animated: Bool) {
@@ -869,7 +870,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
             let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
             headerView.delegate = self
             headerView.configureCell(date: date)
-            headerView.playAllBtn.addTarget(headerView, action: #selector(SectionHeader.startPulsing(_:)), for: .touchDown)
+            //headerView.playAllBtn.addTarget(headerView, action: #selector(SectionHeader.startPulsing(_:)), for: .touchDown)
             headerView.playAllBtn.addTarget(headerView, action: #selector(SectionHeader.playRecordingTapped(_:)), for: .touchUpInside)
             
             return headerView

@@ -118,13 +118,14 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         
         assetExport?.outputURL = getMergedFileUrl()
         
-        let exportMonitorTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (timer) in
+        
+        let exportMonitorTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { (timer) in
             if let assetExport = assetExport {
                 let progress = assetExport.progress
                 if progress < 0.99 {
-                     Toast.show(message: "\(round(progress*100))% merging done...", type: .Info)
-//                    let dict:[String: Float] = ["Progress": progress]
-//                    NotificationCenter.default.post(name: Notification.Name("ProgressBarPercentage"), object: nil, userInfo: dict)
+                     //Toast.show(message: "\(round(progress*100))% merging done...", type: .Info)
+                    
+                    ProgressBar.bar.updateWidth(progress: progress)
                 }
             }
         }
@@ -147,6 +148,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                 default:
                     Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
                     exportMonitorTimer.invalidate()
+                    ProgressBar.bar.updateWidth(progress: 0)
                     isMerging = false
                     completion()
                 }
