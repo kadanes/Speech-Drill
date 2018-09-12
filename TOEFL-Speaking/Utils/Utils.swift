@@ -184,31 +184,33 @@ func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActiv
             }
         }
         
-        let deleteStatus = deleteStoredRecording(recordingURL: getMergedFileUrl())
-        
-        if deleteStatus == .Success || deleteStatus == .FileNotFound {
+        sortedRecordingsList = sortUrlList(recordingsUrlList: sortedRecordingsList)
+        if sortedRecordingsList.count == 1 {
             
-            sortedRecordingsList = sortUrlList(recordingsUrlList: sortedRecordingsList)
-            if sortedRecordingsList.count == 1 {
+            let deleteStatus = deleteStoredRecording(recordingURL: getMergedFileUrl())
+            
+            if deleteStatus == .Success || deleteStatus == .FileNotFound {
+                
                 let url = sortedRecordingsList[0]
                 
                 let fileManager = FileManager()
                 
                 do {
-                    
                     try fileManager.copyItem(at: url, to: getMergedFileUrl())
                     completion()
                 } catch let error as NSError {
                     print("Error copying file")
                     print(error.localizedFailureReason ?? "ERROR COPYING")
                 }
-                
-            } else {
-                mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
-                    completion()
-                }
+            }
+        
+        } else {
+            mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
+                completion()
             }
         }
+        
+        
     }
 }
 

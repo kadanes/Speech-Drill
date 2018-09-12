@@ -11,7 +11,7 @@ import AVFoundation
 
 private var previouslyMergedUrlsList = [URL]()
 private var isMerging = false
-
+private var assetExport: AVAssetExportSession?
 func checkIfMerging() -> Bool {
     return isMerging
 }
@@ -46,15 +46,15 @@ func getMergedFileUrl() -> URL {
 
 func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
     if previouslyMergedUrlsList == audioFileUrls {
+        print("New url list matches old url list")
         completion()
     } else {
         isMerging = true
         previouslyMergedUrlsList = audioFileUrls
-        do {
-            try FileManager.default.removeItem(at: getMergedFileUrl())
-        } catch let error as NSError {
-            print("Error Deleting Merged Audio:\n\(error.domain)")
-        }
+       
+        let deleteStatus = deleteStoredRecording(recordingURL: getMergedFileUrl())
+        
+        if deleteStatus == .Failed { return }
         
         let composition = AVMutableComposition()
         
@@ -62,9 +62,6 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
         
         for i in 0 ..< audioFileUrls.count {
             
-            if (i+1).quotientAndRemainder(dividingBy: 4).remainder == 0 {
-                Toast.show(message: "Merging \(i+1) of \(audioFileUrls.count)", type: .Info)
-            }
             
             let compositionAudioTrack :AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: CMPersistentTrackID())!
             
@@ -115,11 +112,22 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
             }
         }
         
-        let assetExport = AVAssetExportSession(asset: composition, presetName: presetName)
+        assetExport = AVAssetExportSession(asset: composition, presetName: presetName)
         
         assetExport?.outputFileType = outputFileType
         
         assetExport?.outputURL = getMergedFileUrl()
+        
+        let exportMonitorTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (timer) in
+            if let assetExport = assetExport {
+                let progress = assetExport.progress
+                if progress < 0.99 {
+                     Toast.show(message: "\(round(progress*100))% merging done...", type: .Info)
+//                    let dict:[String: Float] = ["Progress": progress]
+//                    NotificationCenter.default.post(name: Notification.Name("ProgressBarPercentage"), object: nil, userInfo: dict)
+                }
+            }
+        }
         
         assetExport?.exportAsynchronously(completionHandler:
             {
@@ -138,9 +146,11 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                     print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
                 default:
                     Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
+                    exportMonitorTimer.invalidate()
                     isMerging = false
                     completion()
                 }
         })
     }
 }
+

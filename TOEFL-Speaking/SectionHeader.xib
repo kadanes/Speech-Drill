@@ -42,31 +42,36 @@
                                             <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="dXw-2W-Um2">
-                                            <rect key="frame" x="261" y="0.0" width="40" height="58.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="pcQ-ra-Ebd"/>
-                                            </constraints>
-                                            <color key="color" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                        </activityIndicatorView>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E69-e1-ICB">
-                                            <rect key="frame" x="301" y="0.0" width="40" height="58.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="CeV-f0-Oem"/>
-                                            </constraints>
-                                            <state key="normal" image="playg.png"/>
-                                        </button>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hyc-uS-HVW">
-                                            <rect key="frame" x="341" y="0.0" width="40" height="58.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="GLR-Y7-MS8"/>
-                                            </constraints>
-                                            <state key="normal" image="share.png"/>
-                                            <connections>
-                                                <action selector="shareRecordingsTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="ygc-AJ-hJt"/>
-                                                <action selector="startPulsing:" destination="iN0-l3-epB" eventType="touchDown" id="cGn-1b-9ze"/>
-                                            </connections>
-                                        </button>
+                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRn-RL-X1w">
+                                            <rect key="frame" x="261" y="0.0" width="120" height="58.5"/>
+                                            <subviews>
+                                                <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="dXw-2W-Um2">
+                                                    <rect key="frame" x="0.0" y="0.0" width="40" height="58.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="pcQ-ra-Ebd"/>
+                                                    </constraints>
+                                                    <color key="color" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                </activityIndicatorView>
+                                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E69-e1-ICB">
+                                                    <rect key="frame" x="40" y="0.0" width="40" height="58.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="CeV-f0-Oem"/>
+                                                    </constraints>
+                                                    <state key="normal" image="playg.png"/>
+                                                </button>
+                                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hyc-uS-HVW">
+                                                    <rect key="frame" x="80" y="0.0" width="40" height="58.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="GLR-Y7-MS8"/>
+                                                    </constraints>
+                                                    <state key="normal" image="share.png"/>
+                                                    <connections>
+                                                        <action selector="shareRecordingsTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="ygc-AJ-hJt"/>
+                                                        <action selector="startPulsing:" destination="iN0-l3-epB" eventType="touchDown" id="cGn-1b-9ze"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                 </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MdP-9K-oCh">
@@ -145,7 +150,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="KWI-pa-BmT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="04M-kd-tdz"/>
                 <constraint firstItem="KWI-pa-BmT" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="GcW-v3-T8r"/>

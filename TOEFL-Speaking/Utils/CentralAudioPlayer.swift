@@ -44,13 +44,16 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         isPlaying = false
         playingRecordingURL = nil
         playingRecordingID = nil
-        audioPlayer?.stop()
+        //audioPlayer?.stop
+        audioPlayer = nil
     }
     
     ///Play or Pause or Start a recording
     func playRecording(url: URL,id: String){
 
         if (url != playingRecordingURL || playingRecordingID != id ) {
+            print("OLD ID AND URL: \n",playingRecordingURL,"\n",playingRecordingID)
+            print("NEW ID AND URL: \n",url,"\n",id)
             
             isPlaying = true
             
@@ -109,16 +112,7 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         return false;
     }
-    
-//    
-//    func checkIfPlaying(url: URL,id: String) -> Bool {
-//    
-//        if (playingRecordingURL ==  url && playingRecordingID == id) {
-//            return isPlaying
-//        }
-//        return false;
-//    }
-    
+
     func getPlayBackDuration() -> Double{
         if let playBackDuration = audioPlayer?.duration {
             return playBackDuration

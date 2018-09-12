@@ -412,7 +412,6 @@
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="50" id="bZA-p7-S9W"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="recordf.png"/>
                                                                         <connections>
                                                                             <action selector="startPulsing:" destination="BYZ-38-t0r" eventType="touchDown" id="2Zd-d1-A2X"/>
                                                                             <action selector="startRecordingPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qSY-Fq-E7g"/>
@@ -529,7 +528,7 @@
                                                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZWA-dg-mum">
                                                                             <rect key="frame" x="217" y="0.0" width="150" height="53"/>
                                                                             <subviews>
-                                                                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="4aq-Hj-aQI">
+                                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="4aq-Hj-aQI">
                                                                                     <rect key="frame" x="0.0" y="6.6666666666666679" width="142" height="40"/>
                                                                                     <subviews>
                                                                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-N2-BwQ" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
@@ -1263,7 +1262,6 @@
         <image name="github.png" width="188" height="150"/>
         <image name="info.png" width="192" height="512"/>
         <image name="playg.png" width="101" height="116"/>
-        <image name="recordf.png" width="512" height="512"/>
         <image name="sleft.png" width="66" height="101"/>
         <image name="sright.png" width="66" height="101"/>
         <image name="sshareg.png" width="116" height="101"/>

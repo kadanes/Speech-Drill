@@ -450,8 +450,6 @@ class MainVC: UIViewController {
                     audioPlayer!.prepareToPlay()
                     audioPlayer!.play()
                     
-                    
-                    
                     while (audioPlayer?.isPlaying)! {
                         
                     }
