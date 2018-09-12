@@ -436,8 +436,21 @@ class MainVC: UIViewController {
                     try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
                     try AVAudioSession.sharedInstance().setActive(true)
                     try audioPlayer = AVAudioPlayer(contentsOf: alertSound)
+                    
+                    DispatchQueue.main.async {
+                        let duration = (self.audioPlayer?.duration)!/2
+                        UIView.animate(withDuration: duration, animations: {
+                            self.thinkTimeInfoView.backgroundColor = .clear
+                        })
+                        UIView.animate(withDuration: duration, animations: {
+                            self.speakTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+                        })
+                    }
+                    
                     audioPlayer!.prepareToPlay()
                     audioPlayer!.play()
+                    
+                    
                     
                     while (audioPlayer?.isPlaying)! {
                         
@@ -447,16 +460,11 @@ class MainVC: UIViewController {
                 }
             }
             
-            DispatchQueue.main.async {
-                self.thinkTimeInfoView.backgroundColor = .clear
-            }
             
             isThinking = false
             recordAudio()
             
-            DispatchQueue.main.async {
-                self.speakTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
-            }
+           
             
             speakTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
             blinkTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
@@ -739,9 +747,12 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         
         if !recordingUrlsDict.keys.contains(date) {
             var urls = [URL]()
-            urls.insert(url, at: 0)
             recordingUrlsDict[date] = urls
             recordingTableView.insertSections([0], with: .automatic)
+            urls.insert(url, at: 0)
+            recordingUrlsDict[date] = urls
+            let indexPath = IndexPath(row: 0, section: 0)
+            recordingTableView.insertRows(at: [indexPath], with: .automatic)
             visibleSections.append(date)
             
         } else {
