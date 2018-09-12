@@ -32,7 +32,7 @@ class InfoVC: UIViewController {
     
     let ttsURL = URL(string: "http://www.fromtexttospeech.com")
     
-    var icons = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,recordIcon,deleteIcon,playBtnIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon,plusIcon,minusIcon]
+    var icons = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,deleteIcon,playBtnIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon,plusIcon,minusIcon]
     
     var redIcons = [deleteIcon,closeIcon]
     
@@ -40,13 +40,7 @@ class InfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setBtnImgProp(button: githubBtn, topPadding: 5, leftPadding: 1)
-        setBtnImgProp(button: gmailBtn, topPadding: 5, leftPadding: 1)
-        setBtnImgProp(button: closeInfoBtn, topPadding: 5, leftPadding: 1)
-        setBtnImgProp(button: twitterBtn, topPadding: 5, leftPadding: 1)
-        
-        fABtn.setTitleColor(accentColor, for: .normal)
-        tTSBtn.setTitleColor(accentColor, for: .normal)
+        setButtonProp()
         
         infoContainer.layer.cornerRadius = 5
         infoContainer.layer.masksToBounds = true
@@ -54,8 +48,24 @@ class InfoVC: UIViewController {
         iconCollectionView.delegate = self
         iconCollectionView.dataSource = self
         
-       icons = icons.shuffled()
+        icons = icons.shuffled()
         
+    }
+    
+    func setButtonProp() {
+        setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
+        githubBtn.backgroundColor = githubBlue.withAlphaComponent(0.8)
+        
+        setBtnImgProp(button: gmailBtn, topPadding: 10, leftPadding: 1)
+        gmailBtn.backgroundColor = disabledRed.withAlphaComponent(0.8)
+        
+        setBtnImgProp(button: twitterBtn, topPadding: 10, leftPadding: 1)
+        twitterBtn.backgroundColor = twitterBlue.withAlphaComponent(0.8)
+        
+        setBtnImgProp(button: closeInfoBtn, topPadding: 10, leftPadding: 1)
+
+        fABtn.setTitleColor(accentColor, for: .normal)
+        tTSBtn.setTitleColor(accentColor, for: .normal)
     }
 
     @IBAction func gitHubTapped(_ sender: UIButton) {

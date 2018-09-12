@@ -732,7 +732,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwL-04-xF6">
                                                         <rect key="frame" x="61" y="0.0" width="213" height="45"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVR-g6-4WM">
+                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVR-g6-4WM">
                                                                 <rect key="frame" x="0.0" y="0.0" width="173" height="45"/>
                                                                 <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <state key="normal" title="Export">
@@ -851,12 +851,12 @@
                                     <constraint firstAttribute="bottom" secondItem="pAb-EB-osd" secondAttribute="bottom" id="zb3-3G-AT5"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-tb-mhP">
-                                <rect key="frame" x="335" y="30" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-tb-mhP" customClass="RoundBorderedBtn" customModule="TOEFL_Speaking" customModuleProvider="target">
+                                <rect key="frame" x="340" y="30" width="25" height="25"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="0kA-K4-ypX"/>
-                                    <constraint firstAttribute="width" constant="30" id="JRg-dM-sdM"/>
+                                    <constraint firstAttribute="height" constant="25" id="0kA-K4-ypX"/>
+                                    <constraint firstAttribute="width" constant="25" id="JRg-dM-sdM"/>
                                 </constraints>
                                 <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="info.png"/>
@@ -1008,21 +1008,21 @@
                                                                             <constraint firstAttribute="height" constant="100" id="h50-5S-87Y"/>
                                                                         </constraints>
                                                                     </stackView>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qzS-rV-MC5">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="qzS-rV-MC5">
                                                                         <rect key="frame" x="0.0" y="100.00000000000003" width="319" height="80"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qqz-kM-OpR">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="103" height="80"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="99.666666666666671" height="80"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Raise Issue" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yiC-v4-Hg9">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="103" height="35"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="99.666666666666671" height="35"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="17"/>
                                                                                         <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkR-gD-ncx" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                                        <rect key="frame" x="0.0" y="40" width="103" height="40"/>
-                                                                                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <rect key="frame" x="0.0" y="40" width="99.666666666666671" height="40"/>
+                                                                                        <color key="backgroundColor" red="0.0" green="0.58823529411764708" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="40" id="PCn-5e-NWg"/>
                                                                                         </constraints>
@@ -1034,16 +1034,16 @@
                                                                                 </subviews>
                                                                             </stackView>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="KkX-Lr-3a6">
-                                                                                <rect key="frame" x="108" y="0.0" width="103" height="80"/>
+                                                                                <rect key="frame" x="109.66666666666666" y="0.0" width="99.666666666666657" height="80"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report Bug" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJ0-7k-zXj">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="103" height="38"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="99.666666666666671" height="38"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="17"/>
                                                                                         <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lr9-oh-usT" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                                        <rect key="frame" x="0.0" y="40" width="103" height="40"/>
+                                                                                        <rect key="frame" x="0.0" y="40" width="99.666666666666671" height="40"/>
                                                                                         <color key="backgroundColor" red="0.58072251080000004" green="0.066734083" blue="0.0" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="40" id="wR5-uX-o7J"/>
@@ -1056,16 +1056,16 @@
                                                                                 </subviews>
                                                                             </stackView>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="mHC-kx-mNs">
-                                                                                <rect key="frame" x="216" y="0.0" width="103" height="80"/>
+                                                                                <rect key="frame" x="219.33333333333334" y="0.0" width="99.666666666666657" height="80"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Features" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QN-Jq-Foo">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="103" height="35"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="99.666666666666671" height="35"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="17"/>
                                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btf-CQ-qdV" customClass="RoundButton" customModule="TOEFL_Speaking" customModuleProvider="target">
-                                                                                        <rect key="frame" x="0.0" y="40" width="103" height="40"/>
+                                                                                        <rect key="frame" x="0.0" y="40" width="99.666666666666671" height="40"/>
                                                                                         <color key="backgroundColor" red="0.11372549019607843" green="0.63137254901960782" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="40" id="NMk-uF-LgI"/>

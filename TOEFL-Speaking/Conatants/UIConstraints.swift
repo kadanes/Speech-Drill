@@ -8,11 +8,14 @@
 
 import UIKit
 
-let sectionHeaderHeight: CGFloat = 40
-let expandedSectionHeaderHeight: CGFloat = 80
+let sectionHeaderHeight: CGFloat = 45
+let expandedSectionHeaderHeight: CGFloat = 85
+
 let buttonVerticalInset: CGFloat = sectionHeaderHeight/4
 let buttonHorizontalInset: CGFloat = 5
+
 let recordingCellHeight: CGFloat = 50
 let expandedRecordingCellHeight: CGFloat = 90
+
 let normalThumbDiameter: CGFloat = 10
 let highlightedThumbDiameter: CGFloat = 25

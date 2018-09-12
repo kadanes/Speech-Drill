@@ -146,9 +146,10 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                 case AVAssetExportSessionStatus.exporting:
                     print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
                 default:
-                    Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
+//                    Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
                     exportMonitorTimer.invalidate()
                     ProgressBar.bar.updateWidth(progress: 0)
+                    
                     isMerging = false
                     completion()
                 }

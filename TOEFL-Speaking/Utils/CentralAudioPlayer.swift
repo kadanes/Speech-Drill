@@ -52,8 +52,6 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     func playRecording(url: URL,id: String){
 
         if (url != playingRecordingURL || playingRecordingID != id ) {
-            print("OLD ID AND URL: \n",playingRecordingURL,"\n",playingRecordingID)
-            print("NEW ID AND URL: \n",url,"\n",id)
             
             isPlaying = true
             

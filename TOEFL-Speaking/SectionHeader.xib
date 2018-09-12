@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,7 +28,7 @@
                                             <state key="normal" image="plus.png"/>
                                             <connections>
                                                 <action selector="startPulsing:" destination="iN0-l3-epB" eventType="touchDown" id="gdo-1q-QJg"/>
-                                                <action selector="toggleSection:" destination="iN0-l3-epB" eventType="touchUpInside" id="A2U-Ej-xI4"/>
+                                                <action selector="toggleSectionTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="A2U-Ej-xI4"/>
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2/8/2018" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhh-AS-qYP">

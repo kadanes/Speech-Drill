@@ -37,6 +37,7 @@ class SectionHeader:UITableViewHeaderFooterView{
         
         sectionNameLbl.text = date
         self.date = date
+        addTapGestureToHeader()
         
         isMerging = checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!)
         if  isMerging{
@@ -57,6 +58,16 @@ class SectionHeader:UITableViewHeaderFooterView{
         sender.layer.addSublayer(pulse)
     }
     
+    func addTapGestureToHeader() {
+        let tapToggleGesture = UITapGestureRecognizer(target: self, action: #selector(toggleSection))
+        tapToggleGesture.numberOfTapsRequired = 1
+        sectionNameLbl.isUserInteractionEnabled = true
+        sectionNameLbl.addGestureRecognizer(tapToggleGesture)
+    }
+    
+    @objc func toggleSection() {
+        delegate?.toggleSection(date: date)
+    }
     
     func setBtnImage() {
         
@@ -126,8 +137,8 @@ class SectionHeader:UITableViewHeaderFooterView{
         }
     }
     
-    @IBAction func toggleSection(_ sender: UIButton) {
-        delegate?.toggleSection(date: date)
+    @IBAction func toggleSectionTapped(_ sender: UIButton) {
+        toggleSection()
     }
    
 }

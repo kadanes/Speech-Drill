@@ -21,3 +21,7 @@ let accentColor = UIColor(red:1.00, green:0.82, blue:0.00, alpha:1.0)
 let confirmGreen = UIColor(red:0.00, green:0.72, blue:0.40, alpha:1.0)
 //#20bdf7
 let infoBlue = UIColor(red:0.13, green:0.74, blue:0.97, alpha:1.0)
+//#0096FF
+let githubBlue = UIColor(red:0.00, green:0.59, blue:1.00, alpha:1.0)
+//#1DA1F2
+let twitterBlue = UIColor(red:0.11, green:0.63, blue:0.95, alpha:1.0)

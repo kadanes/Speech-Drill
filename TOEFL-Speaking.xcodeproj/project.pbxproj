@@ -15,6 +15,7 @@
 		B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */; };
 		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
+		B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */; };
 		B232A5672142207400417DA5 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B232A5662142207400417DA5 /* logo.png */; };
 		B23F7F1021483AA6009B6ECA /* UIColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F0F21483AA6009B6ECA /* UIColors.swift */; };
 		B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1121483AD1009B6ECA /* UIIcons.swift */; };
@@ -81,6 +82,7 @@
 		B21ABB2E210FF664009C678C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
+		B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBorderedBtn.swift; sourceTree = "<group>"; };
 		B232A5662142207400417DA5 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
 		B23F7F0F21483AA6009B6ECA /* UIColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColors.swift; sourceTree = "<group>"; };
 		B23F7F1121483AD1009B6ECA /* UIIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIcons.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 		B21ABB35210FFA19009C678C /* Custom View */ = {
 			isa = PBXGroup;
 			children = (
+				B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */,
 				B22C81362114133300104E02 /* RoundButton.swift */,
 				B25F80C7211F667500AD786C /* RoundLabel.swift */,
 				B2E5F5F3212B401B00FC7E28 /* RoundImage.swift */,
@@ -499,6 +502,7 @@
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
 				B25F80B9211F4F3200AD786C /* Enums.swift in Sources */,
+				B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,
 				B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */,

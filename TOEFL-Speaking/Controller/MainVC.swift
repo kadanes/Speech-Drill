@@ -151,7 +151,7 @@ class MainVC: UIViewController {
         setBtnImgProp(button: recordBtn,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: closeShareMenuBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset - 5, leftPadding: buttonHorizontalInset - 5)
+        setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset - 8, leftPadding: buttonHorizontalInset - 8)
     }
     
     func setBtnImage() {
