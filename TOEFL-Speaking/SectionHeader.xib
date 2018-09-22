@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -160,6 +164,7 @@
                 <outlet property="mergingActivityIndicator" destination="dXw-2W-Um2" id="gOK-48-inU"/>
                 <outlet property="playAllBtn" destination="E69-e1-ICB" id="iOu-YJ-TlW"/>
                 <outlet property="sectionNameLbl" destination="vhh-AS-qYP" id="14O-oj-uWv"/>
+                <outlet property="sectionSeperator" destination="QoG-kQ-Q9p" id="TUD-Co-mBx"/>
                 <outlet property="seekerView" destination="MdP-9K-oCh" id="BX4-aX-Ra0"/>
                 <outlet property="shareAllBtn" destination="hyc-uS-HVW" id="75B-7n-FzN"/>
                 <outlet property="totalPlayTimeLbl" destination="925-h9-n1r" id="GDR-u2-nnR"/>

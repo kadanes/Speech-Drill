@@ -746,12 +746,16 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         
         if !recordingUrlsDict.keys.contains(date) {
             var urls = [URL]()
-            recordingUrlsDict[date] = urls
-            recordingTableView.insertSections([0], with: .automatic)
             urls.insert(url, at: 0)
             recordingUrlsDict[date] = urls
-            let indexPath = IndexPath(row: 0, section: 0)
-            recordingTableView.insertRows(at: [indexPath], with: .automatic)
+            
+            recordingTableView.insertSections([0], with: .automatic)
+            
+//            print("URLS: ",urls)
+//
+//            recordingUrlsDict[date] = urls
+//            let indexPath = IndexPath(row: 0, section: 0)
+//            recordingTableView.insertRows(at: [indexPath], with: .automatic)
             visibleSections.append(date)
             
         } else {
@@ -774,7 +778,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, containedUrls) in
             var urls = containedUrls
             
-            if let row = urls.firstIndex(of: url) {
+            if let row = urls.index(of: url) {
                 
                 let indexPath = IndexPath(item: row, section: section)
                 
@@ -799,7 +803,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         let timestamp = splitFileURL(url:url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
-            if let row = urls.firstIndex(of: url) {
+            if let row = urls.index(of: url) {
                 let indexPath = IndexPath(row: row, section: section)
                 self.recordingTableView.reloadRows(at: [indexPath], with: .automatic)
             }
@@ -842,7 +846,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
                 let date = parseDate(timeStamp: timestamp)
                 findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
                     
-                    if let row = urls.firstIndex(of: url) {
+                    if let row = urls.index(of: url) {
                         let indexPath = IndexPath(row: row, section: section)
                         self.recordingTableView.reloadRows(at: [indexPath], with: .automatic)
                         completion()

@@ -47,7 +47,7 @@ func findAndUpdateSection(date: String, recordingUrlsDict:Dictionary<String,Arra
 }
 
 func openURL(url: URL?) {
-    guard let url = url else {return }
+    guard let url = url else { return }
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
 }
 

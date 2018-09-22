@@ -30,6 +30,8 @@ class SectionHeader:UITableViewHeaderFooterView{
     @IBOutlet weak var headerPlayingSeeker: UISlider!
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
+    @IBOutlet weak var sectionSeperator: UIView!
+    
     private var headerPlayBackTimer: Timer?
     
     
@@ -45,7 +47,6 @@ class SectionHeader:UITableViewHeaderFooterView{
         } else {
             mergingActivityIndicator.stopAnimating()
         }
-        
         updatePlayingState()
         isMerging = checkIfMerging()
         setBtnImage()
