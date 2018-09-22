@@ -47,6 +47,7 @@ class SectionHeader:UITableViewHeaderFooterView{
         } else {
             mergingActivityIndicator.stopAnimating()
         }
+                
         updatePlayingState()
         isMerging = checkIfMerging()
         setBtnImage()
