@@ -166,23 +166,7 @@ class RecordingCell: UITableViewCell {
             }
             
             CentralAudioPlayer.player.playRecording(url: url, id: "\(timeStamp)")
-            
-            //delegate?.reloadData()
             delegate?.reloadRow(url: recordingURL!)
-//            var previousPlayingId = CentralAudioPlayer.player.getPlayingRecordingId()
-//
-//
-//
-//            if previousPlayingId == "" {
-//
-//                delegate?.reloadRow(url: recordingURL!)
-//                return
-//            }
-//
-//            if previousPlayingId != selectedAudioId || checkIfDate(date: previousPlayingId) {
-//               previousPlayingId = CentralAudioPlayer.player.getPlayingRecordingUrl()
-//            }
-//            delegate?.togglePlayIconsFor(previouslyPlayingId: previousPlayingId, nowPlayingId: "\(recordingURL!)")
         }
     }
     
@@ -214,7 +198,6 @@ class RecordingCell: UITableViewCell {
         updatePlayingState()
         if !isPlaying {
             timer.invalidate()
-//            delegate?.reloadData()
             delegate?.reloadRow(url: recordingURL!)
         }
     }
@@ -240,16 +223,6 @@ class RecordingCell: UITableViewCell {
     }
     
     func showDeleteMenu() {
-        
-//        UIView.animate(withDuration: 0.3) {
-//
-//            self.deleteRecordingBtn.imageView?.tintColor = disabledRed
-//            self.confirmDeleteBtn.isHidden = false
-//            self.cancelDeleteBtn.isHidden = false
-//            self.playPauseBtn.isHidden = true
-//            self.shareRecordingBtn.isHidden = true
-//        }
-        
         UIView.animate(withDuration: 0.15, animations: {
             self.playPauseBtn.isHidden = true
             

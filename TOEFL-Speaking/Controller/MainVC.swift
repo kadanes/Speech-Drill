@@ -113,6 +113,11 @@ class MainVC: UIViewController {
         
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
+        recordingTableView.rowHeight = UITableViewAutomaticDimension
+        recordingTableView.estimatedRowHeight = recordingCellHeight
+        recordingTableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        recordingTableView.estimatedSectionHeaderHeight = sectionHeaderHeight
+        
         recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerCellId)
         
         callObserver.setDelegate(self, queue: nil)
@@ -811,8 +816,10 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     }
     
     func reloadSection(date: String) {
-        findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, _) in
-            self.recordingTableView.reloadSections([section], with: .automatic)
+        DispatchQueue.main.async {
+            findAndUpdateSection(date: date, recordingUrlsDict: self.recordingUrlsDict) { (section, _) in
+                self.recordingTableView.reloadSections([section], with: .automatic)
+            }
         }
     }
     
@@ -883,36 +890,36 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         return UITableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
-            guard let convertedDate1 = convertToDate(date: date1) else { return false }
-            guard let convertedDate2 = convertToDate(date: date2) else { return false }
-            return convertedDate1 > convertedDate2
-        }
-        
-        let date = dateSortedKeys[section]
-        
-        let  isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(id: date)
-       
-        if isSectionRecordingsPlaying {
-            return expandedSectionHeaderHeight
-        }
-        return sectionHeaderHeight
-    }
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//
+//        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
+//            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+//            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+//            return convertedDate1 > convertedDate2
+//        }
+//
+//        let date = dateSortedKeys[section]
+//
+//        let  isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(id: date)
+//
+//        if isSectionRecordingsPlaying {
+//            return expandedSectionHeaderHeight
+//        }
+//        return sectionHeaderHeight
+//    }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
-        let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
-        let timeStamp = splitFileURL(url: url).timeStamp
-       
-        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
-        if isPlaying {
-            return expandedRecordingCellHeight
-        }
-        return recordingCellHeight
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//
+//        let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
+//        let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
+//        let timeStamp = splitFileURL(url: url).timeStamp
+//
+//        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
+//        if isPlaying {
+//            return expandedRecordingCellHeight
+//        }
+//        return recordingCellHeight
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell {

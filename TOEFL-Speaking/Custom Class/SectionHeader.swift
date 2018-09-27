@@ -39,15 +39,17 @@ class SectionHeader:UITableViewHeaderFooterView{
         
         sectionNameLbl.text = date
         self.date = date
+        configureCell()
+    }
+    private func configureCell() {
         addTapGestureToHeader()
-        
         isMerging = checkIfMerging(audioFileUrls: (delegate?.getAudioFilesList(date: date))!)
         if  isMerging{
             mergingActivityIndicator.startAnimating()
         } else {
             mergingActivityIndicator.stopAnimating()
         }
-                
+        
         updatePlayingState()
         isMerging = checkIfMerging()
         setBtnImage()
@@ -130,12 +132,12 @@ class SectionHeader:UITableViewHeaderFooterView{
             return
         }
 //        delegate?.reloadData()
-        
         processMultipleRecordings(recordingsList: delegate?.getAudioFilesList(date: date), activityIndicator: mergingActivityIndicator){
             
             self.recordingsUrl = getMergedFileUrl()
             CentralAudioPlayer.player.playRecording(url: getMergedFileUrl(), id: self.date)
             self.delegate?.reloadData()
+//            self.delegate?.reloadSection(date: self.date)
         }
     }
     
@@ -145,8 +147,7 @@ class SectionHeader:UITableViewHeaderFooterView{
    
 }
 
-
- //MARK :- Playback Seeker
+//MARK :- Playback Seeker
 extension SectionHeader {
 
     func configureHeaderPlayBackSeeker() {
@@ -179,6 +180,7 @@ extension SectionHeader {
         if !isPlaying {
             timer.invalidate()
             delegate?.reloadData()
+//            self.delegate?.reloadSection(date: self.date)
         }
     }
     
