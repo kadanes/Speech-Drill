@@ -18,13 +18,14 @@ enum Direction {
 
 struct MenuHelper {
     
-    static let menuWidth:CGFloat = 0.8
+    static let menuWidth:CGFloat = 0.75
     
     static let percentThreshold:CGFloat = 0.3
     
     static let snapshotNumber = 12345
     
     static func calculateProgress(translationInView:CGPoint, viewBounds:CGRect, direction:Direction) -> CGFloat {
+        
         let pointOnAxis:CGFloat
         let axisLength:CGFloat
         switch direction {

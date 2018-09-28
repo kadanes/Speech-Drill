@@ -12,21 +12,45 @@ class SideNavVC: UIViewController {
     
     static let sideNav = SideNavVC()
 
+    var interactor: Interactor? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        let dummyView = UIView(frame: CGRect(x: 10, y: 200, width: 100, height: 100))
-        dummyView.backgroundColor = accentColor
         
-        view.addSubview(dummyView)
+        let closeX = view.bounds.width * MenuHelper.menuWidth
+        let closeWidth = view.bounds.width - closeX
         
-        let closeBtn = UIButton(frame: CGRect(x: 4, y: 30, width: 200, height: 20))
+        let closeBtn = UIButton(frame: CGRect(x: closeX, y: 0, width: closeWidth , height: view.bounds.height))
         closeBtn.addTarget(self, action: #selector(closeViewTapped), for: .touchUpInside)
         closeBtn.setTitle("Close", for: .normal)
-        
+        closeBtn.backgroundColor = disabledRed
         view.addSubview(closeBtn)
+
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(closeViewWithPan(sender:)))
+        view.addGestureRecognizer(panGesture)
         
-        view.backgroundColor = confirmGreen
+        
+        view.backgroundColor = UIColor.darkGray
+        
+    }
+    
+    @objc func closeViewWithPan(sender: UIPanGestureRecognizer) {
+        
+        let translation = sender.translation(in: view)
+        // 4
+        let progress = MenuHelper.calculateProgress(
+            translationInView: translation,
+            viewBounds: view.bounds,
+            direction: .Left
+        )
+        // 5
+        MenuHelper.mapGestureStateToInteractor(
+            gestureState: sender.state,
+            progress: progress,
+            interactor: interactor){
+                // 6
+                self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc func closeViewTapped(_ sender: UIButton) {
