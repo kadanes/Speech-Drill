@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class SideNavVC: UIViewController{
     
@@ -30,6 +31,8 @@ class SideNavVC: UIViewController{
     private let updatesTextView = UITextView()
     private let menuTableView = UITableView()
     private var menuItems = [menuItem]()
+    private var notices: Array<Dictionary<String,String>> = [[:]]
+    private var noticeNumber = 0
     
     private let appstoreLink = "itms-apps://itunes.apple.com/app/id1433796147"
     
@@ -43,6 +46,7 @@ class SideNavVC: UIViewController{
         menuTableView.dataSource = self
 
         populateMenuItems()
+        fetchNotices()
         
         addViews()
         
@@ -54,6 +58,7 @@ class SideNavVC: UIViewController{
         view.addGestureRecognizer(panGesture)
         
         view.backgroundColor = darkGrey
+        
         
     }
     
@@ -167,7 +172,8 @@ class SideNavVC: UIViewController{
         updatesTextView.textColor = .white
         updatesTextView.backgroundColor = .clear
         updatesTextView.font = UIFont(name: "Helvetica", size: 16)
-        updatesTextView.text = "Planned updates:\n\n1) Ability to chat with other users\n\n2) Share recording within application for others to review\n\n3) A separate settings page"
+        showNotice()
+        
         updatesTextView.translatesAutoresizingMaskIntoConstraints = false
         noticeContainer.addSubview(updatesTextView)
         updatesTextView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor).isActive = true
@@ -246,15 +252,33 @@ class SideNavVC: UIViewController{
     }
     
     @objc func showNextNotice() {
-    
+        if noticeNumber - 1 >= 0 {
+          noticeNumber -= 1
+        }
+        showNotice()
     }
     
     @objc func showPrevNotice() {
-    
+        if noticeNumber + 1 < notices.count {
+            noticeNumber += 1
+        }
+        showNotice()
     }
     
-    func showNotice(noticNumber: Int) {
-    
+    func showNotice() {
+        if noticeNumber >= 0 && noticeNumber < notices.count {
+            
+            guard let date = notices[noticeNumber]["date"],let notice = notices[noticeNumber]["notice"] else {
+                    updatesTextView.text = "No notices..."
+                    return
+            }
+            
+            updatesTextView.text = "\(date)\n\n\(notice)"
+            
+        } else {
+            updatesTextView.text = "No notices..."
+        }
+        
     }
     
     @objc func openInAppstore() {
@@ -283,6 +307,22 @@ class SideNavVC: UIViewController{
         dismiss(animated: true, completion: nil)
     }
     
+    func fetchNotices() {
+        
+        let ref = Database.database().reference()
+        
+        ref.child("notices").observe(.value) { (snapshot) in
+            guard var notices = snapshot.value as? Array<Dictionary<String,String>> else { return }
+            
+            notices = notices.sorted(by: {(arg0,arg1) in
+                guard let date1 = arg0["date"], let date2 = arg1["date"] else { return false}
+                guard let dateObj1 = convertToDate(date: date1), let dateObj2 = convertToDate(date: date2) else { return false }
+                return dateObj1 > dateObj2
+            })
+            self.notices = notices
+            self.showNotice()
+        }
+    }
 }
 
 extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
@@ -368,9 +408,6 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
 
 extension SideNavVC: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        print("Presenting: ",presenting)
-        print("Presented: ",presented)
         return SlideInVC()
     }
 }
