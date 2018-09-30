@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class InfoVC: UIViewController {
 
@@ -21,6 +22,7 @@ class InfoVC: UIViewController {
     @IBOutlet weak var fABtn: UIButton!
     @IBOutlet weak var tTSBtn: UIButton!
     @IBOutlet weak var iconCollectionView: UICollectionView!
+    @IBOutlet weak var creditsTextView: UITextView!
     
     @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
     
@@ -56,7 +58,19 @@ class InfoVC: UIViewController {
         
         creditsTxtViewHeight.constant = self.view.bounds.height - 400
         
+        fetchAndSetCredits()
+        
         addSlideGesture()
+    }
+    
+    func fetchAndSetCredits() {
+        let ref = Database.database().reference().child("credits")
+        ref.keepSynced(true)
+        ref.observe(.value, with: {(snapshot) in
+            if let value = snapshot.value as? String {
+                self.creditsTextView.text = value
+            }
+        })
     }
     
     func addSlideGesture() {

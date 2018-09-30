@@ -34,3 +34,6 @@ let plusIcon = UIImage(named: "plus.png")!
 let minusIcon = UIImage(named: "minus.png")!
 
 let sideNavIcon = UIImage(named: "bars.png")!
+
+let goGeniusLogo = UIImage(named: "gogenius.png")!
+let callIcon = UIImage(named: "phone.png")!

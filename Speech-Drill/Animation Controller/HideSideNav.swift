@@ -33,12 +33,12 @@ extension HideSideNav: UIViewControllerAnimatedTransitioning {
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             snapshot?.frame = CGRect(origin: CGPoint.zero, size: UIScreen.main.bounds.size)
-
+            snapshot?.layer.opacity = 1
         }) { _ in
             let didTransitionComplete = !transitionContext.transitionWasCancelled
             if didTransitionComplete {
                 snapshot?.removeFromSuperview()
-           
+                
                 toVC.view.isHidden = false
                 
             }
