@@ -28,16 +28,23 @@ class SideNavVC: UIViewController{
     private var sideNavWidth: CGFloat = 100
     private var hiddenSideNavWidth: CGFloat = 30
     
+    
     private let updatesTextView = UITextView()
     private let menuTableView = UITableView()
     private var menuItems = [menuItem]()
+
     private var notices: Array<Dictionary<String,String>> = [[:]]
     private var noticeNumber = 0
     
     private let appstoreLink = "itms-apps://itunes.apple.com/app/id1433796147"
-    
+    private var phoneNumbers:[String:String] = ["Hvovi":"9987042606","Umang":"9167884007"]
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+        
+    
         
         sideNavWidth = view.bounds.width * MenuHelper.menuWidth
         hiddenSideNavWidth = view.bounds.width - sideNavWidth
@@ -105,15 +112,18 @@ class SideNavVC: UIViewController{
         view.addConstraints([versionInfoViewTopCnstrnt,versionInfoViewLeadingCnstrnt,versionInfoViewTrailingCnstrnt])
     
     
-        let adView = UIView()
-        adView.backgroundColor = enabledGray.withAlphaComponent(0.2)
+        let adView = makeGoGeniusAdView()
+        adView.layer.borderColor = UIColor.white.cgColor
+        adView.layer.cornerRadius = 5
+        adView.layer.borderWidth = 1
+        adView.clipsToBounds = true
+        
         view.addSubview(adView)
         adView.translatesAutoresizingMaskIntoConstraints = false
         adView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
         adView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
         adView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -8).isActive = true
-        let adViewHeightCnstrnt = NSLayoutConstraint(item: adView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150)
-        view.addConstraint(adViewHeightCnstrnt)
+
         
         menuTableView.allowsMultipleSelection = false
         view.addSubview(menuTableView)
@@ -251,6 +261,133 @@ class SideNavVC: UIViewController{
         return versionInfoView
     }
     
+    func makeGoGeniusAdView() -> UIView {
+        
+        
+        print("Screen Type: ", UIDevice.current.screenType.rawValue)
+        
+        var goGeniusLogoHeight: CGFloat = 70
+        var spacing: CGFloat = 8
+        var callBtnHeight: CGFloat = 40
+        
+        let screenType = UIDevice.current.screenType.rawValue
+        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
+            goGeniusLogoHeight = 40
+            spacing = 4
+            callBtnHeight = 25
+        }
+        
+        
+        let adView = UIView()
+        
+        let adTapView = UIView()
+        adView.addSubview(adTapView)
+        adTapView.translatesAutoresizingMaskIntoConstraints = false
+        adTapView.leadingAnchor.constraint(equalTo: adView.leadingAnchor).isActive = true
+        adTapView.trailingAnchor.constraint(equalTo: adView.trailingAnchor).isActive = true
+        adTapView.topAnchor.constraint(equalTo: adView.topAnchor).isActive = true
+        
+        let logoImgView = UIImageView(image: goGeniusLogo)
+        adTapView.addSubview(logoImgView)
+        logoImgView.translatesAutoresizingMaskIntoConstraints = false
+        logoImgView.contentMode = .scaleAspectFit
+        logoImgView.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor,constant: 8).isActive = true
+        logoImgView.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor, constant: -8).isActive = true
+        logoImgView.topAnchor.constraint(equalTo: adTapView.topAnchor, constant: spacing).isActive = true
+        let logoImgViewHightCnstrnt = NSLayoutConstraint(item: logoImgView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: goGeniusLogoHeight)
+        adTapView.addConstraint(logoImgViewHightCnstrnt)
+        
+        let adLbl = UILabel()
+        adLbl.text = "They are pretty awesome! :)"
+        adLbl.font = UIFont(name: "Helvetica", size: 15)
+        adLbl.minimumScaleFactor = 0.5
+        adLbl.textColor = .white
+        adLbl.textAlignment = .center
+        adTapView.addSubview(adLbl)
+        adLbl.translatesAutoresizingMaskIntoConstraints = false
+        adLbl.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor).isActive = true
+        adLbl.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor).isActive = true
+        adLbl.topAnchor.constraint(equalTo: logoImgView.bottomAnchor, constant: spacing).isActive = true
+        adLbl.bottomAnchor.constraint(equalTo: adTapView.bottomAnchor).isActive = true
+        let addLblHeightConstraint = NSLayoutConstraint(item: adLbl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: callBtnHeight)
+        adTapView.addConstraint(addLblHeightConstraint)
+        
+        let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(openGoGeniusURL))
+        adTapGesture.numberOfTapsRequired = 1
+        adTapView.addGestureRecognizer(adTapGesture)
+        adTapView.isUserInteractionEnabled = true
+        
+        let callHvoviBtn = makeCallBtn(name: "Hvovi")
+        adView.addSubview(callHvoviBtn)
+        callHvoviBtn.translatesAutoresizingMaskIntoConstraints = false
+        callHvoviBtn.topAnchor.constraint(equalTo: adTapView.bottomAnchor, constant: spacing).isActive = true
+        callHvoviBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8).isActive = true
+        callHvoviBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8).isActive = true
+        let callHvoviBtnHeightCnstrnt = NSLayoutConstraint(item: callHvoviBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: callBtnHeight)
+        adView.addConstraint(callHvoviBtnHeightCnstrnt)
+        
+        let callUmangBtn = makeCallBtn(name: "Umang")
+        adView.addSubview(callUmangBtn)
+        callUmangBtn.translatesAutoresizingMaskIntoConstraints = false
+        callUmangBtn.topAnchor.constraint(equalTo: callHvoviBtn.bottomAnchor, constant: 5).isActive = true
+        callUmangBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8).isActive = true
+        callUmangBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8).isActive = true
+        callUmangBtn.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8).isActive = true
+        let callUmangBtnHeightCnstrnt = NSLayoutConstraint(item: callUmangBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: callBtnHeight)
+        adView.addConstraint(callUmangBtnHeightCnstrnt)
+        
+        return adView
+        
+    }
+    
+    func makeCallBtn(name: String) -> UIButton {
+        let callBtn = UIButton()
+        var textRightInset: CGFloat = 80
+        var textLeftInset: CGFloat = 40
+        var iconTopBottomInset: CGFloat = 10
+        
+        let screenType = UIDevice.current.screenType.rawValue
+        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
+            textRightInset = 60
+            textLeftInset = 10
+            iconTopBottomInset = 2
+        }
+        
+        callBtn.backgroundColor = confirmGreen.withAlphaComponent(0.6)
+        callBtn.layer.cornerRadius = 10
+        callBtn.clipsToBounds = true
+        
+        callBtn.setTitle(name, for: .normal)
+        
+        let callImage = callIcon.withRenderingMode(.alwaysTemplate)
+        callBtn.setImage(callImage, for: .normal)
+        callBtn.tintColor = .white
+        
+        callBtn.imageView?.contentMode = .scaleAspectFit
+        
+        callBtn.imageEdgeInsets = UIEdgeInsets(top: iconTopBottomInset, left: 5, bottom:iconTopBottomInset, right: 70)
+        callBtn.titleEdgeInsets = UIEdgeInsets(top: 5, left: textLeftInset, bottom: 5, right: textRightInset)
+        callBtn.titleLabel?.textAlignment = .left
+    
+        callBtn.addTarget(self, action: #selector(callNumber(_:)), for: .touchUpInside)
+        
+        return callBtn
+    }
+    
+    @objc func callNumber(_ sender: UIButton) {
+
+        guard let name = sender.title(for: .normal) else { return }
+        guard let number = phoneNumbers[name] else { return }
+        
+        print("Will call \(name): \(number)")
+        
+        openURL(url: URL(string: "tel://\(number)"))
+    }
+    
+    @objc func openGoGeniusURL(_ sender: UITapGestureRecognizer) {
+        openURL(url: URL(string: "https://www.gogenius.co"))
+    }
+    
     @objc func showNextNotice() {
         if noticeNumber - 1 >= 0 {
           noticeNumber -= 1
@@ -298,7 +435,6 @@ class SideNavVC: UIViewController{
             gestureState: sender.state,
             progress: progress,
             interactor: interactor){
-                // 6
                 self.dismiss(animated: true, completion: nil)
         }
     }
@@ -309,9 +445,9 @@ class SideNavVC: UIViewController{
     
     func fetchNotices() {
         
-        let ref = Database.database().reference()
-        
-        ref.child("notices").observe(.value) { (snapshot) in
+        let notesFIRBRef = Database.database().reference().child("notices")
+        notesFIRBRef.keepSynced(true)
+        notesFIRBRef.observe(.value) { (snapshot) in
             guard var notices = snapshot.value as? Array<Dictionary<String,String>> else { return }
             
             notices = notices.sorted(by: {(arg0,arg1) in
@@ -326,10 +462,10 @@ class SideNavVC: UIViewController{
 }
 
 extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menuItems.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
@@ -363,12 +499,6 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
             
             vcToPresent.transitioningDelegate = self
             vcToPresent.modalPresentationStyle = .custom
-//            let transition = CATransition()
-//            transition.duration = 0.5
-//            transition.type = kCATransitionPush
-//            transition.subtype = kCATransitionFromRight
-//            transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
-//            view.window!.layer.add(transition, forKey: kCATransition)
             self.present(vcToPresent, animated: true, completion: nil)
 
         }

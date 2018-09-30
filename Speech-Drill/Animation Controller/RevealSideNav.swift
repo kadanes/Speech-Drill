@@ -27,12 +27,14 @@ class RevealSideNav: NSObject, UIViewControllerAnimatedTransitioning {
         guard let snapshot = fromVC.view.snapshotView(afterScreenUpdates: false) else { return }
         snapshot.isUserInteractionEnabled = false
         snapshot.tag = MenuHelper.snapshotNumber
-        snapshot.layer.shadowOpacity = 0.7
+        snapshot.layer.shadowOpacity = MenuHelper.snapshotOpacity
+        
         containerView.insertSubview(snapshot, aboveSubview: toVC.view)
         fromVC.view.isHidden = true
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             snapshot.center.x += UIScreen.main.bounds.width * MenuHelper.menuWidth
+            snapshot.layer.opacity = MenuHelper.snapshotOpacity
         }, completion: { _ in
             fromVC.view.isHidden = false
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)

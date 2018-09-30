@@ -24,6 +24,8 @@ struct MenuHelper {
     
     static let snapshotNumber = 12345
     
+    static let snapshotOpacity: Float = 0.6
+    
     static func calculateProgress(translationInView:CGPoint, viewBounds:CGRect, direction:Direction) -> CGFloat {
         
         let pointOnAxis:CGFloat
