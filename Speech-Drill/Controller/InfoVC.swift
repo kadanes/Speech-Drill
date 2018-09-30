@@ -11,9 +11,10 @@ import UIKit
 class InfoVC: UIViewController {
 
     static let infoVC = InfoVC()
+    let sideNavVC = SideNavVC()
     
+    @IBOutlet weak var displaySideNavBtn: UIButton!
     @IBOutlet weak var infoContainer: UIView!
-
     @IBOutlet weak var githubBtn: UIButton!
     @IBOutlet weak var gmailBtn: UIButton!
     @IBOutlet weak var twitterBtn: RoundButton!
@@ -21,10 +22,9 @@ class InfoVC: UIViewController {
     @IBOutlet weak var tTSBtn: UIButton!
     @IBOutlet weak var iconCollectionView: UICollectionView!
     
+    @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
     
-    
-    @IBOutlet weak var closeInfoBtn: UIButton!
-    
+    let interactor = Interactor()
     
     let repoURL = URL(string: "https://github.com/parthv21/TOEFL-Speaking")
     
@@ -38,8 +38,10 @@ class InfoVC: UIViewController {
     
     var redIcons = [deleteIcon,closeIcon]
     
-    var accentedIcons = [checkIcon,singleLeftIcon,singleRightIcon,doubleLeftIcon,doubleRightIcon,tripleLeftIcon,tripleRightIcon,infoIcon]
+    var accentedIcons = [checkIcon,singleLeftIcon,singleRightIcon,doubleLeftIcon,doubleRightIcon,tripleLeftIcon,tripleRightIcon,infoIcon,sideNavIcon]
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
         setButtonProp()
@@ -52,9 +54,51 @@ class InfoVC: UIViewController {
         
         icons = icons.shuffled()
         
+        creditsTxtViewHeight.constant = self.view.bounds.height - 400
+        
+        addSlideGesture()
     }
     
+    func addSlideGesture() {
+        
+        let edgeSlide = UIPanGestureRecognizer(target: self, action: #selector(presentSideNav(sender:)))
+        view.addGestureRecognizer(edgeSlide)
+    }
+    
+    @objc func presentSideNav(sender: UIPanGestureRecognizer) {
+        
+        let translation = sender.translation(in: view)
+        let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
+        
+        MenuHelper.mapGestureStateToInteractor(gestureState: sender.state, progress: progress, interactor: interactor) {
+        
+            sideNavVC.transitioningDelegate = self
+            sideNavVC.modalPresentationStyle = .custom
+            sideNavVC.interactor = interactor
+            sideNavVC.calledFromVC = InfoVC.infoVC
+            self.present(sideNavVC, animated: true, completion: nil)
+
+        }
+        
+    }
+    
+    
+    @IBAction func displaySideNavTapped(_ sender: Any) {
+        
+        sideNavVC.transitioningDelegate = self
+        sideNavVC.modalPresentationStyle = .custom
+        sideNavVC.interactor = interactor
+        sideNavVC.calledFromVC = InfoVC.infoVC
+        self.present(sideNavVC, animated: true, completion: nil)
+        
+    }
+    
+    
     func setButtonProp() {
+        
+        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
+        
         setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
         githubBtn.backgroundColor = githubBlue.withAlphaComponent(0.8)
         
@@ -63,9 +107,7 @@ class InfoVC: UIViewController {
         
         setBtnImgProp(button: twitterBtn, topPadding: 10, leftPadding: 1)
         twitterBtn.backgroundColor = twitterBlue.withAlphaComponent(0.8)
-        
-        setBtnImgProp(button: closeInfoBtn, topPadding: 10, leftPadding: 1)
-
+    
         fABtn.setTitleColor(accentColor, for: .normal)
         tTSBtn.setTitleColor(accentColor, for: .normal)
     }
@@ -136,4 +178,34 @@ extension InfoVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
         return CGSize(width: 40, height: 40)
     }
 
+}
+
+extension InfoVC: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController,
+                             presenting: UIViewController,
+                             source: UIViewController)
+        -> UIViewControllerAnimatedTransitioning?
+    {
+        if presenting == self && presented == sideNavVC {
+            return RevealSideNav()
+        }
+        return nil
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        if dismissed == sideNavVC {
+            return HideSideNav(vcPresent: true)
+        }
+        return nil
+    }
+    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
 }

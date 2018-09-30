@@ -9,20 +9,26 @@
 import UIKit
 
 class HideSideNav : NSObject {
+    var presentingAddedVC = true
+    
+    init(vcPresent: Bool) {
+        self.presentingAddedVC = vcPresent
+    }
+    
 }
 
-extension HideSideNav  : UIViewControllerAnimatedTransitioning {
+extension HideSideNav: UIViewControllerAnimatedTransitioning {
+    
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard
-            let fromVC = transitionContext.viewController(forKey: .from),
             let toVC = transitionContext.viewController(forKey: .to)
             else { return }
         let containerView = transitionContext.containerView
-        // 1
+        
         let snapshot = containerView.viewWithTag(MenuHelper.snapshotNumber)
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
@@ -32,7 +38,9 @@ extension HideSideNav  : UIViewControllerAnimatedTransitioning {
             let didTransitionComplete = !transitionContext.transitionWasCancelled
             if didTransitionComplete {
                 snapshot?.removeFromSuperview()
+           
                 toVC.view.isHidden = false
+                
             }
             transitionContext.completeTransition(didTransitionComplete)
         }

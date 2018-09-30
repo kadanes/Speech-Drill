@@ -15,6 +15,7 @@ import CoreTelephony
 class MainVC: UIViewController {
    
     static let mainVC = MainVC()
+    let sideNavVC = SideNavVC()
     
     @IBOutlet weak var thinkTimeLbl: UILabel!
     
@@ -32,12 +33,12 @@ class MainVC: UIViewController {
     
     @IBOutlet weak var thinkTimeChangeStackViewContainer: UIView!
     
+    @IBOutlet weak var displaySideNavBtn: UIButton!
+    
     @IBOutlet weak var thinkTimeChangeStackView: UIStackView!
 
     @IBOutlet weak var switchModesBtn: RoundButton!
-    
-    @IBOutlet weak var displayInfoBtn: UIButton!
-    
+        
     @IBOutlet weak var recordBtn: UIButton!
     @IBOutlet weak var cancelRecordingBtn: UIButton!
     
@@ -153,7 +154,6 @@ class MainVC: UIViewController {
     
     
     func addSlideGesture() {
-        
         let edgeSlide = UIPanGestureRecognizer(target: self, action: #selector(presentSideNav(sender:)))
         view.addGestureRecognizer(edgeSlide)
     }
@@ -164,23 +164,29 @@ class MainVC: UIViewController {
         let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
         
         MenuHelper.mapGestureStateToInteractor(gestureState: sender.state, progress: progress, interactor: interactor) {
-            SideNavVC.sideNav.transitioningDelegate = self
-            SideNavVC.sideNav.modalPresentationStyle = .custom
-            SideNavVC.sideNav.interactor = interactor
-            SideNavVC.sideNav.calledFromVC = MainVC.mainVC
-            self.present(SideNavVC.sideNav, animated: true, completion: nil)
+            sideNavVC.transitioningDelegate = self
+            sideNavVC.modalPresentationStyle = .custom
+            sideNavVC.interactor = interactor
+            sideNavVC.calledFromVC = MainVC.mainVC
+            self.present(sideNavVC, animated: true, completion: nil)
+
         }
-       
-//        if presentedViewController != SideNavVC.sideNav {
-//            SideNavVC.sideNav.transitioningDelegate = self
-//            SideNavVC.sideNav.modalPresentationStyle = .custom
-//            SideNavVC.sideNav.interactor = interactor
-//            self.present(SideNavVC.sideNav, animated: true, completion: nil)
-//        }
     }
+    
+    @IBAction func displaySideNavTapped(_ sender: Any) {
+        
+        sideNavVC.transitioningDelegate = self
+        sideNavVC.modalPresentationStyle = .custom
+        sideNavVC.interactor = interactor
+        sideNavVC.calledFromVC = MainVC.mainVC
+        self.present(sideNavVC, animated: true, completion: nil)
+        
+    }
+    
     
     func setUIButtonsProperty() {
 
+        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -191,10 +197,11 @@ class MainVC: UIViewController {
         setBtnImgProp(button: recordBtn,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: closeShareMenuBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: cancelRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        setBtnImgProp(button: displayInfoBtn, topPadding: buttonVerticalInset - 8, leftPadding: buttonHorizontalInset - 8)
     }
     
     func setBtnImage() {
+        
+        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
         
         thinkTimeLbl.textColor = accentColor
         speakTimeLbl.textColor = accentColor
@@ -222,8 +229,6 @@ class MainVC: UIViewController {
         
         playSelectedActivityIndicator.color = accentColor
         exportSelectedActivityIndicator.color = accentColor
-        
-        setButtonBgImage(button: displayInfoBtn, bgImage: infoIcon, tintColor: accentColor)
         
         setButtonBgImage(button: loadNextTopicBtn, bgImage: singleRightIcon , tintColor: accentColor)
         setButtonBgImage(button: loadNextTenthTopicBtn, bgImage: doubleRightIcon , tintColor: accentColor)
@@ -1181,8 +1186,7 @@ extension MainVC: UIViewControllerTransitioningDelegate {
                              source: UIViewController)
         -> UIViewControllerAnimatedTransitioning?
     {
-        //print("Source: \(source) \(source == self)")
-        if presenting == self && presented == SideNavVC.sideNav {
+        if presenting == self && presented == sideNavVC {
             return RevealSideNav()
         }
         return nil
@@ -1190,9 +1194,8 @@ extension MainVC: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-       // print("Dismissed: \(dismissed)")
-        if dismissed == SideNavVC.sideNav {
-            return HideSideNav()
+        if dismissed == sideNavVC {
+            return HideSideNav(vcPresent: true)
         }
         return nil
     }

@@ -47,7 +47,6 @@ class SideNavVC: UIViewController{
         
         let closeBtn = UIButton(frame: CGRect(x: sideNavWidth, y: 0, width: hiddenSideNavWidth , height: view.bounds.height))
         closeBtn.addTarget(self, action: #selector(closeViewTapped), for: .touchUpInside)
-        closeBtn.setTitle("Close", for: .normal)
         view.addSubview(closeBtn)
 
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(closeViewWithPan(sender:)))
@@ -60,7 +59,7 @@ class SideNavVC: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         for (index,item) in menuItems.enumerated() {
-            if item.presentedVC == calledFromVC {
+            if item.presentedVC.isKind(of: type(of: calledFromVC!)) {
                 let indexPath = IndexPath(item: index, section: 0)
                 menuTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                 break
@@ -69,11 +68,15 @@ class SideNavVC: UIViewController{
     }
     
     func populateMenuItems() {
-        let mainVC = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: disabledRed, presentedVC: MainVC.mainVC)
-        let infoVC = menuItem(itemName: "Information", itemImg: infoIcon, itemImgClr: confirmGreen, presentedVC: InfoVC.infoVC)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
+        let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoVC") as! InfoVC
         
-        menuItems.append(mainVC)
-        menuItems.append(infoVC)
+        let mainVCMenuItem = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: disabledRed, presentedVC: mainVC)
+        let infoVCMenuItem = menuItem(itemName: "Information", itemImg: infoIcon, itemImgClr: confirmGreen, presentedVC: infoVC)
+        
+        menuItems.append(mainVCMenuItem)
+        menuItems.append(infoVCMenuItem)
     }
     
     func addViews() {
@@ -245,11 +248,23 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vcToPresent = menuItems[indexPath.row].presentedVC
+        guard let calledFromVC = calledFromVC else { return }
         
-        if let calledFromVC = calledFromVC {
-            if menuItems[indexPath.row].presentedVC == calledFromVC {
-                dismiss(animated: true, completion: nil)
-            }
+        if vcToPresent.isKind(of: type(of: calledFromVC))  {
+            dismiss(animated: true, completion: nil)
+        } else {
+            
+            vcToPresent.transitioningDelegate = self
+            vcToPresent.modalPresentationStyle = .custom
+//            let transition = CATransition()
+//            transition.duration = 0.5
+//            transition.type = kCATransitionPush
+//            transition.subtype = kCATransitionFromRight
+//            transition.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseInEaseOut)
+//            view.window!.layer.add(transition, forKey: kCATransition)
+            self.present(vcToPresent, animated: true, completion: nil)
+
         }
     }
     
@@ -282,5 +297,14 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         cellName.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8).isActive = true
         
         return cellView
+    }
+}
+
+extension SideNavVC: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        print("Presenting: ",presenting)
+        print("Presented: ",presented)
+        return SlideInVC()
     }
 }

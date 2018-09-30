@@ -32,3 +32,5 @@ let shareIcon = UIImage(named: "share.png")!
 let singleShareIcon = UIImage(named: "sshareg.png")!
 let plusIcon = UIImage(named: "plus.png")!
 let minusIcon = UIImage(named: "minus.png")!
+
+let sideNavIcon = UIImage(named: "bars.png")!
