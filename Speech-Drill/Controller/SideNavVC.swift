@@ -13,6 +13,7 @@ class SideNavVC: UIViewController{
     private struct menuItem {
         let itemName: String
         let itemImg: UIImage
+        let itemImgClr: UIColor
         let presentedVC: UIViewController
     }
     
@@ -52,7 +53,7 @@ class SideNavVC: UIViewController{
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(closeViewWithPan(sender:)))
         view.addGestureRecognizer(panGesture)
         
-        view.backgroundColor = UIColor.darkGray
+        view.backgroundColor = darkGrey
         
     }
     
@@ -68,8 +69,9 @@ class SideNavVC: UIViewController{
     }
     
     func populateMenuItems() {
-        let mainVC = menuItem(itemName: "Main Menu", itemImg: recordIcon, presentedVC: MainVC.mainVC)
-        let infoVC = menuItem(itemName: "Information", itemImg: infoIcon, presentedVC: InfoVC.infoVC)
+        let mainVC = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: disabledRed, presentedVC: MainVC.mainVC)
+        let infoVC = menuItem(itemName: "Information", itemImg: infoIcon, itemImgClr: confirmGreen, presentedVC: InfoVC.infoVC)
+        
         menuItems.append(mainVC)
         menuItems.append(infoVC)
     }
@@ -232,7 +234,7 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         
         cell.backgroundColor = .clear
         let bgColorView = UIView()
-        bgColorView.backgroundColor = accentColor.withAlphaComponent(0.4)
+        bgColorView.backgroundColor = disabledGray.withAlphaComponent(0.6)
         cell.selectedBackgroundView = bgColorView
         
         return cell
@@ -253,18 +255,18 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
     
     private func makeCellView(menuItem: menuItem) -> UIView {
         let cellView = UIView()
-        
-        let cellIcon = UIImageView(image: menuItem.itemImg)
-        cellIcon.image?.withRenderingMode(.alwaysTemplate)
-        cellIcon.tintColor = accentColor
+
+        let bgImage =  menuItem.itemImg.withRenderingMode(.alwaysTemplate)
+        let cellIcon = UIImageView(image:bgImage)
+        cellIcon.tintColor = menuItem.itemImgClr
         
         cellView.addSubview(cellIcon)
         cellIcon.translatesAutoresizingMaskIntoConstraints = false
         cellIcon.contentMode = .scaleAspectFit
-        let cellIconLeadingCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .leading, relatedBy: .equal, toItem: cellView, attribute: .leading, multiplier: 1, constant: 8)
-        let cellIconTopCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .top, relatedBy: .equal, toItem: cellView, attribute: .top, multiplier: 1, constant: 8)
-        let cellIconBottomCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .bottom, relatedBy: .equal, toItem: cellView, attribute: .bottom, multiplier: 1, constant: -8)
-        let cellIconWidthCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60)
+        let cellIconLeadingCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .leading, relatedBy: .equal, toItem: cellView, attribute: .leading, multiplier: 1, constant: 0)
+        let cellIconTopCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .top, relatedBy: .equal, toItem: cellView, attribute: .top, multiplier: 1, constant: 16)
+        let cellIconBottomCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .bottom, relatedBy: .equal, toItem: cellView, attribute: .bottom, multiplier: 1, constant: -16)
+        let cellIconWidthCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
         cellView.addConstraints([cellIconTopCnstrnt,cellIconBottomCnstrnt,cellIconLeadingCnstrnt,cellIconWidthCnstrnt])
         
         let cellName = UILabel()
@@ -274,7 +276,7 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         
         cellView.addSubview(cellName)
         cellName.translatesAutoresizingMaskIntoConstraints = false
-        cellName.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 8).isActive = true
+        cellName.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 16).isActive = true
         cellName.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 8).isActive = true
         cellName.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8).isActive = true
         cellName.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8).isActive = true
