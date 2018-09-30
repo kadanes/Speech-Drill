@@ -122,7 +122,6 @@ func convertToDate(date: String) -> Date? {
 }
 
 func checkIfSilent() {
-    
     Mute.shared.isPaused = false
     Mute.shared.checkInterval = 0.5
     Mute.shared.alwaysNotify = true
@@ -287,8 +286,3 @@ func needsUpdate() -> Bool {
     return false
 }
 
-
-///Fetch key value array of text json text from url
-func fetchDatedInfoText(link: String) {
-    
-}

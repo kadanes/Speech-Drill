@@ -11,6 +11,7 @@
 		B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204ECAF21134A2200A51E8B /* RecordingCell.swift */; };
 		B206B61221609CA700B1CCBA /* SlideInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B206B61121609CA700B1CCBA /* SlideInVC.swift */; };
 		B206B6142160BCA800B1CCBA /* bars.png in Resources */ = {isa = PBXBuildFile; fileRef = B206B6132160BCA700B1CCBA /* bars.png */; };
+		B206B6162160D39F00B1CCBA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B206B6152160D39F00B1CCBA /* GoogleService-Info.plist */; };
 		B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB22210FF664009C678C /* AppDelegate.swift */; };
 		B21ABB25210FF664009C678C /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB24210FF664009C678C /* MainVC.swift */; };
 		B21ABB28210FF664009C678C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB26210FF664009C678C /* Main.storyboard */; };
@@ -85,6 +86,7 @@
 		B204ECAF21134A2200A51E8B /* RecordingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
 		B206B61121609CA700B1CCBA /* SlideInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInVC.swift; sourceTree = "<group>"; };
 		B206B6132160BCA700B1CCBA /* bars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bars.png; sourceTree = SOURCE_ROOT; };
+		B206B6152160D39F00B1CCBA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B21ABB1F210FF664009C678C /* Speech-Drill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Speech-Drill.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B21ABB22210FF664009C678C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B21ABB24210FF664009C678C /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				B23F7F0E21483A94009B6ECA /* Constants */,
 				B27F31382122027700872047 /* Utils */,
 				B21ABB2E210FF664009C678C /* Info.plist */,
+				B206B6152160D39F00B1CCBA /* GoogleService-Info.plist */,
 				B2FFE74321438AE600484AFA /* SectionHeader.xib */,
 				B21ABB26210FF664009C678C /* Main.storyboard */,
 				B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */,
@@ -455,6 +458,7 @@
 				B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */,
 				B2E5F5E1212B1D1200FC7E28 /* sright.png in Resources */,
 				B21ABB28210FF664009C678C /* Main.storyboard in Resources */,
+				B206B6162160D39F00B1CCBA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,11 +501,17 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Mute/Mute.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mute.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -721,10 +731,7 @@
 				DEVELOPMENT_TEAM = U4985LT7P8;
 				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parthtamane.SpeechTrainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -741,10 +748,7 @@
 				DEVELOPMENT_TEAM = U4985LT7P8;
 				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parthtamane.SpeechTrainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

@@ -7,4 +7,7 @@ target 'Speech-Drill' do
 
   # Pods for Speech-Drill
   pod 'Mute'
+  pod 'Firebase/Core'
+  pod 'Firebase/Database'
+
 end
