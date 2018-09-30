@@ -10,6 +10,8 @@ import UIKit
 
 class InfoVC: UIViewController {
 
+    static let infoVC = InfoVC()
+    
     @IBOutlet weak var infoContainer: UIView!
 
     @IBOutlet weak var githubBtn: UIButton!

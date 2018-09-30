@@ -14,6 +14,8 @@ import CoreTelephony
 
 class MainVC: UIViewController {
    
+    static let mainVC = MainVC()
+    
     @IBOutlet weak var thinkTimeLbl: UILabel!
     
     @IBOutlet weak var thinkTimeInfoView: UIView!
@@ -68,6 +70,9 @@ class MainVC: UIViewController {
     @IBOutlet weak var exportCurrentPlayTimeLbl: UILabel!
     @IBOutlet weak var exportPlayingSeeker: UISlider!
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
+    
+    
+    let interactor = Interactor()
     
     var isTestMode = false
     var reducedTime = false
@@ -137,11 +142,41 @@ class MainVC: UIViewController {
         setHiddenVisibleSectionList()
         toggleExportMenu()
         
+        addSlideGesture()
+        
     }
   
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         recordingTableView.reloadData()
+    }
+    
+    
+    func addSlideGesture() {
+        
+        let edgeSlide = UIPanGestureRecognizer(target: self, action: #selector(presentSideNav(sender:)))
+        view.addGestureRecognizer(edgeSlide)
+    }
+    
+    @objc func presentSideNav(sender: UIPanGestureRecognizer) {
+        
+        let translation = sender.translation(in: view)
+        let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
+        
+        MenuHelper.mapGestureStateToInteractor(gestureState: sender.state, progress: progress, interactor: interactor) {
+            SideNavVC.sideNav.transitioningDelegate = self
+            SideNavVC.sideNav.modalPresentationStyle = .custom
+            SideNavVC.sideNav.interactor = interactor
+            SideNavVC.sideNav.calledFromVC = MainVC.mainVC
+            self.present(SideNavVC.sideNav, animated: true, completion: nil)
+        }
+       
+//        if presentedViewController != SideNavVC.sideNav {
+//            SideNavVC.sideNav.transitioningDelegate = self
+//            SideNavVC.sideNav.modalPresentationStyle = .custom
+//            SideNavVC.sideNav.interactor = interactor
+//            self.present(SideNavVC.sideNav, animated: true, completion: nil)
+//        }
     }
     
     func setUIButtonsProperty() {
@@ -1139,3 +1174,34 @@ extension MainVC {
     }
 }
 
+extension MainVC: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController,
+                             presenting: UIViewController,
+                             source: UIViewController)
+        -> UIViewControllerAnimatedTransitioning?
+    {
+        //print("Source: \(source) \(source == self)")
+        if presenting == self && presented == SideNavVC.sideNav {
+            return RevealSideNav()
+        }
+        return nil
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+       // print("Dismissed: \(dismissed)")
+        if dismissed == SideNavVC.sideNav {
+            return HideSideNav()
+        }
+        return nil
+    }
+    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
+}

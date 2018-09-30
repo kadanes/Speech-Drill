@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84FF2EE76F526D2EEB5D78D0 /* Pods_Speech_Drill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B004704A17CB4927208EC40B /* Pods_Speech_Drill.framework */; };
 		B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204ECAF21134A2200A51E8B /* RecordingCell.swift */; };
 		B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB22210FF664009C678C /* AppDelegate.swift */; };
 		B21ABB25210FF664009C678C /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21ABB24210FF664009C678C /* MainVC.swift */; };
@@ -21,10 +22,15 @@
 		B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1121483AD1009B6ECA /* UIIcons.swift */; };
 		B23F7F1421483B02009B6ECA /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1321483B02009B6ECA /* IDs.swift */; };
 		B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1521483BA5009B6ECA /* UIConstraints.swift */; };
+		B2418C18215E8E490020E078 /* SideNavVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2418C17215E8E490020E078 /* SideNavVC.swift */; };
+		B2418C1B215EA6A30020E078 /* RevealSideNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2418C1A215EA6A30020E078 /* RevealSideNav.swift */; };
+		B2418C1D215EAC490020E078 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2418C1C215EAC490020E078 /* Interactor.swift */; };
+		B2418C1F215EACDA0020E078 /* MenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2418C1E215EACDA0020E078 /* MenuHelper.swift */; };
 		B25F80B9211F4F3200AD786C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80B8211F4F3200AD786C /* Enums.swift */; };
 		B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C3211F5B0700AD786C /* beep1.m4a */; };
 		B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C5211F5BAA00AD786C /* beep2.m4a */; };
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
+		B26A36BD215ECE3C00628EC9 /* HideSideNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */; };
 		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
 		B2752D342137FD6300054ACF /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = B2752D322137FD6200054ACF /* plus.png */; };
 		B2752D352137FD6300054ACF /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = B2752D332137FD6300054ACF /* minus.png */; };
@@ -66,14 +72,16 @@
 		B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F01E25212D8C44006D6D86 /* Toast.swift */; };
 		B2FFE74421438AE600484AFA /* SectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2FFE74321438AE600484AFA /* SectionHeader.xib */; };
 		B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FFE74521438C7B00484AFA /* SectionHeader.swift */; };
-		C6D05DCAA034BD7548B558D4 /* Pods_TOEFL_Speaking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BECC3C4456E730C500DAC85 /* Pods-Speech-Drill.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Speech-Drill.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill.debug.xcconfig"; sourceTree = "<group>"; };
 		1F2AD09C9611AD51D31B8DC1 /* Pods-TOEFL-Speaking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TOEFL-Speaking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking.debug.xcconfig"; sourceTree = "<group>"; };
+		77D0B60F9E79CA2CAB235FD0 /* Pods-Speech-Drill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Speech-Drill.release.xcconfig"; path = "Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill.release.xcconfig"; sourceTree = "<group>"; };
 		7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TOEFL_Speaking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B004704A17CB4927208EC40B /* Pods_Speech_Drill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Speech_Drill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B204ECAF21134A2200A51E8B /* RecordingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCell.swift; sourceTree = "<group>"; };
-		B21ABB1F210FF664009C678C /* TOEFL-Speaking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOEFL-Speaking.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B21ABB1F210FF664009C678C /* Speech-Drill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Speech-Drill.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B21ABB22210FF664009C678C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B21ABB24210FF664009C678C /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		B21ABB27210FF664009C678C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -88,10 +96,15 @@
 		B23F7F1121483AD1009B6ECA /* UIIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIcons.swift; sourceTree = "<group>"; };
 		B23F7F1321483B02009B6ECA /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
 		B23F7F1521483BA5009B6ECA /* UIConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstraints.swift; sourceTree = "<group>"; };
+		B2418C17215E8E490020E078 /* SideNavVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavVC.swift; sourceTree = "<group>"; };
+		B2418C1A215EA6A30020E078 /* RevealSideNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevealSideNav.swift; sourceTree = "<group>"; };
+		B2418C1C215EAC490020E078 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
+		B2418C1E215EACDA0020E078 /* MenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHelper.swift; sourceTree = "<group>"; };
 		B25F80B8211F4F3200AD786C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		B25F80C3211F5B0700AD786C /* beep1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep1.m4a; sourceTree = "<group>"; };
 		B25F80C5211F5BAA00AD786C /* beep2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep2.m4a; sourceTree = "<group>"; };
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
+		B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideSideNav.swift; sourceTree = "<group>"; };
 		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
 		B2752D322137FD6200054ACF /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		B2752D332137FD6300054ACF /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
@@ -141,7 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6D05DCAA034BD7548B558D4 /* Pods_TOEFL_Speaking.framework in Frameworks */,
+				84FF2EE76F526D2EEB5D78D0 /* Pods_Speech_Drill.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				7F7944DA8AFEC25230A555F0 /* Pods_TOEFL_Speaking.framework */,
+				B004704A17CB4927208EC40B /* Pods_Speech_Drill.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,7 +185,7 @@
 		B21ABB16210FF664009C678C = {
 			isa = PBXGroup;
 			children = (
-				B21ABB21210FF664009C678C /* TOEFL-Speaking */,
+				B21ABB21210FF664009C678C /* Speech-Drill */,
 				B21ABB20210FF664009C678C /* Products */,
 				C2DE69F64CE1AF011AEF432A /* Pods */,
 				9F8DF12821157B0A13C38B8E /* Frameworks */,
@@ -181,14 +195,16 @@
 		B21ABB20210FF664009C678C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B21ABB1F210FF664009C678C /* TOEFL-Speaking.app */,
+				B21ABB1F210FF664009C678C /* Speech-Drill.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B21ABB21210FF664009C678C /* TOEFL-Speaking */ = {
+		B21ABB21210FF664009C678C /* Speech-Drill */ = {
 			isa = PBXGroup;
 			children = (
+				B21FAB25215F26C900AE2E0A /* Information */,
+				B2418C19215EA67C0020E078 /* Animation Controller */,
 				B2DAB65D21285C780062ECDF /* Extension */,
 				B2DAB65421285C470062ECDF /* Image Assets */,
 				B23F5FEA211EFA68006034EC /* Assets */,
@@ -203,7 +219,7 @@
 				B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */,
 				B21ABB29210FF664009C678C /* Assets.xcassets */,
 			);
-			path = "TOEFL-Speaking";
+			path = "Speech-Drill";
 			sourceTree = "<group>";
 		};
 		B21ABB35210FFA19009C678C /* Custom View */ = {
@@ -217,6 +233,13 @@
 				B2BF9F07214009820015F330 /* Pulsing.swift */,
 			);
 			path = "Custom View";
+			sourceTree = "<group>";
+		};
+		B21FAB25215F26C900AE2E0A /* Information */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Information;
 			sourceTree = "<group>";
 		};
 		B23F5FEA211EFA68006034EC /* Assets */ = {
@@ -245,11 +268,21 @@
 			path = Conatants;
 			sourceTree = "<group>";
 		};
+		B2418C19215EA67C0020E078 /* Animation Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B2418C1A215EA6A30020E078 /* RevealSideNav.swift */,
+				B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */,
+			);
+			path = "Animation Controller";
+			sourceTree = "<group>";
+		};
 		B27F31372122025F00872047 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				B21ABB24210FF664009C678C /* MainVC.swift */,
 				B2E5F5E7212B260C00FC7E28 /* InfoVC.swift */,
+				B2418C17215E8E490020E078 /* SideNavVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -262,6 +295,8 @@
 				B2E5F5E9212B2C5900FC7E28 /* Utils.swift */,
 				B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */,
 				B21ABB22210FF664009C678C /* AppDelegate.swift */,
+				B2418C1C215EAC490020E078 /* Interactor.swift */,
+				B2418C1E215EACDA0020E078 /* MenuHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -310,6 +345,8 @@
 			children = (
 				1F2AD09C9611AD51D31B8DC1 /* Pods-TOEFL-Speaking.debug.xcconfig */,
 				B47960409B4B75DC35695E1D /* Pods-TOEFL-Speaking.release.xcconfig */,
+				0BECC3C4456E730C500DAC85 /* Pods-Speech-Drill.debug.xcconfig */,
+				77D0B60F9E79CA2CAB235FD0 /* Pods-Speech-Drill.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -317,9 +354,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B21ABB1E210FF664009C678C /* TOEFL-Speaking */ = {
+		B21ABB1E210FF664009C678C /* Speech-Drill */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B21ABB31210FF664009C678C /* Build configuration list for PBXNativeTarget "TOEFL-Speaking" */;
+			buildConfigurationList = B21ABB31210FF664009C678C /* Build configuration list for PBXNativeTarget "Speech-Drill" */;
 			buildPhases = (
 				D5CDA80B74DFF63E0CD2E475 /* [CP] Check Pods Manifest.lock */,
 				B21ABB1B210FF664009C678C /* Sources */,
@@ -333,9 +370,9 @@
 			);
 			dependencies = (
 			);
-			name = "TOEFL-Speaking";
+			name = "Speech-Drill";
 			productName = "TOEFL Speaking";
-			productReference = B21ABB1F210FF664009C678C /* TOEFL-Speaking.app */;
+			productReference = B21ABB1F210FF664009C678C /* Speech-Drill.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -353,7 +390,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B21ABB1A210FF664009C678C /* Build configuration list for PBXProject "TOEFL-Speaking" */;
+			buildConfigurationList = B21ABB1A210FF664009C678C /* Build configuration list for PBXProject "Speech-Drill" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -366,7 +403,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B21ABB1E210FF664009C678C /* TOEFL-Speaking */,
+				B21ABB1E210FF664009C678C /* Speech-Drill */,
 			);
 		};
 /* End PBXProject section */
@@ -429,7 +466,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B21ABB34210FF673009C678C /* Increment Build */ = {
@@ -452,7 +489,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Mute/Mute.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -461,7 +498,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TOEFL-Speaking/Pods-TOEFL-Speaking-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D5CDA80B74DFF63E0CD2E475 /* [CP] Check Pods Manifest.lock */ = {
@@ -475,7 +512,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TOEFL-Speaking-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Speech-Drill-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -499,13 +536,18 @@
 				B23F7F1421483B02009B6ECA /* IDs.swift in Sources */,
 				B2DB3F232148EE72000DD50E /* ProgressBar.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
+				B26A36BD215ECE3C00628EC9 /* HideSideNav.swift in Sources */,
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
+				B2418C1D215EAC490020E078 /* Interactor.swift in Sources */,
 				B25F80B9211F4F3200AD786C /* Enums.swift in Sources */,
+				B2418C1B215EA6A30020E078 /* RevealSideNav.swift in Sources */,
 				B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
+				B2418C18215E8E490020E078 /* SideNavVC.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,
 				B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */,
+				B2418C1F215EACDA0020E078 /* MenuHelper.swift in Sources */,
 				B23F7F1021483AA6009B6ECA /* UIColors.swift in Sources */,
 				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
@@ -664,12 +706,12 @@
 		};
 		B21ABB32210FF664009C678C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F2AD09C9611AD51D31B8DC1 /* Pods-TOEFL-Speaking.debug.xcconfig */;
+			baseConfigurationReference = 0BECC3C4456E730C500DAC85 /* Pods-Speech-Drill.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U4985LT7P8;
-				INFOPLIST_FILE = "TOEFL-Speaking/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -684,12 +726,12 @@
 		};
 		B21ABB33210FF664009C678C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B47960409B4B75DC35695E1D /* Pods-TOEFL-Speaking.release.xcconfig */;
+			baseConfigurationReference = 77D0B60F9E79CA2CAB235FD0 /* Pods-Speech-Drill.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U4985LT7P8;
-				INFOPLIST_FILE = "TOEFL-Speaking/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -705,7 +747,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B21ABB1A210FF664009C678C /* Build configuration list for PBXProject "TOEFL-Speaking" */ = {
+		B21ABB1A210FF664009C678C /* Build configuration list for PBXProject "Speech-Drill" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B21ABB2F210FF664009C678C /* Debug */,
@@ -714,7 +756,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B21ABB31210FF664009C678C /* Build configuration list for PBXNativeTarget "TOEFL-Speaking" */ = {
+		B21ABB31210FF664009C678C /* Build configuration list for PBXNativeTarget "Speech-Drill" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B21ABB32210FF664009C678C /* Debug */,
