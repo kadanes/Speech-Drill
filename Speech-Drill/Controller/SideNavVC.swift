@@ -56,6 +56,17 @@ class SideNavVC: UIViewController{
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        for (index,item) in menuItems.enumerated() {
+            if item.presentedVC == calledFromVC {
+                let indexPath = IndexPath(item: index, section: 0)
+                menuTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                break
+            }
+        }
+    }
+    
     func populateMenuItems() {
         let mainVC = menuItem(itemName: "Main Menu", itemImg: recordIcon, presentedVC: MainVC.mainVC)
         let infoVC = menuItem(itemName: "Information", itemImg: infoIcon, presentedVC: InfoVC.infoVC)
@@ -98,6 +109,7 @@ class SideNavVC: UIViewController{
         let adViewHeightCnstrnt = NSLayoutConstraint(item: adView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150)
         view.addConstraint(adViewHeightCnstrnt)
         
+        menuTableView.allowsMultipleSelection = false
         view.addSubview(menuTableView)
         menuTableView.translatesAutoresizingMaskIntoConstraints = false
         menuTableView.backgroundColor = .clear
@@ -219,11 +231,24 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         cellView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
         
         cell.backgroundColor = .clear
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = accentColor.withAlphaComponent(0.4)
+        cell.selectedBackgroundView = bgColorView
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let calledFromVC = calledFromVC {
+            if menuItems[indexPath.row].presentedVC == calledFromVC {
+                dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     private func makeCellView(menuItem: menuItem) -> UIView {
