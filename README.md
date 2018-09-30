@@ -13,6 +13,6 @@ This app has you covered!
 
 All the best for yout exams! :)
 
-[Speech Drill](https://itunes.apple.com/us/app/speech-drill/id1433796147?ls=1&mt=8) ![Speech Drill Logo](/TOEFL-Speaking/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png)
+[Speech Drill](https://itunes.apple.com/us/app/speech-drill/id1433796147?ls=1&mt=8) <img src="https://github.com/parthv21/Speech-Drill/blob/master/logo.png" width="20px" alt="Speech-Drill Logo">
 
 <img src="https://github.com/parthv21/TOEFL-Speaking/blob/master/UI_Screen_Shots/success.png" width="19%"> <img src="https://github.com/parthv21/TOEFL-Speaking/blob/master/UI_Screen_Shots/delete.png" width="19%"> <img src="https://github.com/parthv21/TOEFL-Speaking/blob/master/UI_Screen_Shots/export.png" width="19%"> <img src="https://github.com/parthv21/TOEFL-Speaking/blob/master/UI_Screen_Shots/test.png" width="19%"> <img src="https://github.com/parthv21/TOEFL-Speaking/blob/master/UI_Screen_Shots/info.png" width="19%"> 
