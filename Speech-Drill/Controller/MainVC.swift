@@ -159,6 +159,7 @@ class MainVC: UIViewController {
     }
     
     @objc func presentSideNav(sender: UIPanGestureRecognizer) {
+        cancelRecording()
         
         let translation = sender.translation(in: view)
         let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
@@ -450,11 +451,9 @@ class MainVC: UIViewController {
     
     func cancelRecording() {
         if isRecording {
-            
             audioRecorder.stop()
             resetRecordingState()
             cancelledRecording = true
-            
             if let url = currentRecordingURL {
                 let _ = deleteStoredRecording(recordingURL: url)
                 reloadData()

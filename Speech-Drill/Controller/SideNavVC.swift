@@ -68,7 +68,7 @@ class SideNavVC: UIViewController{
         
         
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         for (index,item) in menuItems.enumerated() {
@@ -94,13 +94,22 @@ class SideNavVC: UIViewController{
     
     func addViews() {
         
+        var topMargin: CGFloat = 20
+        var bottomMargin: CGFloat = -8
+        
+        let screenType = UIDevice.current.screenType
+        if screenType == ScreenType.iPhoneXR || screenType == ScreenType.iPhoneXSMax || screenType == ScreenType.iPhoneX_iPhoneXS {
+            topMargin = 30
+            bottomMargin = -20
+        }
+        
         let noticeView = makeNoticeView()
         view.addSubview(noticeView)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
         let noticeViewHghtCnstrnt = NSLayoutConstraint(item: noticeView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.bounds.height / 4)
         noticeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
         updatesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + hiddenSideNavWidth)).isActive = true
-        noticeView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
+        noticeView.topAnchor.constraint(equalTo: view.topAnchor, constant: topMargin).isActive = true
         view.addConstraint(noticeViewHghtCnstrnt)
         
         let versionInfoView = makeVersionDetailView()
@@ -110,7 +119,6 @@ class SideNavVC: UIViewController{
         let versionInfoViewLeadingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 8)
         let versionInfoViewTrailingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -(8 + hiddenSideNavWidth))
         view.addConstraints([versionInfoViewTopCnstrnt,versionInfoViewLeadingCnstrnt,versionInfoViewTrailingCnstrnt])
-    
     
         let adView = makeGoGeniusAdView()
         adView.layer.borderColor = UIColor.white.cgColor
@@ -122,7 +130,7 @@ class SideNavVC: UIViewController{
         adView.translatesAutoresizingMaskIntoConstraints = false
         adView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
         adView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
-        adView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -8).isActive = true
+        adView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin).isActive = true
 
         
         menuTableView.allowsMultipleSelection = false
@@ -134,7 +142,6 @@ class SideNavVC: UIViewController{
         menuTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
         menuTableView.bottomAnchor.constraint(equalTo: adView.topAnchor, constant: 0).isActive = true
 
-        
     }
     
     func makeNoticeView() -> UIView {
