@@ -215,7 +215,7 @@
 				B27F31372122025F00872047 /* Controller */,
 				B204ECAE211349FE00A51E8B /* Custom Class */,
 				B21ABB35210FFA19009C678C /* Custom View */,
-				B23F7F0E21483A94009B6ECA /* Conatants */,
+				B23F7F0E21483A94009B6ECA /* Constants */,
 				B27F31382122027700872047 /* Utils */,
 				B21ABB2E210FF664009C678C /* Info.plist */,
 				B2FFE74321438AE600484AFA /* SectionHeader.xib */,
@@ -260,7 +260,7 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		B23F7F0E21483A94009B6ECA /* Conatants */ = {
+		B23F7F0E21483A94009B6ECA /* Constants */ = {
 			isa = PBXGroup;
 			children = (
 				B23F7F0F21483AA6009B6ECA /* UIColors.swift */,
@@ -269,7 +269,7 @@
 				B23F7F1521483BA5009B6ECA /* UIConstraints.swift */,
 				B25F80B8211F4F3200AD786C /* Enums.swift */,
 			);
-			path = Conatants;
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		B2418C19215EA67C0020E078 /* Animation Controller */ = {

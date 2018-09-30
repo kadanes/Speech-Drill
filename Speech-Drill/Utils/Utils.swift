@@ -287,3 +287,8 @@ func needsUpdate() -> Bool {
     return false
 }
 
+
+///Fetch key value array of text json text from url
+func fetchDatedInfoText(link: String) {
+    
+}

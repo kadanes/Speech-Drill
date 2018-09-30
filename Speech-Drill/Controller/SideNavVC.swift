@@ -10,13 +10,14 @@ import UIKit
 
 class SideNavVC: UIViewController{
     
+    private let noticesUrl = "https://github.com/parthv21/Speech-Drill/blob/master/Speech-Drill/Information/info.json"
+    
     private struct menuItem {
         let itemName: String
         let itemImg: UIImage
         let itemImgClr: UIColor
         let presentedVC: UIViewController
     }
-    
     
     static let sideNav = SideNavVC()
     var interactor: Interactor? = nil
@@ -81,19 +82,14 @@ class SideNavVC: UIViewController{
     
     func addViews() {
         
-        view.addSubview(updatesTextView)
-        updatesTextView.translatesAutoresizingMaskIntoConstraints = false
-        updatesTextView.backgroundColor = .clear
-        updatesTextView.textColor = .white
-        updatesTextView.font = UIFont(name: "Helvetica", size: 16)
-        
-        updatesTextView.text = "Planned updates:\n\n1) Ability to chat with other users\n\n2) Share recording within application for others to review\n\n3) A separate settings page"
-        
-        let updatesTxtViewHghtCnstrnt = NSLayoutConstraint(item: updatesTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.bounds.height / 4)
-        updatesTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
+        let noticeView = makeNoticeView()
+        view.addSubview(noticeView)
+        noticeView.translatesAutoresizingMaskIntoConstraints = false
+        let noticeViewHghtCnstrnt = NSLayoutConstraint(item: noticeView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.bounds.height / 4)
+        noticeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
         updatesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + hiddenSideNavWidth)).isActive = true
-        updatesTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
-        view.addConstraint(updatesTxtViewHghtCnstrnt)
+        noticeView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
+        view.addConstraint(noticeViewHghtCnstrnt)
         
         let versionInfoView = makeVersionDetailView()
         view.addSubview(versionInfoView)
@@ -123,6 +119,63 @@ class SideNavVC: UIViewController{
         menuTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
         menuTableView.bottomAnchor.constraint(equalTo: adView.topAnchor, constant: 0).isActive = true
 
+        
+    }
+    
+    func makeNoticeView() -> UIView {
+        let noticeContainer = UIView()
+        
+        let noticeStackView = UIStackView()
+        noticeStackView.backgroundColor = .red
+        noticeStackView.axis = .horizontal
+        noticeStackView.spacing = 5
+        noticeStackView.alignment = .fill
+        noticeStackView.distribution = .fillEqually
+        noticeContainer.addSubview(noticeStackView)
+        noticeStackView.translatesAutoresizingMaskIntoConstraints = false
+        noticeStackView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor).isActive = true
+        noticeStackView.trailingAnchor.constraint(equalTo: noticeContainer.trailingAnchor).isActive = true
+        noticeStackView.topAnchor.constraint(equalTo: noticeContainer.topAnchor).isActive = true
+        let noticSVHeightCnstrnt = NSLayoutConstraint(item: noticeStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
+        noticeContainer.addConstraint(noticSVHeightCnstrnt)
+        
+        let nextNoticeBtn = UIButton()
+        nextNoticeBtn.addTarget(self, action: #selector(showNextNotice), for: .touchUpInside)
+        setButtonBgImage(button: nextNoticeBtn, bgImage: singleRightIcon, tintColor: .white)
+        setBtnImgProp(button: nextNoticeBtn, topPadding: 5, leftPadding: 5)
+        nextNoticeBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        let prevNoticeBtn = UIButton()
+        prevNoticeBtn.addTarget(self, action: #selector(showPrevNotice), for: .touchUpInside)
+        setButtonBgImage(button: prevNoticeBtn, bgImage: singleLeftIcon, tintColor: .white)
+        setBtnImgProp(button: prevNoticeBtn, topPadding: 5, leftPadding: 5)
+        prevNoticeBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        noticeStackView.insertArrangedSubview(prevNoticeBtn, at: 0)
+        noticeStackView.insertArrangedSubview(nextNoticeBtn, at: 1)
+        
+        let noticeLbl = UILabel()
+        noticeLbl.text = "Notice"
+        noticeLbl.textColor = .white
+        noticeLbl.backgroundColor = .clear
+        noticeLbl.textAlignment = .center
+        noticeStackView.insertArrangedSubview(noticeLbl, at: 1)
+        noticeLbl.translatesAutoresizingMaskIntoConstraints = false
+        noticeLbl.topAnchor.constraint(equalTo: noticeStackView.topAnchor).isActive = true
+        noticeLbl.bottomAnchor.constraint(equalTo: noticeStackView.bottomAnchor).isActive = true
+        
+        updatesTextView.textColor = .white
+        updatesTextView.backgroundColor = .clear
+        updatesTextView.font = UIFont(name: "Helvetica", size: 16)
+        updatesTextView.text = "Planned updates:\n\n1) Ability to chat with other users\n\n2) Share recording within application for others to review\n\n3) A separate settings page"
+        updatesTextView.translatesAutoresizingMaskIntoConstraints = false
+        noticeContainer.addSubview(updatesTextView)
+        updatesTextView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor).isActive = true
+        updatesTextView.trailingAnchor.constraint(equalTo: noticeContainer.trailingAnchor).isActive = true
+        updatesTextView.topAnchor.constraint(equalTo: noticeStackView.bottomAnchor).isActive = true
+        updatesTextView.bottomAnchor.constraint(equalTo: noticeContainer.bottomAnchor).isActive = true
+        
+        return noticeContainer
         
     }
     
@@ -192,6 +245,18 @@ class SideNavVC: UIViewController{
         return versionInfoView
     }
     
+    @objc func showNextNotice() {
+    
+    }
+    
+    @objc func showPrevNotice() {
+    
+    }
+    
+    func showNotice(noticNumber: Int) {
+    
+    }
+    
     @objc func openInAppstore() {
         let url = URL(string: appstoreLink)
         openURL(url: url)
@@ -217,6 +282,7 @@ class SideNavVC: UIViewController{
     @objc func closeViewTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
+    
 }
 
 extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {

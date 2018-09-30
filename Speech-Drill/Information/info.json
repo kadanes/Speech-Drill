@@ -1,11 +1,11 @@
 
 {
-    "notice": [
-        "Some planned updates:
-        1) Ability to chat with other users
-        2) Share recording within application for others to review
-        3) A separate settings page 
-        "
-    ]
-
+    "notices": [ {
+        "date": "29/09/18",
+        "notice": "Some planned updates:\n\n1) Ability to chat with other users\n\n2) Share recording within application for others to review\n\n3) A separate settings page"
+        },
+        {
+            "date": "30/09/18",
+            "notice": "Please keep the app upto date! Some awesome changes are comming!"
+        }]
 }
