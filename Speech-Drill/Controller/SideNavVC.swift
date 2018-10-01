@@ -42,10 +42,6 @@ class SideNavVC: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        
-    
-        
         sideNavWidth = view.bounds.width * MenuHelper.menuWidth
         hiddenSideNavWidth = view.bounds.width - sideNavWidth
         
@@ -64,7 +60,7 @@ class SideNavVC: UIViewController{
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(closeViewWithPan(sender:)))
         view.addGestureRecognizer(panGesture)
         
-        view.backgroundColor = darkGrey
+        view.backgroundColor = MenuHelper.menuBGColor
         
         
     }
@@ -186,6 +182,7 @@ class SideNavVC: UIViewController{
         noticeLbl.topAnchor.constraint(equalTo: noticeStackView.topAnchor).isActive = true
         noticeLbl.bottomAnchor.constraint(equalTo: noticeStackView.bottomAnchor).isActive = true
         
+        updatesTextView.isEditable = false
         updatesTextView.textColor = .white
         updatesTextView.backgroundColor = .clear
         updatesTextView.font = UIFont(name: "Helvetica", size: 16)

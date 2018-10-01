@@ -11,23 +11,23 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="SectionHeader" customModule="TOEFL_Speaking" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="397" height="88"/>
+        <view contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="SectionHeader" customModule="Speech_Drill" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="397" height="121"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KWI-pa-BmT">
-                    <rect key="frame" x="0.0" y="0.0" width="397" height="88"/>
+                    <rect key="frame" x="0.0" y="0.0" width="397" height="121"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MHo-SW-3Nr">
-                            <rect key="frame" x="8" y="0.0" width="381" height="87"/>
+                            <rect key="frame" x="8" y="1" width="381" height="80"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PHt-82-zjk">
-                                    <rect key="frame" x="0.0" y="0.0" width="381" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="381" height="40"/>
                                     <subviews>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cua-FM-TuF">
-                                            <rect key="frame" x="0.0" y="0.0" width="40" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="Pno-gZ-IcZ"/>
+                                                <constraint firstAttribute="width" constant="40" identifier="$HideSectionWidth$" id="Pno-gZ-IcZ"/>
                                             </constraints>
                                             <state key="normal" image="plus.png"/>
                                             <connections>
@@ -36,33 +36,33 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2/8/2018" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhh-AS-qYP">
-                                            <rect key="frame" x="40" y="0.0" width="221" height="43.5"/>
+                                            <rect key="frame" x="40" y="0.0" width="221" height="40"/>
                                             <gestureRecognizers/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="20"/>
                                             <color key="textColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRn-RL-X1w">
-                                            <rect key="frame" x="261" y="0.0" width="120" height="43.5"/>
+                                            <rect key="frame" x="261" y="0.0" width="120" height="40"/>
                                             <subviews>
                                                 <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="dXw-2W-Um2">
-                                                    <rect key="frame" x="0.0" y="0.0" width="40" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="pcQ-ra-Ebd"/>
+                                                        <constraint firstAttribute="width" constant="40" identifier="$MergingIndicatorWidth$" id="pcQ-ra-Ebd"/>
                                                     </constraints>
                                                     <color key="color" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                                 </activityIndicatorView>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E69-e1-ICB">
-                                                    <rect key="frame" x="40" y="0.0" width="40" height="43.5"/>
+                                                    <rect key="frame" x="40" y="0.0" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="CeV-f0-Oem"/>
+                                                        <constraint firstAttribute="width" constant="40" identifier="$PlayBtnWidth$" id="CeV-f0-Oem"/>
                                                     </constraints>
                                                     <state key="normal" image="playg.png"/>
                                                 </button>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hyc-uS-HVW">
-                                                    <rect key="frame" x="80" y="0.0" width="40" height="43.5"/>
+                                                    <rect key="frame" x="80" y="0.0" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="GLR-Y7-MS8"/>
+                                                        <constraint firstAttribute="width" constant="40" identifier="$ShareAllWidth$" id="GLR-Y7-MS8"/>
                                                     </constraints>
                                                     <state key="normal" image="share.png"/>
                                                     <connections>
@@ -74,26 +74,26 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="la0-1N-yTO"/>
+                                        <constraint firstAttribute="height" constant="40" identifier="$SectionDateHeight$" id="DLi-e0-O7W"/>
                                     </constraints>
                                 </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MdP-9K-oCh">
-                                    <rect key="frame" x="0.0" y="43.5" width="381" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="40" width="381" height="40"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T8K-sf-LXy">
-                                            <rect key="frame" x="8" y="0.0" width="365" height="43.5"/>
+                                            <rect key="frame" x="8" y="0.0" width="365" height="40"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zbm-vu-FNj">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="6mn-ZC-elK"/>
+                                                        <constraint firstAttribute="width" constant="50" identifier="$CurrentTimeWidth$" id="6mn-ZC-elK"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Cp6-TR-TCb">
-                                                    <rect key="frame" x="48" y="0.0" width="269" height="44.5"/>
+                                                    <rect key="frame" x="48" y="0.0" width="269" height="41"/>
                                                     <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="minimumTrackTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="maximumTrackTintColor" red="0.37055522200000002" green="0.37056469920000001" blue="0.37055957319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -105,9 +105,9 @@
                                                     </connections>
                                                 </slider>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="925-h9-n1r">
-                                                    <rect key="frame" x="315" y="0.0" width="50" height="43.5"/>
+                                                    <rect key="frame" x="315" y="0.0" width="50" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="djd-Lb-ZBZ"/>
+                                                        <constraint firstAttribute="width" constant="50" identifier="$TotslTimeLbl$" id="djd-Lb-ZBZ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -117,48 +117,47 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="6fS-AP-bPw"/>
-                                        <constraint firstAttribute="bottom" secondItem="T8K-sf-LXy" secondAttribute="bottom" id="DyR-jS-ghU"/>
-                                        <constraint firstItem="T8K-sf-LXy" firstAttribute="leading" secondItem="MdP-9K-oCh" secondAttribute="leading" constant="8" id="J9u-Yp-sQV"/>
-                                        <constraint firstItem="T8K-sf-LXy" firstAttribute="top" secondItem="MdP-9K-oCh" secondAttribute="top" id="Xz2-g7-thq"/>
-                                        <constraint firstAttribute="trailing" secondItem="T8K-sf-LXy" secondAttribute="trailing" constant="8" id="oFV-hQ-c3f"/>
+                                        <constraint firstAttribute="bottom" secondItem="T8K-sf-LXy" secondAttribute="bottom" identifier="$SeekerSVBottom$" id="DyR-jS-ghU"/>
+                                        <constraint firstAttribute="height" constant="40" identifier="$SeekerSVHeight$" id="HMZ-rS-YY3"/>
+                                        <constraint firstItem="T8K-sf-LXy" firstAttribute="leading" secondItem="MdP-9K-oCh" secondAttribute="leading" constant="8" identifier="$SeekerSVLeading$" id="J9u-Yp-sQV"/>
+                                        <constraint firstItem="T8K-sf-LXy" firstAttribute="top" secondItem="MdP-9K-oCh" secondAttribute="top" identifier="$SeekerSVTop$" id="Xz2-g7-thq"/>
+                                        <constraint firstAttribute="trailing" secondItem="T8K-sf-LXy" secondAttribute="trailing" constant="8" identifier="$SeekerSVTrailing$" id="oFV-hQ-c3f"/>
                                     </constraints>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="MdP-9K-oCh" firstAttribute="leading" secondItem="MHo-SW-3Nr" secondAttribute="leading" id="0Yg-ct-JpM"/>
-                                <constraint firstItem="PHt-82-zjk" firstAttribute="leading" secondItem="MHo-SW-3Nr" secondAttribute="leading" id="4mK-FS-sfs"/>
-                                <constraint firstAttribute="trailing" secondItem="MdP-9K-oCh" secondAttribute="trailing" id="McL-wX-4cc"/>
-                                <constraint firstAttribute="trailing" secondItem="PHt-82-zjk" secondAttribute="trailing" id="dh4-Fc-eld"/>
+                                <constraint firstItem="MdP-9K-oCh" firstAttribute="leading" secondItem="MHo-SW-3Nr" secondAttribute="leading" identifier="$SeekerLeading$" id="0Yg-ct-JpM"/>
+                                <constraint firstItem="PHt-82-zjk" firstAttribute="leading" secondItem="MHo-SW-3Nr" secondAttribute="leading" priority="750" identifier="$DateLeading$" id="4mK-FS-sfs"/>
+                                <constraint firstAttribute="trailing" secondItem="MdP-9K-oCh" secondAttribute="trailing" identifier="$SeekerLeading$" id="McL-wX-4cc"/>
+                                <constraint firstAttribute="trailing" secondItem="PHt-82-zjk" secondAttribute="trailing" priority="750" identifier="$DateTrailing$" id="dh4-Fc-eld"/>
                             </constraints>
                         </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QoG-kQ-Q9p">
-                            <rect key="frame" x="0.0" y="87" width="397" height="1"/>
+                            <rect key="frame" x="0.0" y="81" width="397" height="1"/>
                             <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="jya-Io-Wyf"/>
+                                <constraint firstAttribute="height" constant="1" identifier="$SeperatorHeight$" id="jya-Io-Wyf"/>
                             </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="QoG-kQ-Q9p" firstAttribute="leading" secondItem="KWI-pa-BmT" secondAttribute="leading" id="1Kg-zX-SP4"/>
-                        <constraint firstAttribute="trailing" secondItem="QoG-kQ-Q9p" secondAttribute="trailing" id="C6d-2L-JxI"/>
-                        <constraint firstItem="MHo-SW-3Nr" firstAttribute="leading" secondItem="KWI-pa-BmT" secondAttribute="leading" constant="8" id="Ebg-Xq-Rm5" userLabel="Leading Inside 8"/>
-                        <constraint firstAttribute="bottom" secondItem="MHo-SW-3Nr" secondAttribute="bottom" constant="1" id="Fed-Vm-2hQ"/>
-                        <constraint firstAttribute="trailing" secondItem="MHo-SW-3Nr" secondAttribute="trailing" constant="8" id="Got-q1-oi6" userLabel="Trailing Inside 8"/>
-                        <constraint firstItem="QoG-kQ-Q9p" firstAttribute="top" secondItem="MHo-SW-3Nr" secondAttribute="bottom" id="IQt-Ax-kKs"/>
-                        <constraint firstAttribute="bottom" secondItem="QoG-kQ-Q9p" secondAttribute="bottom" id="K2z-Ct-O4z"/>
-                        <constraint firstItem="MHo-SW-3Nr" firstAttribute="top" secondItem="KWI-pa-BmT" secondAttribute="top" id="obS-wb-LoX"/>
+                        <constraint firstItem="QoG-kQ-Q9p" firstAttribute="leading" secondItem="KWI-pa-BmT" secondAttribute="leading" identifier="$SeperatorLeading$" id="1Kg-zX-SP4"/>
+                        <constraint firstAttribute="trailing" secondItem="MHo-SW-3Nr" secondAttribute="trailing" constant="8" identifier="$HeaderSVTrailing$" id="3nH-ko-Nnh"/>
+                        <constraint firstItem="MHo-SW-3Nr" firstAttribute="top" secondItem="KWI-pa-BmT" secondAttribute="top" constant="1" id="7UW-Kv-qJA"/>
+                        <constraint firstAttribute="trailing" secondItem="QoG-kQ-Q9p" secondAttribute="trailing" identifier="$SeperatorTrailing$" id="C6d-2L-JxI"/>
+                        <constraint firstAttribute="bottom" secondItem="QoG-kQ-Q9p" secondAttribute="bottom" priority="750" id="K2z-Ct-O4z"/>
+                        <constraint firstItem="QoG-kQ-Q9p" firstAttribute="top" secondItem="MHo-SW-3Nr" secondAttribute="bottom" identifier="$SectionSeperatorTop$" id="S1W-Bj-ZOi"/>
+                        <constraint firstItem="MHo-SW-3Nr" firstAttribute="leading" secondItem="KWI-pa-BmT" secondAttribute="leading" constant="8" identifier="$HeaderSVLeading$" id="dSM-KL-ZRM"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
                 <constraint firstItem="KWI-pa-BmT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="04M-kd-tdz"/>
-                <constraint firstItem="KWI-pa-BmT" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="GcW-v3-T8r"/>
+                <constraint firstAttribute="trailing" secondItem="KWI-pa-BmT" secondAttribute="trailing" priority="750" id="DT9-3b-9iZ"/>
                 <constraint firstItem="KWI-pa-BmT" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Ick-z9-UN9"/>
-                <constraint firstItem="KWI-pa-BmT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="n0t-g6-sJe"/>
+                <constraint firstItem="KWI-pa-BmT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" identifier="$ContainerViewLeading$" id="n0t-g6-sJe"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -173,7 +172,7 @@
                 <outlet property="shareAllBtn" destination="hyc-uS-HVW" id="75B-7n-FzN"/>
                 <outlet property="totalPlayTimeLbl" destination="925-h9-n1r" id="GDR-u2-nnR"/>
             </connections>
-            <point key="canvasLocation" x="-402.39999999999998" y="-477.66116941529236"/>
+            <point key="canvasLocation" x="-410.39999999999998" y="-454.72263868065971"/>
         </view>
     </objects>
     <resources>
