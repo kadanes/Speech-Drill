@@ -281,8 +281,10 @@ func getInstalledVersion() -> String? {
     let currentVersion = infoDictionary!["CFBundleShortVersionString"] as? String
     return currentVersion
 }
-func needsUpdate() -> Bool {
-    
-    return false
-}
 
+func getBuildNumber() -> String {
+    if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+        return build
+    }
+    return ""
+}

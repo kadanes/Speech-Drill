@@ -127,7 +127,6 @@ class SideNavVC: UIViewController{
         adView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
         adView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
         adView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin).isActive = true
-
         
         menuTableView.allowsMultipleSelection = false
   
@@ -186,7 +185,7 @@ class SideNavVC: UIViewController{
         updatesTextView.isEditable = false
         updatesTextView.textColor = .white
         updatesTextView.backgroundColor = .clear
-        updatesTextView.font = UIFont(name: "Helvetica", size: 16)
+        updatesTextView.font = UIFont(name: "HelveticaNeue", size: 16)
         showNotice()
         
         updatesTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -213,6 +212,7 @@ class SideNavVC: UIViewController{
         versionInfoLbl.textAlignment = .center
         versionInfoLbl.numberOfLines = 0
         versionInfoLbl.textColor = UIColor.white
+        versionInfoLbl.minimumScaleFactor = 0.5
         versionInfoLbl.translatesAutoresizingMaskIntoConstraints = false
         let versionInfoLblTopCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .top, relatedBy: .equal, toItem: versionInfoView, attribute: .top, multiplier: 1, constant: 0)
         let versionInfoLblLeadingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .leading, relatedBy: .equal, toItem: versionInfoView, attribute: .leading, multiplier: 1, constant: 0)
@@ -246,8 +246,8 @@ class SideNavVC: UIViewController{
         versionInfoView.addConstraints([seperatorViewTopCnstrnt,seperatorViewHeightCnstrnt,seperatorViewBtmCnstrnt])
         
         var currentVersion = ""
+        let currentBuildNo = getBuildNumber()
         var latestVersion = ""
-        
         if let installedVersion = getInstalledVersion() {
             currentVersion = installedVersion
         }
@@ -255,7 +255,10 @@ class SideNavVC: UIViewController{
             latestVersion = appstoreVersion
         }
         
-        let versionInfo = "You are running v\(currentVersion)"
+        var versionInfo = "You are running v\(currentVersion)"
+        if currentBuildNo != "" {
+            versionInfo += " (\(currentBuildNo))"
+        }
         if currentVersion == latestVersion {
             appstoreBtn.setTitle("View on Appstore", for: .normal)
         } else {
@@ -301,7 +304,7 @@ class SideNavVC: UIViewController{
         
         let adLbl = UILabel()
         adLbl.text = "They are pretty awesome! :)"
-        adLbl.font = UIFont(name: "Helvetica", size: 15)
+        adLbl.font = UIFont(name: "HelveticaNeue", size: 15)
         adLbl.minimumScaleFactor = 0.5
         adLbl.textColor = .white
         adLbl.textAlignment = .center
