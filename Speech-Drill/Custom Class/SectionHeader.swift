@@ -137,7 +137,6 @@ class SectionHeader:UITableViewHeaderFooterView{
             self.recordingsUrl = getMergedFileUrl()
             CentralAudioPlayer.player.playRecording(url: getMergedFileUrl(), id: self.date)
             self.delegate?.reloadData()
-//            self.delegate?.reloadSection(date: self.date)
         }
     }
     
@@ -180,7 +179,6 @@ extension SectionHeader {
         if !isPlaying {
             timer.invalidate()
             delegate?.reloadData()
-//            self.delegate?.reloadSection(date: self.date)
         }
     }
     

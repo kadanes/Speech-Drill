@@ -141,12 +141,16 @@ class MainVC: UIViewController {
         setUIButtonsProperty()
         
         setHiddenVisibleSectionList()
-        toggleExportMenu()
         
         addSlideGesture()
         
     }
   
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        toggleExportMenu()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         recordingTableView.reloadData()

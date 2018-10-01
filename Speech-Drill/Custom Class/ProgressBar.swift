@@ -57,7 +57,6 @@ class ProgressBar: NSObject  {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
-                
                 self.c4?.constant = CGFloat(progress) * topController.view.bounds.width
             }
         }

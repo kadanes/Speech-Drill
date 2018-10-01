@@ -130,6 +130,7 @@ class SideNavVC: UIViewController{
 
         
         menuTableView.allowsMultipleSelection = false
+  
         view.addSubview(menuTableView)
         menuTableView.translatesAutoresizingMaskIntoConstraints = false
         menuTableView.backgroundColor = .clear
@@ -266,9 +267,6 @@ class SideNavVC: UIViewController{
     }
     
     func makeGoGeniusAdView() -> UIView {
-        
-        
-        print("Screen Type: ", UIDevice.current.screenType.rawValue)
         
         var goGeniusLogoHeight: CGFloat = 70
         var spacing: CGFloat = 8
@@ -500,11 +498,11 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         if vcToPresent.isKind(of: type(of: calledFromVC))  {
             dismiss(animated: true, completion: nil)
         } else {
-            
-            vcToPresent.transitioningDelegate = self
-            vcToPresent.modalPresentationStyle = .custom
-            self.present(vcToPresent, animated: true, completion: nil)
-
+            DispatchQueue.main.async {
+                vcToPresent.transitioningDelegate = self
+                vcToPresent.modalPresentationStyle = .custom
+                self.present(vcToPresent, animated: true, completion: nil)
+            }
         }
     }
     
