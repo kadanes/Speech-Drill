@@ -8,7 +8,7 @@
 
 import UIKit
 
-let sectionHeaderHeight: CGFloat = 45
+let sectionHeaderHeight: CGFloat = 48
 //let expandedSectionHeaderHeight: CGFloat = 85
 
 let buttonVerticalInset: CGFloat = 45/4

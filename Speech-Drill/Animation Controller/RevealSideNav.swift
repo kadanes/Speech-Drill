@@ -20,10 +20,16 @@ class RevealSideNav: NSObject, UIViewControllerAnimatedTransitioning {
         let toVC = transitionContext.viewController(forKey: .to)
         else { return }
         
+        let initalScale = MenuHelper.initialMenuScale
+        
         let containerView = transitionContext.containerView
-    
+        containerView.backgroundColor = MenuHelper.menuBGColor
+        
+        toVC.view.transform = CGAffineTransform(scaleX: initalScale, y: initalScale)
         containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
         
+        fromVC.view.isHidden = true
+
         guard let snapshot = fromVC.view.snapshotView(afterScreenUpdates: false) else { return }
         snapshot.isUserInteractionEnabled = false
         snapshot.tag = MenuHelper.snapshotNumber
@@ -35,6 +41,7 @@ class RevealSideNav: NSObject, UIViewControllerAnimatedTransitioning {
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             snapshot.center.x += UIScreen.main.bounds.width * MenuHelper.menuWidth
             snapshot.layer.opacity = MenuHelper.snapshotOpacity
+            toVC.view.transform = CGAffineTransform(scaleX: 1, y: 1)
         }, completion: { _ in
             fromVC.view.isHidden = false
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
