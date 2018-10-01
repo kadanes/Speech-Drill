@@ -5,3 +5,4 @@ speech_practicer_logo.afdesign
 Base.lproj/
 Podfile.lock
 Pods/
+Speech-Drill/GoogleService-Info.plist
