@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import Firebase
 
 class SideNavVC: UIViewController{
     
@@ -384,7 +385,7 @@ class SideNavVC: UIViewController{
         guard let name = sender.title(for: .normal) else { return }
         guard let number = phoneNumbers[name] else { return }
         
-        print("Will call \(name): \(number)")
+        Analytics.logEvent(AnalyticsEvent.CallCouncillor.rawValue, parameters: [StringAnalyticsProperties.CouncillorName.rawValue : name as NSObject])
         
         openURL(url: URL(string: "tel://\(number)"))
     }
@@ -424,11 +425,25 @@ class SideNavVC: UIViewController{
     }
     
     @objc func openInAppstore() {
+        
+        var currentVersion = "0"
+        var latestVersion = "0"
+        var isVersionSame: Int = 1
+        
+        if let cv = getInstalledVersion(), let lv = getAppstoreVersion() {
+            currentVersion = cv
+            latestVersion = lv
+        }
+        if currentVersion != latestVersion { isVersionSame = 0 }
+        
+        Analytics.logEvent(AnalyticsEvent.ViewOnAppstore.rawValue, parameters: [IntegerAnalyticsPropertites.ShowCurrentVersion.rawValue : isVersionSame as NSObject ])
         let url = URL(string: appstoreLink)
         openURL(url: url)
     }
     
     @objc func closeViewWithPan(sender: UIPanGestureRecognizer) {
+        
+        Analytics.logEvent(AnalyticsEvent.HideSideNav.rawValue, parameters: [StringAnalyticsProperties.VCDisplayed.rawValue : "\(type(of: calledFromVC))".lowercased()])
         
         let translation = sender.translation(in: view)
         let progress = MenuHelper.calculateProgress(
@@ -499,9 +514,15 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         guard let calledFromVC = calledFromVC else { return }
         
         if vcToPresent.isKind(of: type(of: calledFromVC))  {
+            
+            Analytics.logEvent(AnalyticsEvent.HideSideNav.rawValue, parameters: [StringAnalyticsProperties.VCDisplayed.rawValue : "\(type(of: calledFromVC))".lowercased()])
+            
             dismiss(animated: true, completion: nil)
         } else {
             DispatchQueue.main.async {
+                
+                Analytics.logEvent(AnalyticsEvent.ChooseMenuItem.rawValue, parameters: [StringAnalyticsProperties.VCDisplayed.rawValue : "\(type(of: vcToPresent))".lowercased()])
+                
                 vcToPresent.transitioningDelegate = self
                 vcToPresent.modalPresentationStyle = .custom
                 self.present(vcToPresent, animated: true, completion: nil)

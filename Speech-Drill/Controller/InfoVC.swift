@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import Firebase
 
 class InfoVC: UIViewController {
 
@@ -98,7 +99,7 @@ class InfoVC: UIViewController {
     
     
     @IBAction func displaySideNavTapped(_ sender: Any) {
-        
+        Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
         sideNavVC.transitioningDelegate = self
         sideNavVC.modalPresentationStyle = .custom
         sideNavVC.interactor = interactor
@@ -127,15 +128,18 @@ class InfoVC: UIViewController {
     }
 
     @IBAction func gitHubTapped(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.OpenRepo.rawValue, parameters: nil)
         openURL(url: repoURL)
     }
     
     @IBAction func gmailTapped(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.SendMail.rawValue, parameters: nil)
         openURL(url: reportBugURL)
     }
     
     @IBAction func twitterTapped(_ sender: Any) {
         
+        Analytics.logEvent(AnalyticsEvent.SendTweet.rawValue, parameters: nil)
         let screenName =  "parthv21"
         let appURL = NSURL(string: "twitter://user?screen_name=\(screenName)")!
         let webURL = NSURL(string: "https://twitter.com/\(screenName)")!
@@ -150,17 +154,15 @@ class InfoVC: UIViewController {
     }
     
     @IBAction func showLicenseTapped(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.OpenFontAwesome.rawValue, parameters: nil)
         openURL(url: licenseURL)
     }
     
     @IBAction func fromTTSTapped(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.OpenTextToSpeech.rawValue, parameters: nil)
         openURL(url: ttsURL)
     }
-    
-    @IBAction func closeInfoTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
+  
 }
 
 extension InfoVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

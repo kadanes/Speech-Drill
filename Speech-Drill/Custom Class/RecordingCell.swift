@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Firebase
 
 class RecordingCell: UITableViewCell {
     
@@ -145,6 +146,8 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
+      
+        Analytics.logEvent(AnalyticsEvent.ShareRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Single.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : 1 as NSObject])
         
         if (delegate?.checkIfRecordingIsOn())! || isMerging { return }
         
@@ -153,6 +156,8 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func playRecording(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.PlayRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Single.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : 1 as NSObject])
+        
         if (delegate?.checkIfRecordingIsOn())! {
             return
         }
@@ -265,10 +270,13 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func deleteRecording(_ sender: Any) {
+        Analytics.logEvent(AnalyticsEvent.ShowDeleteMenu.rawValue, parameters: nil)
         showDeleteMenu()
     }
     
     @IBAction func confirmDelete(_ sender: Any) {
+        
+        Analytics.logEvent(AnalyticsEvent.ConfirmDelete.rawValue, parameters: nil)
         let date = parseDate(timeStamp: timeStamp)
         let isRecordingUsedInMerging = checkIfMerging(date: date)
         if isRecordingUsedInMerging { return }
@@ -283,6 +291,7 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func cancelDelete(_ sender: Any) {
+        Analytics.logEvent(AnalyticsEvent.CancelDelete.rawValue, parameters: nil)
         hideDeleteMenuAnimated()
     }
     

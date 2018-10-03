@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SectionHeader:UITableViewHeaderFooterView{
 
@@ -70,6 +71,8 @@ class SectionHeader:UITableViewHeaderFooterView{
     }
     
     @objc func toggleSection() {
+        
+        Analytics.logEvent(AnalyticsEvent.ToggleSection.rawValue, parameters: [StringAnalyticsProperties.ToggleSectionFrom.rawValue : ToggleSectionFrom.Label.rawValue as NSObject])
         delegate?.toggleSection(date: date)
     }
     
@@ -119,6 +122,14 @@ class SectionHeader:UITableViewHeaderFooterView{
     }
     
     @IBAction func shareRecordingsTapped(_ sender: UIButton) {
+    
+        var count = 0
+        if let _ = delegate?.getAudioFilesList(date: date).count  {
+            count = (delegate?.getAudioFilesList(date: date).count)!
+        }
+        
+        Analytics.logEvent(AnalyticsEvent.ShareRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Section.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : count as NSObject])
+        
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
@@ -128,6 +139,14 @@ class SectionHeader:UITableViewHeaderFooterView{
     }
     
     @IBAction func playRecordingTapped(_ sender: UIButton) {
+        
+        var count = 0
+        if let _ = delegate?.getAudioFilesList(date: date).count  {
+            count = (delegate?.getAudioFilesList(date: date).count)!
+        }
+        
+        Analytics.logEvent(AnalyticsEvent.PlayRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Section.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : count as NSObject])
+        
         if (delegate?.checkIfRecordingIsOn())! || checkIfMerging() {
             return
         }
@@ -141,6 +160,8 @@ class SectionHeader:UITableViewHeaderFooterView{
     }
     
     @IBAction func toggleSectionTapped(_ sender: UIButton) {
+        
+        Analytics.logEvent(AnalyticsEvent.ToggleSection.rawValue, parameters: [StringAnalyticsProperties.ToggleSectionFrom.rawValue : ToggleSectionFrom.Button.rawValue as NSObject])
         toggleSection()
     }
    

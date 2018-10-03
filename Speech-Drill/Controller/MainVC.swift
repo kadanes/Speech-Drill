@@ -8,9 +8,11 @@
 
 import UIKit
 import AVFoundation
-import Mute
 import CallKit
 import CoreTelephony
+
+import Mute
+import Firebase
 
 class MainVC: UIViewController {
    
@@ -163,8 +165,9 @@ class MainVC: UIViewController {
     }
     
     @objc func presentSideNav(sender: UIPanGestureRecognizer) {
-        cancelRecording()
         
+        Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
+        cancelRecording()
         let translation = sender.translation(in: view)
         let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
         
@@ -179,7 +182,7 @@ class MainVC: UIViewController {
     }
     
     @IBAction func displaySideNavTapped(_ sender: Any) {
-        
+        Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
         sideNavVC.transitioningDelegate = self
         sideNavVC.modalPresentationStyle = .custom
         sideNavVC.interactor = interactor
@@ -350,10 +353,14 @@ class MainVC: UIViewController {
         if checkIfRecordingIsOn() {return}
         
         if isTestMode {
+            Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "practice" as NSObject])
+            
             thinkTimeChangeStackViewContainer.isHidden = true
             thinkTimeChangeStackViewSeperator.isHidden = true
             
             switchModesBtn.setTitle("Practice", for: .normal)
+            
+            
             changeTopicBtnsStackView.isHidden = false
             renderTopic(topicNumber: self.topicNumber)
             defaultThinkTime = 15
@@ -362,6 +369,8 @@ class MainVC: UIViewController {
             speakTime = defaultSpeakTime
             
         } else {
+            Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "test" as NSObject])
+            
             thinkTimeChangeStackViewContainer.isHidden = false
             thinkTimeChangeStackViewSeperator.isHidden = false
             
@@ -385,6 +394,8 @@ class MainVC: UIViewController {
     
     @IBAction func changeThinkTimeTapped(_ sender: RoundButton) {
 
+        Analytics.logEvent(AnalyticsEvent.SetThinkTime.rawValue, parameters: [IntegerAnalyticsPropertites.ThinkTime.rawValue : sender.tag as NSObject])
+        
         if checkIfRecordingIsOn() {return}
        
         switch sender.tag {
@@ -417,7 +428,8 @@ class MainVC: UIViewController {
     
     ///Increment current displayed topic number base on button pressed
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
-    
+        Analytics.logEvent(AnalyticsEvent.ShowNextTopic.rawValue, parameters: [IntegerAnalyticsPropertites.NumberOfTopics.rawValue : sender.tag as NSObject ])
+        
         let increment = sender.tag
         topicNumber = (topicNumber + increment < topics.count) ? topicNumber + increment : topics.count - 1
         renderTopic(topicNumber: topicNumber)
@@ -425,6 +437,7 @@ class MainVC: UIViewController {
     
     ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.ShowPreviousTopic.rawValue, parameters: [IntegerAnalyticsPropertites.NumberOfTopics.rawValue : sender.tag as NSObject ])
         
         let decrement = sender.tag
         topicNumber = (topicNumber - decrement >= 1) ? topicNumber - decrement : 1
@@ -433,6 +446,8 @@ class MainVC: UIViewController {
     
     ///Start recording of speech
     @IBAction func startRecordingPressed(_ sender: Any) {
+        
+        Analytics.logEvent(AnalyticsEvent.RecordTopic.rawValue, parameters:nil)
         
         CentralAudioPlayer.player.stopPlaying()
         
@@ -450,6 +465,7 @@ class MainVC: UIViewController {
     
     ///Stop recording 
     @IBAction func cancelRecordingTapped(_ sender: Any) {
+        Analytics.logEvent(AnalyticsEvent.CancelRecording.rawValue, parameters: nil)
         cancelRecording()
     }
     
@@ -1075,6 +1091,8 @@ extension MainVC {
     
     ///Export selected recordings
     @IBAction func exportSelectedTapped(_ sender: UIButton) {
+        Analytics.logEvent(AnalyticsEvent.ShareRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Selected.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : recordingUrlsListToExport.count as NSObject])
+        
         if checkIfRecordingIsOn() || checkIfMerging() {
             return
         }
@@ -1089,6 +1107,7 @@ extension MainVC {
     
     ///Play selected recordings
     @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
+         Analytics.logEvent(AnalyticsEvent.PlayRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Selected.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : recordingUrlsListToExport.count as NSObject])
         
         if checkIfRecordingIsOn() || checkIfMerging() { return }
         
