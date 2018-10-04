@@ -70,6 +70,8 @@ class InfoVC: UIViewController {
         ref.observe(.value, with: {(snapshot) in
             if let value = snapshot.value as? String {
                 self.creditsTextView.text = value
+                self.creditsTextView.scrollsToTop = true
+                self.creditsTextView.scrollRangeToVisible(NSRange(location: 0, length: 0))
             }
         })
     }
