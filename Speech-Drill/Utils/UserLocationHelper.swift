@@ -12,15 +12,12 @@ import CoreLocation
 func storeLocationInFirebase(locationManager: CLLocationManager) {
     
     let uuid = UUID().uuidString
-    
+    var isoCode = "UNK"
+
     if  CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied
             || !CLLocationManager.locationServicesEnabled() {
         
-        let isoCode = "UNK"
-            
-        userLocationReference.child(uuid).setValue(isoCode)
-        userLocationReference.onDisconnectSetValue(nil)
-        
+        saveUserLocation(isoCode: isoCode, uuid: uuid)
         print("Saving status for: ", uuid, " as", isoCode)
         
     } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse && CLLocationManager.locationServicesEnabled()  {
@@ -28,23 +25,35 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
 
         let geoCoder = CLGeocoder()
         
-        guard let currentLocation = locationManager.location else { return }
+        guard let currentLocation = locationManager.location else {
+            saveUserLocation(isoCode: isoCode, uuid: uuid)
+            return
+        }
         
         geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, error) in
-            guard let currentLocPlacemark = placemarks?.first else { return }
+            guard let currentLocPlacemark = placemarks?.first else {
+                saveUserLocation(isoCode: isoCode, uuid: uuid)
+                return
+            }
             print(currentLocPlacemark.country ?? "No country found")
             print(currentLocPlacemark.isoCountryCode ?? "No country code found")
-            guard let isoCode = currentLocPlacemark.isoCountryCode else { return }
+            isoCode = currentLocPlacemark.isoCountryCode ?? isoCode
             
             print("Saving status for: ", uuid, " as", isoCode)
-            
+            saveUserLocation(isoCode: isoCode, uuid: uuid)
             //SAVE ISO CODE +1 TO FIREBASE
-            userLocationReference.child(uuid).setValue(isoCode)
-            userLocationReference.onDisconnectSetValue(nil)
+            
         }
     }
 }
 
+func saveUserLocation(isoCode: String, uuid: String) {
+    userLocationReference.child(uuid).setValue(isoCode)
+    userLocationReference.onDisconnectSetValue(nil)
+    let defaults = UserDefaults.standard
+    defaults.set(isoCode, forKey: userLocationCodeKey)
+    defaults.set(flag(from: isoCode), forKey: userLocationEmojiKey)
+}
 
 func flag(from country:String) -> String {
     

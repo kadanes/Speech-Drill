@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import GoogleSignIn
 
 class DiscussionsViewController: UIViewController {
     
@@ -19,6 +20,9 @@ class DiscussionsViewController: UIViewController {
     let headerContainer = UIView()
     let countryCountView = UserCountryUIView()
     let discussionsMessageBox = DiscussionsMessageBox()
+    let discussionChatView = DiscussionChatView()
+        
+    var discussionsMessageBoxBottomAnchor: NSLayoutConstraint = NSLayoutConstraint()
     
     let infoMessage = "This is a chatroom created to help students discuss topics with each other and get advice. Use it to ask questions, get tips, etc."
     
@@ -29,6 +33,20 @@ class DiscussionsViewController: UIViewController {
         addHeader()
         addCountryCountTableView()
         addDiscussionsMessageBox()
+        addDiscussionChatView()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.keyboardNotification(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
+                                               object: nil)
+        
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+//        GIDSignIn.sharedInstance().signIn()
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func addHeader() {
@@ -109,6 +127,14 @@ class DiscussionsViewController: UIViewController {
     
     func addDiscussionsMessageBox() {
         view.addSubview(discussionsMessageBox)
+
+        if #available(iOS 11.0, *) {
+            discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+        } else {
+            // Fallback on earlier versions
+            discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        }
+        
         discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -116,7 +142,8 @@ class DiscussionsViewController: UIViewController {
             NSLayoutConstraint.activate([
                 discussionsMessageBox.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
                 discussionsMessageBox.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-                discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                //                discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                discussionsMessageBoxBottomAnchor,
                 discussionsMessageBox.heightAnchor.constraint(equalToConstant: 150)
                 
             ])
@@ -125,10 +152,35 @@ class DiscussionsViewController: UIViewController {
             NSLayoutConstraint.activate([
                 discussionsMessageBox.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
                 discussionsMessageBox.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-                discussionsMessageBox.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+                //                discussionsMessageBox.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+                discussionsMessageBoxBottomAnchor,
                 discussionsMessageBox.heightAnchor.constraint(equalToConstant: 100)
             ])
         }
+    }
+    
+    func addDiscussionChatView() {
+        self.view.addSubview(discussionChatView)
+        discussionChatView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([
+                discussionChatView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+                discussionChatView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            ])
+        } else {
+            // Fallback on earlier versions
+            NSLayoutConstraint.activate([
+              discussionChatView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+              discussionChatView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+          ])
+        }
+        
+        NSLayoutConstraint.activate([
+            discussionChatView.topAnchor.constraint(equalTo: countryCountView.bottomAnchor  , constant: 10),
+            discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10),
+        ])
+        
     }
     
     func addSlideGesture() {
@@ -206,5 +258,33 @@ extension DiscussionsViewController: UIViewControllerTransitioningDelegate {
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return interactor.hasStarted ? interactor : nil
+    }
+}
+
+//MARK:- Keyboard handler
+
+extension DiscussionsViewController {
+    @objc func keyboardNotification(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        
+        let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        let endFrameY = endFrame?.origin.y ?? 0
+        let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+        let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
+        
+        if endFrameY >= UIScreen.main.bounds.size.height {
+            self.discussionsMessageBoxBottomAnchor.constant = 0.0
+        } else {
+            self.discussionsMessageBoxBottomAnchor.constant = -1 * (endFrame?.size.height ?? 0.0)
+        }
+        
+        UIView.animate(
+            withDuration: duration,
+            delay: TimeInterval(0),
+            options: animationCurve,
+            animations: { self.view.layoutIfNeeded() },
+            completion: nil)
     }
 }
