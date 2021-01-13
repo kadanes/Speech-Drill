@@ -107,7 +107,6 @@ class InfoVC: UIViewController {
         sideNavVC.interactor = interactor
         sideNavVC.calledFromVC = InfoVC.infoVC
         self.present(sideNavVC, animated: true, completion: nil)
-        
     }
     
     

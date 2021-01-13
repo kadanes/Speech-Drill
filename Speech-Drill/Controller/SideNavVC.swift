@@ -81,12 +81,16 @@ class SideNavVC: UIViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
         let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoVC") as! InfoVC
+//        let DiscussionsVC = storyboard.instantiateViewController(withIdentifier: "DiscussionsVC") as! DiscussionsViewController
+        let DiscussionsVC = DiscussionsViewController()
         
         let mainVCMenuItem = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: disabledRed, presentedVC: mainVC)
         let infoVCMenuItem = menuItem(itemName: "Information", itemImg: infoIcon, itemImgClr: confirmGreen, presentedVC: infoVC)
+        let discussionsVCMenuItem = menuItem(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: UIColor.purple, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: <#T##String#>)
         
         menuItems.append(mainVCMenuItem)
         menuItems.append(infoVCMenuItem)
+        menuItems.append(discussionsVCMenuItem)
     }
     
     func addViews() {

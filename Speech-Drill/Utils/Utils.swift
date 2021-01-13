@@ -128,6 +128,7 @@ func checkIfSilent() {
     Mute.shared.notify = { isMute in
         Mute.shared.isPaused = true
         if isMute {
+            print("Muted")
             Toast.show(message: "Please turn silent mode off!", type: .Failure)
         }
     }

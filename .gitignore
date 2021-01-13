@@ -6,3 +6,4 @@ Base.lproj/
 Podfile.lock
 Pods/
 Speech-Drill/GoogleService-Info.plist
+.DS_Store

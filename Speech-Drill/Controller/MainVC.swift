@@ -10,12 +10,12 @@ import UIKit
 import AVFoundation
 import CallKit
 import CoreTelephony
-
 import Mute
 import Firebase
+import CoreLocation
 
 class MainVC: UIViewController {
-   
+    
     static let mainVC = MainVC()
     let sideNavVC = SideNavVC()
     
@@ -38,9 +38,9 @@ class MainVC: UIViewController {
     @IBOutlet weak var displaySideNavBtn: UIButton!
     
     @IBOutlet weak var thinkTimeChangeStackView: UIStackView!
-
+    
     @IBOutlet weak var switchModesBtn: RoundButton!
-        
+    
     @IBOutlet weak var recordBtn: UIButton!
     @IBOutlet weak var cancelRecordingBtn: UIButton!
     
@@ -84,7 +84,7 @@ class MainVC: UIViewController {
     var defaultSpeakTime = 45
     var thinkTime = 15
     var speakTime = 45
-
+    
     var topicNumber = 0
     var topics: [String] = []
     
@@ -115,7 +115,10 @@ class MainVC: UIViewController {
     private var audioPlayer: AVAudioPlayer?
     
     var callObserver = CXCallObserver()
-
+    var openEarsEventsObserver = OEEventsObserver()
+    
+    let locationManager: CLLocationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -125,13 +128,14 @@ class MainVC: UIViewController {
         recordingTableView.estimatedRowHeight = recordingCellHeight
         recordingTableView.sectionHeaderHeight = UITableViewAutomaticDimension
         recordingTableView.estimatedSectionHeaderHeight = sectionHeaderHeight
+        openEarsEventsObserver.delegate = self
         
         recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerCellId)
         
         callObserver.setDelegate(self, queue: nil)
         
         resetRecordingState()
-
+        
         updateUrlList()
         readTopics()
         topicNumber = userDefaults.integer(forKey: "topicNumber")
@@ -146,8 +150,9 @@ class MainVC: UIViewController {
         
         addSlideGesture()
         
+        locationManager.delegate = self
     }
-  
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         toggleExportMenu()
@@ -177,7 +182,7 @@ class MainVC: UIViewController {
             sideNavVC.interactor = interactor
             sideNavVC.calledFromVC = MainVC.mainVC
             self.present(sideNavVC, animated: true, completion: nil)
-
+            
         }
     }
     
@@ -193,7 +198,7 @@ class MainVC: UIViewController {
     
     
     func setUIButtonsProperty() {
-
+        
         setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -219,7 +224,7 @@ class MainVC: UIViewController {
         thinkInfoImgView.tintColor = accentColor
         thinkTimeInfoView.clipsToBounds = true
         
-      
+        
         let thinkPressGesture =  UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
         thinkPressGesture.minimumPressDuration = 0
         thinkTimeInfoView.isUserInteractionEnabled = true
@@ -287,11 +292,11 @@ class MainVC: UIViewController {
     }
     
     @objc func pulseThinkInfoView(gesture: UILongPressGestureRecognizer) {
-
+        
         if isPlaying || checkIfRecordingIsOn() {
             return
         }
-
+        
         if gesture.state == .began {
             let pulse = Pulsing(numberOfPulses: 1, diameter: thinkTimeInfoView.bounds.width, position: CGPoint(x:thinkTimeInfoView.bounds.width/2,y: thinkTimeInfoView.bounds.height/2))
             thinkTimeInfoView.layer.addSublayer(pulse)
@@ -321,7 +326,7 @@ class MainVC: UIViewController {
     }
     
     func displayInfo() {
-       
+        
         if isPlaying || checkIfRecordingIsOn() {
             return
         }
@@ -339,9 +344,10 @@ class MainVC: UIViewController {
             infoText = ""
         }
         
-        if infoText != "" {
-            topicTxtView.text = infoText
-        }
+        let alert = UIAlertController(title: "Question Information", message: infoText, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel) { _ in }
+        alert.addAction(dismissAction)
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func switchModesTapped(_ sender: UIButton) {
@@ -393,25 +399,25 @@ class MainVC: UIViewController {
     }
     
     @IBAction func changeThinkTimeTapped(_ sender: RoundButton) {
-
+        
         Analytics.logEvent(AnalyticsEvent.SetThinkTime.rawValue, parameters: [IntegerAnalyticsPropertites.ThinkTime.rawValue : sender.tag as NSObject])
         
         if checkIfRecordingIsOn() {return}
-       
+        
         switch sender.tag {
-            
-            case 15:
-                defaultThinkTime = 15
-                defaultSpeakTime = 45
-            case 20:
-                defaultThinkTime = 20
-                defaultSpeakTime = 60
-            case 30:
-                defaultThinkTime = 30
-                defaultSpeakTime = 60
-            default:
-                defaultThinkTime = 15
-                defaultSpeakTime = 45
+        
+        case 15:
+            defaultThinkTime = 15
+            defaultSpeakTime = 45
+        case 20:
+            defaultThinkTime = 20
+            defaultSpeakTime = 60
+        case 30:
+            defaultThinkTime = 30
+            defaultSpeakTime = 60
+        default:
+            defaultThinkTime = 15
+            defaultSpeakTime = 45
         }
         
         speakTime = defaultSpeakTime
@@ -527,8 +533,6 @@ class MainVC: UIViewController {
             isThinking = false
             recordAudio()
             
-           
-            
             speakTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementSpeakTime), userInfo: nil, repeats: true)
             blinkTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(blinkRecordBtn), userInfo: nil, repeats: true)
         }
@@ -574,12 +578,12 @@ class MainVC: UIViewController {
         
         thinkTime = defaultThinkTime
         speakTime = defaultSpeakTime
-    
+        
         setButtonBgImage(button: recordBtn, bgImage: recordIcon, tintColor: .red)
         thinkTimeLbl.text = "\(defaultThinkTime)"
         speakTimeLbl.text = "\(defaultSpeakTime)"
         cancelRecordingBtn.isHidden = true
-
+        
         thinkTimer?.invalidate()
         speakTimer?.invalidate()
         blinkTimer?.invalidate()
@@ -601,21 +605,21 @@ class MainVC: UIViewController {
     
     ///Update local list with newly added recording urls
     func updateUrlList() {
-                
+        
         recordingUrlsDict.removeAll()
         
         let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
         
         if let files = FileManager.default.enumerator(atPath: "\(documents)") {
-
+            
             for file in files  {
                 
                 guard let fileUrl = URL(string: "\(file)") else { break }
                 
                 let recordingName = "\(file)"
-
+                
                 if recordingName.hasSuffix("."+recordingExtension) {
-
+                    
                     if (recordingName != mergedFileName) {
                         
                         let timeStamp = splitFileURL(url: fileUrl).0
@@ -652,7 +656,7 @@ class MainVC: UIViewController {
             return convertedDate1 > convertedDate2
         }
         if dateSortedKeys.count == 0 {return}
-
+        
         if visibleSections.count == 0 {
             visibleSections.append(dateSortedKeys[0])
             for ind in 1..<dateSortedKeys.count {
@@ -687,7 +691,7 @@ class MainVC: UIViewController {
             }
         }
     }
-
+    
     func updateRowsFor(recordingsOn date: String) {
         
         findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
@@ -748,9 +752,10 @@ extension MainVC: AVAudioRecorderDelegate {
             let recordSettings = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                 AVSampleRateKey: 12000,
+                AVLinearPCMBitDepthKey: 16,
                 AVNumberOfChannelsKey: 1,
                 AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-                ] as [String : Any]
+            ] as [String : Any]
             
             do{
                 isRecording = true
@@ -758,10 +763,10 @@ extension MainVC: AVAudioRecorderDelegate {
                 audioRecorder.delegate = self
                 audioRecorder.prepareToRecord()
                 audioRecorder.record(forDuration: Double(defaultSpeakTime))
-            
+                
             } catch let error as NSError {
                 resetRecordingState()
-               
+                
                 print("Error with recording")
                 print(error.localizedDescription)
             }
@@ -799,12 +804,12 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
     func reloadData() {
         updateUrlList()
         DispatchQueue.main.async {
-             self.recordingTableView.reloadData()
+            self.recordingTableView.reloadData()
         }
     }
     
     func insertRow(with url:URL ) {
-    
+        
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         
@@ -815,11 +820,11 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
             
             recordingTableView.insertSections([0], with: .automatic)
             
-//            print("URLS: ",urls)
-//
-//            recordingUrlsDict[date] = urls
-//            let indexPath = IndexPath(row: 0, section: 0)
-//            recordingTableView.insertRows(at: [indexPath], with: .automatic)
+            //            print("URLS: ",urls)
+            //
+            //            recordingUrlsDict[date] = urls
+            //            let indexPath = IndexPath(row: 0, section: 0)
+            //            recordingTableView.insertRows(at: [indexPath], with: .automatic)
             visibleSections.append(date)
             
         } else {
@@ -888,7 +893,7 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         }
     }
     
-   
+    
     func reloadPlayedRow(playingId: String, pause: Bool, completion: @escaping ()->()) {
         if checkIfDate(date: playingId) {
             findAndUpdateSection(date: playingId, recordingUrlsDict: recordingUrlsDict) { (section, _) in
@@ -949,36 +954,36 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
         return UITableViewCell()
     }
     
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//
-//        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
-//            guard let convertedDate1 = convertToDate(date: date1) else { return false }
-//            guard let convertedDate2 = convertToDate(date: date2) else { return false }
-//            return convertedDate1 > convertedDate2
-//        }
-//
-//        let date = dateSortedKeys[section]
-//
-//        let  isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(id: date)
-//
-//        if isSectionRecordingsPlaying {
-//            return expandedSectionHeaderHeight
-//        }
-//        return sectionHeaderHeight
-//    }
+    //    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    //
+    //        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
+    //            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+    //            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+    //            return convertedDate1 > convertedDate2
+    //        }
+    //
+    //        let date = dateSortedKeys[section]
+    //
+    //        let  isSectionRecordingsPlaying = CentralAudioPlayer.player.checkIfPlaying(id: date)
+    //
+    //        if isSectionRecordingsPlaying {
+    //            return expandedSectionHeaderHeight
+    //        }
+    //        return sectionHeaderHeight
+    //    }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//
-//        let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
-//        let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
-//        let timeStamp = splitFileURL(url: url).timeStamp
-//
-//        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
-//        if isPlaying {
-//            return expandedRecordingCellHeight
-//        }
-//        return recordingCellHeight
-//    }
+    //    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    //
+    //        let recordings = sortDict(recordingUrlsDict: recordingUrlsDict)[indexPath.section]
+    //        let url = sortUrlList(recordingsUrlList: recordings.value)[indexPath.row]
+    //        let timeStamp = splitFileURL(url: url).timeStamp
+    //
+    //        let isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
+    //        if isPlaying {
+    //            return expandedRecordingCellHeight
+    //        }
+    //        return recordingCellHeight
+    //    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: recordingCellId) as? RecordingCell {
@@ -1021,7 +1026,7 @@ extension MainVC: CXCallObserverDelegate {
             print("Dialing")
         }
         if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
-             cancelRecording()
+            cancelRecording()
         }
         if call.hasConnected == true && call.hasEnded == false {
             print("Connected")
@@ -1107,7 +1112,7 @@ extension MainVC {
     
     ///Play selected recordings
     @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
-         Analytics.logEvent(AnalyticsEvent.PlayRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Selected.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : recordingUrlsListToExport.count as NSObject])
+        Analytics.logEvent(AnalyticsEvent.PlayRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Selected.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : recordingUrlsListToExport.count as NSObject])
         
         if checkIfRecordingIsOn() || checkIfMerging() { return }
         
@@ -1206,7 +1211,7 @@ extension MainVC: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController,
                              presenting: UIViewController,
                              source: UIViewController)
-        -> UIViewControllerAnimatedTransitioning?
+    -> UIViewControllerAnimatedTransitioning?
     {
         if presenting == self && presented == sideNavVC {
             return RevealSideNav()
@@ -1228,5 +1233,30 @@ extension MainVC: UIViewControllerTransitioningDelegate {
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return interactor.hasStarted ? interactor : nil
+    }
+}
+
+extension MainVC: OEEventsObserverDelegate {
+    func pocketsphinxDidReceiveHypothesis(_ hypothesis: String!, recognitionScore: String!, utteranceID: String!) { // Something was heard
+        print("Local callback: The received hypothesis is \(hypothesis!) with a score of \(recognitionScore!) and an ID of \(utteranceID!)")
+    }
+    
+    func pocketsphinxRecognitionLoopDidStart() {
+        print("Local callback: Pocketsphinx started.") // Log it.
+    }
+    
+}
+
+
+//MARK:- Location manager
+
+extension MainVC: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("Storing location on change")
+        
+        if CLLocationManager.authorizationStatus() ==  CLAuthorizationStatus.notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        storeLocationInFirebase(locationManager: locationManager)
     }
 }

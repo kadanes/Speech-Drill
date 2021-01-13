@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,9 @@
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
 		B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */; };
 		B232A5672142207400417DA5 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B232A5662142207400417DA5 /* logo.png */; };
+		B23C1B6A21A5C6D2004FB815 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23C1B6721A5C6D2004FB815 /* Slt.framework */; };
+		B23C1B6B21A5C6D2004FB815 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23C1B6821A5C6D2004FB815 /* OpenEars.framework */; };
+		B23C1B6C21A5C6D2004FB815 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B23C1B6921A5C6D2004FB815 /* AcousticModelEnglish.bundle */; };
 		B23F7F1021483AA6009B6ECA /* UIColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F0F21483AA6009B6ECA /* UIColors.swift */; };
 		B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1121483AD1009B6ECA /* UIIcons.swift */; };
 		B23F7F1421483B02009B6ECA /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F7F1321483B02009B6ECA /* IDs.swift */; };
@@ -32,6 +35,14 @@
 		B25F80C4211F5B0700AD786C /* beep1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C3211F5B0700AD786C /* beep1.m4a */; };
 		B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = B25F80C5211F5BAA00AD786C /* beep2.m4a */; };
 		B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F80C7211F667500AD786C /* RoundLabel.swift */; };
+		B269D32D25AC11480025E1DE /* DiscussionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D32C25AC11480025E1DE /* DiscussionsViewController.swift */; };
+		B269D34B25AC58B00025E1DE /* UserCountryUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D34A25AC58B00025E1DE /* UserCountryUIView.swift */; };
+		B269D34F25AC5B410025E1DE /* UserCountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D34E25AC5B410025E1DE /* UserCountryCell.swift */; };
+		B269D3A625ACB7720025E1DE /* UserLocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3A525ACB7720025E1DE /* UserLocationHelper.swift */; };
+		B269D3A925ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */; };
+		B269D3AC25ADEE650025E1DE /* DiscussionsMessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */; };
+		B269D3BF25AE0E530025E1DE /* send_message.png in Resources */ = {isa = PBXBuildFile; fileRef = B269D3BE25AE0E530025E1DE /* send_message.png */; };
+		B269D3C325AE0E6A0025E1DE /* discussion.png in Resources */ = {isa = PBXBuildFile; fileRef = B269D3C225AE0E6A0025E1DE /* discussion.png */; };
 		B26A36BD215ECE3C00628EC9 /* HideSideNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */; };
 		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
 		B26DEB9B21613273006FE754 /* gogenius.png in Resources */ = {isa = PBXBuildFile; fileRef = B26DEB9A21613272006FE754 /* gogenius.png */; };
@@ -101,6 +112,9 @@
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
 		B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBorderedBtn.swift; sourceTree = "<group>"; };
 		B232A5662142207400417DA5 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
+		B23C1B6721A5C6D2004FB815 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
+		B23C1B6821A5C6D2004FB815 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
+		B23C1B6921A5C6D2004FB815 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
 		B23F7F0F21483AA6009B6ECA /* UIColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColors.swift; sourceTree = "<group>"; };
 		B23F7F1121483AD1009B6ECA /* UIIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIcons.swift; sourceTree = "<group>"; };
 		B23F7F1321483B02009B6ECA /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
@@ -113,6 +127,14 @@
 		B25F80C3211F5B0700AD786C /* beep1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep1.m4a; sourceTree = "<group>"; };
 		B25F80C5211F5BAA00AD786C /* beep2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = beep2.m4a; sourceTree = "<group>"; };
 		B25F80C7211F667500AD786C /* RoundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundLabel.swift; sourceTree = "<group>"; };
+		B269D32C25AC11480025E1DE /* DiscussionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionsViewController.swift; sourceTree = "<group>"; };
+		B269D34A25AC58B00025E1DE /* UserCountryUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCountryUIView.swift; sourceTree = "<group>"; };
+		B269D34E25AC5B410025E1DE /* UserCountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCountryCell.swift; sourceTree = "<group>"; };
+		B269D3A525ACB7720025E1DE /* UserLocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationHelper.swift; sourceTree = "<group>"; };
+		B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseReferences.swift; sourceTree = "<group>"; };
+		B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionsMessageBox.swift; sourceTree = "<group>"; };
+		B269D3BE25AE0E530025E1DE /* send_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_message.png; sourceTree = "<group>"; };
+		B269D3C225AE0E6A0025E1DE /* discussion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discussion.png; sourceTree = "<group>"; };
 		B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideSideNav.swift; sourceTree = "<group>"; };
 		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
 		B26DEB9A21613272006FE754 /* gogenius.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gogenius.png; sourceTree = "<group>"; };
@@ -168,7 +190,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B23C1B6A21A5C6D2004FB815 /* Slt.framework in Frameworks */,
 				84FF2EE76F526D2EEB5D78D0 /* Pods_Speech_Drill.framework in Frameworks */,
+				B23C1B6B21A5C6D2004FB815 /* OpenEars.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +211,7 @@
 		B204ECAE211349FE00A51E8B /* Custom Class */ = {
 			isa = PBXGroup;
 			children = (
+				B269D34925AC58630025E1DE /* Discussions */,
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
 				B2FFE74521438C7B00484AFA /* SectionHeader.swift */,
 				B2E5F5F1212B340D00FC7E28 /* IconCell.swift */,
@@ -199,6 +224,7 @@
 		B21ABB16210FF664009C678C = {
 			isa = PBXGroup;
 			children = (
+				B23C1B6621A5C6D2004FB815 /* Framework */,
 				B21ABB21210FF664009C678C /* Speech-Drill */,
 				B21ABB20210FF664009C678C /* Products */,
 				C2DE69F64CE1AF011AEF432A /* Pods */,
@@ -257,6 +283,16 @@
 			path = Information;
 			sourceTree = "<group>";
 		};
+		B23C1B6621A5C6D2004FB815 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				B23C1B6721A5C6D2004FB815 /* Slt.framework */,
+				B23C1B6821A5C6D2004FB815 /* OpenEars.framework */,
+				B23C1B6921A5C6D2004FB815 /* AcousticModelEnglish.bundle */,
+			);
+			path = Framework;
+			sourceTree = "<group>";
+		};
 		B23F5FEA211EFA68006034EC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -281,6 +317,7 @@
 				B25F80B8211F4F3200AD786C /* Enums.swift */,
 				B26DEB9E2161556D006FE754 /* SceenType.swift */,
 				B2D70CB32164A7520003232D /* AnalyticsEvents.swift */,
+				B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -295,12 +332,23 @@
 			path = "Animation Controller";
 			sourceTree = "<group>";
 		};
+		B269D34925AC58630025E1DE /* Discussions */ = {
+			isa = PBXGroup;
+			children = (
+				B269D34A25AC58B00025E1DE /* UserCountryUIView.swift */,
+				B269D34E25AC5B410025E1DE /* UserCountryCell.swift */,
+				B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */,
+			);
+			path = Discussions;
+			sourceTree = "<group>";
+		};
 		B27F31372122025F00872047 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				B21ABB24210FF664009C678C /* MainVC.swift */,
 				B2E5F5E7212B260C00FC7E28 /* InfoVC.swift */,
 				B2418C17215E8E490020E078 /* SideNavVC.swift */,
+				B269D32C25AC11480025E1DE /* DiscussionsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -315,6 +363,7 @@
 				B21ABB22210FF664009C678C /* AppDelegate.swift */,
 				B2418C1C215EAC490020E078 /* Interactor.swift */,
 				B2418C1E215EACDA0020E078 /* MenuHelper.swift */,
+				B269D3A525ACB7720025E1DE /* UserLocationHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -335,7 +384,9 @@
 				B2E5F5ED212B318700FC7E28 /* email.png */,
 				B2E5F5EE212B318700FC7E28 /* github.png */,
 				B2E5F5D7212B1D0E00FC7E28 /* dleft.png */,
+				B269D3C225AE0E6A0025E1DE /* discussion.png */,
 				B2E5F5DA212B1D1000FC7E28 /* dright.png */,
+				B269D3BE25AE0E530025E1DE /* send_message.png */,
 				B2E5F5DC212B1D1100FC7E28 /* sleft.png */,
 				B2E5F5DB212B1D1100FC7E28 /* sright.png */,
 				B2E5F5D8212B1D0F00FC7E28 /* tleft.png */,
@@ -385,7 +436,6 @@
 				B21ABB1D210FF664009C678C /* Resources */,
 				B21ABB34210FF673009C678C /* Increment Build */,
 				C5348A6DF832E98BE42079CE /* [CP] Embed Pods Frameworks */,
-				6EE7C239B56403EA996CA127 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -437,9 +487,11 @@
 				B2DAB68F2129277A0062ECDF /* close.png in Resources */,
 				B2F01E22212D3994006D6D86 /* integrated_a.mp3 in Resources */,
 				B2DAB671212894190062ECDF /* check.png in Resources */,
+				B269D3BF25AE0E530025E1DE /* send_message.png in Resources */,
 				B2DAB698212929A70062ECDF /* sshareg.png in Resources */,
 				B2DAB6952129288F0062ECDF /* delete.png in Resources */,
 				B2F01E24212D3994006D6D86 /* integrated_b.mp3 in Resources */,
+				B269D3C325AE0E6A0025E1DE /* discussion.png in Resources */,
 				B2E5F5EF212B318700FC7E28 /* email.png in Resources */,
 				B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */,
 				B2DAB67F212894190062ECDF /* box.png in Resources */,
@@ -467,6 +519,7 @@
 				B2FFE74421438AE600484AFA /* SectionHeader.xib in Resources */,
 				B2DAB6932129282E0062ECDF /* playg.png in Resources */,
 				B2F01E23212D3994006D6D86 /* independent.mp3 in Resources */,
+				B23C1B6C21A5C6D2004FB815 /* AcousticModelEnglish.bundle in Resources */,
 				B2E5F5E0212B1D1200FC7E28 /* dright.png in Resources */,
 				B2F01E21212D3994006D6D86 /* speak_now.mp3 in Resources */,
 				B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */,
@@ -479,21 +532,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6EE7C239B56403EA996CA127 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B21ABB34210FF673009C678C /* Increment Build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -506,30 +544,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "#!bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n";
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\nbuildNumber=$(printf \"%04d\" $buildNumber)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n";
 		};
 		C5348A6DF832E98BE42079CE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/Mute/Mute.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mute.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Speech-Drill/Pods-Speech-Drill-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D5CDA80B74DFF63E0CD2E475 /* [CP] Check Pods Manifest.lock */ = {
@@ -561,6 +592,7 @@
 				B206B61221609CA700B1CCBA /* SlideInVC.swift in Sources */,
 				B2E5F5E8212B260C00FC7E28 /* InfoVC.swift in Sources */,
 				B2BC4A38213C535E00EDEB74 /* IconMaker.swift in Sources */,
+				B269D34F25AC5B410025E1DE /* UserCountryCell.swift in Sources */,
 				B21ABB25210FF664009C678C /* MainVC.swift in Sources */,
 				B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
@@ -572,6 +604,7 @@
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B2D70CB42164A7520003232D /* AnalyticsEvents.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
+				B269D3A925ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift in Sources */,
 				B2418C1D215EAC490020E078 /* Interactor.swift in Sources */,
 				B25F80B9211F4F3200AD786C /* Enums.swift in Sources */,
 				B2418C1B215EA6A30020E078 /* RevealSideNav.swift in Sources */,
@@ -586,9 +619,13 @@
 				B26DEB9F2161556D006FE754 /* SceenType.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
 				B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */,
+				B269D3AC25ADEE650025E1DE /* DiscussionsMessageBox.swift in Sources */,
 				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,
 				B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */,
 				B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */,
+				B269D34B25AC58B00025E1DE /* UserCountryUIView.swift in Sources */,
+				B269D32D25AC11480025E1DE /* DiscussionsViewController.swift in Sources */,
+				B269D3A625ACB7720025E1DE /* UserLocationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -744,15 +781,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0098;
 				DEVELOPMENT_TEAM = U4985LT7P8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Framework",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.parthtamane.SpeechTrainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/OpenEarsHeader.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "$(PROJECT_DIR)/$(PROJECT_NAME)/OpenEarsHeader.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -764,15 +809,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0098;
 				DEVELOPMENT_TEAM = U4985LT7P8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Framework",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.parthtamane.SpeechTrainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/OpenEarsHeader.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import Firebase
+import Speech
 
 class RecordingCell: UITableViewCell {
     
@@ -30,6 +31,8 @@ class RecordingCell: UITableViewCell {
     @IBOutlet weak var currentPlayTimeLbl: UILabel!
     @IBOutlet weak var playingSeeker: UISlider!
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
+    
+    
     
     weak var delegate: MainVC?
 
@@ -59,6 +62,89 @@ class RecordingCell: UITableViewCell {
         
     }
     
+    fileprivate func transcribeFile() {
+        
+        // 1
+        guard let recognizer = SFSpeechRecognizer() else {
+            print("Speech recognition not available for specified locale")
+            return
+        }
+        
+        if !recognizer.isAvailable {
+            print("Speech recognition not currently available")
+            return
+        }
+        
+        // 2
+        let request = SFSpeechURLRecognitionRequest(url: recordingURL!)
+        
+        // 3
+        recognizer.recognitionTask(with: request) {
+            [unowned self] (result, error) in
+            guard let result = result else {
+                print("There was an error transcribing that file")
+                return
+            }
+            
+            // 4
+            if result.isFinal {
+                print(result.bestTranscription.formattedString)
+            }
+        }
+    }
+    
+    func transcribe() {
+        let lmGenerator = OELanguageModelGenerator()
+        
+        let words = ["this","the","so","most","firstly","secondly", "Statement", "this is for 2 reasos"] // These can be lowercase, uppercase, or mixed-case.
+        
+        let name = "NameIWantForMyLanguageModelFiles"
+        
+        let err: Error! = lmGenerator.generateLanguageModel(from: words, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
+        
+        if(err != nil) {
+            print("Error while creating initial language model: \(err)")
+        } else {
+            let lmPath = lmGenerator.pathToSuccessfullyGeneratedLanguageModel(withRequestedName: name) // Convenience method to reference the path of a language model known to have been created successfully.
+            let dicPath = lmGenerator.pathToSuccessfullyGeneratedDictionary(withRequestedName: name) // Convenience method to reference the path of a dictionary known to have been created successfully.
+            
+            //OELogging.startOpenEarsLogging() //Uncomment to receive full OpenEars logging in case of any unexpected results.
+            do {
+                try OEPocketsphinxController.sharedInstance().setActive(true) // Setting the shared OEPocketsphinxController active is necessary before any of its properties are accessed.
+                
+                OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: lmPath, dictionaryAtPath: dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
+                            
+                OEPocketsphinxController.sharedInstance()?.runRecognitionOnWavFile(atPath: recordingURL?.path, usingLanguageModelAtPath: lmPath!, dictionaryAtPath: dicPath!, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
+                
+                print("Success")
+
+                
+            } catch {
+                print("Error: it wasn't possible to set the shared instance to active: \"\(error)\"")
+            }
+            
+            
+            
+        }
+
+    }
+    
+    @IBAction func transcribeRecording(_ sender: Any) {
+        SFSpeechRecognizer.requestAuthorization {
+            [unowned self] (authStatus) in
+            switch authStatus {
+            case .authorized:
+                self.transcribeFile()
+            case .denied:
+                print("Speech recognition authorization denied")
+            case .restricted:
+                print("Not available on this device")
+            case .notDetermined:
+                print("Not determined")
+            }
+        }
+    }
+    
     
     @IBAction func startPulsing(_ sender: UIButton) {
         let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.layer.bounds.width/2,y: sender.layer.bounds.height/2))
@@ -85,6 +171,8 @@ class RecordingCell: UITableViewCell {
             recordingNameLbl.text = labelText
         }
     }
+    
+    
     
     func setBtnImage() {
         
@@ -316,3 +404,4 @@ class RecordingCell: UITableViewCell {
 
     }
 }
+
