@@ -115,7 +115,7 @@ class MainVC: UIViewController {
     private var audioPlayer: AVAudioPlayer?
     
     var callObserver = CXCallObserver()
-    var openEarsEventsObserver = OEEventsObserver()
+//    var openEarsEventsObserver = OEEventsObserver()
     
     let locationManager: CLLocationManager = CLLocationManager()
     
@@ -128,7 +128,7 @@ class MainVC: UIViewController {
         recordingTableView.estimatedRowHeight = recordingCellHeight
         recordingTableView.sectionHeaderHeight = UITableViewAutomaticDimension
         recordingTableView.estimatedSectionHeaderHeight = sectionHeaderHeight
-        openEarsEventsObserver.delegate = self
+//        openEarsEventsObserver.delegate = self
         
         recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerCellId)
         
@@ -1235,18 +1235,6 @@ extension MainVC: UIViewControllerTransitioningDelegate {
         return interactor.hasStarted ? interactor : nil
     }
 }
-
-extension MainVC: OEEventsObserverDelegate {
-    func pocketsphinxDidReceiveHypothesis(_ hypothesis: String!, recognitionScore: String!, utteranceID: String!) { // Something was heard
-        print("Local callback: The received hypothesis is \(hypothesis!) with a score of \(recognitionScore!) and an ID of \(utteranceID!)")
-    }
-    
-    func pocketsphinxRecognitionLoopDidStart() {
-        print("Local callback: Pocketsphinx started.") // Log it.
-    }
-    
-}
-
 
 //MARK:- Location manager
 
