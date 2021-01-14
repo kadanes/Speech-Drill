@@ -49,6 +49,12 @@ class DiscussionsViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        discussionChatView.scrollTableViewToEnd(animated: true)
+    }
+ 
+    
     func addHeader() {
         
         headerContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -180,7 +186,6 @@ class DiscussionsViewController: UIViewController {
             discussionChatView.topAnchor.constraint(equalTo: countryCountView.bottomAnchor  , constant: 10),
             discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10),
         ])
-        
     }
     
     func addSlideGesture() {

@@ -18,11 +18,6 @@ class DiscussionChatMessageCell: UITableViewCell {
     private var bubbleLeadingConstraint: NSLayoutConstraint!
     private var bubbleTrailingConstraint: NSLayoutConstraint!
     
-    // not needed
-    //let screenWidth: CGFloat
-    
-    // wrong signature
-    //override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         messageLabel = UILabel()
@@ -30,9 +25,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         messageBubble = UIView()
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        //        self.contentView.backgroundColor = .clear
-        
+                
         self.contentView.addSubview(messageBubble)
         messageBubble.translatesAutoresizingMaskIntoConstraints = false
         
@@ -97,10 +90,30 @@ class DiscussionChatMessageCell: UITableViewCell {
         let date = Date(timeIntervalSince1970: message.messageTimestamp)
 
         let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.timeZone = .current
+        
         dayTimePeriodFormatter.dateFormat = "hh:mm a"
         let dateString = dayTimePeriodFormatter.string(from: date)
         
-        messageLabel.text = message.message + "\n\n" + dateString
+        let messageFont:UIFont = UIFont(name: "Helvetica Neue", size: 13)!
+        let sentTimeFont:UIFont = UIFont(name: "HelveticaNeue-ThinItalic", size: 11)!
+
+        let messageTextAttributes = [NSAttributedString.Key.font: messageFont]
+        
+        let setTimeTextParagraphStyle =  NSMutableParagraphStyle()
+        setTimeTextParagraphStyle.alignment = isSender ? .left : .left
+
+        let sentTimeTextAttributes = [NSAttributedString.Key.font: sentTimeFont, NSAttributedString.Key.paragraphStyle: setTimeTextParagraphStyle]
+
+        let messageString = NSMutableAttributedString(string: message.message + "\n\n",
+        attributes: messageTextAttributes)
+        
+        let sentTimeString = NSMutableAttributedString(string: dateString, attributes: sentTimeTextAttributes)
+
+        messageString.append(sentTimeString)
+            
+//        messageLabel.text = message.message + "\n\n" + dateString
+        messageLabel.attributedText = messageString
                 
         messageLabel.textColor = isSender ? .black : .white
         senderNameLabel.textColor = isSender ? .black : .white
@@ -145,5 +158,4 @@ class DiscussionChatMessageCell: UITableViewCell {
         }
         
     }
-    
 }

@@ -17,20 +17,15 @@ class DiscussionChatView: UIView {
     var messages: [String: [DiscussionMessage]]  = [:]
     var messageSendDates: [String] = []
     
-    let userEmail: String
+    var userEmail = "UserNotLoggedIn"
     var first = true
     
     override init(frame: CGRect) {
         discussionTableView = UITableView()
         
-        if let currentUser = GIDSignIn.sharedInstance().currentUser {
-            userEmail = currentUser.profile.email
-        } else {
-            userEmail = "UserNotLoggedIn"
-        }
-        
-        print("Email: ", userEmail)
         super.init(frame: frame)
+        
+        saveUserEmail()
         
         discussionTableView.register(DiscussionChatMessageCell.self, forCellReuseIdentifier: discussionChatId)
         discussionTableView.delegate = self
@@ -55,7 +50,7 @@ class DiscussionChatView: UIView {
         loadInitialMessages()
         appendNewMessages()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -72,13 +67,10 @@ class DiscussionChatView: UIView {
                     $0.messageTimestamp < $1.messageTimestamp
                 })
                 
-                let dayTimePeriodFormatter = DateFormatter()
-                dayTimePeriodFormatter.dateFormat = "dd MMM YYYY"
-                
                 for message in messagesList {
                     
-                    let date = Date(timeIntervalSince1970: message.messageTimestamp)
-                    let dateString = dayTimePeriodFormatter.string(from: date)
+                    let dateString = self.getDateString(from: message.messageTimestamp)
+                    
                     if !self.messageSendDates.contains(dateString) {
                         self.messageSendDates.append(dateString)
                     }
@@ -101,17 +93,23 @@ class DiscussionChatView: UIView {
                 return
             }
             
+            self.saveUserEmail()
+            
             if  let value = snapshot.value {
                 print("Added value: ", value)
                 do {
+                    
+                    var lastCellWasVisible: Bool = false
+                    if let visiblePaths = self.discussionTableView.indexPathsForVisibleRows {
+                        
+                        lastCellWasVisible = visiblePaths.contains([self.messageSendDates.count - 1, self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1])
+                    }
+                    
                     let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
                     let message = try JSONDecoder().decode(DiscussionMessage.self, from: data)
-                    let dayTimePeriodFormatter = DateFormatter()
-                    dayTimePeriodFormatter.dateFormat = "dd MMM YYYY"
                     
+                    let dateString = self.getDateString(from: message.messageTimestamp)
                     
-                    let date = Date(timeIntervalSince1970: message.messageTimestamp)
-                    let dateString = dayTimePeriodFormatter.string(from: date)
                     if !self.messageSendDates.contains(dateString) {
                         self.messageSendDates.append(dateString)
                     }
@@ -121,7 +119,9 @@ class DiscussionChatView: UIView {
                     
                     self.discussionTableView.reloadData() //Make this push cell
                     
-                    
+                    if lastCellWasVisible {
+                        self.scrollTableViewToEnd()
+                    }
                 } catch {
                     print(error)
                 }
@@ -151,11 +151,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         
         return discussionChatMessageCell
     }
-    
-    //    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    //        return messageSendDates[section]
-    //    }
-    //
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerLabelView = UILabel(frame: CGRect(x: 0, y: 0, width: discussionTableView.frame.size.width, height: 60))
@@ -183,5 +179,37 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
+    }
+    
+    func saveUserEmail() {
+        if userEmail != "UserNotLoggedIn" { return }
+        if let currentUser = GIDSignIn.sharedInstance().currentUser {
+            userEmail = currentUser.profile.email
+            print("Email: ", userEmail)
+        }
+    }
+    
+    func getDateString(from timestamp: Double) -> String {
+        
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.timeZone = .current
+        
+        dayTimePeriodFormatter.dateFormat = "dd MMM YYYY"
+        
+        let date = Date(timeIntervalSince1970: timestamp)
+        var dateString = dayTimePeriodFormatter.string(from: date)
+        
+        if Calendar.current.isDateInToday(date) { dateString = "Today"}
+        if Calendar.current.isDateInYesterday(date) {dateString = "Yesterday"}
+        
+        return dateString
+    }
+    
+    func scrollTableViewToEnd(animated: Bool = true) {
+                
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            let indexPath = IndexPath(row: self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1, section: self.messageSendDates.count - 1)
+            self.discussionTableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: animated)
+        })
     }
 }
