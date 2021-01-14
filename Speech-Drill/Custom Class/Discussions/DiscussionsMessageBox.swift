@@ -75,10 +75,14 @@ extension DiscussionsMessageBox {
             let userName = profile?.name ?? "UserNameUnknown"
             let timestamp = NSDate().timeIntervalSince1970
             
-            let message = DiscussionMessage(message: messageTextView.text, userCountryCode: userCountryCode, userCountryEmoji: userCountryEmoji, messageTimestamp: timestamp, userName: userName, userEmailAddress: userEmail, fcmToken: nil, question: nil, recordingUrl: nil)
+            let message = DiscussionMessage(message: messageTextView.text, userCountryCode: userCountryCode, userCountryEmoji: userCountryEmoji, userName: userName, userEmailAddress: userEmail, messageTimestamp: timestamp, fcmToken: nil, question: nil, recordingUrl: nil)
             
-            
-            messagesReference.childByAutoId().setValue(message)
+            do {
+                let messageDictionary = try message.dictionary()
+                messagesReference.childByAutoId().setValue(messageDictionary)
+            } catch {
+                print(error)
+            }
             
             messageTextView.text = nil
             messageTextView.endEditing(false)

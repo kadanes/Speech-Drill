@@ -91,20 +91,27 @@ class DiscussionChatMessageCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(message: String, isSender: Bool) {
-        senderNameLabel.text = "Default Sender With A Long Long Long Name"
-        messageLabel.text = message
+    func configureCell(message: DiscussionMessage, isSender: Bool) {
+        senderNameLabel.text = message.userName + " " + message.userCountryEmoji
         
+        let date = Date(timeIntervalSince1970: message.messageTimestamp)
+
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "hh:mm a"
+        let dateString = dayTimePeriodFormatter.string(from: date)
+        
+        messageLabel.text = message.message + "\n\n" + dateString
+                
         messageLabel.textColor = isSender ? .black : .white
         senderNameLabel.textColor = isSender ? .black : .white
 
-        bubbleLeadingConstraint.priority = isSender ? .defaultHigh : .defaultLow
-        bubbleTrailingConstraint.priority = isSender ? .defaultLow : .defaultHigh
+        bubbleLeadingConstraint.priority = isSender ? .defaultLow : .defaultHigh
+        bubbleTrailingConstraint.priority = isSender ? .defaultHigh : .defaultLow
         
         messageBubble.backgroundColor = isSender ? accentColor : .gray
         
-        let senderCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        let nonSenderCorners: CACornerMask =  [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner]
+        let senderCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner]
+        let nonSenderCorners: CACornerMask =  [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         
         if #available(iOS 11.0, *) {
             messageBubble.layer.maskedCorners = isSender ?

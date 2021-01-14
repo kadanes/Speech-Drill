@@ -8,17 +8,12 @@
 
 import Foundation
 
-struct DiscussionMessage: Decodable {
-    var message: String
-    var userCountryCode: String
-    var userCountryEmoji: String
-    var messageTimestamp: Double
-    var userName: String
-    var userEmailAddress: String
-    var fcmToken: String?
-    var question: String?
-    var recordingUrl: String?
+struct DiscussionMessage: Codable {
+    let message, userCountryCode, userCountryEmoji, userName, userEmailAddress: String
+    let messageTimestamp: Double
+    let fcmToken, question, recordingUrl: String?
 }
+
 
 
 //struct Request: Decodable {

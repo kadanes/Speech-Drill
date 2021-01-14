@@ -52,6 +52,10 @@
 		B2BBE29A25AEF5BD0054DE1F /* DiscussionChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29925AEF5BD0054DE1F /* DiscussionChatMessageCell.swift */; };
 		B2BBE29D25AF46000054DE1F /* NSDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */; };
 		B2BBE2B325AF50E90054DE1F /* DiscussionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2B225AF50E90054DE1F /* DiscussionMessage.swift */; };
+		B2BBE2B625B023630054DE1F /* EncodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2B525B023630054DE1F /* EncodableExtension.swift */; };
+		B2BBE2B925B024010054DE1F /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2B825B024010054DE1F /* DataExtension.swift */; };
+		B2BBE2BC25B0243E0054DE1F /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2BB25B0243E0054DE1F /* SequenceExtension.swift */; };
+		B2BBE2C125B056B60054DE1F /* DiscussionChatViewSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2C025B056B60054DE1F /* DiscussionChatViewSectionHeader.swift */; };
 		B2BC4A38213C535E00EDEB74 /* IconMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A37213C535E00EDEB74 /* IconMaker.swift */; };
 		B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */; };
 		B2BF9F08214009820015F330 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BF9F07214009820015F330 /* Pulsing.swift */; };
@@ -145,6 +149,10 @@
 		B2BBE29925AEF5BD0054DE1F /* DiscussionChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionChatMessageCell.swift; sourceTree = "<group>"; };
 		B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDefaultKeys.swift; sourceTree = "<group>"; };
 		B2BBE2B225AF50E90054DE1F /* DiscussionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionMessage.swift; sourceTree = "<group>"; };
+		B2BBE2B525B023630054DE1F /* EncodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableExtension.swift; sourceTree = "<group>"; };
+		B2BBE2B825B024010054DE1F /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		B2BBE2BB25B0243E0054DE1F /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
+		B2BBE2C025B056B60054DE1F /* DiscussionChatViewSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionChatViewSectionHeader.swift; sourceTree = "<group>"; };
 		B2BC4A37213C535E00EDEB74 /* IconMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconMaker.swift; sourceTree = "<group>"; };
 		B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingsMerger.swift; sourceTree = "<group>"; };
 		B2BF9F07214009820015F330 /* Pulsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
@@ -242,8 +250,7 @@
 		B21ABB21210FF664009C678C /* Speech-Drill */ = {
 			isa = PBXGroup;
 			children = (
-				B2BBE2B125AF50D10054DE1F /* Decodable */,
-				B21FAB25215F26C900AE2E0A /* Information */,
+				B2BBE2B125AF50D10054DE1F /* Codable */,
 				B2418C19215EA67C0020E078 /* Animation Controller */,
 				B2DAB65D21285C780062ECDF /* Extension */,
 				B2DAB65421285C470062ECDF /* Image Assets */,
@@ -274,13 +281,6 @@
 				B2BF9F07214009820015F330 /* Pulsing.swift */,
 			);
 			path = "Custom View";
-			sourceTree = "<group>";
-		};
-		B21FAB25215F26C900AE2E0A /* Information */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Information;
 			sourceTree = "<group>";
 		};
 		B23F5FEA211EFA68006034EC /* Assets */ = {
@@ -331,6 +331,7 @@
 				B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */,
 				B2BBE29625AEF1DD0054DE1F /* DiscussionChatView.swift */,
 				B2BBE29925AEF5BD0054DE1F /* DiscussionChatMessageCell.swift */,
+				B2BBE2C025B056B60054DE1F /* DiscussionChatViewSectionHeader.swift */,
 			);
 			path = Discussions;
 			sourceTree = "<group>";
@@ -361,12 +362,12 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		B2BBE2B125AF50D10054DE1F /* Decodable */ = {
+		B2BBE2B125AF50D10054DE1F /* Codable */ = {
 			isa = PBXGroup;
 			children = (
 				B2BBE2B225AF50E90054DE1F /* DiscussionMessage.swift */,
 			);
-			path = Decodable;
+			path = Codable;
 			sourceTree = "<group>";
 		};
 		B2DAB65421285C470062ECDF /* Image Assets */ = {
@@ -409,6 +410,9 @@
 			isa = PBXGroup;
 			children = (
 				B2E5F5F6212B420900FC7E28 /* ShuffleExtension.swift */,
+				B2BBE2B525B023630054DE1F /* EncodableExtension.swift */,
+				B2BBE2B825B024010054DE1F /* DataExtension.swift */,
+				B2BBE2BB25B0243E0054DE1F /* SequenceExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -615,6 +619,7 @@
 				B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,
+				B2BBE2C125B056B60054DE1F /* DiscussionChatViewSectionHeader.swift in Sources */,
 				B23F7F1421483B02009B6ECA /* IDs.swift in Sources */,
 				B2DB3F232148EE72000DD50E /* ProgressBar.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
@@ -631,7 +636,9 @@
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
 				B2BBE29D25AF46000054DE1F /* NSDefaultKeys.swift in Sources */,
 				B2418C18215E8E490020E078 /* SideNavVC.swift in Sources */,
+				B2BBE2B925B024010054DE1F /* DataExtension.swift in Sources */,
 				B2E5F5F4212B401B00FC7E28 /* RoundImage.swift in Sources */,
+				B2BBE2BC25B0243E0054DE1F /* SequenceExtension.swift in Sources */,
 				B2FFE74621438C7B00484AFA /* SectionHeader.swift in Sources */,
 				B2418C1F215EACDA0020E078 /* MenuHelper.swift in Sources */,
 				B23F7F1021483AA6009B6ECA /* UIColors.swift in Sources */,
@@ -642,6 +649,7 @@
 				B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */,
 				B269D3AC25ADEE650025E1DE /* DiscussionsMessageBox.swift in Sources */,
 				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,
+				B2BBE2B625B023630054DE1F /* EncodableExtension.swift in Sources */,
 				B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */,
 				B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */,
 				B269D34B25AC58B00025E1DE /* UserCountryUIView.swift in Sources */,
