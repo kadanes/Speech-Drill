@@ -11,3 +11,4 @@ import Foundation
 
 let userLocationCodeKey = "UserLocationCode"
 let userLocationEmojiKey = "UserLocationEmoji"
+let userLocationUuidKey = "UserLocationUuid"

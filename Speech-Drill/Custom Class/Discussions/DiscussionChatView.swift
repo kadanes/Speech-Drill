@@ -50,7 +50,7 @@ class DiscussionChatView: UIView {
         loadInitialMessages()
         appendNewMessages()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -96,7 +96,6 @@ class DiscussionChatView: UIView {
             self.saveUserEmail()
             
             if  let value = snapshot.value {
-                print("Added value: ", value)
                 do {
                     
                     var lastCellWasVisible: Bool = false
@@ -121,15 +120,15 @@ class DiscussionChatView: UIView {
                     
                     if lastCellWasVisible {
                         self.scrollTableViewToEnd()
+                    } else {
+                        Toast.show(message: "New Message", type: .Info)
                     }
                 } catch {
                     print(error)
                 }
-                
             }
         }
     }
-    
 }
 
 extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
@@ -151,14 +150,14 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         
         return discussionChatMessageCell
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerLabelView = UILabel(frame: CGRect(x: 0, y: 0, width: discussionTableView.frame.size.width, height: 60))
         let headerLabel = UILabel(frame: CGRect(x: (discussionTableView.frame.size.width-100)/2, y: 20, width: 100, height: 40))
         
         headerLabel.adjustsFontSizeToFitWidth = true
-        headerLabel.font = UIFont.systemFont(ofSize: 13)
+        headerLabel.font = UIFont(name: "Helvetica Neue", size: 13)!
         headerLabel.backgroundColor = UIColor.white
         headerLabel.textAlignment = .center
         headerLabel.textColor = UIColor.black
@@ -167,7 +166,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         headerLabel.clipsToBounds = true
         headerLabel.layer.cornerRadius = 10
         
-        headerLabel.text = messageSendDates[section]
+        headerLabel.text = getDateStringForHeaderText(dateString: messageSendDates[section])
         
         return headerLabelView
         
@@ -181,6 +180,12 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
     
+}
+
+//MARK:- Utility Functions
+
+extension DiscussionChatView {
+    
     func saveUserEmail() {
         if userEmail != "UserNotLoggedIn" { return }
         if let currentUser = GIDSignIn.sharedInstance().currentUser {
@@ -189,27 +194,44 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func getDateFormatter() -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .current
+        dateFormatter.dateFormat = "dd MMM yyyy"
+        return dateFormatter
+    }
+    
+    func getDate(from dateString: String) -> Date? {
+//        print("Date String: ", dateString)
+        let dateFormatter = getDateFormatter()
+        return dateFormatter.date(from: dateString) ?? nil
+    }
+    
     func getDateString(from timestamp: Double) -> String {
-        
-        let dayTimePeriodFormatter = DateFormatter()
-        dayTimePeriodFormatter.timeZone = .current
-        
-        dayTimePeriodFormatter.dateFormat = "dd MMM YYYY"
-        
+        let dateFormatter = getDateFormatter()
         let date = Date(timeIntervalSince1970: timestamp)
-        var dateString = dayTimePeriodFormatter.string(from: date)
-        
-        if Calendar.current.isDateInToday(date) { dateString = "Today"}
-        if Calendar.current.isDateInYesterday(date) {dateString = "Yesterday"}
-        
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
+    
+    func getDateStringForHeaderText(dateString: String) -> String {
+        guard let date = getDate(from: dateString) else {
+//            print("Could not get date for generting header string")
+            return dateString
+        }
+//        print("Date: ", date.description(with: .current))
+        if Calendar.current.isDateInToday(date) { return "Today"}
+        if Calendar.current.isDateInYesterday(date) {return "Yesterday"}
         return dateString
     }
     
     func scrollTableViewToEnd(animated: Bool = true) {
-                
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
             let indexPath = IndexPath(row: self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1, section: self.messageSendDates.count - 1)
-            self.discussionTableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: animated)
+            if self.discussionTableView.isValid(indexPath: indexPath) {
+                self.discussionTableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: animated)
+            }
         })
     }
 }

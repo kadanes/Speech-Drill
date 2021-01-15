@@ -58,6 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        let defaults = UserDefaults.standard
+        let uuid = defaults.string(forKey: userLocationUuidKey) ?? ""
+        userLocationReference.child(uuid).onDisconnectSetValue(nil)
+        print("Making uuid ", uuid, "ofline")
     }
     
     open func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {

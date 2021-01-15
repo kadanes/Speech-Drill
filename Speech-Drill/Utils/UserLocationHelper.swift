@@ -48,11 +48,12 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
 }
 
 func saveUserLocation(isoCode: String, uuid: String) {
-    userLocationReference.child(uuid).setValue(isoCode)
-    userLocationReference.child(uuid).onDisconnectSetValue(nil)
     let defaults = UserDefaults.standard
+    defaults.setValue(uuid, forKeyPath: userLocationUuidKey)
     defaults.set(isoCode, forKey: userLocationCodeKey)
     defaults.set(flag(from: isoCode), forKey: userLocationEmojiKey)
+    
+    userLocationReference.child(uuid).setValue(isoCode)
 }
 
 func flag(from country:String) -> String {
