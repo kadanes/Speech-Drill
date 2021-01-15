@@ -20,7 +20,12 @@ let enabledRed = UIColor.red
 //#8E0000
 let disabledRed =  UIColor(red:0.56, green:0.00, blue:0.00, alpha:1.0)
 
+//#Yellow 255, 209, 0
 let accentColor = UIColor(red:1.00, green:0.82, blue:0.00, alpha:1.0)
+//#Yellow light 255, 209, 80
+//let disabledAccentColor = UIColor(red: 1.00, green: 0.82, blue: 0.31, alpha: 1.00)
+let disabledAccentColor =  UIColor(red:1.00, green:0.82, blue:0.00, alpha:0.5)
+
 //#008080(teal)
 //let accentColor = UIColor(red:0.00, green:0.50, blue:0.50, alpha:1.0)
 

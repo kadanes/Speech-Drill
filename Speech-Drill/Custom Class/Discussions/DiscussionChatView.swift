@@ -116,7 +116,10 @@ class DiscussionChatView: UIView {
                     self.messages[dateString, default: [DiscussionMessage]()].append(message)
                     
                     
-                    self.discussionTableView.reloadData() //Make this push cell
+//                    self.discussionTableView.reloadData() //Make this push cell
+                    
+                    let indexPath = IndexPath(row:(self.messages[dateString, default: [DiscussionMessage]()].count - 1), section: self.messageSendDates.index(of: dateString) ?? 0)
+                    self.discussionTableView.insertRows(at:[indexPath], with: .left)
                     
                     if lastCellWasVisible {
                         self.scrollTableViewToEnd()
@@ -180,6 +183,10 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        NotificationCenter.default.post(name: NSNotification.Name(chatViewScrolledNotificationName), object: nil)
+    }
+    
 }
 
 //MARK:- Utility Functions
@@ -191,6 +198,7 @@ extension DiscussionChatView {
         if let currentUser = GIDSignIn.sharedInstance().currentUser {
             userEmail = currentUser.profile.email
             print("Email: ", userEmail)
+            discussionTableView.reloadData()
         }
     }
     

@@ -133,6 +133,7 @@ class DiscussionsViewController: UIViewController {
     
     func addDiscussionsMessageBox() {
         view.addSubview(discussionsMessageBox)
+        discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
 
         if #available(iOS 11.0, *) {
             discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
@@ -141,26 +142,21 @@ class DiscussionsViewController: UIViewController {
             discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         }
         
-        discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
-        
         
         if #available(iOS 11.0, *) {
             NSLayoutConstraint.activate([
                 discussionsMessageBox.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
                 discussionsMessageBox.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-                //                discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
                 discussionsMessageBoxBottomAnchor,
-                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 150)
-                
+//                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 150)
             ])
         } else {
             // Fallback on earlier versions
             NSLayoutConstraint.activate([
                 discussionsMessageBox.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
                 discussionsMessageBox.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-                //                discussionsMessageBox.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
                 discussionsMessageBoxBottomAnchor,
-                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 100)
+//                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 100)
             ])
         }
     }
@@ -281,8 +277,11 @@ extension DiscussionsViewController {
         
         if endFrameY >= UIScreen.main.bounds.size.height {
             self.discussionsMessageBoxBottomAnchor.constant = 0.0
+//            self.discussionChatView.discussionTableView.contentOffset.y = 0
         } else {
-            self.discussionsMessageBoxBottomAnchor.constant = -1 * (endFrame?.size.height ?? 0.0)
+            let offset = -1 * (endFrame?.size.height ?? 0.0)
+            self.discussionsMessageBoxBottomAnchor.constant = offset
+//            self.discussionChatView.discussionTableView.contentOffset.y = offset
         }
         
         UIView.animate(

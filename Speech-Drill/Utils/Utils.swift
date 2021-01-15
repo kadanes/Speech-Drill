@@ -289,3 +289,12 @@ func getBuildNumber() -> String {
     }
     return ""
 }
+
+
+func validateTextView(textView: UITextView) -> Bool {
+    guard let text = textView.text,
+        !text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
+        return false
+    }
+    return true
+}
