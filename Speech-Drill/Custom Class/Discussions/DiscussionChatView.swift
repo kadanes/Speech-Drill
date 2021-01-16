@@ -22,8 +22,11 @@ class DiscussionChatView: UIView {
     
     override init(frame: CGRect) {
         discussionTableView = UITableView()
-        
+
         super.init(frame: frame)
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(sendTapNotification))
+        discussionTableView.addGestureRecognizer(tapRecognizer)
         
         saveUserEmail()
         
@@ -183,9 +186,13 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        NotificationCenter.default.post(name: NSNotification.Name(chatViewScrolledNotificationName), object: nil)
-    }
+//    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+//
+//    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+//        return true
+//    }
     
 }
 
@@ -241,5 +248,13 @@ extension DiscussionChatView {
                 self.discussionTableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: animated)
             }
         })
+    }
+}
+
+//MARK:- Actions
+
+extension DiscussionChatView {
+    @objc func sendTapNotification() {
+        NotificationCenter.default.post(name: NSNotification.Name(chatViewTappedNotificationName), object: nil)
     }
 }

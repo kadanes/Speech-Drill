@@ -23,6 +23,7 @@ class DiscussionsViewController: UIViewController {
     let discussionChatView = DiscussionChatView()
         
     var discussionsMessageBoxBottomAnchor: NSLayoutConstraint = NSLayoutConstraint()
+    var keyBoardHeight: CGFloat = 0
     
     let infoMessage = "This is a chatroom created to help students discuss topics with each other and get advice. Use it to ask questions, get tips, etc."
     
@@ -35,10 +36,18 @@ class DiscussionsViewController: UIViewController {
         addDiscussionsMessageBox()
         addDiscussionChatView()
         
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(handleKeyboardWillChangeFrame),
+//                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
+//                                               object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.keyboardNotification(notification:)),
-                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
-                                               object: nil)
+                                                       selector: #selector(handleKeyboardWillShow),
+                                                       name: NSNotification.Name.UIKeyboardWillShow,
+                                                       object: nil)
+        NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(handleKeyboardWillHide),
+                                                       name: NSNotification.Name.UIKeyboardWillHide,
+                                                       object: nil)
         
         GIDSignIn.sharedInstance()?.presentingViewController = self
 //        GIDSignIn.sharedInstance().signIn()
@@ -62,12 +71,16 @@ class DiscussionsViewController: UIViewController {
         discussionsTitleLbl.translatesAutoresizingMaskIntoConstraints = false
         discussionsTitleLbl.text = "Discussions"
         discussionsTitleLbl.textColor = .white
+        discussionsTitleLbl.font = UIFont(name: "HelveticaNeue-Bold", size: 20)!
         
         let hamburgerBtn = UIButton()
         hamburgerBtn.translatesAutoresizingMaskIntoConstraints = false
         hamburgerBtn.setImage(sideNavIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        
         hamburgerBtn.tintColor = accentColor
+        setBtnImgProp(button: hamburgerBtn, topPadding: 45/4, leftPadding: 5)
         hamburgerBtn.addTarget(self, action: #selector(displaySideNavTapped), for: .touchUpInside)
+        hamburgerBtn.contentMode = .scaleAspectFit
         
         let infoButton = UIButton()
         infoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -76,47 +89,31 @@ class DiscussionsViewController: UIViewController {
         infoButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         infoButton.addTarget(self, action: #selector(displayInfoTapped), for: .touchUpInside)
         
-        headerContainer.addSubview(hamburgerBtn)
+        view.addSubview(hamburgerBtn)
         headerContainer.addSubview(discussionsTitleLbl)
         headerContainer.addSubview(infoButton)
         view.addSubview(headerContainer)
         
         NSLayoutConstraint.activate([
-            hamburgerBtn.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor, constant: 20),
-            hamburgerBtn.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
-            hamburgerBtn.heightAnchor.constraint(equalToConstant: 20),
-            hamburgerBtn.widthAnchor.constraint(equalToConstant: 20),
+            hamburgerBtn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 4),
+            hamburgerBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
+            hamburgerBtn.heightAnchor.constraint(equalToConstant: 35),
+            hamburgerBtn.widthAnchor.constraint(equalToConstant: 35),
             
             discussionsTitleLbl.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
-            discussionsTitleLbl.topAnchor.constraint(equalTo: headerContainer.topAnchor, constant: 10),
+            discussionsTitleLbl.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
             discussionsTitleLbl.heightAnchor.constraint(equalToConstant: 50),
-            discussionsTitleLbl.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor, constant: 10),
-            
             
             infoButton.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor, constant: -20),
             infoButton.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
             infoButton.heightAnchor.constraint(equalToConstant: 20),
             infoButton.widthAnchor.constraint(equalToConstant: 20),
             
-            headerContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            headerContainer.heightAnchor.constraint(equalToConstant: 60),
+            headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            headerContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
+            headerContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
         ])
-        
-        if #available(iOS 11.0, *) {
-            NSLayoutConstraint.activate([
-                
-                headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-                
-            ])
-        } else {
-            // Fallback on earlier versions
-            NSLayoutConstraint.activate([
-                
-                headerContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-                
-            ])
-        }
-        
     }
     
     func addCountryCountTableView() {
@@ -134,51 +131,27 @@ class DiscussionsViewController: UIViewController {
     func addDiscussionsMessageBox() {
         view.addSubview(discussionsMessageBox)
         discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
-
-        if #available(iOS 11.0, *) {
-            discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
-        } else {
-            // Fallback on earlier versions
-            discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        }
         
+       
+        discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         
-        if #available(iOS 11.0, *) {
-            NSLayoutConstraint.activate([
-                discussionsMessageBox.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-                discussionsMessageBox.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-                discussionsMessageBoxBottomAnchor,
+        NSLayoutConstraint.activate([
+            discussionsMessageBox.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            discussionsMessageBox.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            discussionsMessageBoxBottomAnchor,
 //                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 150)
-            ])
-        } else {
-            // Fallback on earlier versions
-            NSLayoutConstraint.activate([
-                discussionsMessageBox.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-                discussionsMessageBox.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-                discussionsMessageBoxBottomAnchor,
-//                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 100)
-            ])
-        }
+        ])
+        
     }
     
     func addDiscussionChatView() {
         self.view.addSubview(discussionChatView)
         discussionChatView.translatesAutoresizingMaskIntoConstraints = false
         
-        if #available(iOS 11.0, *) {
-            NSLayoutConstraint.activate([
-                discussionChatView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-                discussionChatView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            ])
-        } else {
-            // Fallback on earlier versions
-            NSLayoutConstraint.activate([
-              discussionChatView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-              discussionChatView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-          ])
-        }
-        
+
         NSLayoutConstraint.activate([
+            discussionChatView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            discussionChatView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             discussionChatView.topAnchor.constraint(equalTo: countryCountView.bottomAnchor  , constant: 10),
             discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10),
         ])
@@ -265,24 +238,42 @@ extension DiscussionsViewController: UIViewControllerTransitioningDelegate {
 //MARK:- Keyboard handler
 
 extension DiscussionsViewController {
-    @objc func keyboardNotification(notification: NSNotification) {
+    @objc func handleKeyboardWillShow(notification: NSNotification) {
+        
+        print("Keyboard Will SHOW")
+        
         guard let userInfo = notification.userInfo else { return }
         
+        let uiScreenHeight = UIScreen.main.bounds.size.height
         let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         let endFrameY = endFrame?.origin.y ?? 0
+                
         let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
         let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
         
-        if endFrameY >= UIScreen.main.bounds.size.height {
+        let offset = -1 * (endFrame?.size.height ?? 0.0)
+        
+//        print("Keyboard Height: ", keyBoardHeight, " End Frame Height: ", endFrame?.height ?? 0)
+        
+        if endFrameY >= uiScreenHeight {
             self.discussionsMessageBoxBottomAnchor.constant = 0.0
-//            self.discussionChatView.discussionTableView.contentOffset.y = 0
-        } else {
-            let offset = -1 * (endFrame?.size.height ?? 0.0)
+            discussionChatView.discussionTableView.contentOffset.y += 2 * offset
+        } else
+        //if keyBoardHeight != endFrame?.height ?? 0
+        {
+       
+            let oldOffset = discussionChatView.discussionTableView.contentOffset.y
+            let newOffset = oldOffset - offset
+            
+//            print("Old Offset: ", oldOffset, "New Offset: ", newOffset)
+            
             self.discussionsMessageBoxBottomAnchor.constant = offset
-//            self.discussionChatView.discussionTableView.contentOffset.y = offset
+            discussionChatView.discussionTableView.contentOffset.y = newOffset
         }
+        
+        keyBoardHeight = max(keyBoardHeight, endFrame?.height ?? 0)
         
         UIView.animate(
             withDuration: duration,
@@ -291,4 +282,46 @@ extension DiscussionsViewController {
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
     }
+    
+    
+    @objc func handleKeyboardWillHide(notification: NSNotification) {
+            
+            print("Keyboard Will Hide")
+        
+            guard let userInfo = notification.userInfo else { return }
+            
+            let uiScreenHeight = UIScreen.main.bounds.size.height
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let endFrameY = endFrame?.origin.y ?? 0
+                    
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+            let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
+            
+            let offset = -1 * (endFrame?.size.height ?? 0.0)
+            
+    //        print("Keyboard Height: ", keyBoardHeight, " End Frame Height: ", endFrame?.height ?? 0)
+            
+            if endFrameY >= uiScreenHeight {
+                self.discussionsMessageBoxBottomAnchor.constant = 0.0
+                discussionChatView.discussionTableView.contentOffset.y += 2 * offset
+            } else
+            //if keyBoardHeight != endFrame?.height ?? 0
+            {
+                print("Old offset: ", discussionChatView.discussionTableView.contentOffset.y)
+                print("New Offsets: ", discussionChatView.discussionTableView.contentOffset.y - offset)
+                self.discussionsMessageBoxBottomAnchor.constant = offset
+                discussionChatView.discussionTableView.contentOffset.y -= offset
+            }
+            
+            keyBoardHeight = max(keyBoardHeight, endFrame?.height ?? 0)
+            
+            UIView.animate(
+                withDuration: duration,
+                delay: TimeInterval(0),
+                options: animationCurve,
+                animations: { self.view.layoutIfNeeded() },
+                completion: nil)
+        }
 }

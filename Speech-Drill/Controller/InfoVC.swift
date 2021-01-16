@@ -25,7 +25,7 @@ class InfoVC: UIViewController {
     @IBOutlet weak var iconCollectionView: UICollectionView!
     @IBOutlet weak var creditsTextView: UITextView!
     
-    @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
+//    @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
     
     let interactor = Interactor()
     
@@ -57,7 +57,7 @@ class InfoVC: UIViewController {
         
         icons = icons.shuffled()
         
-        creditsTxtViewHeight.constant = self.view.bounds.height - 400
+//        creditsTxtViewHeight.constant = self.view.bounds.height - 400
         
         fetchAndSetCredits()
         

@@ -39,7 +39,6 @@
 		B269D3A925ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */; };
 		B269D3AC25ADEE650025E1DE /* DiscussionsMessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */; };
 		B269D3BF25AE0E530025E1DE /* send_message.png in Resources */ = {isa = PBXBuildFile; fileRef = B269D3BE25AE0E530025E1DE /* send_message.png */; };
-		B269D3C325AE0E6A0025E1DE /* discussion.png in Resources */ = {isa = PBXBuildFile; fileRef = B269D3C225AE0E6A0025E1DE /* discussion.png */; };
 		B26A36BD215ECE3C00628EC9 /* HideSideNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */; };
 		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
 		B26DEB9B21613273006FE754 /* gogenius.png in Resources */ = {isa = PBXBuildFile; fileRef = B26DEB9A21613272006FE754 /* gogenius.png */; };
@@ -57,6 +56,7 @@
 		B2BBE2BC25B0243E0054DE1F /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2BB25B0243E0054DE1F /* SequenceExtension.swift */; };
 		B2BBE2C425B16B050054DE1F /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2C325B16B050054DE1F /* UITableViewExtension.swift */; };
 		B2BBE2C825B18DAD0054DE1F /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2C725B18DAD0054DE1F /* NotificationNames.swift */; };
+		B2BBE30525B36B5A0054DE1F /* discussions.png in Resources */ = {isa = PBXBuildFile; fileRef = B2BBE30425B36B5A0054DE1F /* discussions.png */; };
 		B2BC4A38213C535E00EDEB74 /* IconMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A37213C535E00EDEB74 /* IconMaker.swift */; };
 		B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */; };
 		B2BF9F08214009820015F330 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BF9F07214009820015F330 /* Pulsing.swift */; };
@@ -137,7 +137,6 @@
 		B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseReferences.swift; sourceTree = "<group>"; };
 		B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionsMessageBox.swift; sourceTree = "<group>"; };
 		B269D3BE25AE0E530025E1DE /* send_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_message.png; sourceTree = "<group>"; };
-		B269D3C225AE0E6A0025E1DE /* discussion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discussion.png; sourceTree = "<group>"; };
 		B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideSideNav.swift; sourceTree = "<group>"; };
 		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
 		B26DEB9A21613272006FE754 /* gogenius.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gogenius.png; sourceTree = "<group>"; };
@@ -155,6 +154,7 @@
 		B2BBE2BB25B0243E0054DE1F /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
 		B2BBE2C325B16B050054DE1F /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
 		B2BBE2C725B18DAD0054DE1F /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
+		B2BBE30425B36B5A0054DE1F /* discussions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discussions.png; sourceTree = "<group>"; };
 		B2BC4A37213C535E00EDEB74 /* IconMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconMaker.swift; sourceTree = "<group>"; };
 		B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingsMerger.swift; sourceTree = "<group>"; };
 		B2BF9F07214009820015F330 /* Pulsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
@@ -387,8 +387,8 @@
 				B2E5F5EB212B2E7600FC7E28 /* Me.jpg */,
 				B2E5F5ED212B318700FC7E28 /* email.png */,
 				B2E5F5EE212B318700FC7E28 /* github.png */,
+				B2BBE30425B36B5A0054DE1F /* discussions.png */,
 				B2E5F5D7212B1D0E00FC7E28 /* dleft.png */,
-				B269D3C225AE0E6A0025E1DE /* discussion.png */,
 				B2E5F5DA212B1D1000FC7E28 /* dright.png */,
 				B269D3BE25AE0E530025E1DE /* send_message.png */,
 				B2E5F5DC212B1D1100FC7E28 /* sleft.png */,
@@ -500,7 +500,6 @@
 				B2DAB698212929A70062ECDF /* sshareg.png in Resources */,
 				B2DAB6952129288F0062ECDF /* delete.png in Resources */,
 				B2F01E24212D3994006D6D86 /* integrated_b.mp3 in Resources */,
-				B269D3C325AE0E6A0025E1DE /* discussion.png in Resources */,
 				B2E5F5EF212B318700FC7E28 /* email.png in Resources */,
 				B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */,
 				B2DAB67F212894190062ECDF /* box.png in Resources */,
@@ -527,6 +526,7 @@
 				B2D70CB8216506E70003232D /* bars.png in Resources */,
 				B2FFE74421438AE600484AFA /* SectionHeader.xib in Resources */,
 				B2DAB6932129282E0062ECDF /* playg.png in Resources */,
+				B2BBE30525B36B5A0054DE1F /* discussions.png in Resources */,
 				B2F01E23212D3994006D6D86 /* independent.mp3 in Resources */,
 				B2E5F5E0212B1D1200FC7E28 /* dright.png in Resources */,
 				B2F01E21212D3994006D6D86 /* speak_now.mp3 in Resources */,
@@ -745,7 +745,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -800,7 +800,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -822,7 +822,7 @@
 					"$(PROJECT_DIR)/Framework",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -848,7 +848,7 @@
 					"$(PROJECT_DIR)/Framework",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Speech-Drill/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

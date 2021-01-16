@@ -22,7 +22,7 @@ struct MenuHelper {
     static let percentThreshold:CGFloat = 0.3
     static let snapshotNumber = 12345
     static let snapshotOpacity: Float = 0.9
-    static let menuBGColor = darkGrey
+    static let menuBGColor = UIColor(red: 0.13, green: 0.13, blue: 0.13, alpha: 1.00)
     static let initialMenuScale: CGFloat = 0.95
     
     static func calculateProgress(translationInView:CGPoint, viewBounds:CGRect, direction:Direction) -> CGFloat {

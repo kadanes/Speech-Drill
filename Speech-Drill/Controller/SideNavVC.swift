@@ -23,7 +23,7 @@ class SideNavVC: UIViewController{
     
     static let sideNav = SideNavVC()
     var interactor: Interactor? = nil
-   
+    
     var calledFromVC: UIViewController?
     
     private var sideNavWidth: CGFloat = 100
@@ -33,13 +33,13 @@ class SideNavVC: UIViewController{
     private let updatesTextView = UITextView()
     private let menuTableView = UITableView()
     private var menuItems = [menuItem]()
-
+    
     private var notices: Array<Dictionary<String,String>> = [[:]]
     private var noticeNumber = 0
     
     private let appstoreLink = "itms-apps://itunes.apple.com/app/id1433796147"
     private var phoneNumbers:[String:String] = ["Hvovi":"9987042606","Umang":"9167884007"]
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,7 +48,7 @@ class SideNavVC: UIViewController{
         
         menuTableView.delegate = self
         menuTableView.dataSource = self
-
+        
         populateMenuItems()
         fetchNotices()
         
@@ -57,7 +57,7 @@ class SideNavVC: UIViewController{
         let closeBtn = UIButton(frame: CGRect(x: sideNavWidth, y: 0, width: hiddenSideNavWidth , height: view.bounds.height))
         closeBtn.addTarget(self, action: #selector(closeViewTapped), for: .touchUpInside)
         view.addSubview(closeBtn)
-
+        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(closeViewWithPan(sender:)))
         view.addGestureRecognizer(panGesture)
         
@@ -65,7 +65,7 @@ class SideNavVC: UIViewController{
         
         
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         for (index,item) in menuItems.enumerated() {
@@ -81,16 +81,16 @@ class SideNavVC: UIViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
         let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoVC") as! InfoVC
-//        let DiscussionsVC = storyboard.instantiateViewController(withIdentifier: "DiscussionsVC") as! DiscussionsViewController
+    
         let DiscussionsVC = DiscussionsViewController()
         
-        let mainVCMenuItem = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: disabledRed, presentedVC: mainVC)
-        let infoVCMenuItem = menuItem(itemName: "Information", itemImg: infoIcon, itemImgClr: confirmGreen, presentedVC: infoVC)
-        let discussionsVCMenuItem = menuItem(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: UIColor.purple, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: <#T##String#>)
+        let mainVCMenuItem = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: accentColor, presentedVC: mainVC)
+        let infoVCMenuItem = menuItem(itemName: "About", itemImg: infoIcon, itemImgClr: accentColor, presentedVC: infoVC)
+        let discussionsVCMenuItem = menuItem(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: accentColor, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: T##String)
         
         menuItems.append(mainVCMenuItem)
-        menuItems.append(infoVCMenuItem)
         menuItems.append(discussionsVCMenuItem)
+        menuItems.append(infoVCMenuItem)
     }
     
     func addViews() {
@@ -107,11 +107,15 @@ class SideNavVC: UIViewController{
         let noticeView = makeNoticeView()
         view.addSubview(noticeView)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
-        let noticeViewHghtCnstrnt = NSLayoutConstraint(item: noticeView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.bounds.height / 4)
-        noticeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
-        updatesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + hiddenSideNavWidth)).isActive = true
-        noticeView.topAnchor.constraint(equalTo: view.topAnchor, constant: topMargin).isActive = true
-        view.addConstraint(noticeViewHghtCnstrnt)
+              
+        NSLayoutConstraint.activate([
+            noticeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            updatesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + hiddenSideNavWidth)),
+            noticeView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            noticeView.heightAnchor.constraint(equalToConstant: 150)
+        ])
+        
+        
         
         let versionInfoView = makeVersionDetailView()
         view.addSubview(versionInfoView)
@@ -120,7 +124,7 @@ class SideNavVC: UIViewController{
         let versionInfoViewLeadingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 8)
         let versionInfoViewTrailingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -(8 + hiddenSideNavWidth))
         view.addConstraints([versionInfoViewTopCnstrnt,versionInfoViewLeadingCnstrnt,versionInfoViewTrailingCnstrnt])
-    
+        
         let adView = makeGoGeniusAdView()
         adView.layer.borderColor = UIColor.white.cgColor
         adView.layer.cornerRadius = 5
@@ -129,38 +133,45 @@ class SideNavVC: UIViewController{
         
         view.addSubview(adView)
         adView.translatesAutoresizingMaskIntoConstraints = false
-        adView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
-        adView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
-        adView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin).isActive = true
+        
+        NSLayoutConstraint.activate([
+                                        adView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+                                        adView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)),
+                                        adView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: bottomMargin)        ])
+        
+        
         
         menuTableView.allowsMultipleSelection = false
-  
+        
         view.addSubview(menuTableView)
         menuTableView.translatesAutoresizingMaskIntoConstraints = false
         menuTableView.backgroundColor = .clear
-        menuTableView.topAnchor.constraint(equalTo: versionInfoView.bottomAnchor, constant: 20).isActive = true
-        menuTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
-        menuTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)).isActive = true
-        menuTableView.bottomAnchor.constraint(equalTo: adView.topAnchor, constant: 0).isActive = true
-
+        
+        NSLayoutConstraint.activate([
+            menuTableView.topAnchor.constraint(equalTo: versionInfoView.bottomAnchor, constant: 20),
+            menuTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            menuTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)),
+            menuTableView.bottomAnchor.constraint(equalTo: adView.topAnchor, constant: 0)
+        ])
     }
     
     func makeNoticeView() -> UIView {
         let noticeContainer = UIView()
         
         let noticeStackView = UIStackView()
-        noticeStackView.backgroundColor = .red
         noticeStackView.axis = .horizontal
         noticeStackView.spacing = 5
         noticeStackView.alignment = .fill
         noticeStackView.distribution = .fillEqually
         noticeContainer.addSubview(noticeStackView)
         noticeStackView.translatesAutoresizingMaskIntoConstraints = false
-        noticeStackView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor).isActive = true
-        noticeStackView.trailingAnchor.constraint(equalTo: noticeContainer.trailingAnchor).isActive = true
-        noticeStackView.topAnchor.constraint(equalTo: noticeContainer.topAnchor).isActive = true
-        let noticSVHeightCnstrnt = NSLayoutConstraint(item: noticeStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
-        noticeContainer.addConstraint(noticSVHeightCnstrnt)
+        
+        NSLayoutConstraint.activate([
+            noticeStackView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor),
+            noticeStackView.trailingAnchor.constraint(equalTo: noticeContainer.trailingAnchor),
+            noticeStackView.topAnchor.constraint(equalTo: noticeContainer.topAnchor),
+            noticeStackView.heightAnchor.constraint(equalToConstant: 30)
+        ])
         
         let nextNoticeBtn = UIButton()
         nextNoticeBtn.addTarget(self, action: #selector(showNextNotice), for: .touchUpInside)
@@ -184,8 +195,11 @@ class SideNavVC: UIViewController{
         noticeLbl.textAlignment = .center
         noticeStackView.insertArrangedSubview(noticeLbl, at: 1)
         noticeLbl.translatesAutoresizingMaskIntoConstraints = false
-        noticeLbl.topAnchor.constraint(equalTo: noticeStackView.topAnchor).isActive = true
-        noticeLbl.bottomAnchor.constraint(equalTo: noticeStackView.bottomAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            noticeLbl.topAnchor.constraint(equalTo: noticeStackView.topAnchor),
+            noticeLbl.bottomAnchor.constraint(equalTo: noticeStackView.bottomAnchor)
+        ])
         
         updatesTextView.isEditable = false
         updatesTextView.textColor = .white
@@ -195,10 +209,15 @@ class SideNavVC: UIViewController{
         
         updatesTextView.translatesAutoresizingMaskIntoConstraints = false
         noticeContainer.addSubview(updatesTextView)
-        updatesTextView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor).isActive = true
-        updatesTextView.trailingAnchor.constraint(equalTo: noticeContainer.trailingAnchor).isActive = true
-        updatesTextView.topAnchor.constraint(equalTo: noticeStackView.bottomAnchor).isActive = true
-        updatesTextView.bottomAnchor.constraint(equalTo: noticeContainer.bottomAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            updatesTextView.leadingAnchor.constraint(equalTo: noticeContainer.leadingAnchor),
+            updatesTextView.trailingAnchor.constraint(equalTo: noticeContainer.trailingAnchor),
+            updatesTextView.topAnchor.constraint(equalTo: noticeStackView.bottomAnchor),
+            updatesTextView.bottomAnchor.constraint(equalTo: noticeContainer.bottomAnchor)
+        ])
+        
+        
         
         return noticeContainer
         
@@ -219,11 +238,19 @@ class SideNavVC: UIViewController{
         versionInfoLbl.textColor = UIColor.white
         versionInfoLbl.minimumScaleFactor = 0.5
         versionInfoLbl.translatesAutoresizingMaskIntoConstraints = false
-        let versionInfoLblTopCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .top, relatedBy: .equal, toItem: versionInfoView, attribute: .top, multiplier: 1, constant: 0)
-        let versionInfoLblLeadingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .leading, relatedBy: .equal, toItem: versionInfoView, attribute: .leading, multiplier: 1, constant: 0)
-        let versionInfoLblTrailingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .trailing, relatedBy: .equal, toItem: versionInfoView, attribute: .trailing, multiplier: 1, constant: 0)
-        let versionInfoLblHeightCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: versionInfoLblHeight)
-    versionInfoView.addConstraints([versionInfoLblTopCnstrnt,versionInfoLblLeadingCnstrnt,versionInfoLblTrailingCnstrnt,versionInfoLblHeightCnstrnt])
+        
+        NSLayoutConstraint.activate([
+            versionInfoLbl.topAnchor.constraint(equalTo: versionInfoView.topAnchor),
+            versionInfoLbl.leadingAnchor.constraint(equalTo: versionInfoView.leadingAnchor),
+            versionInfoLbl.trailingAnchor.constraint(equalTo: versionInfoView.trailingAnchor),
+            versionInfoLbl.heightAnchor.constraint(equalToConstant: versionInfoLblHeight)
+        ])
+        
+//        let versionInfoLblTopCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .top, relatedBy: .equal, toItem: versionInfoView, attribute: .top, multiplier: 1, constant: 0)
+//        let versionInfoLblLeadingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .leading, relatedBy: .equal, toItem: versionInfoView, attribute: .leading, multiplier: 1, constant: 0)
+//        let versionInfoLblTrailingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .trailing, relatedBy: .equal, toItem: versionInfoView, attribute: .trailing, multiplier: 1, constant: 0)
+//        let versionInfoLblHeightCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: versionInfoLblHeight)
+//        versionInfoView.addConstraints([versionInfoLblTopCnstrnt,versionInfoLblLeadingCnstrnt,versionInfoLblTrailingCnstrnt,versionInfoLblHeightCnstrnt])
         
         
         let appstoreBtn = UIButton(frame: CGRect())
@@ -233,22 +260,34 @@ class SideNavVC: UIViewController{
         appstoreBtn.layer.cornerRadius = 10
         appstoreBtn.clipsToBounds = true
         appstoreBtn.backgroundColor = enabledGray.withAlphaComponent(0.1)
-        let appstoreBtnWidthCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: downloadBtnWidth)
-        let appstoreBtnHightCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: downloadBtnHeight)
-        let appstoreBtnCntrCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .centerX, relatedBy: .equal, toItem: versionInfoView, attribute: .centerX, multiplier: 1, constant: 0)
-        let appstoreBtnTopCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .top, relatedBy: .equal, toItem: versionInfoLbl, attribute: .bottom, multiplier: 1, constant: 7)
-       versionInfoView.addConstraints([appstoreBtnHightCnstrnt,appstoreBtnWidthCnstrnt,appstoreBtnCntrCnstrnt,appstoreBtnTopCnstrnt])
+        
+        NSLayoutConstraint.activate([
+            appstoreBtn.widthAnchor.constraint(equalToConstant: downloadBtnWidth),
+            appstoreBtn.heightAnchor.constraint(equalToConstant: downloadBtnHeight),
+            appstoreBtn.centerXAnchor.constraint(equalTo: versionInfoView.centerXAnchor),
+            appstoreBtn.topAnchor.constraint(equalTo: versionInfoLbl.bottomAnchor, constant: 7)
+        ])
+        
+//        let appstoreBtnWidthCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: downloadBtnWidth)
+//        let appstoreBtnHightCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: downloadBtnHeight)
+//        let appstoreBtnCntrCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .centerX, relatedBy: .equal, toItem: versionInfoView, attribute: .centerX, multiplier: 1, constant: 0)
+//        let appstoreBtnTopCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .top, relatedBy: .equal, toItem: versionInfoLbl, attribute: .bottom, multiplier: 1, constant: 7)
+//        versionInfoView.addConstraints([appstoreBtnHightCnstrnt,appstoreBtnWidthCnstrnt,appstoreBtnCntrCnstrnt,appstoreBtnTopCnstrnt])
         
         let seperatorView = UIView()
         seperatorView.backgroundColor = enabledGray
         versionInfoView.addSubview(seperatorView)
         seperatorView.translatesAutoresizingMaskIntoConstraints = false
-        let seperatorViewHeightCnstrnt = NSLayoutConstraint(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1)
-        let seperatorViewTopCnstrnt = NSLayoutConstraint(item: seperatorView, attribute: .top, relatedBy: .equal, toItem: appstoreBtn, attribute: .bottom, multiplier: 1, constant: 10)
-        let seperatorViewBtmCnstrnt = NSLayoutConstraint(item:seperatorView , attribute: .bottom, relatedBy: .equal, toItem: versionInfoView , attribute: .bottom, multiplier: 1, constant: 0)
-        seperatorView.leadingAnchor.constraint(equalTo: versionInfoView.leadingAnchor).isActive = true
-        seperatorView.trailingAnchor.constraint(equalTo: versionInfoView.trailingAnchor).isActive = true
-        versionInfoView.addConstraints([seperatorViewTopCnstrnt,seperatorViewHeightCnstrnt,seperatorViewBtmCnstrnt])
+        
+        
+        NSLayoutConstraint.activate([
+            seperatorView.heightAnchor.constraint(equalToConstant: 1),
+            seperatorView.topAnchor.constraint(equalTo: appstoreBtn.bottomAnchor, constant: 10),
+            seperatorView.bottomAnchor.constraint(equalTo: versionInfoView.bottomAnchor, constant: 0),
+            seperatorView.leadingAnchor.constraint(equalTo: versionInfoView.leadingAnchor),
+            seperatorView.trailingAnchor.constraint(equalTo: versionInfoView.trailingAnchor)
+            
+        ])
         
         var currentVersion = ""
         let currentBuildNo = getBuildNumber()
@@ -270,7 +309,7 @@ class SideNavVC: UIViewController{
             appstoreBtn.setTitle("Download (v\(latestVersion))", for: .normal)
         }
         versionInfoLbl.text = versionInfo
- 
+        
         return versionInfoView
     }
     
@@ -293,19 +332,26 @@ class SideNavVC: UIViewController{
         let adTapView = UIView()
         adView.addSubview(adTapView)
         adTapView.translatesAutoresizingMaskIntoConstraints = false
-        adTapView.leadingAnchor.constraint(equalTo: adView.leadingAnchor).isActive = true
-        adTapView.trailingAnchor.constraint(equalTo: adView.trailingAnchor).isActive = true
-        adTapView.topAnchor.constraint(equalTo: adView.topAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            adTapView.leadingAnchor.constraint(equalTo: adView.leadingAnchor),
+            adTapView.trailingAnchor.constraint(equalTo: adView.trailingAnchor),
+            adTapView.topAnchor.constraint(equalTo: adView.topAnchor)
+        ])
+        
         
         let logoImgView = UIImageView(image: goGeniusLogo)
         adTapView.addSubview(logoImgView)
         logoImgView.translatesAutoresizingMaskIntoConstraints = false
         logoImgView.contentMode = .scaleAspectFit
-        logoImgView.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor,constant: 8).isActive = true
-        logoImgView.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor, constant: -8).isActive = true
-        logoImgView.topAnchor.constraint(equalTo: adTapView.topAnchor, constant: spacing).isActive = true
-        let logoImgViewHightCnstrnt = NSLayoutConstraint(item: logoImgView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: goGeniusLogoHeight)
-        adTapView.addConstraint(logoImgViewHightCnstrnt)
+        
+        NSLayoutConstraint.activate([
+            logoImgView.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor,constant: 8),
+            logoImgView.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor, constant: -8),
+            logoImgView.topAnchor.constraint(equalTo: adTapView.topAnchor, constant: spacing),
+            logoImgView.heightAnchor.constraint(equalToConstant: goGeniusLogoHeight)
+        ])
+        
         
         let adLbl = UILabel()
         adLbl.text = "They are pretty awesome! :)"
@@ -315,12 +361,13 @@ class SideNavVC: UIViewController{
         adLbl.textAlignment = .center
         adTapView.addSubview(adLbl)
         adLbl.translatesAutoresizingMaskIntoConstraints = false
-        adLbl.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor).isActive = true
-        adLbl.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor).isActive = true
-        adLbl.topAnchor.constraint(equalTo: logoImgView.bottomAnchor, constant: spacing).isActive = true
-        adLbl.bottomAnchor.constraint(equalTo: adTapView.bottomAnchor).isActive = true
-        let addLblHeightConstraint = NSLayoutConstraint(item: adLbl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: callBtnHeight)
-        adTapView.addConstraint(addLblHeightConstraint)
+        NSLayoutConstraint.activate([
+            adLbl.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor),
+            adLbl.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor),
+            adLbl.topAnchor.constraint(equalTo: logoImgView.bottomAnchor, constant: spacing),
+            adLbl.bottomAnchor.constraint(equalTo: adTapView.bottomAnchor),
+            adLbl.heightAnchor.constraint(equalToConstant: callBtnHeight)
+        ])
         
         let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(openGoGeniusURL))
         adTapGesture.numberOfTapsRequired = 1
@@ -330,21 +377,26 @@ class SideNavVC: UIViewController{
         let callHvoviBtn = makeCallBtn(name: "Hvovi")
         adView.addSubview(callHvoviBtn)
         callHvoviBtn.translatesAutoresizingMaskIntoConstraints = false
-        callHvoviBtn.topAnchor.constraint(equalTo: adTapView.bottomAnchor, constant: spacing).isActive = true
-        callHvoviBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8).isActive = true
-        callHvoviBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8).isActive = true
-        let callHvoviBtnHeightCnstrnt = NSLayoutConstraint(item: callHvoviBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: callBtnHeight)
-        adView.addConstraint(callHvoviBtnHeightCnstrnt)
+        
+        NSLayoutConstraint.activate([
+            callHvoviBtn.topAnchor.constraint(equalTo: adTapView.bottomAnchor, constant: spacing),
+            callHvoviBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+            callHvoviBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+            callHvoviBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
+        ])
         
         let callUmangBtn = makeCallBtn(name: "Umang")
         adView.addSubview(callUmangBtn)
         callUmangBtn.translatesAutoresizingMaskIntoConstraints = false
-        callUmangBtn.topAnchor.constraint(equalTo: callHvoviBtn.bottomAnchor, constant: 5).isActive = true
-        callUmangBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8).isActive = true
-        callUmangBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8).isActive = true
-        callUmangBtn.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8).isActive = true
-        let callUmangBtnHeightCnstrnt = NSLayoutConstraint(item: callUmangBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: callBtnHeight)
-        adView.addConstraint(callUmangBtnHeightCnstrnt)
+        
+        NSLayoutConstraint.activate([
+            callUmangBtn.topAnchor.constraint(equalTo: callHvoviBtn.bottomAnchor, constant: 5),
+            callUmangBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+            callUmangBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+            callUmangBtn.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8),
+            callUmangBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
+            
+        ])
         
         return adView
         
@@ -378,14 +430,14 @@ class SideNavVC: UIViewController{
         callBtn.imageEdgeInsets = UIEdgeInsets(top: iconTopBottomInset, left: 5, bottom:iconTopBottomInset, right: 70)
         callBtn.titleEdgeInsets = UIEdgeInsets(top: 5, left: textLeftInset, bottom: 5, right: textRightInset)
         callBtn.titleLabel?.textAlignment = .left
-    
+        
         callBtn.addTarget(self, action: #selector(callNumber(_:)), for: .touchUpInside)
         
         return callBtn
     }
     
     @objc func callNumber(_ sender: UIButton) {
-
+        
         guard let name = sender.title(for: .normal) else { return }
         guard let number = phoneNumbers[name] else { return }
         
@@ -400,7 +452,7 @@ class SideNavVC: UIViewController{
     
     @objc func showNextNotice() {
         if noticeNumber - 1 >= 0 {
-          noticeNumber -= 1
+            noticeNumber -= 1
         }
         showNotice()
     }
@@ -416,8 +468,8 @@ class SideNavVC: UIViewController{
         if noticeNumber >= 0 && noticeNumber < notices.count {
             
             guard let date = notices[noticeNumber]["date"],let notice = notices[noticeNumber]["notice"] else {
-                    updatesTextView.text = "No notices..."
-                    return
+                updatesTextView.text = "No notices..."
+                return
             }
             
             updatesTextView.text = "\(date)\n\n\(notice)"
@@ -459,7 +511,7 @@ class SideNavVC: UIViewController{
             gestureState: sender.state,
             progress: progress,
             interactor: interactor){
-                self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -496,10 +548,13 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         let cellView = makeCellView(menuItem: menuItems[indexPath.row])
         cellView.translatesAutoresizingMaskIntoConstraints = false
         cell.contentView.addSubview(cellView)
-        cellView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor).isActive = true
-        cellView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor).isActive = true
-        cellView.topAnchor.constraint(equalTo: cell.contentView.topAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            cellView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            cellView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            cellView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            cellView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+        ])
         
         cell.backgroundColor = .clear
         let bgColorView = UIView()
@@ -536,7 +591,7 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
     
     private func makeCellView(menuItem: menuItem) -> UIView {
         let cellView = UIView()
-
+        
         let bgImage =  menuItem.itemImg.withRenderingMode(.alwaysTemplate)
         let cellIcon = UIImageView(image:bgImage)
         cellIcon.tintColor = menuItem.itemImgClr
@@ -544,12 +599,20 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         cellView.addSubview(cellIcon)
         cellIcon.translatesAutoresizingMaskIntoConstraints = false
         cellIcon.contentMode = .scaleAspectFit
-        let cellIconLeadingCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .leading, relatedBy: .equal, toItem: cellView, attribute: .leading, multiplier: 1, constant: 0)
-        let cellIconTopCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .top, relatedBy: .equal, toItem: cellView, attribute: .top, multiplier: 1, constant: 16)
-        let cellIconBottomCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .bottom, relatedBy: .equal, toItem: cellView, attribute: .bottom, multiplier: 1, constant: -16)
-        let cellIconWidthCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
-        cellView.addConstraints([cellIconTopCnstrnt,cellIconBottomCnstrnt,cellIconLeadingCnstrnt,cellIconWidthCnstrnt])
         
+        NSLayoutConstraint.activate([
+            cellIcon.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
+            cellIcon.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 16),
+            cellIcon.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -16),
+            cellIcon.widthAnchor.constraint(equalToConstant: 30)
+        ])
+        
+//        let cellIconLeadingCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .leading, relatedBy: .equal, toItem: cellView, attribute: .leading, multiplier: 1, constant: 0)
+//        let cellIconTopCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .top, relatedBy: .equal, toItem: cellView, attribute: .top, multiplier: 1, constant: 16)
+//        let cellIconBottomCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .bottom, relatedBy: .equal, toItem: cellView, attribute: .bottom, multiplier: 1, constant: -16)
+//        let cellIconWidthCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
+//        cellView.addConstraints([cellIconTopCnstrnt,cellIconBottomCnstrnt,cellIconLeadingCnstrnt,cellIconWidthCnstrnt])
+//
         let cellName = UILabel()
         cellName.text = menuItem.itemName
         cellName.textColor = .white
@@ -557,10 +620,16 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
         
         cellView.addSubview(cellName)
         cellName.translatesAutoresizingMaskIntoConstraints = false
-        cellName.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 16).isActive = true
-        cellName.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 8).isActive = true
-        cellName.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8).isActive = true
-        cellName.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8).isActive = true
+        
+        NSLayoutConstraint.activate([
+            cellName.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 16),
+            cellName.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 8),
+            cellName.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8),
+            cellName.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8)
+        ])
+        
+        
+        
         
         return cellView
     }

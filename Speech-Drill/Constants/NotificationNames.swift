@@ -8,4 +8,4 @@
 
 import Foundation
 
-let chatViewScrolledNotificationName = "ChatViewScrolledNotification"
+let chatViewTappedNotificationName = "ChatViewScrolledNotification"

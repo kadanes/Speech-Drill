@@ -78,7 +78,7 @@ class UserCountryUIView: UIView{
          userLocationReference.observe(.value) { (snapshot) in
             
             let onlineUsers = snapshot.value as? [String: String] ?? [:]
-            print("Online Users: ", onlineUsers)
+//            print("Online Users: ", onlineUsers)
             self.countryUserCount.removeAll()
             for countryCode in onlineUsers.values {
                 self.countryUserCount[countryCode, default: 0] += 1

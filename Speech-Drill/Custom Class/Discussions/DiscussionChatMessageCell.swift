@@ -11,7 +11,7 @@ import UIKit
 
 class DiscussionChatMessageCell: UITableViewCell {
     
-    private let messageLabel: UILabel
+    private let messageLabel: UITextView
     private let senderNameLabel: UILabel
     private let messageSentTimeLabel: UILabel
     private let messageBubble: UIView
@@ -21,7 +21,7 @@ class DiscussionChatMessageCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
-        messageLabel = UILabel()
+        messageLabel = UITextView()
         senderNameLabel = UILabel()
         messageSentTimeLabel = UILabel()
         messageBubble = UIView()
@@ -35,19 +35,23 @@ class DiscussionChatMessageCell: UITableViewCell {
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
         senderNameLabel.numberOfLines = 0
         senderNameLabel.lineBreakMode = .byCharWrapping
-        senderNameLabel.font =  UIFont(name: "HelveticaNeue-Bold", size: 14)!
+        senderNameLabel.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)!
         senderNameLabel.textColor = .white
         
         messageBubble.addSubview(messageLabel)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        //        messageLabel.isEditable = false
-        //        messageLabel.dataDetectorTypes = .all
-        //        messageLabel.textContainer.lineBreakMode = .byWordWrapping
+        messageLabel.isEditable = false
+        messageLabel.isSelectable = false
+        messageLabel.dataDetectorTypes = .all
+        messageLabel.textContainer.lineBreakMode = .byWordWrapping
+        messageLabel.isScrollEnabled = false
+        messageLabel.backgroundColor = .clear
+//        messageLabel.isUserInteractionEnabled = true
         
-        messageLabel.numberOfLines = 0
-        messageLabel.lineBreakMode = .byWordWrapping
-        messageLabel.font = UIFont(name: "Helvetica Neue", size: 14)!
+//        messageLabel.numberOfLines = 0
+//        messageLabel.lineBreakMode = .byWordWrapping
+        messageLabel.font = UIFont(name: "Helvetica Neue", size: 15)!
         
         messageBubble.addSubview(messageSentTimeLabel)
         messageSentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -133,16 +137,13 @@ class DiscussionChatMessageCell: UITableViewCell {
         let senderCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner]
         let nonSenderCorners: CACornerMask =  [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         
-        if #available(iOS 11.0, *) {
-            messageBubble.layer.maskedCorners = isSender ?
-                // topLeft, topRight, bottomRight
-                senderCorners
-                :
-                // topLeft, topRight, bottomLeft
-                nonSenderCorners
-        } else {
-            // Fallback on earlier versions
-            // All corners will be rounded
-        }
+        
+        messageBubble.layer.maskedCorners = isSender ?
+            // topLeft, topRight, bottomRight
+            senderCorners
+            :
+            // topLeft, topRight, bottomLeft
+            nonSenderCorners
+       
     }
 }

@@ -32,8 +32,8 @@ let shareIcon = UIImage(named: "share.png")!
 let singleShareIcon = UIImage(named: "sshareg.png")!
 let plusIcon = UIImage(named: "plus.png")!
 let minusIcon = UIImage(named: "minus.png")!
-let discussionIcon = UIImage(named: "dright.png")! //Fix this icon
-//let discussionIcon = UIImage(named: "discussion.png")! //Fix this icon
+//let discussionIcon = UIImage(named: "dright.png")! //Fix this icon
+let discussionIcon = UIImage(named: "discussions.png")! //Fix this icon
 let sideNavIcon = UIImage(named: "bars.png")!
 let sendMessageIcon = UIImage(named: "send_message.png")!
 
