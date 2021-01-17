@@ -21,9 +21,10 @@ class DiscussionsViewController: UIViewController {
     let countryCountView = UserCountryUIView()
     let discussionsMessageBox = DiscussionsMessageBox()
     let discussionChatView = DiscussionChatView()
-        
+    
     var discussionsMessageBoxBottomAnchor: NSLayoutConstraint = NSLayoutConstraint()
-    var keyBoardHeight: CGFloat = 0
+    var isKeyboardFullyVisible = false
+    let keyboard = KeyboardObserver()
     
     let infoMessage = "This is a chatroom created to help students discuss topics with each other and get advice. Use it to ask questions, get tips, etc."
     
@@ -36,33 +37,47 @@ class DiscussionsViewController: UIViewController {
         addDiscussionsMessageBox()
         addDiscussionChatView()
         
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(handleKeyboardWillChangeFrame),
-//                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
-//                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                                       selector: #selector(handleKeyboardWillShow),
-                                                       name: NSNotification.Name.UIKeyboardWillShow,
-                                                       object: nil)
-        NotificationCenter.default.addObserver(self,
-                                                       selector: #selector(handleKeyboardWillHide),
-                                                       name: NSNotification.Name.UIKeyboardWillHide,
-                                                       object: nil)
+        keyboard.observe { [weak self] (event) -> Void in
+            guard let self = self else { return }
+            switch event.type {
+            case .didShow:
+                self.isKeyboardFullyVisible = true
+            case .didHide:
+                self.isKeyboardFullyVisible = false
+            case .willChangeFrame:
+                self.handleKeyboardWillChangeFrame(keyboardEvent: event)
+            default:
+                break
+            }
+        }
+        
+        //        NotificationCenter.default.addObserver(self,
+        //                                               selector: #selector(handleKeyboardWillChangeFrame),
+        //                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
+        //                                               object: nil)
+        //        NotificationCenter.default.addObserver(self,
+        //                                                       selector: #selector(handleKeyboardWillShow),
+        //                                                       name: NSNotification.Name.UIKeyboardWillShow,
+        //                                                       object: nil)
+        //        NotificationCenter.default.addObserver(self,
+        //                                                       selector: #selector(handleKeyboardWillHide),
+        //                                                       name: NSNotification.Name.UIKeyboardWillHide,
+        //                                                       object: nil)
         
         GIDSignIn.sharedInstance()?.presentingViewController = self
-//        GIDSignIn.sharedInstance().signIn()
+        //        GIDSignIn.sharedInstance().signIn()
         
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        //        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         discussionChatView.scrollTableViewToEnd(animated: true)
     }
- 
+    
     
     func addHeader() {
         
@@ -132,14 +147,14 @@ class DiscussionsViewController: UIViewController {
         view.addSubview(discussionsMessageBox)
         discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
         
-       
+        
         discussionsMessageBoxBottomAnchor = discussionsMessageBox.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         
         NSLayoutConstraint.activate([
             discussionsMessageBox.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             discussionsMessageBox.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             discussionsMessageBoxBottomAnchor,
-//                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 150)
+            //                discussionsMessageBox.heightAnchor.constraint(equalToConstant: 150)
         ])
         
     }
@@ -148,7 +163,7 @@ class DiscussionsViewController: UIViewController {
         self.view.addSubview(discussionChatView)
         discussionChatView.translatesAutoresizingMaskIntoConstraints = false
         
-
+        
         NSLayoutConstraint.activate([
             discussionChatView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             discussionChatView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
@@ -238,90 +253,32 @@ extension DiscussionsViewController: UIViewControllerTransitioningDelegate {
 //MARK:- Keyboard handler
 
 extension DiscussionsViewController {
-    @objc func handleKeyboardWillShow(notification: NSNotification) {
-        
-        print("Keyboard Will SHOW")
-        
-        guard let userInfo = notification.userInfo else { return }
+    
+    func handleKeyboardWillChangeFrame(keyboardEvent: KeyboardEvent) {
         
         let uiScreenHeight = UIScreen.main.bounds.size.height
-        let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        let endFrameY = endFrame?.origin.y ?? 0
-                
-        let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-        let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
-        let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
+        let endFrame = keyboardEvent.keyboardFrameEnd
+        let endFrameY = endFrame.origin.y
         
-        let offset = -1 * (endFrame?.size.height ?? 0.0)
-        
-//        print("Keyboard Height: ", keyBoardHeight, " End Frame Height: ", endFrame?.height ?? 0)
+        let offset = -1 * endFrame.size.height
         
         if endFrameY >= uiScreenHeight {
             self.discussionsMessageBoxBottomAnchor.constant = 0.0
-            discussionChatView.discussionTableView.contentOffset.y += 2 * offset
-        } else
-        //if keyBoardHeight != endFrame?.height ?? 0
-        {
-       
-            let oldOffset = discussionChatView.discussionTableView.contentOffset.y
-            let newOffset = oldOffset - offset
-            
-//            print("Old Offset: ", oldOffset, "New Offset: ", newOffset)
-            
+            self.discussionChatView.discussionTableView.contentOffset.y += 2 * offset
+        } else {
+            print("Keybord fully visible: ", isKeyboardFullyVisible)
             self.discussionsMessageBoxBottomAnchor.constant = offset
-            discussionChatView.discussionTableView.contentOffset.y = newOffset
+            self.discussionChatView.discussionTableView.contentOffset.y -= offset
         }
-        
-        keyBoardHeight = max(keyBoardHeight, endFrame?.height ?? 0)
         
         UIView.animate(
-            withDuration: duration,
+            withDuration: keyboardEvent.duration,
             delay: TimeInterval(0),
-            options: animationCurve,
-            animations: { self.view.layoutIfNeeded() },
+            options: keyboardEvent.options,
+            animations: {
+                self.view.layoutIfNeeded()
+                
+            },
             completion: nil)
     }
-    
-    
-    @objc func handleKeyboardWillHide(notification: NSNotification) {
-            
-            print("Keyboard Will Hide")
-        
-            guard let userInfo = notification.userInfo else { return }
-            
-            let uiScreenHeight = UIScreen.main.bounds.size.height
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-            let endFrameY = endFrame?.origin.y ?? 0
-                    
-            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
-            let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
-            
-            let offset = -1 * (endFrame?.size.height ?? 0.0)
-            
-    //        print("Keyboard Height: ", keyBoardHeight, " End Frame Height: ", endFrame?.height ?? 0)
-            
-            if endFrameY >= uiScreenHeight {
-                self.discussionsMessageBoxBottomAnchor.constant = 0.0
-                discussionChatView.discussionTableView.contentOffset.y += 2 * offset
-            } else
-            //if keyBoardHeight != endFrame?.height ?? 0
-            {
-                print("Old offset: ", discussionChatView.discussionTableView.contentOffset.y)
-                print("New Offsets: ", discussionChatView.discussionTableView.contentOffset.y - offset)
-                self.discussionsMessageBoxBottomAnchor.constant = offset
-                discussionChatView.discussionTableView.contentOffset.y -= offset
-            }
-            
-            keyBoardHeight = max(keyBoardHeight, endFrame?.height ?? 0)
-            
-            UIView.animate(
-                withDuration: duration,
-                delay: TimeInterval(0),
-                options: animationCurve,
-                animations: { self.view.layoutIfNeeded() },
-                completion: nil)
-        }
 }

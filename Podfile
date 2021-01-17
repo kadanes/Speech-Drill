@@ -10,5 +10,6 @@ target 'Speech-Drill' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
+  pod 'FirebaseStorage'
   pod 'GoogleSignIn'
 end

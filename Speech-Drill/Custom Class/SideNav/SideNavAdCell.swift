@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseStorage
 
 class SideNavAdCell: UICollectionViewCell {
     
@@ -112,20 +113,38 @@ class SideNavAdCell: UICollectionViewCell {
         
         self.adInformation = adInformation
         
-        let bannerUrl = URL(string: adInformation.bannerUrl)
+//        let bannerUrl = URL(string: adInformation.bannerUrl)
         
-        if let url = bannerUrl {
-            print("Banner URL: ", bannerUrl)
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                guard let data = data, error == nil else { return }
-//                       print(response?.suggestedFilename ?? url.lastPathComponent)
-//                       print("Download Finished")
-               DispatchQueue.main.async() { [weak self] in
-                print("Got image")
-                self?.bannerImageView.image = UIImage(data: data)
+        
+        let reference = Storage.storage().reference(withPath: adInformation.bannerUrl)
+           reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
+               if let _error = error{
+                   print(_error)
+               } else {
+                   if let _data  = data {
+                    self.bannerImageView.image = UIImage(data: _data)
+                       
+                   }
                }
-            }
-        }
+           }
+        
+//        if let url = bannerUrl {
+//            print("Banner URL: ", bannerUrl)
+//            URLSession.shared.dataTask(with: url) { (data, response, error) in
+//                guard let data = data, error == nil else {
+//                    print("Error:", error)
+//                    return
+//
+//                }
+////                       print(response?.suggestedFilename ?? url.lastPathComponent)
+////                       print("Download Finished")
+//               DispatchQueue.main.async() { [weak self] in
+//                print("Got image")
+//                self?.bannerImageView.image = UIImage(data: data)
+//               }
+//            }
+//            print("END")
+//        }
         
         tagLineLabel.text = adInformation.tagLine
         

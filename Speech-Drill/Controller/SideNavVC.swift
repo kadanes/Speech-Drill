@@ -37,8 +37,8 @@ class SideNavVC: UIViewController{
     private let appstoreLink = "itms-apps://itunes.apple.com/app/id1433796147"
     private var phoneNumbers:[String:String] = ["Hvovi":"9987042606","Umang":"9167884007"]
     
-    let goGeniusAd = SideNavAdStructure(bannerUrl: "https://firebasestorage.googleapis.com/v0/b/speech-drill.appspot.com/o/gogenius.png", tagLine: "They are pretty awesome! :)", contact1: SideNavAdContactDetailsStruct(contactTitle: "Hvovi", contactNumber: "9987042606", contactEmail: nil), contact2: SideNavAdContactDetailsStruct(contactTitle: "Umang", contactNumber: "9167884007", contactEmail: nil), websiteUrl: "https://www.gogenius.co/")
-    let adAdsAdd = SideNavAdStructure(bannerUrl: "https://firebasestorage.googleapis.com/v0/b/speech-drill.appspot.com/o/create-ads.png", tagLine: "Place ads for study resources", contact1: SideNavAdContactDetailsStruct(contactTitle: "Give a Call", contactNumber: "+917977009722", contactEmail: nil), contact2: SideNavAdContactDetailsStruct(contactTitle: "Send Email", contactNumber: nil, contactEmail: "parthv21@gmail.com"), websiteUrl: nil)
+    let goGeniusAd = SideNavAdStructure(bannerUrl: "gogenius.png", tagLine: "Call us for councelling.", contact1: SideNavAdContactDetailsStruct(contactTitle: "Hvovi", contactNumber: "9987042606", contactEmail: nil), contact2: SideNavAdContactDetailsStruct(contactTitle: "Umang", contactNumber: "9167884007", contactEmail: nil), websiteUrl: "https://www.gogenius.co/")
+    let adAdsAdd = SideNavAdStructure(bannerUrl: "ads-here.jpeg", tagLine: "Place ads for study resources!", contact1: SideNavAdContactDetailsStruct(contactTitle: "Give a Call", contactNumber: "+917977009722", contactEmail: nil), contact2: SideNavAdContactDetailsStruct(contactTitle: "Send Email", contactNumber: nil, contactEmail: "parthv21@gmail.com"), websiteUrl: nil)
     
     var ads: [SideNavAdStructure] = []
     
@@ -156,6 +156,8 @@ class SideNavVC: UIViewController{
         adsCollectionView.backgroundColor = .clear
         adsCollectionView.delegate = self
         adsCollectionView.dataSource = self
+        adsCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
+//        adsCollectionView.isPagingEnabled = true
         adsCollectionView.register(SideNavAdCell.self, forCellWithReuseIdentifier: sideNavAdCellReuseIdentifier)
         
         adsCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -168,18 +170,6 @@ class SideNavVC: UIViewController{
             adsCollectionView.heightAnchor.constraint(equalToConstant: 250),
             adsPagingIndicator.centerXAnchor.constraint(equalTo: adsCollectionView.centerXAnchor)
         ])
-        
-        //
-        //        adView = makeGoGeniusAdView()
-        //        adView.layer.borderColor = UIColor.white.cgColor
-        //        adView.layer.cornerRadius = 5
-        //        adView.layer.borderWidth = 1
-        //        adView.clipsToBounds = true
-        //
-        //        view.addSubview(adView)
-        //        adView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
     }
     
     
@@ -352,143 +342,6 @@ class SideNavVC: UIViewController{
         return versionInfoView
     }
     
-//    func makeGoGeniusAdView() -> UIView {
-//
-//        var goGeniusLogoHeight: CGFloat = 70
-//        var spacing: CGFloat = 8
-//        var callBtnHeight: CGFloat = 40
-//
-//        let screenType = UIDevice.current.screenType.rawValue
-//        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
-//            goGeniusLogoHeight = 40
-//            spacing = 4
-//            callBtnHeight = 25
-//        }
-//
-//
-//        let adView = UIView()
-//
-//        let adTapView = UIView()
-//        adView.addSubview(adTapView)
-//        adTapView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            adTapView.leadingAnchor.constraint(equalTo: adView.leadingAnchor),
-//            adTapView.trailingAnchor.constraint(equalTo: adView.trailingAnchor),
-//            adTapView.topAnchor.constraint(equalTo: adView.topAnchor)
-//        ])
-//
-//
-//        let logoImgView = UIImageView(image: goGeniusLogo)
-//        adTapView.addSubview(logoImgView)
-//        logoImgView.translatesAutoresizingMaskIntoConstraints = false
-//        logoImgView.contentMode = .scaleAspectFit
-//
-//        NSLayoutConstraint.activate([
-//            logoImgView.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor,constant: 8),
-//            logoImgView.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor, constant: -8),
-//            logoImgView.topAnchor.constraint(equalTo: adTapView.topAnchor, constant: spacing),
-//            logoImgView.heightAnchor.constraint(equalToConstant: goGeniusLogoHeight)
-//        ])
-//
-//
-//        let adLbl = UILabel()
-//        adLbl.text = "They are pretty awesome! :)"
-//        adLbl.font = UIFont(name: "HelveticaNeue", size: 15)
-//        adLbl.minimumScaleFactor = 0.5
-//        adLbl.textColor = .white
-//        adLbl.textAlignment = .center
-//        adTapView.addSubview(adLbl)
-//        adLbl.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            adLbl.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor),
-//            adLbl.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor),
-//            adLbl.topAnchor.constraint(equalTo: logoImgView.bottomAnchor, constant: spacing),
-//            adLbl.bottomAnchor.constraint(equalTo: adTapView.bottomAnchor),
-//            adLbl.heightAnchor.constraint(equalToConstant: callBtnHeight)
-//        ])
-//
-//        let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(openGoGeniusURL))
-//        adTapGesture.numberOfTapsRequired = 1
-//        adTapView.addGestureRecognizer(adTapGesture)
-//        adTapView.isUserInteractionEnabled = true
-//
-//        let callHvoviBtn = makeCallBtn(name: "Hvovi")
-//        adView.addSubview(callHvoviBtn)
-//        callHvoviBtn.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            callHvoviBtn.topAnchor.constraint(equalTo: adTapView.bottomAnchor, constant: spacing),
-//            callHvoviBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
-//            callHvoviBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
-//            callHvoviBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
-//        ])
-//
-//        let callUmangBtn = makeCallBtn(name: "Umang")
-//        adView.addSubview(callUmangBtn)
-//        callUmangBtn.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            callUmangBtn.topAnchor.constraint(equalTo: callHvoviBtn.bottomAnchor, constant: 5),
-//            callUmangBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
-//            callUmangBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
-//            callUmangBtn.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8),
-//            callUmangBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
-//
-//        ])
-//
-//        return adView
-//
-//    }
-    
-//    func makeCallBtn(name: String) -> UIButton {
-//        let callBtn = UIButton()
-//        var textRightInset: CGFloat = 80
-//        var textLeftInset: CGFloat = 40
-//        var iconTopBottomInset: CGFloat = 10
-//        
-//        let screenType = UIDevice.current.screenType.rawValue
-//        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
-//            textRightInset = 60
-//            textLeftInset = 10
-//            iconTopBottomInset = 2
-//        }
-//        
-//        callBtn.backgroundColor = confirmGreen.withAlphaComponent(0.6)
-//        callBtn.layer.cornerRadius = 10
-//        callBtn.clipsToBounds = true
-//        
-//        callBtn.setTitle(name, for: .normal)
-//        
-//        let callImage = callIcon.withRenderingMode(.alwaysTemplate)
-//        callBtn.setImage(callImage, for: .normal)
-//        callBtn.tintColor = .white
-//        
-//        callBtn.imageView?.contentMode = .scaleAspectFit
-//        
-//        callBtn.imageEdgeInsets = UIEdgeInsets(top: iconTopBottomInset, left: 5, bottom:iconTopBottomInset, right: 70)
-//        callBtn.titleEdgeInsets = UIEdgeInsets(top: 5, left: textLeftInset, bottom: 5, right: textRightInset)
-//        callBtn.titleLabel?.textAlignment = .left
-//        
-//        callBtn.addTarget(self, action: #selector(callNumber(_:)), for: .touchUpInside)
-//        
-//        return callBtn
-//    }
-//    
-//    @objc func callNumber(_ sender: UIButton) {
-//        
-//        guard let name = sender.title(for: .normal) else { return }
-//        guard let number = phoneNumbers[name] else { return }
-//        
-//        Analytics.logEvent(AnalyticsEvent.CallCouncillor.rawValue, parameters: [StringAnalyticsProperties.CouncillorName.rawValue : name as NSObject])
-//        
-//        openURL(url: URL(string: "tel://\(number)"))
-//    }
-//    
-//    @objc func openGoGeniusURL(_ sender: UITapGestureRecognizer) {
-//        
-//    }
-    
     @objc func showNextNotice() {
         if noticeNumber - 1 >= 0 {
             noticeNumber -= 1
@@ -647,4 +500,20 @@ extension SideNavVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
             .rounded(.toNearestOrAwayFromZero)
         )
     }
+    
+    func snapToNearestCell(scrollView: UIScrollView) {
+         let middlePoint = Int(scrollView.contentOffset.x + UIScreen.main.bounds.width / 2)
+         if let indexPath = self.adsCollectionView.indexPathForItem(at: CGPoint(x: middlePoint, y: 0)) {
+              self.adsCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+         }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.snapToNearestCell(scrollView: scrollView)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.snapToNearestCell(scrollView: scrollView)
+    }
+    
 }
