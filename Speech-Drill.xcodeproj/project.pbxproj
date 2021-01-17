@@ -57,6 +57,12 @@
 		B2BBE2C425B16B050054DE1F /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2C325B16B050054DE1F /* UITableViewExtension.swift */; };
 		B2BBE2C825B18DAD0054DE1F /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2C725B18DAD0054DE1F /* NotificationNames.swift */; };
 		B2BBE30525B36B5A0054DE1F /* discussions.png in Resources */ = {isa = PBXBuildFile; fileRef = B2BBE30425B36B5A0054DE1F /* discussions.png */; };
+		B2BBE30925B402EA0054DE1F /* SideNavMenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE30825B402E90054DE1F /* SideNavMenuItemCell.swift */; };
+		B2BBE30F25B406750054DE1F /* SideNavMenuItemStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE30E25B406750054DE1F /* SideNavMenuItemStruct.swift */; };
+		B2BBE31225B4096B0054DE1F /* SideNavAdStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE31125B4096B0054DE1F /* SideNavAdStructure.swift */; };
+		B2BBE31525B40F4C0054DE1F /* SideNavAdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE31425B40F4C0054DE1F /* SideNavAdCell.swift */; };
+		B2BBE31825B4118C0054DE1F /* no-image.png in Resources */ = {isa = PBXBuildFile; fileRef = B2BBE31725B4118C0054DE1F /* no-image.png */; };
+		B2BBE31B25B44AAF0054DE1F /* rsz_email.png in Resources */ = {isa = PBXBuildFile; fileRef = B2BBE31A25B44AAF0054DE1F /* rsz_email.png */; };
 		B2BC4A38213C535E00EDEB74 /* IconMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A37213C535E00EDEB74 /* IconMaker.swift */; };
 		B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */; };
 		B2BF9F08214009820015F330 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BF9F07214009820015F330 /* Pulsing.swift */; };
@@ -155,6 +161,12 @@
 		B2BBE2C325B16B050054DE1F /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
 		B2BBE2C725B18DAD0054DE1F /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		B2BBE30425B36B5A0054DE1F /* discussions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = discussions.png; sourceTree = "<group>"; };
+		B2BBE30825B402E90054DE1F /* SideNavMenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavMenuItemCell.swift; sourceTree = "<group>"; };
+		B2BBE30E25B406750054DE1F /* SideNavMenuItemStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavMenuItemStruct.swift; sourceTree = "<group>"; };
+		B2BBE31125B4096B0054DE1F /* SideNavAdStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavAdStructure.swift; sourceTree = "<group>"; };
+		B2BBE31425B40F4C0054DE1F /* SideNavAdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavAdCell.swift; sourceTree = "<group>"; };
+		B2BBE31725B4118C0054DE1F /* no-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no-image.png"; sourceTree = "<group>"; };
+		B2BBE31A25B44AAF0054DE1F /* rsz_email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rsz_email.png; sourceTree = "<group>"; };
 		B2BC4A37213C535E00EDEB74 /* IconMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconMaker.swift; sourceTree = "<group>"; };
 		B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingsMerger.swift; sourceTree = "<group>"; };
 		B2BF9F07214009820015F330 /* Pulsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
@@ -221,6 +233,7 @@
 		B204ECAE211349FE00A51E8B /* Custom Class */ = {
 			isa = PBXGroup;
 			children = (
+				B2BBE30725B402D30054DE1F /* SideNav */,
 				B269D34925AC58630025E1DE /* Discussions */,
 				B204ECAF21134A2200A51E8B /* RecordingCell.swift */,
 				B2FFE74521438C7B00484AFA /* SectionHeader.swift */,
@@ -252,7 +265,7 @@
 		B21ABB21210FF664009C678C /* Speech-Drill */ = {
 			isa = PBXGroup;
 			children = (
-				B2BBE2B125AF50D10054DE1F /* Codable */,
+				B2BBE2B125AF50D10054DE1F /* Model */,
 				B2418C19215EA67C0020E078 /* Animation Controller */,
 				B2DAB65D21285C780062ECDF /* Extension */,
 				B2DAB65421285C470062ECDF /* Image Assets */,
@@ -364,12 +377,23 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		B2BBE2B125AF50D10054DE1F /* Codable */ = {
+		B2BBE2B125AF50D10054DE1F /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				B2BBE2B225AF50E90054DE1F /* DiscussionMessage.swift */,
+				B2BBE30E25B406750054DE1F /* SideNavMenuItemStruct.swift */,
+				B2BBE31125B4096B0054DE1F /* SideNavAdStructure.swift */,
 			);
-			path = Codable;
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B2BBE30725B402D30054DE1F /* SideNav */ = {
+			isa = PBXGroup;
+			children = (
+				B2BBE30825B402E90054DE1F /* SideNavMenuItemCell.swift */,
+				B2BBE31425B40F4C0054DE1F /* SideNavAdCell.swift */,
+			);
+			path = SideNav;
 			sourceTree = "<group>";
 		};
 		B2DAB65421285C470062ECDF /* Image Assets */ = {
@@ -381,11 +405,13 @@
 				B2752D332137FD6300054ACF /* minus.png */,
 				B232A5662142207400417DA5 /* logo.png */,
 				B2C7152221419F8900530CEA /* twitter.png */,
+				B2BBE31725B4118C0054DE1F /* no-image.png */,
 				B2752D322137FD6200054ACF /* plus.png */,
 				B2F01E19212D3244006D6D86 /* penmic.png */,
 				B2ACC676212D0F58009AE30D /* blackbg.jpg */,
 				B2E5F5EB212B2E7600FC7E28 /* Me.jpg */,
 				B2E5F5ED212B318700FC7E28 /* email.png */,
+				B2BBE31A25B44AAF0054DE1F /* rsz_email.png */,
 				B2E5F5EE212B318700FC7E28 /* github.png */,
 				B2BBE30425B36B5A0054DE1F /* discussions.png */,
 				B2E5F5D7212B1D0E00FC7E28 /* dleft.png */,
@@ -511,6 +537,7 @@
 				B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */,
 				B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */,
 				B25F80C6211F5BAA00AD786C /* beep2.m4a in Resources */,
+				B2BBE31825B4118C0054DE1F /* no-image.png in Resources */,
 				B2DAB699212929A70062ECDF /* share.png in Resources */,
 				B2E5F5EC212B2E7600FC7E28 /* Me.jpg in Resources */,
 				B2ACC677212D0F59009AE30D /* blackbg.jpg in Resources */,
@@ -533,6 +560,7 @@
 				B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */,
 				B2E5F5E1212B1D1200FC7E28 /* sright.png in Resources */,
 				B21ABB28210FF664009C678C /* Main.storyboard in Resources */,
+				B2BBE31B25B44AAF0054DE1F /* rsz_email.png in Resources */,
 				B206B6162160D39F00B1CCBA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,9 +653,12 @@
 				B23F7F1421483B02009B6ECA /* IDs.swift in Sources */,
 				B2DB3F232148EE72000DD50E /* ProgressBar.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
+				B2BBE31525B40F4C0054DE1F /* SideNavAdCell.swift in Sources */,
 				B26A36BD215ECE3C00628EC9 /* HideSideNav.swift in Sources */,
+				B2BBE30F25B406750054DE1F /* SideNavMenuItemStruct.swift in Sources */,
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B2D70CB42164A7520003232D /* AnalyticsEvents.swift in Sources */,
+				B2BBE30925B402EA0054DE1F /* SideNavMenuItemCell.swift in Sources */,
 				B2BBE2B325AF50E90054DE1F /* DiscussionMessage.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
 				B269D3A925ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift in Sources */,
@@ -656,6 +687,7 @@
 				B2BBE2B625B023630054DE1F /* EncodableExtension.swift in Sources */,
 				B23F7F1221483AD1009B6ECA /* UIIcons.swift in Sources */,
 				B2F01E26212D8C44006D6D86 /* Toast.swift in Sources */,
+				B2BBE31225B4096B0054DE1F /* SideNavAdStructure.swift in Sources */,
 				B269D34B25AC58B00025E1DE /* UserCountryUIView.swift in Sources */,
 				B269D32D25AC11480025E1DE /* DiscussionsViewController.swift in Sources */,
 				B269D3A625ACB7720025E1DE /* UserLocationHelper.swift in Sources */,

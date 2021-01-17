@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0000</string>
+	<string>0004</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes
@@ -39,7 +39,6 @@ LSApplicationQueriesSchemes
 
 </key>
 	<array>
-		<string>googlegmail</string>
 		<string>twitter</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>

@@ -14,25 +14,22 @@ class SideNavVC: UIViewController{
     
     private let noticesUrl = "https://github.com/parthv21/Speech-Drill/blob/master/Speech-Drill/Information/info.json"
     
-    private struct menuItem {
-        let itemName: String
-        let itemImg: UIImage
-        let itemImgClr: UIColor
-        let presentedVC: UIViewController
-    }
+    private let sideNavMenuItemReuseIdentifier = "SideNavMenuItemIdentifier"
+    private let sideNavAdCellReuseIdentifier = "SideNavAdCellReuseIdentifier"
     
     static let sideNav = SideNavVC()
     var interactor: Interactor? = nil
-    
     var calledFromVC: UIViewController?
     
-    private var sideNavWidth: CGFloat = 100
-    private var hiddenSideNavWidth: CGFloat = 30
+    //    private var sideNavWidth: CGFloat =  MenuHelper.sideNavWidth
+    //    private var hiddenSideNavWidth: CGFloat = MenuHelper.hiddenSideNavWidth
     
+    private let updatesTextView: UITextView
+    private let menuTableView: UITableView
+    private var adsCollectionView: UICollectionView
+    private let adsPagingIndicator: UIPageControl
     
-    private let updatesTextView = UITextView()
-    private let menuTableView = UITableView()
-    private var menuItems = [menuItem]()
+    private var menuItems = [sideNavMenuItemStruct]()
     
     private var notices: Array<Dictionary<String,String>> = [[:]]
     private var noticeNumber = 0
@@ -40,21 +37,48 @@ class SideNavVC: UIViewController{
     private let appstoreLink = "itms-apps://itunes.apple.com/app/id1433796147"
     private var phoneNumbers:[String:String] = ["Hvovi":"9987042606","Umang":"9167884007"]
     
+    let goGeniusAd = SideNavAdStructure(bannerUrl: "https://firebasestorage.googleapis.com/v0/b/speech-drill.appspot.com/o/gogenius.png", tagLine: "They are pretty awesome! :)", contact1: SideNavAdContactDetailsStruct(contactTitle: "Hvovi", contactNumber: "9987042606", contactEmail: nil), contact2: SideNavAdContactDetailsStruct(contactTitle: "Umang", contactNumber: "9167884007", contactEmail: nil), websiteUrl: "https://www.gogenius.co/")
+    let adAdsAdd = SideNavAdStructure(bannerUrl: "https://firebasestorage.googleapis.com/v0/b/speech-drill.appspot.com/o/create-ads.png", tagLine: "Place ads for study resources", contact1: SideNavAdContactDetailsStruct(contactTitle: "Give a Call", contactNumber: "+917977009722", contactEmail: nil), contact2: SideNavAdContactDetailsStruct(contactTitle: "Send Email", contactNumber: nil, contactEmail: "parthv21@gmail.com"), websiteUrl: nil)
+    
+    var ads: [SideNavAdStructure] = []
+    
+    var noticeView: UIView = UIView()
+    var versionInfoView: UIView = UIView()
+    var adView: UIView = UIView()
+    
+    var selectedIndex = 0
+    
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        
+        updatesTextView = UITextView()
+        menuTableView = UITableView()
+        let adsCollectionViewLayout = UICollectionViewFlowLayout()
+        adsCollectionViewLayout.scrollDirection = .horizontal
+        adsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: adsCollectionViewLayout)
+        adsPagingIndicator = UIPageControl()
+        
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sideNavWidth = view.bounds.width * MenuHelper.menuWidth
-        hiddenSideNavWidth = view.bounds.width - sideNavWidth
-        
         menuTableView.delegate = self
         menuTableView.dataSource = self
+        menuTableView.register(SideNavMenuItemCell.self, forCellReuseIdentifier: sideNavMenuItemReuseIdentifier)
         
         populateMenuItems()
         fetchNotices()
         
         addViews()
         
-        let closeBtn = UIButton(frame: CGRect(x: sideNavWidth, y: 0, width: hiddenSideNavWidth , height: view.bounds.height))
+        let closeBtn = UIButton(frame: CGRect(x: MenuHelper.sideNavWidth, y: 0, width: MenuHelper.hiddenSideNavWidth , height: view.bounds.height))
         closeBtn.addTarget(self, action: #selector(closeViewTapped), for: .touchUpInside)
         view.addSubview(closeBtn)
         
@@ -63,7 +87,7 @@ class SideNavVC: UIViewController{
         
         view.backgroundColor = MenuHelper.menuBGColor
         
-        
+        ads = [goGeniusAd, adAdsAdd]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,75 +96,94 @@ class SideNavVC: UIViewController{
             if item.presentedVC.isKind(of: type(of: calledFromVC!)) {
                 let indexPath = IndexPath(item: index, section: 0)
                 menuTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                selectedIndex = index
                 break
             }
         }
     }
     
     func populateMenuItems() {
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
         let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoVC") as! InfoVC
-    
         let DiscussionsVC = DiscussionsViewController()
         
-        let mainVCMenuItem = menuItem(itemName: "Recordings", itemImg: recordIcon, itemImgClr: accentColor, presentedVC: mainVC)
-        let infoVCMenuItem = menuItem(itemName: "About", itemImg: infoIcon, itemImgClr: accentColor, presentedVC: infoVC)
-        let discussionsVCMenuItem = menuItem(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: accentColor, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: T##String)
+        let mainVCMenuItem = sideNavMenuItemStruct(itemName: "Recordings", itemImg: recordIcon, itemImgClr: accentColor, presentedVC: mainVC)
+        let infoVCMenuItem = sideNavMenuItemStruct(itemName: "About", itemImg: infoIcon, itemImgClr: accentColor, presentedVC: infoVC)
+        let discussionsVCMenuItem = sideNavMenuItemStruct(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: accentColor, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: T##String)
         
         menuItems.append(mainVCMenuItem)
         menuItems.append(discussionsVCMenuItem)
         menuItems.append(infoVCMenuItem)
     }
     
-    func addViews() {
+    func addNoticeView() {
         
-        var topMargin: CGFloat = 20
-        var bottomMargin: CGFloat = -8
-        
-        let screenType = UIDevice.current.screenType
-        if screenType == ScreenType.iPhoneXR || screenType == ScreenType.iPhoneXSMax || screenType == ScreenType.iPhoneX_iPhoneXS {
-            topMargin = 30
-            bottomMargin = -20
-        }
-        
-        let noticeView = makeNoticeView()
+        noticeView = makeNoticeView()
         view.addSubview(noticeView)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
-              
+        
         NSLayoutConstraint.activate([
             noticeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            updatesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + hiddenSideNavWidth)),
+            updatesTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + MenuHelper.hiddenSideNavWidth)),
             noticeView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             noticeView.heightAnchor.constraint(equalToConstant: 150)
         ])
+    }
+    
+    func addVersionInfoView() {
         
-        
-        
-        let versionInfoView = makeVersionDetailView()
+        versionInfoView = makeVersionDetailView()
         view.addSubview(versionInfoView)
         versionInfoView.translatesAutoresizingMaskIntoConstraints = false
         let versionInfoViewTopCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .top, relatedBy: .equal, toItem: updatesTextView, attribute: .bottom, multiplier: 1, constant: 4)
         let versionInfoViewLeadingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 8)
-        let versionInfoViewTrailingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -(8 + hiddenSideNavWidth))
+        let versionInfoViewTrailingCnstrnt = NSLayoutConstraint(item: versionInfoView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -(8 + MenuHelper.hiddenSideNavWidth))
         view.addConstraints([versionInfoViewTopCnstrnt,versionInfoViewLeadingCnstrnt,versionInfoViewTrailingCnstrnt])
+    }
+    
+    
+    func addAdView() {
         
-        let adView = makeGoGeniusAdView()
-        adView.layer.borderColor = UIColor.white.cgColor
-        adView.layer.cornerRadius = 5
-        adView.layer.borderWidth = 1
-        adView.clipsToBounds = true
+        view.addSubview(adsPagingIndicator)
+        adsPagingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        adsPagingIndicator.tintColor = .white
+        adsPagingIndicator.currentPageIndicatorTintColor = accentColor
         
-        view.addSubview(adView)
-        adView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(adsCollectionView)
+        adsCollectionView.backgroundColor = .clear
+        adsCollectionView.delegate = self
+        adsCollectionView.dataSource = self
+        adsCollectionView.register(SideNavAdCell.self, forCellWithReuseIdentifier: sideNavAdCellReuseIdentifier)
+        
+        adsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-                                        adView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-                                        adView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)),
-                                        adView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: bottomMargin)        ])
+            adsPagingIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            
+            adsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            adsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + MenuHelper.hiddenSideNavWidth)),
+            adsCollectionView.bottomAnchor.constraint(equalTo: adsPagingIndicator.topAnchor, constant: 0),
+            adsCollectionView.heightAnchor.constraint(equalToConstant: 250),
+            adsPagingIndicator.centerXAnchor.constraint(equalTo: adsCollectionView.centerXAnchor)
+        ])
+        
+        //
+        //        adView = makeGoGeniusAdView()
+        //        adView.layer.borderColor = UIColor.white.cgColor
+        //        adView.layer.cornerRadius = 5
+        //        adView.layer.borderWidth = 1
+        //        adView.clipsToBounds = true
+        //
+        //        view.addSubview(adView)
+        //        adView.translatesAutoresizingMaskIntoConstraints = false
         
         
-        
+    }
+    
+    
+    func addMenuTableView() {
         menuTableView.allowsMultipleSelection = false
         
         view.addSubview(menuTableView)
@@ -150,9 +193,17 @@ class SideNavVC: UIViewController{
         NSLayoutConstraint.activate([
             menuTableView.topAnchor.constraint(equalTo: versionInfoView.bottomAnchor, constant: 20),
             menuTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            menuTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8+hiddenSideNavWidth)),
-            menuTableView.bottomAnchor.constraint(equalTo: adView.topAnchor, constant: 0)
+            menuTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(8 + MenuHelper.hiddenSideNavWidth)),
+            menuTableView.bottomAnchor.constraint(equalTo: adsCollectionView.topAnchor, constant: 0)
         ])
+    }
+    
+    func addViews() {
+        
+        addNoticeView()
+        addVersionInfoView()
+        addAdView()
+        addMenuTableView()
     }
     
     func makeNoticeView() -> UIView {
@@ -246,12 +297,6 @@ class SideNavVC: UIViewController{
             versionInfoLbl.heightAnchor.constraint(equalToConstant: versionInfoLblHeight)
         ])
         
-//        let versionInfoLblTopCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .top, relatedBy: .equal, toItem: versionInfoView, attribute: .top, multiplier: 1, constant: 0)
-//        let versionInfoLblLeadingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .leading, relatedBy: .equal, toItem: versionInfoView, attribute: .leading, multiplier: 1, constant: 0)
-//        let versionInfoLblTrailingCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .trailing, relatedBy: .equal, toItem: versionInfoView, attribute: .trailing, multiplier: 1, constant: 0)
-//        let versionInfoLblHeightCnstrnt = NSLayoutConstraint(item: versionInfoLbl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: versionInfoLblHeight)
-//        versionInfoView.addConstraints([versionInfoLblTopCnstrnt,versionInfoLblLeadingCnstrnt,versionInfoLblTrailingCnstrnt,versionInfoLblHeightCnstrnt])
-        
         
         let appstoreBtn = UIButton(frame: CGRect())
         versionInfoView.addSubview(appstoreBtn)
@@ -267,12 +312,6 @@ class SideNavVC: UIViewController{
             appstoreBtn.centerXAnchor.constraint(equalTo: versionInfoView.centerXAnchor),
             appstoreBtn.topAnchor.constraint(equalTo: versionInfoLbl.bottomAnchor, constant: 7)
         ])
-        
-//        let appstoreBtnWidthCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: downloadBtnWidth)
-//        let appstoreBtnHightCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: downloadBtnHeight)
-//        let appstoreBtnCntrCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .centerX, relatedBy: .equal, toItem: versionInfoView, attribute: .centerX, multiplier: 1, constant: 0)
-//        let appstoreBtnTopCnstrnt = NSLayoutConstraint(item: appstoreBtn, attribute: .top, relatedBy: .equal, toItem: versionInfoLbl, attribute: .bottom, multiplier: 1, constant: 7)
-//        versionInfoView.addConstraints([appstoreBtnHightCnstrnt,appstoreBtnWidthCnstrnt,appstoreBtnCntrCnstrnt,appstoreBtnTopCnstrnt])
         
         let seperatorView = UIView()
         seperatorView.backgroundColor = enabledGray
@@ -313,142 +352,142 @@ class SideNavVC: UIViewController{
         return versionInfoView
     }
     
-    func makeGoGeniusAdView() -> UIView {
-        
-        var goGeniusLogoHeight: CGFloat = 70
-        var spacing: CGFloat = 8
-        var callBtnHeight: CGFloat = 40
-        
-        let screenType = UIDevice.current.screenType.rawValue
-        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
-            goGeniusLogoHeight = 40
-            spacing = 4
-            callBtnHeight = 25
-        }
-        
-        
-        let adView = UIView()
-        
-        let adTapView = UIView()
-        adView.addSubview(adTapView)
-        adTapView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            adTapView.leadingAnchor.constraint(equalTo: adView.leadingAnchor),
-            adTapView.trailingAnchor.constraint(equalTo: adView.trailingAnchor),
-            adTapView.topAnchor.constraint(equalTo: adView.topAnchor)
-        ])
-        
-        
-        let logoImgView = UIImageView(image: goGeniusLogo)
-        adTapView.addSubview(logoImgView)
-        logoImgView.translatesAutoresizingMaskIntoConstraints = false
-        logoImgView.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate([
-            logoImgView.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor,constant: 8),
-            logoImgView.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor, constant: -8),
-            logoImgView.topAnchor.constraint(equalTo: adTapView.topAnchor, constant: spacing),
-            logoImgView.heightAnchor.constraint(equalToConstant: goGeniusLogoHeight)
-        ])
-        
-        
-        let adLbl = UILabel()
-        adLbl.text = "They are pretty awesome! :)"
-        adLbl.font = UIFont(name: "HelveticaNeue", size: 15)
-        adLbl.minimumScaleFactor = 0.5
-        adLbl.textColor = .white
-        adLbl.textAlignment = .center
-        adTapView.addSubview(adLbl)
-        adLbl.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            adLbl.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor),
-            adLbl.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor),
-            adLbl.topAnchor.constraint(equalTo: logoImgView.bottomAnchor, constant: spacing),
-            adLbl.bottomAnchor.constraint(equalTo: adTapView.bottomAnchor),
-            adLbl.heightAnchor.constraint(equalToConstant: callBtnHeight)
-        ])
-        
-        let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(openGoGeniusURL))
-        adTapGesture.numberOfTapsRequired = 1
-        adTapView.addGestureRecognizer(adTapGesture)
-        adTapView.isUserInteractionEnabled = true
-        
-        let callHvoviBtn = makeCallBtn(name: "Hvovi")
-        adView.addSubview(callHvoviBtn)
-        callHvoviBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            callHvoviBtn.topAnchor.constraint(equalTo: adTapView.bottomAnchor, constant: spacing),
-            callHvoviBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
-            callHvoviBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
-            callHvoviBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
-        ])
-        
-        let callUmangBtn = makeCallBtn(name: "Umang")
-        adView.addSubview(callUmangBtn)
-        callUmangBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            callUmangBtn.topAnchor.constraint(equalTo: callHvoviBtn.bottomAnchor, constant: 5),
-            callUmangBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
-            callUmangBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
-            callUmangBtn.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8),
-            callUmangBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
-            
-        ])
-        
-        return adView
-        
-    }
+//    func makeGoGeniusAdView() -> UIView {
+//
+//        var goGeniusLogoHeight: CGFloat = 70
+//        var spacing: CGFloat = 8
+//        var callBtnHeight: CGFloat = 40
+//
+//        let screenType = UIDevice.current.screenType.rawValue
+//        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
+//            goGeniusLogoHeight = 40
+//            spacing = 4
+//            callBtnHeight = 25
+//        }
+//
+//
+//        let adView = UIView()
+//
+//        let adTapView = UIView()
+//        adView.addSubview(adTapView)
+//        adTapView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        NSLayoutConstraint.activate([
+//            adTapView.leadingAnchor.constraint(equalTo: adView.leadingAnchor),
+//            adTapView.trailingAnchor.constraint(equalTo: adView.trailingAnchor),
+//            adTapView.topAnchor.constraint(equalTo: adView.topAnchor)
+//        ])
+//
+//
+//        let logoImgView = UIImageView(image: goGeniusLogo)
+//        adTapView.addSubview(logoImgView)
+//        logoImgView.translatesAutoresizingMaskIntoConstraints = false
+//        logoImgView.contentMode = .scaleAspectFit
+//
+//        NSLayoutConstraint.activate([
+//            logoImgView.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor,constant: 8),
+//            logoImgView.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor, constant: -8),
+//            logoImgView.topAnchor.constraint(equalTo: adTapView.topAnchor, constant: spacing),
+//            logoImgView.heightAnchor.constraint(equalToConstant: goGeniusLogoHeight)
+//        ])
+//
+//
+//        let adLbl = UILabel()
+//        adLbl.text = "They are pretty awesome! :)"
+//        adLbl.font = UIFont(name: "HelveticaNeue", size: 15)
+//        adLbl.minimumScaleFactor = 0.5
+//        adLbl.textColor = .white
+//        adLbl.textAlignment = .center
+//        adTapView.addSubview(adLbl)
+//        adLbl.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            adLbl.leadingAnchor.constraint(equalTo: adTapView.leadingAnchor),
+//            adLbl.trailingAnchor.constraint(equalTo: adTapView.trailingAnchor),
+//            adLbl.topAnchor.constraint(equalTo: logoImgView.bottomAnchor, constant: spacing),
+//            adLbl.bottomAnchor.constraint(equalTo: adTapView.bottomAnchor),
+//            adLbl.heightAnchor.constraint(equalToConstant: callBtnHeight)
+//        ])
+//
+//        let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(openGoGeniusURL))
+//        adTapGesture.numberOfTapsRequired = 1
+//        adTapView.addGestureRecognizer(adTapGesture)
+//        adTapView.isUserInteractionEnabled = true
+//
+//        let callHvoviBtn = makeCallBtn(name: "Hvovi")
+//        adView.addSubview(callHvoviBtn)
+//        callHvoviBtn.translatesAutoresizingMaskIntoConstraints = false
+//
+//        NSLayoutConstraint.activate([
+//            callHvoviBtn.topAnchor.constraint(equalTo: adTapView.bottomAnchor, constant: spacing),
+//            callHvoviBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+//            callHvoviBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+//            callHvoviBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
+//        ])
+//
+//        let callUmangBtn = makeCallBtn(name: "Umang")
+//        adView.addSubview(callUmangBtn)
+//        callUmangBtn.translatesAutoresizingMaskIntoConstraints = false
+//
+//        NSLayoutConstraint.activate([
+//            callUmangBtn.topAnchor.constraint(equalTo: callHvoviBtn.bottomAnchor, constant: 5),
+//            callUmangBtn.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+//            callUmangBtn.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+//            callUmangBtn.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8),
+//            callUmangBtn.heightAnchor.constraint(equalToConstant: callBtnHeight)
+//
+//        ])
+//
+//        return adView
+//
+//    }
     
-    func makeCallBtn(name: String) -> UIButton {
-        let callBtn = UIButton()
-        var textRightInset: CGFloat = 80
-        var textLeftInset: CGFloat = 40
-        var iconTopBottomInset: CGFloat = 10
-        
-        let screenType = UIDevice.current.screenType.rawValue
-        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
-            textRightInset = 60
-            textLeftInset = 10
-            iconTopBottomInset = 2
-        }
-        
-        callBtn.backgroundColor = confirmGreen.withAlphaComponent(0.6)
-        callBtn.layer.cornerRadius = 10
-        callBtn.clipsToBounds = true
-        
-        callBtn.setTitle(name, for: .normal)
-        
-        let callImage = callIcon.withRenderingMode(.alwaysTemplate)
-        callBtn.setImage(callImage, for: .normal)
-        callBtn.tintColor = .white
-        
-        callBtn.imageView?.contentMode = .scaleAspectFit
-        
-        callBtn.imageEdgeInsets = UIEdgeInsets(top: iconTopBottomInset, left: 5, bottom:iconTopBottomInset, right: 70)
-        callBtn.titleEdgeInsets = UIEdgeInsets(top: 5, left: textLeftInset, bottom: 5, right: textRightInset)
-        callBtn.titleLabel?.textAlignment = .left
-        
-        callBtn.addTarget(self, action: #selector(callNumber(_:)), for: .touchUpInside)
-        
-        return callBtn
-    }
-    
-    @objc func callNumber(_ sender: UIButton) {
-        
-        guard let name = sender.title(for: .normal) else { return }
-        guard let number = phoneNumbers[name] else { return }
-        
-        Analytics.logEvent(AnalyticsEvent.CallCouncillor.rawValue, parameters: [StringAnalyticsProperties.CouncillorName.rawValue : name as NSObject])
-        
-        openURL(url: URL(string: "tel://\(number)"))
-    }
-    
-    @objc func openGoGeniusURL(_ sender: UITapGestureRecognizer) {
-        openURL(url: URL(string: "https://www.gogenius.co"))
-    }
+//    func makeCallBtn(name: String) -> UIButton {
+//        let callBtn = UIButton()
+//        var textRightInset: CGFloat = 80
+//        var textLeftInset: CGFloat = 40
+//        var iconTopBottomInset: CGFloat = 10
+//        
+//        let screenType = UIDevice.current.screenType.rawValue
+//        if  screenType == ScreenType.iPhones_5_5s_5c_SE.rawValue || screenType == ScreenType.iPhone4_4S.rawValue {
+//            textRightInset = 60
+//            textLeftInset = 10
+//            iconTopBottomInset = 2
+//        }
+//        
+//        callBtn.backgroundColor = confirmGreen.withAlphaComponent(0.6)
+//        callBtn.layer.cornerRadius = 10
+//        callBtn.clipsToBounds = true
+//        
+//        callBtn.setTitle(name, for: .normal)
+//        
+//        let callImage = callIcon.withRenderingMode(.alwaysTemplate)
+//        callBtn.setImage(callImage, for: .normal)
+//        callBtn.tintColor = .white
+//        
+//        callBtn.imageView?.contentMode = .scaleAspectFit
+//        
+//        callBtn.imageEdgeInsets = UIEdgeInsets(top: iconTopBottomInset, left: 5, bottom:iconTopBottomInset, right: 70)
+//        callBtn.titleEdgeInsets = UIEdgeInsets(top: 5, left: textLeftInset, bottom: 5, right: textRightInset)
+//        callBtn.titleLabel?.textAlignment = .left
+//        
+//        callBtn.addTarget(self, action: #selector(callNumber(_:)), for: .touchUpInside)
+//        
+//        return callBtn
+//    }
+//    
+//    @objc func callNumber(_ sender: UIButton) {
+//        
+//        guard let name = sender.title(for: .normal) else { return }
+//        guard let number = phoneNumbers[name] else { return }
+//        
+//        Analytics.logEvent(AnalyticsEvent.CallCouncillor.rawValue, parameters: [StringAnalyticsProperties.CouncillorName.rawValue : name as NSObject])
+//        
+//        openURL(url: URL(string: "tel://\(number)"))
+//    }
+//    
+//    @objc func openGoGeniusURL(_ sender: UITapGestureRecognizer) {
+//        
+//    }
     
     @objc func showNextNotice() {
         if noticeNumber - 1 >= 0 {
@@ -544,28 +583,14 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        let cellView = makeCellView(menuItem: menuItems[indexPath.row])
-        cellView.translatesAutoresizingMaskIntoConstraints = false
-        cell.contentView.addSubview(cellView)
         
-        NSLayoutConstraint.activate([
-            cellView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-            cellView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            cellView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-            cellView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
-        ])
-        
-        cell.backgroundColor = .clear
-        let bgColorView = UIView()
-        bgColorView.backgroundColor = disabledGray.withAlphaComponent(0.6)
-        cell.selectedBackgroundView = bgColorView
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: sideNavMenuItemReuseIdentifier) as? SideNavMenuItemCell else { return UITableViewCell() }
+        cell.configureCell(with: menuItems[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 40
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -588,55 +613,38 @@ extension SideNavVC: UITableViewDelegate,UITableViewDataSource  {
             }
         }
     }
-    
-    private func makeCellView(menuItem: menuItem) -> UIView {
-        let cellView = UIView()
-        
-        let bgImage =  menuItem.itemImg.withRenderingMode(.alwaysTemplate)
-        let cellIcon = UIImageView(image:bgImage)
-        cellIcon.tintColor = menuItem.itemImgClr
-        
-        cellView.addSubview(cellIcon)
-        cellIcon.translatesAutoresizingMaskIntoConstraints = false
-        cellIcon.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate([
-            cellIcon.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
-            cellIcon.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 16),
-            cellIcon.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -16),
-            cellIcon.widthAnchor.constraint(equalToConstant: 30)
-        ])
-        
-//        let cellIconLeadingCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .leading, relatedBy: .equal, toItem: cellView, attribute: .leading, multiplier: 1, constant: 0)
-//        let cellIconTopCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .top, relatedBy: .equal, toItem: cellView, attribute: .top, multiplier: 1, constant: 16)
-//        let cellIconBottomCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .bottom, relatedBy: .equal, toItem: cellView, attribute: .bottom, multiplier: 1, constant: -16)
-//        let cellIconWidthCnstrnt = NSLayoutConstraint(item: cellIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
-//        cellView.addConstraints([cellIconTopCnstrnt,cellIconBottomCnstrnt,cellIconLeadingCnstrnt,cellIconWidthCnstrnt])
-//
-        let cellName = UILabel()
-        cellName.text = menuItem.itemName
-        cellName.textColor = .white
-        cellName.textAlignment = .left
-        
-        cellView.addSubview(cellName)
-        cellName.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            cellName.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 16),
-            cellName.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 8),
-            cellName.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8),
-            cellName.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8)
-        ])
-        
-        
-        
-        
-        return cellView
-    }
 }
 
 extension SideNavVC: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SlideInVC()
+    }
+}
+
+extension SideNavVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        adsPagingIndicator.numberOfPages = ads.count
+        return ads.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sideNavAdCellReuseIdentifier, for: indexPath) as? SideNavAdCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.configureCell(adInformation: ads[indexPath.row])
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: adsCollectionView.frame.size.width, height: 250)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        adsPagingIndicator.currentPage = Int(
+            (adsCollectionView.contentOffset.x / adsCollectionView.frame.width)
+            .rounded(.toNearestOrAwayFromZero)
+        )
     }
 }

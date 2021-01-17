@@ -14,6 +14,7 @@ let deleteBtnIcon = UIImage(named: "delete.png")!
 let recordIcon = drawSliderThumb(diameter: 40, backgroundColor: enabledRed)
 
 let emailIcon = UIImage(named: "email.png")!
+let smallEmailIcon = UIImage(named: "rsz_email.png")!
 let githubIcon = UIImage(named: "github.png")!
 
 let doubleLeftIcon = UIImage(named: "dleft.png")!
@@ -37,5 +38,8 @@ let discussionIcon = UIImage(named: "discussions.png")! //Fix this icon
 let sideNavIcon = UIImage(named: "bars.png")!
 let sendMessageIcon = UIImage(named: "send_message.png")!
 
+
+let noImageLogo = UIImage(named: "no-image.png")!
 let goGeniusLogo = UIImage(named: "gogenius.png")!
 let callIcon = UIImage(named: "phone.png")!
+

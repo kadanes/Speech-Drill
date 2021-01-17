@@ -18,6 +18,8 @@ enum Direction {
 
 struct MenuHelper {
     
+    static let sideNavWidth: CGFloat = UIScreen.main.bounds.size.width * MenuHelper.menuWidth
+    static let hiddenSideNavWidth: CGFloat = UIScreen.main.bounds.size.width - MenuHelper.sideNavWidth
     static let menuWidth:CGFloat = 0.75
     static let percentThreshold:CGFloat = 0.3
     static let snapshotNumber = 12345

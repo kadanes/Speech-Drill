@@ -1,0 +1,214 @@
+//
+//  SideNavAdCell.swift
+//  Speech-Drill
+//
+//  Created by Parth Tamane on 17/01/21.
+//  Copyright © 2021 Parth Tamane. All rights reserved.
+//
+
+import Foundation
+import UIKit
+import Firebase
+
+class SideNavAdCell: UICollectionViewCell {
+    
+    let adView: UIView
+    let bannerImageView: UIImageView
+    let tagLineLabel: UILabel
+    let contact1Button: UIButton
+    let contact2Button: UIButton
+    var adInformation: SideNavAdStructure?
+    
+    override init(frame: CGRect) {
+        
+        adView = UIView()
+        bannerImageView = UIImageView()
+        tagLineLabel = UILabel()
+        contact1Button = UIButton()
+        contact2Button = UIButton()
+        super.init(frame: frame)
+        
+        let bannerHeight: CGFloat = 70
+        let spacing: CGFloat = 8
+        let callBtnHeight: CGFloat = 40
+        
+        adView.layer.borderWidth = 1
+        adView.layer.borderColor = UIColor.white.cgColor
+        adView.clipsToBounds = true
+        adView.layer.cornerRadius = 5
+        
+        contentView.addSubview(adView)
+        adView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            adView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            adView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            adView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
+                
+        adView.addSubview(bannerImageView)
+        bannerImageView.translatesAutoresizingMaskIntoConstraints = false
+        bannerImageView.image = noImageLogo.withRenderingMode(.alwaysTemplate)
+        bannerImageView.tintColor = accentColor
+        bannerImageView.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate([
+           bannerImageView.leadingAnchor.constraint(equalTo: adView.leadingAnchor,constant: 8),
+           bannerImageView.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+           bannerImageView.topAnchor.constraint(equalTo: adView.topAnchor, constant: spacing),
+           bannerImageView.heightAnchor.constraint(equalToConstant: bannerHeight)
+       ])
+        
+        adView.addSubview(tagLineLabel)
+        tagLineLabel.translatesAutoresizingMaskIntoConstraints = false
+        tagLineLabel.font = UIFont(name: "HelveticaNeue", size: 15)
+        tagLineLabel.minimumScaleFactor = 0.5
+        tagLineLabel.textColor = .white
+        tagLineLabel.textAlignment = .center
+        
+        NSLayoutConstraint.activate([
+            tagLineLabel.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+            tagLineLabel.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+            tagLineLabel.topAnchor.constraint(equalTo: bannerImageView.bottomAnchor, constant: spacing),
+            tagLineLabel.heightAnchor.constraint(equalToConstant: callBtnHeight)
+        ])
+        
+        let adTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openAdWebsite(_:)))
+        adTapGesture.numberOfTapsRequired = 1
+        adView.addGestureRecognizer(adTapGesture)
+//        adView.isUserInteractionEnabled = true
+        
+        configureContactButton(name: "Contact 1", contactButton: contact1Button)
+        contact1Button.tag = 1
+        adView.addSubview(contact1Button)
+        contact1Button.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            contact1Button.topAnchor.constraint(equalTo: tagLineLabel.bottomAnchor, constant: spacing),
+            contact1Button.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+            contact1Button.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+            contact1Button.heightAnchor.constraint(equalToConstant: callBtnHeight)
+        ])
+        
+        configureContactButton(name: "Contact 2", contactButton: contact2Button)
+        contact2Button.tag = 2
+        adView.addSubview(contact2Button)
+        contact2Button.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            contact2Button.topAnchor.constraint(equalTo: contact1Button.bottomAnchor, constant: 5),
+            contact2Button.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
+            contact2Button.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+            contact2Button.bottomAnchor.constraint(equalTo: adView.bottomAnchor, constant: -8),
+            contact2Button.heightAnchor.constraint(equalToConstant: callBtnHeight)
+            
+        ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureCell(adInformation: SideNavAdStructure) {
+        
+        self.adInformation = adInformation
+        
+        let bannerUrl = URL(string: adInformation.bannerUrl)
+        
+        if let url = bannerUrl {
+            print("Banner URL: ", bannerUrl)
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                guard let data = data, error == nil else { return }
+//                       print(response?.suggestedFilename ?? url.lastPathComponent)
+//                       print("Download Finished")
+               DispatchQueue.main.async() { [weak self] in
+                print("Got image")
+                self?.bannerImageView.image = UIImage(data: data)
+               }
+            }
+        }
+        
+        tagLineLabel.text = adInformation.tagLine
+        
+        if let contact1Information = adInformation.contact1 {
+            contact1Button.setTitle(contact1Information.contactTitle, for: .normal)
+            contact1Button.isHidden = false
+            contact1Button.removeTarget(self, action: #selector(contactPerson(_:)), for: .touchUpInside)
+            contact1Button.addTarget(self, action: #selector(contactPerson(_:)), for: .touchUpInside)
+            toggleButtonIcon(contact1Button, callsPhoneNumber: contact1Information.contactNumber != nil)
+        } else {
+            contact1Button.isHidden = true
+        }
+        
+        if let contact2Information = adInformation.contact2 {
+            contact2Button.setTitle(contact2Information.contactTitle, for: .normal)
+            contact2Button.isHidden = false
+            contact2Button.removeTarget(self, action: #selector(contactPerson(_:)), for: .touchUpInside)
+            contact2Button.addTarget(self, action: #selector(contactPerson(_:)), for: .touchUpInside)
+            toggleButtonIcon(contact2Button, callsPhoneNumber: contact2Information.contactNumber != nil)
+        } else {
+            contact2Button.isHidden = true
+        }
+        
+    }
+}
+
+
+//MARK:- Utility functions
+
+extension SideNavAdCell {
+    
+    func configureContactButton(name: String, contactButton: UIButton) {
+        
+        contactButton.layer.cornerRadius = 10
+        contactButton.clipsToBounds = true
+        
+        contactButton.setTitle(name, for: .normal)
+        contactButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+    
+    }
+    
+    func toggleButtonIcon(_ contactButton: UIButton, callsPhoneNumber: Bool) {
+        contactButton.backgroundColor = callsPhoneNumber ? confirmGreen.withAlphaComponent(0.6) : githubBlue.withAlphaComponent(0.6)
+        let buttonImage = callsPhoneNumber ? callIcon.withRenderingMode(.alwaysTemplate) : smallEmailIcon.withRenderingMode(.alwaysTemplate)
+        contactButton.setImage(buttonImage, for: .normal)
+        contactButton.tintColor = .white
+        contactButton.imageView?.contentMode = .scaleAspectFit
+        contactButton.contentHorizontalAlignment = .left
+        contactButton.imageEdgeInsets = callsPhoneNumber ? UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20) : UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20)
+    }
+}
+
+//MARK:- Actions
+
+extension SideNavAdCell {
+    
+    @objc func contactPerson(_ sender: UIButton) {
+        guard let contactDetails = sender.tag == 1 ? adInformation?.contact1 ?? nil : adInformation?.contact2 ?? nil else { return }
+        
+        if let phoneNumber = contactDetails.contactNumber {
+            placeCall(phoneNumber: phoneNumber, contactName: contactDetails.contactTitle)
+        } else if let emailId = contactDetails.contactEmail {
+            sendEmail(emailId: emailId)
+        }
+    }
+    
+    func placeCall(phoneNumber: String, contactName: String) {
+        
+        
+        Analytics.logEvent(AnalyticsEvent.CallCouncillor.rawValue, parameters: [StringAnalyticsProperties.CouncillorName.rawValue : contactName as NSObject])
+        
+        openURL(url: URL(string: "tel://\(phoneNumber)"))
+    }
+    
+    func sendEmail(emailId: String) {
+        let urlEncodedTagLine = adInformation?.tagLine.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let mailUrl = URL(string: "googlegmail:///co?to=" + emailId + "&subject=" + urlEncodedTagLine )
+        openURL(url: mailUrl)
+    }
+    
+    @objc func openAdWebsite(_ sender: UIButton) {
+        guard let url = URL(string: adInformation?.websiteUrl ?? "") else { return }
+        openURL(url: url)
+    }
+}
+
