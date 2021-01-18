@@ -40,17 +40,13 @@ class DiscussionsViewController: UIViewController {
         keyboard.observe { [weak self] (event) -> Void in
             guard let self = self else { return }
             switch event.type {
-            case .didShow:
-                self.isKeyboardFullyVisible = true
-            case .didHide:
-                self.isKeyboardFullyVisible = false
             case .willChangeFrame:
                 self.handleKeyboardWillChangeFrame(keyboardEvent: event)
             default:
                 break
             }
         }
-        
+    
         //        NotificationCenter.default.addObserver(self,
         //                                               selector: #selector(handleKeyboardWillChangeFrame),
         //                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
@@ -254,10 +250,32 @@ extension DiscussionsViewController: UIViewControllerTransitioningDelegate {
 
 extension DiscussionsViewController {
     
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            print("Keyboard Height:", keyboardHeight)
+        }
+    }
+    
+    func keyboardWillShow(keyboarEvent: KeyboardEvent ) {
+        let keyboardFrame = keyboarEvent.keyboardFrameEnd
+        let keyboardHeight = keyboardFrame.height
+        print("Keyboard Height from observer:", keyboardHeight)
+    }
+    
+    
     func handleKeyboardWillChangeFrame(keyboardEvent: KeyboardEvent) {
+        
         
         let uiScreenHeight = UIScreen.main.bounds.size.height
         let endFrame = keyboardEvent.keyboardFrameEnd
+        let beginFrame = keyboardEvent.keyboardFrameBegin
+        
+        
+        print("End Frame:", endFrame)
+        print("Begin Frame:", beginFrame)
+        
         let endFrameY = endFrame.origin.y
         
         let offset = -1 * endFrame.size.height
@@ -266,7 +284,7 @@ extension DiscussionsViewController {
             self.discussionsMessageBoxBottomAnchor.constant = 0.0
             self.discussionChatView.discussionTableView.contentOffset.y += 2 * offset
         } else {
-            print("Keybord fully visible: ", isKeyboardFullyVisible)
+//            print("Keybord fully visible: ", isKeyboardFullyVisible)
             self.discussionsMessageBoxBottomAnchor.constant = offset
             self.discussionChatView.discussionTableView.contentOffset.y -= offset
         }

@@ -13,3 +13,4 @@ let ref = Database.database().reference()
 
 let userLocationReference = ref.child("onlineUserLocations")
 let messagesReference = ref.child("discussionMessages")
+let sideNavAdsReference = ref.child("sideNavAds")

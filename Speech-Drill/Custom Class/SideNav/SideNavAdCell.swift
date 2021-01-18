@@ -18,6 +18,8 @@ class SideNavAdCell: UICollectionViewCell {
     let tagLineLabel: UILabel
     let contact1Button: UIButton
     let contact2Button: UIButton
+    let userDefaults = UserDefaults.standard
+    
     var adInformation: SideNavAdStructure?
     
     override init(frame: CGRect) {
@@ -31,8 +33,9 @@ class SideNavAdCell: UICollectionViewCell {
         
         let bannerHeight: CGFloat = 70
         let spacing: CGFloat = 8
-        let callBtnHeight: CGFloat = 40
-        
+        let callBtnHeight: CGFloat = 30
+        let tagLineHeight: CGFloat = 50
+
         adView.layer.borderWidth = 1
         adView.layer.borderColor = UIColor.white.cgColor
         adView.clipsToBounds = true
@@ -45,7 +48,7 @@ class SideNavAdCell: UICollectionViewCell {
             adView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             adView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
-                
+        
         adView.addSubview(bannerImageView)
         bannerImageView.translatesAutoresizingMaskIntoConstraints = false
         bannerImageView.image = noImageLogo.withRenderingMode(.alwaysTemplate)
@@ -53,11 +56,11 @@ class SideNavAdCell: UICollectionViewCell {
         bannerImageView.contentMode = .scaleAspectFit
         
         NSLayoutConstraint.activate([
-           bannerImageView.leadingAnchor.constraint(equalTo: adView.leadingAnchor,constant: 8),
-           bannerImageView.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
-           bannerImageView.topAnchor.constraint(equalTo: adView.topAnchor, constant: spacing),
-           bannerImageView.heightAnchor.constraint(equalToConstant: bannerHeight)
-       ])
+            bannerImageView.leadingAnchor.constraint(equalTo: adView.leadingAnchor,constant: 8),
+            bannerImageView.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
+            bannerImageView.topAnchor.constraint(equalTo: adView.topAnchor, constant: spacing),
+            bannerImageView.heightAnchor.constraint(equalToConstant: bannerHeight)
+        ])
         
         adView.addSubview(tagLineLabel)
         tagLineLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -65,18 +68,20 @@ class SideNavAdCell: UICollectionViewCell {
         tagLineLabel.minimumScaleFactor = 0.5
         tagLineLabel.textColor = .white
         tagLineLabel.textAlignment = .center
+        tagLineLabel.numberOfLines = 0
+        tagLineLabel.lineBreakMode = .byWordWrapping
         
         NSLayoutConstraint.activate([
             tagLineLabel.leadingAnchor.constraint(equalTo: adView.leadingAnchor, constant: 8),
             tagLineLabel.trailingAnchor.constraint(equalTo: adView.trailingAnchor, constant: -8),
             tagLineLabel.topAnchor.constraint(equalTo: bannerImageView.bottomAnchor, constant: spacing),
-            tagLineLabel.heightAnchor.constraint(equalToConstant: callBtnHeight)
+            tagLineLabel.heightAnchor.constraint(equalToConstant: tagLineHeight)
         ])
         
         let adTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openAdWebsite(_:)))
         adTapGesture.numberOfTapsRequired = 1
         adView.addGestureRecognizer(adTapGesture)
-//        adView.isUserInteractionEnabled = true
+        //        adView.isUserInteractionEnabled = true
         
         configureContactButton(name: "Contact 1", contactButton: contact1Button)
         contact1Button.tag = 1
@@ -113,38 +118,30 @@ class SideNavAdCell: UICollectionViewCell {
         
         self.adInformation = adInformation
         
-//        let bannerUrl = URL(string: adInformation.bannerUrl)
+        
+        let bannerFilePath: String = adInformation.bannerUrl
+        let bannerFileUserDefaultsKey = sideNavAdBannerPrefix + bannerFilePath
+        
+        if let bannerImageData = userDefaults.object(forKey: bannerFileUserDefaultsKey) as? Data {
+            let bannerImage = UIImage(data: bannerImageData)
+            self.bannerImageView.image = bannerImage
+            
+        } else {
+            let reference = Storage.storage().reference(withPath: bannerFilePath)
+            reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
+                if let _error = error{
+                    print(_error)
+                } else {
+                    if let _data = data {
+                        guard let bannerImage: UIImage = UIImage(data: _data) else { return }
+                        self.bannerImageView.image = bannerImage
+                        self.userDefaults.setValue(_data, forKey: bannerFileUserDefaultsKey)
+                    }
+                }
+            }
+        }
         
         
-        let reference = Storage.storage().reference(withPath: adInformation.bannerUrl)
-           reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
-               if let _error = error{
-                   print(_error)
-               } else {
-                   if let _data  = data {
-                    self.bannerImageView.image = UIImage(data: _data)
-                       
-                   }
-               }
-           }
-        
-//        if let url = bannerUrl {
-//            print("Banner URL: ", bannerUrl)
-//            URLSession.shared.dataTask(with: url) { (data, response, error) in
-//                guard let data = data, error == nil else {
-//                    print("Error:", error)
-//                    return
-//
-//                }
-////                       print(response?.suggestedFilename ?? url.lastPathComponent)
-////                       print("Download Finished")
-//               DispatchQueue.main.async() { [weak self] in
-//                print("Got image")
-//                self?.bannerImageView.image = UIImage(data: data)
-//               }
-//            }
-//            print("END")
-//        }
         
         tagLineLabel.text = adInformation.tagLine
         
@@ -183,7 +180,8 @@ extension SideNavAdCell {
         
         contactButton.setTitle(name, for: .normal)
         contactButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
-    
+        contactButton.titleLabel?.minimumScaleFactor = 0.5
+        
     }
     
     func toggleButtonIcon(_ contactButton: UIButton, callsPhoneNumber: Bool) {

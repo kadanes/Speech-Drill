@@ -12,3 +12,4 @@ import Foundation
 let userLocationCodeKey = "UserLocationCode"
 let userLocationEmojiKey = "UserLocationEmoji"
 let userLocationUuidKey = "UserLocationUuid"
+let sideNavAdBannerPrefix = "AdBanner_"
