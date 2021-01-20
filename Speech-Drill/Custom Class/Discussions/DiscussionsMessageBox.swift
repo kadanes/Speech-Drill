@@ -109,8 +109,9 @@ import GoogleSignIn
             let googleUser = GIDSignIn.sharedInstance()?.currentUser
             
             if googleUser == nil {
-                Toast.show(message: "Login via gmail to send a message.", type: .Failure)
-                GIDSignIn.sharedInstance()?.signIn()
+                let notSignedInAlert = UIAlertController(title: "Please Login", message: "You will have to login with your gmail account before you can send a message.", preferredStyle: .alert)
+                
+                UIApplication.shared.windows.last?.rootViewController?.present(notSignedInAlert, animated: true)
                 
             } else if validateTextView(textView: messageTextView) {
                 
@@ -145,10 +146,20 @@ import GoogleSignIn
     }
 
     extension DiscussionsMessageBox: UITextViewDelegate {
+        
+//        override var intrinsicContentSize: CGSize {
+//            let textSize = self.messageTextView.sizeThatFits(CGSize(width: self.messageTextView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
+//
+//            if(textSize.height >= maxMessageBoxHeight) {
+//                return CGSize(width: self.bounds.width, height: .infinity)
+//            } else {
+//                return CGSize(width: self.bounds.width, height: textSize.height + 2 * messageBoxPadding)
+//            }
+//        }
+//        
         func textViewDidChange(_ textView: UITextView) {
             updateSendButton()
-            
-    //        print("Content height: ", textView.contentSize.height, "Max message box height: ", maxMessageBoxHeight, "Cursor Height: ", cursorHeight)
+            self.invalidateIntrinsicContentSize()
             
             if abs(textView.contentSize.height - maxMessageBoxHeight) < cursorHeight || textView.contentSize.height > maxMessageBoxHeight {
                 textView.isScrollEnabled = true
@@ -156,5 +167,13 @@ import GoogleSignIn
                 textView.isScrollEnabled = false
                 textView.setNeedsUpdateConstraints()
             }
+            
+                
+//                if (textView.contentSize.height >= maxMessageBoxHeight) {
+//                    textView.isScrollEnabled = true
+//                } else {
+//                    textView.isScrollEnabled = false
+//                    textView.setNeedsUpdateConstraints()
+//                }
         }
     }

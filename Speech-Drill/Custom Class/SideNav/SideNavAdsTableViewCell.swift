@@ -1,5 +1,5 @@
 //
-//  SideNavAdsView.swift
+//  SideNavAdsTableViewCell.swift
 //  Speech-Drill
 //
 //  Created by Parth Tamane on 18/01/21.
@@ -9,29 +9,42 @@
 import Foundation
 import UIKit
 
-class SideNavAdsView: UIView {
-    private var adsCollectionView: UICollectionView
+class SideNavAdsTableViewCell: UITableViewCell {
+    private let adsTitleLable: UILabel
+    private let adsCollectionView: UICollectionView
     private let adsPagingIndicator: UIPageControl
     private var fetchedAds: [SideNavAdStructure] = []
     
     private let sideNavAdCellReuseIdentifier = "SideNavAdCellReuseIdentifier"
     
-    override init(frame: CGRect) {
+    override init(style:  UITableViewCell.CellStyle, reuseIdentifier: String?) {
+
+        adsTitleLable = UILabel()
         let adsCollectionViewLayout = UICollectionViewFlowLayout()
         adsCollectionViewLayout.scrollDirection = .horizontal
         adsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: adsCollectionViewLayout)
         adsPagingIndicator = UIPageControl()
-        super.init(frame: frame)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addTopBorder(with: .darkGray, andWidth: 1)
+        backgroundColor = .clear
+        selectionStyle = .none
         
-        addSubview(adsPagingIndicator)
+        contentView.addSubview(adsTitleLable)
+        adsTitleLable.translatesAutoresizingMaskIntoConstraints = false
+        adsTitleLable.textColor = .white
+        adsTitleLable.font = getFont(name: .HelveticaNeueBold, size: .xlarge)
+        adsTitleLable.text = "Other Resources"
+        adsTitleLable.minimumScaleFactor = 0.5
+        adsTitleLable.textAlignment = .center
+        
+        contentView.addSubview(adsPagingIndicator)
         adsPagingIndicator.translatesAutoresizingMaskIntoConstraints = false
         adsPagingIndicator.tintColor = .white
         adsPagingIndicator.currentPageIndicatorTintColor = accentColor
         
         
-        addSubview(adsCollectionView)
+        contentView.addSubview(adsCollectionView)
         adsCollectionView.backgroundColor = .clear
         adsCollectionView.delegate = self
         adsCollectionView.dataSource = self
@@ -43,12 +56,18 @@ class SideNavAdsView: UIView {
         
         adsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            adsPagingIndicator.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+        
+            adsTitleLable.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
+            adsTitleLable.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            adsTitleLable.heightAnchor.constraint(equalToConstant: 30),
             
-            adsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            adsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            adsCollectionView.bottomAnchor.constraint(equalTo: adsPagingIndicator.topAnchor, constant: 0),
-            adsCollectionView.heightAnchor.constraint(equalToConstant: 250),
+            adsPagingIndicator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            adsPagingIndicator.heightAnchor.constraint(equalToConstant: 30),
+            adsCollectionView.topAnchor.constraint(equalTo: adsTitleLable.bottomAnchor, constant: 3),
+            adsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            adsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            adsCollectionView.bottomAnchor.constraint(equalTo: adsPagingIndicator.topAnchor, constant: -3),
+//            adsCollectionView.heightAnchor.constraint(equalToConstant: 250),
             adsPagingIndicator.centerXAnchor.constraint(equalTo: adsCollectionView.centerXAnchor)
         ])
     }
@@ -58,7 +77,8 @@ class SideNavAdsView: UIView {
     }
 }
 
-extension SideNavAdsView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SideNavAdsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         adsPagingIndicator.numberOfPages = fetchedAds.count
         return fetchedAds.count

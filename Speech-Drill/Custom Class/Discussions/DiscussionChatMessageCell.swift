@@ -47,7 +47,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         messageLabel.textContainer.lineBreakMode = .byWordWrapping
         messageLabel.isScrollEnabled = false
         messageLabel.backgroundColor = .clear
-//        messageLabel.isUserInteractionEnabled = true
+        messageLabel.isUserInteractionEnabled = true
         
 //        messageLabel.numberOfLines = 0
 //        messageLabel.lineBreakMode = .byWordWrapping
@@ -62,9 +62,6 @@ class DiscussionChatMessageCell: UITableViewCell {
         // set hugging and compression resistance for Name label
         senderNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         senderNameLabel.setContentHuggingPriority(.required, for: .vertical)
-        
-        //        messageLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        //        messageLabel.setContentHuggingPriority(.required, for: .vertical)
         
         // create bubble Leading and Trailing constraints
         bubbleLeadingConstraint = messageBubble.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10)
@@ -107,7 +104,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(message: DiscussionMessage, isSender: Bool) {
+    func configureCell(message: DiscussionMessage, isSender: Bool, previousMessage: DiscussionMessage?) {
         
         let senderName = isSender ? "You" : message.userName
         senderNameLabel.text = senderName + " " + message.userCountryEmoji
@@ -144,6 +141,15 @@ class DiscussionChatMessageCell: UITableViewCell {
             :
             // topLeft, topRight, bottomLeft
             nonSenderCorners
-       
+//
+//        if let previousMessage = previousMessage {
+//            if message.userEmailAddress == previousMessage.userEmailAddress && message.userCountryCode == previousMessage.userCountryCode && isSender {
+//                senderNameLabel.isHidden = true
+//            } else {
+//                senderNameLabel.isHidden = false
+//            }
+//        } else {
+//            senderNameLabel.isHidden = false
+//        }
     }
 }

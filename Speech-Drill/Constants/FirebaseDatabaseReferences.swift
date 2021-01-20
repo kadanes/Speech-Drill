@@ -11,6 +11,7 @@ import Firebase
 
 let ref = Database.database().reference()
 
+let noticesReference = ref.child("notices")
 let userLocationReference = ref.child("onlineUserLocations")
 let messagesReference = ref.child("discussionMessages")
 let sideNavAdsReference = ref.child("sideNavAds")

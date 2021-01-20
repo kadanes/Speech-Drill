@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import GoogleSignIn
+import FirebaseAuth
 
 class DiscussionChatView: UIView {
     
@@ -22,13 +23,13 @@ class DiscussionChatView: UIView {
     
     override init(frame: CGRect) {
         discussionTableView = UITableView()
-
+        
         super.init(frame: frame)
-
+        
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(sendTapNotification))
         discussionTableView.addGestureRecognizer(tapRecognizer)
         
-        saveUserEmail()
+        //        saveUserEmail()
         
         discussionTableView.register(DiscussionChatMessageCell.self, forCellReuseIdentifier: discussionChatId)
         discussionTableView.delegate = self
@@ -103,6 +104,10 @@ class DiscussionChatView: UIView {
                     
                     var lastCellWasVisible: Bool = false
                     if let visiblePaths = self.discussionTableView.indexPathsForVisibleRows {
+                        print("Visible paths: ", visiblePaths) 
+                        
+                        print("Sections: ", self.messageSendDates.count - 1)
+                        print("Row: ", self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1)
                         
                         lastCellWasVisible = visiblePaths.contains([self.messageSendDates.count - 1, self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1])
                     }
@@ -114,18 +119,24 @@ class DiscussionChatView: UIView {
                     
                     if !self.messageSendDates.contains(dateString) {
                         self.messageSendDates.append(dateString)
+                        let indexSet = IndexSet(integer: self.messageSendDates.count - 1)
+                        self.discussionTableView.performBatchUpdates({
+                            self.discussionTableView.insertSections(indexSet, with: .automatic)
+                        }) { (update) in
+                            print("Update Success")
+                            print("Last cell visible", lastCellWasVisible)
+                            self.insertMessage(dateString: dateString, message: message)
+                        }
+                    } else {
+                        print("Last cell visible", lastCellWasVisible)
+                        self.insertMessage(dateString: dateString, message: message)
                     }
-                    
-                    self.messages[dateString, default: [DiscussionMessage]()].append(message)
-                    
-                    
-//                    self.discussionTableView.reloadData() //Make this push cell
-                    
-                    let indexPath = IndexPath(row:(self.messages[dateString, default: [DiscussionMessage]()].count - 1), section: self.messageSendDates.index(of: dateString) ?? 0)
-                    self.discussionTableView.insertRows(at:[indexPath], with: .left)
                     
                     if lastCellWasVisible {
                         self.scrollTableViewToEnd()
+                        // This is not working
+                        // This is not working
+                        // This is not working
                     } else {
                         Toast.show(message: "New Message", type: .Info)
                     }
@@ -134,6 +145,13 @@ class DiscussionChatView: UIView {
                 }
             }
         }
+    }
+    
+    func insertMessage(dateString: String, message: DiscussionMessage) {
+        messages[dateString, default: [DiscussionMessage]()].append(message)
+        let indexPath = IndexPath(row:(self.messages[dateString, default: [DiscussionMessage]()].count - 1), section: self.messageSendDates.index(of: dateString) ?? 0)
+        
+        self.discussionTableView.insertRows(at: [indexPath], with: .automatic)
     }
 }
 
@@ -152,7 +170,24 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         
         
         let message = messages[messageSendDates[indexPath.section], default: [DiscussionMessage]()][indexPath.row]
-        discussionChatMessageCell.configureCell(message:message, isSender: message.userEmailAddress == userEmail)
+        
+        var previousRow = indexPath.row - 1
+        var previousSection = indexPath.section
+        
+        if previousRow < 0 {
+            previousSection = indexPath.section - 1
+            if previousSection >= 0 {
+                previousRow = messages[messageSendDates[previousSection], default: [DiscussionMessage]()].count - 1
+            }
+        }
+        
+        var previousMessage: DiscussionMessage? = nil
+        if previousRow >= 0 && previousSection >= 0 {
+            previousMessage = messages[messageSendDates[previousSection], default: [DiscussionMessage]()][previousRow]
+        }
+            
+        
+        discussionChatMessageCell.configureCell(message:message, isSender: message.userEmailAddress == userEmail, previousMessage: previousMessage)
         
         return discussionChatMessageCell
     }
@@ -186,13 +221,13 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
     
-//    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
-//        return true
-//    }
-//
-//    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-//        return true
-//    }
+    //    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+    //        return true
+    //    }
+    //
+    //    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    //        return true
+    //    }
     
 }
 
@@ -206,6 +241,7 @@ extension DiscussionChatView {
             userEmail = currentUser.profile.email
             print("Email: ", userEmail)
             discussionTableView.reloadData()
+            scrollTableViewToEnd(animated: false)
         }
     }
     
@@ -217,7 +253,7 @@ extension DiscussionChatView {
     }
     
     func getDate(from dateString: String) -> Date? {
-//        print("Date String: ", dateString)
+        //        print("Date String: ", dateString)
         let dateFormatter = getDateFormatter()
         return dateFormatter.date(from: dateString) ?? nil
     }
@@ -231,10 +267,10 @@ extension DiscussionChatView {
     
     func getDateStringForHeaderText(dateString: String) -> String {
         guard let date = getDate(from: dateString) else {
-//            print("Could not get date for generting header string")
+            //            print("Could not get date for generting header string")
             return dateString
         }
-//        print("Date: ", date.description(with: .current))
+        //        print("Date: ", date.description(with: .current))
         if Calendar.current.isDateInToday(date) { return "Today"}
         if Calendar.current.isDateInYesterday(date) {return "Yesterday"}
         return dateString

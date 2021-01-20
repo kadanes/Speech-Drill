@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SlideInVC:NSObject, UIViewControllerAnimatedTransitioning {
+class SlideInVC: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
        return 0.2
     }

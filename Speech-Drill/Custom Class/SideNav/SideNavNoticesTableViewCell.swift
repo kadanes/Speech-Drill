@@ -1,5 +1,5 @@
 //
-//  SideNavNoticesView.swift
+//  SideNavNoticesTableViewCell.swift
 //  Speech-Drill
 //
 //  Created by Parth Tamane on 18/01/21.
@@ -10,81 +10,78 @@ import Foundation
 import UIKit
 import Firebase
 
-class SideNavNoticesCell: UITableViewCell {
+class SideNavNoticesTableViewCell: UITableViewCell {
     let noticeStackView: UIStackView
     let updatesTextView: UITextView
+    let noticesCollectionView: UICollectionView
+    let noticesPagingIndicatorContainer: UIView
+    let noticesPagingIndicator: UIPageControl
     private var noticeNumber = 0
-    private var notices: Array<Dictionary<String,String>> = [[:]]
+
+    private var notices: [NoticeStructure] = [NoticeStructure(date:"29/09/18", notice:"No new notice")]
+    
+    private let sideNavNoticesCellReuseIdentifier = "SideNavNoticesCollectionViewCell"
     
     override init(style:  UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         noticeStackView = UIStackView()
         updatesTextView = UITextView()
         
+        let noticesViewLayout = UICollectionViewFlowLayout()
+        noticesViewLayout.scrollDirection = .horizontal
+        
+        noticesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: noticesViewLayout)
+        noticesCollectionView.register(SideNavNoticeCollectionViewCell.self, forCellWithReuseIdentifier: sideNavNoticesCellReuseIdentifier)
+        
+        noticesPagingIndicator = UIPageControl()
+        noticesPagingIndicatorContainer = UIView()
+        noticesPagingIndicator.currentPageIndicatorTintColor = accentColor
+
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        selectionStyle = .none
+        
+        noticesCollectionView.delegate = self
+        noticesCollectionView.dataSource = self
+        noticesCollectionView.backgroundColor = .clear
+        noticesCollectionView.isPagingEnabled = true
+        noticesCollectionView.showsHorizontalScrollIndicator = false
         
         backgroundColor = .clear
         
-        contentView.addSubview(noticeStackView)
-        
-        noticeStackView.axis = .horizontal
-        noticeStackView.spacing = 5
-        noticeStackView.alignment = .fill
-        noticeStackView.distribution = .fillEqually
-        noticeStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            noticeStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            noticeStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            noticeStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            noticeStackView.heightAnchor.constraint(equalToConstant: 30)
-        ])
-        
-        let nextNoticeBtn = UIButton()
-        nextNoticeBtn.addTarget(self, action: #selector(showNextNotice), for: .touchUpInside)
-        setButtonBgImage(button: nextNoticeBtn, bgImage: singleRightIcon, tintColor: .white)
-        setBtnImgProp(button: nextNoticeBtn, topPadding: 5, leftPadding: 5)
-        nextNoticeBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        let prevNoticeBtn = UIButton()
-        prevNoticeBtn.addTarget(self, action: #selector(showPrevNotice), for: .touchUpInside)
-        setButtonBgImage(button: prevNoticeBtn, bgImage: singleLeftIcon, tintColor: .white)
-        setBtnImgProp(button: prevNoticeBtn, topPadding: 5, leftPadding: 5)
-        prevNoticeBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        noticeStackView.insertArrangedSubview(prevNoticeBtn, at: 0)
-        noticeStackView.insertArrangedSubview(nextNoticeBtn, at: 1)
-        
         let noticeLbl = UILabel()
-        noticeLbl.text = "Notice"
+        noticeLbl.text = "Notices"
         noticeLbl.textColor = .white
         noticeLbl.backgroundColor = .clear
         noticeLbl.textAlignment = .center
-        noticeStackView.insertArrangedSubview(noticeLbl, at: 1)
+        noticeLbl.font = getFont(name: .HelveticaNeueBold, size: .xlarge)
+        contentView.addSubview(noticeLbl)
         noticeLbl.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
-            noticeLbl.topAnchor.constraint(equalTo: noticeStackView.topAnchor),
-            noticeLbl.bottomAnchor.constraint(equalTo: noticeStackView.bottomAnchor)
+            noticeLbl.topAnchor.constraint(equalTo: contentView.topAnchor),
+            noticeLbl.heightAnchor.constraint(equalToConstant: 30),
+            noticeLbl.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
         
-        updatesTextView.isEditable = false
-        updatesTextView.textColor = .white
-        updatesTextView.backgroundColor = .clear
-        updatesTextView.font = getFont(name: .HelveticaNeue, size: .medium)
-        showNotice()
-        
-        updatesTextView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(updatesTextView)
+   
+        contentView.addSubview(noticesPagingIndicator)
+        noticesPagingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(noticesCollectionView)
+        noticesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            updatesTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            updatesTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            updatesTextView.topAnchor.constraint(equalTo: noticeStackView.bottomAnchor),
-            updatesTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+            noticesPagingIndicator.centerXAnchor.constraint(equalTo: noticesCollectionView.centerXAnchor),
+            noticesPagingIndicator.topAnchor.constraint(equalTo: noticesCollectionView.bottomAnchor),
+            noticesPagingIndicator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            
+            noticesCollectionView.topAnchor.constraint(equalTo: noticeLbl.bottomAnchor, constant: 2),
+            noticesCollectionView.bottomAnchor.constraint(equalTo: noticesPagingIndicator.bottomAnchor, constant: -8),
+            noticesCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            noticesCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+
         ])
         
-        //        updatesTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: -5, right: -5)
         contentView.addBottomBorder(with: .darkGray, andWidth: 1)
     }
     
@@ -95,51 +92,64 @@ class SideNavNoticesCell: UITableViewCell {
 
 //MARK:- Actions
 
-extension SideNavNoticesCell {
-    @objc func showNextNotice() {
-        if noticeNumber - 1 >= 0 {
-            noticeNumber -= 1
-        }
-        showNotice()
-    }
-    
-    @objc func showPrevNotice() {
-        if noticeNumber + 1 < notices.count {
-            noticeNumber += 1
-        }
-        showNotice()
-    }
-    
-    func showNotice() {
-        if noticeNumber >= 0 && noticeNumber < notices.count {
-            
-            guard let date = notices[noticeNumber]["date"],let notice = notices[noticeNumber]["notice"] else {
-                updatesTextView.text = "No notices..."
-                return
-            }
-            
-            updatesTextView.text = "\(notice)\n\n\(date)"
-            
-        } else {
-            updatesTextView.text = "No notices..."
-        }
-        
-    }
-    
+extension SideNavNoticesTableViewCell {
     func fetchNotices() {
         
-        let notesFIRBRef = Database.database().reference().child("notices")
-        notesFIRBRef.keepSynced(true)
-        notesFIRBRef.observe(.value) { (snapshot) in
-            guard var notices = snapshot.value as? Array<Dictionary<String,String>> else { return }
+//        notesFIRBRef.keepSynced(true)
+        noticesReference.observe(.value) { (snapshot) in
+            guard let value = snapshot.value as? [[String: Any]] else { return }
             
-            notices = notices.sorted(by: {(arg0,arg1) in
-                guard let date1 = arg0["date"], let date2 = arg1["date"] else { return false}
-                guard let dateObj1 = convertToDate(date: date1), let dateObj2 = convertToDate(date: date2) else { return false }
-                return dateObj1 > dateObj2
-            })
-            self.notices = notices
-            self.showNotice()
+            do {
+                
+                let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
+                let unsortedNotices = try JSONDecoder().decode([NoticeStructure].self, from: data)
+                
+                self.notices = unsortedNotices.sorted(by: {(arg0,arg1) in
+                    let date1 = arg0.date, date2 = arg1.date
+                    guard let dateObj1 = convertToDate(date: date1), let dateObj2 = convertToDate(date: date2) else { return false }
+                                return dateObj1 > dateObj2
+                            })
+                
+                self.noticesCollectionView.reloadData()
+                
+            } catch {
+                print("Error parsing notices")
+                print(error)
+            }
         }
     }
+}
+
+extension SideNavNoticesTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            noticesPagingIndicator.numberOfPages = notices.count
+            return notices.count
+        }
+        
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sideNavNoticesCellReuseIdentifier, for: indexPath) as? SideNavNoticeCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.configureCell(notice: notices[indexPath.row])
+            
+            return cell
+        }
+        
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return CGSize(width: frame.size.width - 16, height: 140)
+        }
+
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            noticesPagingIndicator.currentPage = Int(
+                (noticesCollectionView.contentOffset.x / noticesCollectionView.frame.width)
+                .rounded(.toNearestOrAwayFromZero)
+            )
+        }
+        
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+            return 0
+        }
+    
 }

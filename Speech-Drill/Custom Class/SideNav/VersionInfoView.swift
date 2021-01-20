@@ -49,8 +49,6 @@ class VersionInfoView: UIView {
         appstoreBtn.titleLabel?.minimumScaleFactor = 0.5
         
         NSLayoutConstraint.activate([
-//            appstoreBtn.widthAnchor.constraint(equalToConstant: frame.width/2 - 12),
-//            appstoreBtn.heightAnchor.constraint(equalToConstant: downloadBtnHeight),
             appstoreBtn.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             appstoreBtn.leadingAnchor.constraint(equalTo: versionInfoLbl.trailingAnchor, constant:  2),
             appstoreBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),

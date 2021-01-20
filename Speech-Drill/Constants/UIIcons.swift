@@ -43,3 +43,5 @@ let noImageLogo = UIImage(named: "no-image.png")!
 let goGeniusLogo = UIImage(named: "gogenius.png")!
 let callIcon = UIImage(named: "phone.png")!
 
+
+let userPlaceholder = UIImage(named: "user-placeholder")!

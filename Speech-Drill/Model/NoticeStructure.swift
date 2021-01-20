@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+struct NoticeStructure: Codable {
+    let date, notice: String
+}
