@@ -52,16 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
-        let uuid = UIDevice.current.identifierForVendor!.uuidString
-        print(uuid, " will go offline")
         removeLocationFromFirebase()
         
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        let uuid = UIDevice.current.identifierForVendor!.uuidString
-        print(uuid, " will go online")
+
         storeLocationInFirebase(locationManager: locationManager)
     }
     
@@ -71,8 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        let defaults = UserDefaults.standard
-        let uuid = defaults.string(forKey: userLocationUuidKey) ?? ""
+        
+        let uuid = UIDevice.current.identifierForVendor!.uuidString
         userLocationReference.child(uuid).onDisconnectSetValue(nil)
         print("Making uuid ", uuid, "ofline")
     }

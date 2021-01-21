@@ -66,7 +66,6 @@ func saveUserLocation(isoCode: String) {
     let uuid = UIDevice.current.identifierForVendor!.uuidString
     
     let defaults = UserDefaults.standard
-    defaults.setValue(uuid, forKeyPath: userLocationUuidKey)
     defaults.set(isoCode, forKey: userLocationCodeKey)
     defaults.set(flag(from: isoCode), forKey: userLocationEmojiKey)
     
