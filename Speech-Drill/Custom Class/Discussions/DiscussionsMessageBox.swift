@@ -58,7 +58,7 @@ import GoogleSignIn
             messageTextView.layer.backgroundColor = UIColor.black.cgColor
             messageTextView.isScrollEnabled = false
             messageTextView.contentInset.left = messageBoxPadding
-            messageTextView.contentInset.right = messageBoxPadding
+            messageTextView.contentInset.right = -1 * messageBoxPadding
             messageTextView.contentInset.top = messageBoxPadding
             messageTextView.contentInset.bottom = messageBoxPadding
             
@@ -139,8 +139,9 @@ import GoogleSignIn
                 
                 messageTextView.text = nil
                 messageTextView.endEditing(false)
-                messageTextView.isScrollEnabled = false
-                messageTextView.setNeedsUpdateConstraints()
+//                messageTextView.isScrollEnabled = false
+//                messageTextView.setNeedsUpdateConstraints()
+                updateSendButton()
             }
             
         }

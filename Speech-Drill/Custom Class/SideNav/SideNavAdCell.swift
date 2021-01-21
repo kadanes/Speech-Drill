@@ -65,6 +65,7 @@ class SideNavAdCell: UICollectionViewCell {
         adView.addSubview(tagLineLabel)
         tagLineLabel.translatesAutoresizingMaskIntoConstraints = false
         tagLineLabel.font = getFont(name: .HelveticaNeue, size: .medium)
+        tagLineLabel.adjustsFontSizeToFitWidth = true
         tagLineLabel.minimumScaleFactor = 0.5
         tagLineLabel.textColor = .white
         tagLineLabel.textAlignment = .center
@@ -181,7 +182,7 @@ extension SideNavAdCell {
         contactButton.setTitle(name, for: .normal)
         contactButton.titleLabel?.font = getFont(name: .HelveticaNeueBold, size: .large)
         contactButton.titleLabel?.minimumScaleFactor = 0.5
-        
+        contactButton.titleLabel?.adjustsFontSizeToFitWidth = true
     }
     
     func toggleButtonIcon(_ contactButton: UIButton, callsPhoneNumber: Bool) {

@@ -27,10 +27,12 @@ class VersionInfoView: UIView {
         addSubview(versionInfoLbl)
         versionInfoLbl.translatesAutoresizingMaskIntoConstraints = false
         versionInfoLbl.textAlignment = .left
-        versionInfoLbl.numberOfLines = 0
+//        versionInfoLbl.numberOfLines = 0
         versionInfoLbl.textColor = UIColor.white
         versionInfoLbl.minimumScaleFactor = 0.5
-            
+        versionInfoLbl.adjustsFontSizeToFitWidth = true
+        versionInfoLbl.lineBreakMode = .byTruncatingTail
+        
         NSLayoutConstraint.activate([
             versionInfoLbl.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             versionInfoLbl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
@@ -47,6 +49,7 @@ class VersionInfoView: UIView {
         appstoreBtn.backgroundColor = enabledGray.withAlphaComponent(0.1)
         appstoreBtn.titleLabel?.font = getFont(name: .HelveticaNeueBold, size: .small)
         appstoreBtn.titleLabel?.minimumScaleFactor = 0.5
+        appstoreBtn.titleLabel?.adjustsFontSizeToFitWidth = true
         
         NSLayoutConstraint.activate([
             appstoreBtn.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),

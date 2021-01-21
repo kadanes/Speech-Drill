@@ -22,9 +22,10 @@ class SideNavNoticeCollectionViewCell: UICollectionViewCell {
         noticeLabel.textColor = .white
         noticeLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         noticeLabel.numberOfLines = 0
-        noticeLabel.lineBreakMode = .byWordWrapping
+        noticeLabel.lineBreakMode = .byTruncatingTail
         noticeLabel.textAlignment = .left
         noticeLabel.minimumScaleFactor = 0.5
+        noticeLabel.adjustsFontSizeToFitWidth = true
         
         NSLayoutConstraint.activate([
             noticeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

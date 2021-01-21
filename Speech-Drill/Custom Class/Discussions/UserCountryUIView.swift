@@ -28,8 +28,8 @@ class UserCountryUIView: UIView{
     override init(frame: CGRect){
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
-        layout.estimatedItemSize = CGSize(width: 100, height: 50)
+//        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+//        layout.estimatedItemSize = CGSize(width: 100, height: 50)
         
         countryCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         
@@ -96,10 +96,10 @@ class UserCountryUIView: UIView{
 
 extension UserCountryUIView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 70, height: 40)
-////        return CGSize.zero
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 70, height: 50)
+//        return CGSize.zero
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countryUserCount.count

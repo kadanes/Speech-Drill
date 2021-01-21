@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0673</string>
+	<string>0702</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.education</string>
 	<key>LSApplicationQueriesSchemes
@@ -44,9 +44,9 @@ LSApplicationQueriesSchemes
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationUsageDescription</key>
-	<string>This app uses location to help the discussion feature.</string>
+	<string>Location access will be used to know what country the app is being used from. This will enable a more interactive discussion that tells how many users are online from different countries and where the messages are being sent from. Have fun helping each other study!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This will be used to know what country the app is being accessed from to help provide information about number of users from different countires on the discussions page.</string>
+	<string>Location access will be used to know what country the app is being used from. This will enable a more interactive discussion that tells how many users are online from different countries and where the messages are being sent from. Have fun helping each other study!</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Record speaking</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

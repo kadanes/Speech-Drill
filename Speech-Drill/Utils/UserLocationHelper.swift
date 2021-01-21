@@ -14,6 +14,8 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
     let uuid = UUID().uuidString
     var isoCode = "UNK"
 
+    print("Authorization status: ", CLLocationManager.authorizationStatus().rawValue, " When in use status: ", CLAuthorizationStatus.authorizedWhenInUse.rawValue)
+    
     if  CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied
             || !CLLocationManager.locationServicesEnabled() {
         

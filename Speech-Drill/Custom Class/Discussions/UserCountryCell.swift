@@ -24,6 +24,9 @@ class UserCountryCell: UICollectionViewCell {
         countryNameLabel.translatesAutoresizingMaskIntoConstraints = false
         countryNameLabel.font = getFont(name: .HelveticaNeueBold, size: .large)
         countryNameLabel.textColor = .white
+        countryNameLabel.adjustsFontSizeToFitWidth = true
+        countryNameLabel.minimumScaleFactor = 0.5
+//        countryNameLabel.numberOfLines = 1
         
         contentView.addSubview(countryUserCountLabel)
         countryUserCountLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -34,17 +37,19 @@ class UserCountryCell: UICollectionViewCell {
             countryNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
             countryNameLabel.heightAnchor.constraint(equalToConstant: 50),
             countryNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            countryNameLabel.widthAnchor.constraint(equalToConstant: 30),
 //            countryNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
 //            countryNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
 //            countryNameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 0),
 //            countryNameLabel.widthAnchor.constraint(equalToConstant: 20),
 
-            countryUserCountLabel.leadingAnchor.constraint(equalTo: countryNameLabel.trailingAnchor, constant: 5),
+            countryUserCountLabel.leadingAnchor.constraint(equalTo: countryNameLabel.trailingAnchor, constant: 2),
 //            countryUserCountLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
 //            countryUserCountLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
             countryUserCountLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            countryUserCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+            countryUserCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant:0),
             countryUserCountLabel.heightAnchor.constraint(equalToConstant: 50),
+            countryUserCountLabel.widthAnchor.constraint(equalToConstant: 40)
 //            countryUserCountLabel.widthAnchor.constraint(equalToConstant: 40)
         ])
     }

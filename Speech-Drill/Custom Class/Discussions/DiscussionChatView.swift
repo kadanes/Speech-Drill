@@ -62,7 +62,12 @@ class DiscussionChatView: UIView {
     func loadInitialMessages() {
         messagesReference.queryOrderedByKey().observeSingleEvent(of: .value) { (snapshot) in
             
-            guard let value = snapshot.value as? [String: Any] else {return}
+//            print("Snapshot: ", snapshot, "\nValue: ", snapshot.value)
+            
+            guard let value = snapshot.value as? [String: Any] else {
+                self.first = false
+                return
+            }
             do {
                 let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
                 let messages = try JSONDecoder().decode([String: DiscussionMessage].self, from: data)
@@ -81,7 +86,7 @@ class DiscussionChatView: UIView {
                     
                     self.messages[dateString, default: [DiscussionMessage]()].append(message)
                 }
-                
+                                
                 self.discussionTableView.reloadData()
             } catch {
                 print(error)
@@ -92,15 +97,22 @@ class DiscussionChatView: UIView {
     func appendNewMessages() {
         messagesReference.queryLimited(toLast: 1).observe(.childAdded) { (snapshot) in
             
+//            print("Snapshot: ", snapshot)
+            
             if self.first {
                 self.scrollTableViewToEnd(animated: false)
                 self.first = false
                 return
             }
             
+//            print("Here")
+            
             self.saveUserEmail()
             
             if  let value = snapshot.value {
+                
+//                print("Value: ", value)
+                
                 do {
                     
                     var lastCellWasVisible: Bool = false
@@ -118,11 +130,15 @@ class DiscussionChatView: UIView {
                     
                     let dateString = self.getDateString(from: message.messageTimestamp)
                     
+//                    print("Date string: ", dateString, " All dates:", self.messageSendDates)
+                    
                     if !self.messageSendDates.contains(dateString) {
                         self.messageSendDates.append(dateString)
                         let indexSet = IndexSet(integer: self.messageSendDates.count - 1)
                         self.discussionTableView.performBatchUpdates({
+//                            print("Index set")
                             self.discussionTableView.insertSections(indexSet, with: .automatic)
+                            
                         }) { (update) in
                             print("Update Success")
                             print("Last cell visible", lastCellWasVisible)
@@ -151,7 +167,7 @@ class DiscussionChatView: UIView {
     func insertMessage(dateString: String, message: DiscussionMessage) {
         messages[dateString, default: [DiscussionMessage]()].append(message)
         let indexPath = IndexPath(row:(self.messages[dateString, default: [DiscussionMessage]()].count - 1), section: self.messageSendDates.index(of: dateString) ?? 0)
-        
+//        print("Index path: ", indexPath)
         self.discussionTableView.insertRows(at: [indexPath], with: .automatic)
     }
 }

@@ -36,6 +36,7 @@ class SideNavAdsTableViewCell: UITableViewCell {
         adsTitleLable.font = getFont(name: .HelveticaNeueBold, size: .xlarge)
         adsTitleLable.text = "Other Resources"
         adsTitleLable.minimumScaleFactor = 0.5
+        adsTitleLable.adjustsFontSizeToFitWidth = true
         adsTitleLable.textAlignment = .center
         
         contentView.addSubview(adsPagingIndicator)
