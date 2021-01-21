@@ -12,7 +12,7 @@ import CallKit
 import CoreTelephony
 import Mute
 import Firebase
-import CoreLocation
+
 
 class MainVC: UIViewController {
     
@@ -117,7 +117,6 @@ class MainVC: UIViewController {
     var callObserver = CXCallObserver()
 //    var openEarsEventsObserver = OEEventsObserver()
     
-    let locationManager: CLLocationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,8 +148,7 @@ class MainVC: UIViewController {
         setHiddenVisibleSectionList()
         
         addSlideGesture()
-        
-        locationManager.delegate = self
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1233,18 +1231,5 @@ extension MainVC: UIViewControllerTransitioningDelegate {
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return interactor.hasStarted ? interactor : nil
-    }
-}
-
-//MARK:- Location manager
-
-extension MainVC: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("Storing location on change")
-        
-        if CLLocationManager.authorizationStatus() ==  CLAuthorizationStatus.notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        storeLocationInFirebase(locationManager: locationManager)
     }
 }

@@ -9,26 +9,32 @@
 import UIKit
 import Firebase
 import GoogleSignIn
-//import FirebaseAuth
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    let locationManager: CLLocationManager = CLLocationManager()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        let topicNumber  = UserDefaults.standard.integer(forKey: "topicNumber")
+        let userDefaults = UserDefaults.standard
+        
+        let topicNumber  = userDefaults.integer(forKey: "topicNumber")
         if (topicNumber == 0) {
-            UserDefaults.standard.set(1, forKey: "topicNumber")
+            userDefaults.set(1, forKey: "topicNumber")
         }
         
         FirebaseApp.configure()
         
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        
+        userDefaults.setValue(nil, forKey: userLocationCodeKey)
+        locationManager.delegate = self
         
         if #available(iOS 13.0, *) {
             self.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
@@ -45,10 +51,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        let uuid = UIDevice.current.identifierForVendor!.uuidString
+        print(uuid, " will go offline")
+        removeLocationFromFirebase()
+        
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        let uuid = UIDevice.current.identifierForVendor!.uuidString
+        print(uuid, " will go online")
+        storeLocationInFirebase(locationManager: locationManager)
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -69,3 +83,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
+//MARK:- Location manager
+
+extension AppDelegate: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("Storing location on change")
+        
+        if CLLocationManager.authorizationStatus() ==  CLAuthorizationStatus.notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        storeLocationInFirebase(locationManager: locationManager)
+    }
+}

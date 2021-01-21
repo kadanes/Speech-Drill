@@ -8,19 +8,26 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 func storeLocationInFirebase(locationManager: CLLocationManager) {
     
-    let uuid = UUID().uuidString
+    let defaults = UserDefaults.standard
+   
+    if let isoCode = defaults.string(forKey: userLocationCodeKey) {
+        print("Previous default: ", isoCode)
+        saveUserLocation(isoCode: isoCode)
+        return
+    }
+    
+    
+    let uuid = UIDevice.current.identifierForVendor!.uuidString
     var isoCode = "UNK"
 
-    print("Authorization status: ", CLLocationManager.authorizationStatus().rawValue, " When in use status: ", CLAuthorizationStatus.authorizedWhenInUse.rawValue)
-    
     if  CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied
             || !CLLocationManager.locationServicesEnabled() {
         
-        saveUserLocation(isoCode: isoCode, uuid: uuid)
-        print("Saving status for: ", uuid, " as", isoCode)
+        saveUserLocation(isoCode: isoCode)
         
     } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse && CLLocationManager.locationServicesEnabled()  {
         
@@ -28,13 +35,13 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
         let geoCoder = CLGeocoder()
         
         guard let currentLocation = locationManager.location else {
-            saveUserLocation(isoCode: isoCode, uuid: uuid)
+            saveUserLocation(isoCode: isoCode)
             return
         }
         
         geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, error) in
             guard let currentLocPlacemark = placemarks?.first else {
-                saveUserLocation(isoCode: isoCode, uuid: uuid)
+                saveUserLocation(isoCode: isoCode)
                 return
             }
             print(currentLocPlacemark.country ?? "No country found")
@@ -42,14 +49,22 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
             isoCode = currentLocPlacemark.isoCountryCode ?? isoCode
             
             print("Saving status for: ", uuid, " as", isoCode)
-            saveUserLocation(isoCode: isoCode, uuid: uuid)
+            saveUserLocation(isoCode: isoCode)
             //SAVE ISO CODE +1 TO FIREBASE
             
         }
     }
 }
 
-func saveUserLocation(isoCode: String, uuid: String) {
+
+func removeLocationFromFirebase() {
+    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    userLocationReference.child(uuid).setValue(nil)
+}
+
+func saveUserLocation(isoCode: String) {
+    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    
     let defaults = UserDefaults.standard
     defaults.setValue(uuid, forKeyPath: userLocationUuidKey)
     defaults.set(isoCode, forKey: userLocationCodeKey)
