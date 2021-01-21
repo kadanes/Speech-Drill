@@ -37,7 +37,7 @@ import GoogleSignIn
             self.addSubview(messageTextView)
             messageTextView.translatesAutoresizingMaskIntoConstraints = false
             messageTextView.textColor = .white
-            let messageTextViewFont = UIFont.systemFont(ofSize: 14)
+            let messageTextViewFont = getFont(name: .HelveticaNeue, size: .medium)
             messageTextView.font = messageTextViewFont
             
     //        let sizeEstimateLetter = "A"
@@ -109,8 +109,9 @@ import GoogleSignIn
             let googleUser = GIDSignIn.sharedInstance()?.currentUser
             
             if googleUser == nil {
-                let notSignedInAlert = UIAlertController(title: "Please Login", message: "You will have to login with your gmail account before you can send a message.", preferredStyle: .alert)
-                
+                let notSignedInAlert = UIAlertController(title: "Please Login", message: "You will have to login with your gmail account before you can send a message. Tap the user icon on the top right corner of the screen to be logged in.", preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Okay", style: .cancel) { _ in }
+                notSignedInAlert.addAction(dismissAction)
                 UIApplication.shared.windows.last?.rootViewController?.present(notSignedInAlert, animated: true)
                 
             } else if validateTextView(textView: messageTextView) {
@@ -156,7 +157,7 @@ import GoogleSignIn
 //                return CGSize(width: self.bounds.width, height: textSize.height + 2 * messageBoxPadding)
 //            }
 //        }
-//        
+//
         func textViewDidChange(_ textView: UITextView) {
             updateSendButton()
             self.invalidateIntrinsicContentSize()

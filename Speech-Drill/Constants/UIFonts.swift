@@ -12,6 +12,7 @@ import UIKit
 enum FontName: String {
     case HelveticaNeueBold = "HelveticaNeue-Bold"
     case HelveticaNeue = "Helvetica Neue"
+    case HelveticaNeueItalic = "HelveticaNeue-Italic"
 }
 
 enum FontSize: CGFloat {

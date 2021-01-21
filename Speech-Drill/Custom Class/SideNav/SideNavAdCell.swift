@@ -64,7 +64,7 @@ class SideNavAdCell: UICollectionViewCell {
         
         adView.addSubview(tagLineLabel)
         tagLineLabel.translatesAutoresizingMaskIntoConstraints = false
-        tagLineLabel.font = UIFont(name: "HelveticaNeue", size: 15)
+        tagLineLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         tagLineLabel.minimumScaleFactor = 0.5
         tagLineLabel.textColor = .white
         tagLineLabel.textAlignment = .center
@@ -179,7 +179,7 @@ extension SideNavAdCell {
         contactButton.clipsToBounds = true
         
         contactButton.setTitle(name, for: .normal)
-        contactButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+        contactButton.titleLabel?.font = getFont(name: .HelveticaNeueBold, size: .large)
         contactButton.titleLabel?.minimumScaleFactor = 0.5
         
     }

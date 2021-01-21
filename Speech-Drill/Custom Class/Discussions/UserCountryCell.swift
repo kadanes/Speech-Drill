@@ -22,12 +22,12 @@ class UserCountryCell: UICollectionViewCell {
 
         contentView.addSubview(countryNameLabel)
         countryNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        countryNameLabel.font = UIFont.boldSystemFont(ofSize: 15)
+        countryNameLabel.font = getFont(name: .HelveticaNeueBold, size: .large)
         countryNameLabel.textColor = .white
         
         contentView.addSubview(countryUserCountLabel)
         countryUserCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        countryUserCountLabel.font = UIFont.systemFont(ofSize: 15)
+        countryUserCountLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         countryUserCountLabel.textColor = .white
         
         NSLayoutConstraint.activate([

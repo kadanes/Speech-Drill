@@ -74,7 +74,7 @@ import GoogleSignIn
             discussionsTitleLbl.translatesAutoresizingMaskIntoConstraints = false
             discussionsTitleLbl.text = "Discussions"
             discussionsTitleLbl.textColor = .white
-            discussionsTitleLbl.font = UIFont(name: "HelveticaNeue-Bold", size: 20)!
+            discussionsTitleLbl.font = getFont(name: .HelveticaNeueBold, size: .xxlarge)
             
             let hamburgerBtn = UIButton()
             hamburgerBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -200,7 +200,19 @@ import GoogleSignIn
             } else {
                 let postSignInAlert = UIAlertController(title: "Discussions", message: postLoginInfoMessage, preferredStyle: .alert)
                 let dismissAction = UIAlertAction(title: "Okay", style: .cancel) { _ in }
+                let signOutAction = UIAlertAction(title: "Sign Out", style: .destructive) { (alert) in
+//                    let firebaseAuth = Auth.auth()
+                    do {
+                        try Auth.auth().signOut()
+                        GIDSignIn.sharedInstance().signOut()
+                        //Reset user email, photo, chatview
+                        self.setUserProfileImage()
+                    } catch {
+                      print ("Error signing out: %@", error)
+                    }
+                }
                 postSignInAlert.addAction(dismissAction)
+                postSignInAlert.addAction(signOutAction)
                 present(postSignInAlert, animated: true, completion: nil)
             }
         }
@@ -275,8 +287,7 @@ import GoogleSignIn
         
         
         func handleKeyboardWillChangeFrame(keyboardEvent: KeyboardEvent) {
-            
-            
+          
             let uiScreenHeight = UIScreen.main.bounds.size.height
             let endFrame = keyboardEvent.keyboardFrameEnd
             
@@ -290,6 +301,9 @@ import GoogleSignIn
             } else {
                 self.discussionsMessageBoxBottomAnchor.constant = offset
                 self.discussionChatView.discussionTableView.contentOffset.y -= offset
+//                var rect: CGRect = self.discussionChatView.discussionTableView.frame
+//                rect = CGRect(x: rect.minX, y: rect.minY, width: rect.width, height: rect.height + offset)
+//                self.discussionChatView.discussionTableView.scrollRectToVisible(rect, animated: true)
                 print("Shifted visible paths: ", self.discussionChatView.discussionTableView.indexPathsForVisibleRows)
             }
             
@@ -336,7 +350,13 @@ import GoogleSignIn
         
         func setUserProfileImage() {
             discussionChatView.saveUserEmail()
-            guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else { return }
+            guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
+                DispatchQueue.main.async {
+                    [weak self] in
+                    self?.userProfileButton.setImage(userPlaceholder, for: .normal)
+                }
+            return
+            }
             guard let userImageUrl = googleUser.profile.imageURL(withDimension: 40) else { return }
             URLSession.shared.dataTask(with: userImageUrl) { (data, response, error) in
                 

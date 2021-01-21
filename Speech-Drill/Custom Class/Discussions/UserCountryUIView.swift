@@ -49,7 +49,7 @@ class UserCountryUIView: UIView{
         self.addSubview(viewTitleLabel)
         viewTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         viewTitleLabel.textColor = .white
-        viewTitleLabel.font = UIFont.boldSystemFont(ofSize: 15)
+        viewTitleLabel.font = getFont(name: .HelveticaNeueBold, size: .large)
         viewTitleLabel.text = "Online Users"
         
         self.addSubview(countryCollectionView)
@@ -61,7 +61,7 @@ class UserCountryUIView: UIView{
         countryCollectionView.showsVerticalScrollIndicator = false
         
         NSLayoutConstraint.activate([
-            viewTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+            viewTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             viewTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             viewTitleLabel.heightAnchor.constraint(equalToConstant: 30),
             viewTitleLabel.widthAnchor.constraint(equalToConstant: 100),

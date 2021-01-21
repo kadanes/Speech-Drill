@@ -35,7 +35,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
         senderNameLabel.numberOfLines = 0
         senderNameLabel.lineBreakMode = .byCharWrapping
-        senderNameLabel.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)!
+        senderNameLabel.font =  getFont(name: .HelveticaNeueBold, size: .large)
         senderNameLabel.textColor = .white
         
         messageBubble.addSubview(messageLabel)
@@ -51,13 +51,13 @@ class DiscussionChatMessageCell: UITableViewCell {
         
 //        messageLabel.numberOfLines = 0
 //        messageLabel.lineBreakMode = .byWordWrapping
-        messageLabel.font = UIFont(name: "Helvetica Neue", size: 15)!
+        messageLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         
         messageBubble.addSubview(messageSentTimeLabel)
         messageSentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         messageSentTimeLabel.lineBreakMode = .byCharWrapping
         messageSentTimeLabel.numberOfLines = 0
-        messageSentTimeLabel.font = UIFont(name: "HelveticaNeue-Italic", size: 11)!
+        messageSentTimeLabel.font = getFont(name: .HelveticaNeueItalic, size: .small)
         
         // set hugging and compression resistance for Name label
         senderNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)

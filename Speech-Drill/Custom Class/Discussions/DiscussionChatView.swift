@@ -34,7 +34,7 @@ class DiscussionChatView: UIView {
         discussionTableView.register(DiscussionChatMessageCell.self, forCellReuseIdentifier: discussionChatId)
         discussionTableView.delegate = self
         discussionTableView.dataSource = self
-        
+    
         discussionTableView.estimatedRowHeight = 30
         discussionTableView.rowHeight = UITableViewAutomaticDimension
         
@@ -93,6 +93,7 @@ class DiscussionChatView: UIView {
         messagesReference.queryLimited(toLast: 1).observe(.childAdded) { (snapshot) in
             
             if self.first {
+                self.scrollTableViewToEnd(animated: false)
                 self.first = false
                 return
             }
@@ -198,7 +199,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         let headerLabel = UILabel(frame: CGRect(x: (discussionTableView.frame.size.width-100)/2, y: 20, width: 100, height: 40))
         
         headerLabel.adjustsFontSizeToFitWidth = true
-        headerLabel.font = UIFont(name: "Helvetica Neue", size: 13)!
+        headerLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         headerLabel.backgroundColor = UIColor.white
         headerLabel.textAlignment = .center
         headerLabel.textColor = UIColor.black
@@ -236,13 +237,20 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
 extension DiscussionChatView {
     
     func saveUserEmail() {
-        if userEmail != "UserNotLoggedIn" { return }
-        if let currentUser = GIDSignIn.sharedInstance().currentUser {
-            userEmail = currentUser.profile.email
-            print("Email: ", userEmail)
-            discussionTableView.reloadData()
-            scrollTableViewToEnd(animated: false)
+        
+        guard let currrentUser = GIDSignIn.sharedInstance()?.currentUser  else {
+            if userEmail == "UserNotLoggedIn" {
+                return
+            } else {
+                userEmail = "UserNotLoggedIn"
+                discussionTableView.reloadData()
+            }
+            return
         }
+        
+       userEmail = currrentUser.profile.email
+       print("Email: ", userEmail)
+       discussionTableView.reloadData()
     }
     
     func getDateFormatter() -> DateFormatter {
