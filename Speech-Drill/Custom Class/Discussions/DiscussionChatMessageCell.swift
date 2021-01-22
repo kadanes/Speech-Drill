@@ -28,6 +28,8 @@ class DiscussionChatMessageCell: UITableViewCell {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        selectionStyle = .none
+        
         self.contentView.addSubview(messageBubble)
         messageBubble.translatesAutoresizingMaskIntoConstraints = false
         
@@ -41,16 +43,14 @@ class DiscussionChatMessageCell: UITableViewCell {
         messageBubble.addSubview(messageLabel)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        messageLabel.delegate = self
         messageLabel.isEditable = false
-        messageLabel.isSelectable = false
+        messageLabel.isSelectable = true
         messageLabel.dataDetectorTypes = .all
         messageLabel.textContainer.lineBreakMode = .byWordWrapping
         messageLabel.isScrollEnabled = false
         messageLabel.backgroundColor = .clear
-        messageLabel.isUserInteractionEnabled = true
-        
-//        messageLabel.numberOfLines = 0
-//        messageLabel.lineBreakMode = .byWordWrapping
+//        messageLabel.isUserInteractionEnabled = true
         messageLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         
         messageBubble.addSubview(messageSentTimeLabel)
@@ -98,6 +98,10 @@ class DiscussionChatMessageCell: UITableViewCell {
         
         // corners will have radius: 10
         messageBubble.layer.cornerRadius = 10
+    }
+    
+    func getMessageLabel() -> UITextView {
+        return messageLabel
     }
     
     required init?(coder: NSCoder) {
@@ -151,5 +155,11 @@ class DiscussionChatMessageCell: UITableViewCell {
 //        } else {
 //            senderNameLabel.isHidden = false
 //        }
+    }
+}
+
+extension DiscussionChatMessageCell: UITextViewDelegate {
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        textView.selectedTextRange = nil
     }
 }

@@ -246,6 +246,25 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     //        return true
     //    }
     
+    
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return action == #selector(copy(_:))
+    }
+
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+        if action == #selector(copy(_:)) {
+            if let cell = tableView.cellForRow(at: indexPath) as? DiscussionChatMessageCell {
+                let pasteboard = UIPasteboard.general
+                pasteboard.string = cell.getMessageLabel().text
+            }
+        }
+    }
+    
+    
 }
 
 //MARK:- Utility Functions
