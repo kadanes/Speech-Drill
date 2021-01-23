@@ -115,9 +115,7 @@ class MainVC: UIViewController {
     private var audioPlayer: AVAudioPlayer?
     
     var callObserver = CXCallObserver()
-//    var openEarsEventsObserver = OEEventsObserver()
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -131,7 +129,9 @@ class MainVC: UIViewController {
         
         recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerCellId)
         
-        callObserver.setDelegate(self, queue: nil)
+        if isCallKitSupported() {
+            callObserver.setDelegate(self, queue: nil)
+        }
         
         resetRecordingState()
         
@@ -1017,6 +1017,8 @@ extension MainVC:UITableViewDataSource,UITableViewDelegate {
 extension MainVC: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
         
+        print("Call: ", call)
+        
         if call.hasEnded == true {
             print("Disconnected")
         }
@@ -1024,6 +1026,7 @@ extension MainVC: CXCallObserverDelegate {
             print("Dialing")
         }
         if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
+            print("Cancelling recording")
             cancelRecording()
         }
         if call.hasConnected == true && call.hasEnded == false {

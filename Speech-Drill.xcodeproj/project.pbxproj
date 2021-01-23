@@ -163,6 +163,7 @@
 		B2ACC672212D0E16009AE30D /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
 		B2ACC676212D0F58009AE30D /* blackbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blackbg.jpg; sourceTree = "<group>"; };
 		B2B3C65F25B82FA900DC9B86 /* user-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-placeholder.png"; sourceTree = "<group>"; };
+		B2B3C66225BB106F00DC9B86 /* Speech-Drill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Speech-Drill.entitlements"; sourceTree = "<group>"; };
 		B2BBE29625AEF1DD0054DE1F /* DiscussionChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionChatView.swift; sourceTree = "<group>"; };
 		B2BBE29925AEF5BD0054DE1F /* DiscussionChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionChatMessageCell.swift; sourceTree = "<group>"; };
 		B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDefaultKeys.swift; sourceTree = "<group>"; };
@@ -287,6 +288,7 @@
 		B21ABB21210FF664009C678C /* Speech-Drill */ = {
 			isa = PBXGroup;
 			children = (
+				B2B3C66225BB106F00DC9B86 /* Speech-Drill.entitlements */,
 				B2BBE2B125AF50D10054DE1F /* Model */,
 				B2418C19215EA67C0020E078 /* Animation Controller */,
 				B2DAB65D21285C780062ECDF /* Extension */,
@@ -890,6 +892,7 @@
 			baseConfigurationReference = 0BECC3C4456E730C500DAC85 /* Pods-Speech-Drill.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Speech-Drill/Speech-Drill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 600;
 				DEVELOPMENT_TEAM = U4985LT7P8;
@@ -916,6 +919,7 @@
 			baseConfigurationReference = 77D0B60F9E79CA2CAB235FD0 /* Pods-Speech-Drill.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Speech-Drill/Speech-Drill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 600;
 				DEVELOPMENT_TEAM = U4985LT7P8;

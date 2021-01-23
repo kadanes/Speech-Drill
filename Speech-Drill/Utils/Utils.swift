@@ -301,3 +301,16 @@ func validateTextView(textView: UITextView) -> Bool {
     }
     return true
 }
+
+func isCallKitSupported() -> Bool {
+    let userLocale = NSLocale.current
+    
+    guard let regionCode = userLocale.regionCode else { return false }
+    
+    if regionCode.contains("CN") ||
+        regionCode.contains("CHN") {
+        return false
+    } else {
+        return true
+    }
+}
