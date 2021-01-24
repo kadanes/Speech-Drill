@@ -12,10 +12,10 @@ import Firebase
 
 class InfoVC: UIViewController {
 
-    static let infoVC = InfoVC()
-    let sideNavVC = SideNavVC()
+//    static let infoVC = InfoVC()
+//    let sideNavVC = SideNavVC()
     
-    @IBOutlet weak var displaySideNavBtn: UIButton!
+//    @IBOutlet weak var displaySideNavBtn: UIButton!
     @IBOutlet weak var infoContainer: UIView!
     @IBOutlet weak var githubBtn: UIButton!
     @IBOutlet weak var gmailBtn: UIButton!
@@ -27,7 +27,7 @@ class InfoVC: UIViewController {
     
 //    @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
     
-    let interactor = Interactor()
+//    let interactor = Interactor()
     
     let repoURL = URL(string: "https://github.com/parthv21/TOEFL-Speaking")
     
@@ -60,8 +60,13 @@ class InfoVC: UIViewController {
 //        creditsTxtViewHeight.constant = self.view.bounds.height - 400
         
         fetchAndSetCredits()
-        
-        addSlideGesture()
+        addHeader()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.navigationBar.barTintColor = .black
     }
     
     func fetchAndSetCredits() {
@@ -75,45 +80,41 @@ class InfoVC: UIViewController {
             }
         })
     }
-    
-    func addSlideGesture() {
-        
-        let edgeSlide = UIPanGestureRecognizer(target: self, action: #selector(presentSideNav(sender:)))
-        view.addGestureRecognizer(edgeSlide)
-    }
-    
-    @objc func presentSideNav(sender: UIPanGestureRecognizer) {
-        
-        let translation = sender.translation(in: view)
-        let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
-        
-        MenuHelper.mapGestureStateToInteractor(gestureState: sender.state, progress: progress, interactor: interactor) {
-        
-            sideNavVC.transitioningDelegate = self
-            sideNavVC.modalPresentationStyle = .custom
-            sideNavVC.interactor = interactor
-            sideNavVC.calledFromVC = InfoVC.infoVC
-            self.present(sideNavVC, animated: true, completion: nil)
 
-        }
+    
+    func addHeader() {
+        title = "About"
         
+        let hamburgerBtn = UIButton()
+        hamburgerBtn.translatesAutoresizingMaskIntoConstraints = false
+        hamburgerBtn.setImage(sideNavIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        
+        hamburgerBtn.tintColor = accentColor
+        setBtnImgProp(button: hamburgerBtn, topPadding: 45/4, leftPadding: 5)
+        hamburgerBtn.addTarget(self, action: #selector(displaySideNavTapped), for: .touchUpInside)
+        hamburgerBtn.contentMode = .scaleAspectFit
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
+                
     }
     
     
     @IBAction func displaySideNavTapped(_ sender: Any) {
         Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
-        sideNavVC.transitioningDelegate = self
-        sideNavVC.modalPresentationStyle = .custom
-        sideNavVC.interactor = interactor
-        sideNavVC.calledFromVC = InfoVC.infoVC
-        self.present(sideNavVC, animated: true, completion: nil)
+        
+//        sideNavVC.transitioningDelegate = self
+//        sideNavVC.modalPresentationStyle = .custom
+//        sideNavVC.interactor = interactor
+//        sideNavVC.calledFromVC = InfoVC.infoVC
+//        self.present(sideNavVC, animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     
     func setButtonProp() {
         
-        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
+//        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+//        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
         
         setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
         githubBtn.backgroundColor = githubBlue.withAlphaComponent(0.8)
@@ -195,34 +196,4 @@ extension InfoVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
         return CGSize(width: 40, height: 40)
     }
 
-}
-
-extension InfoVC: UIViewControllerTransitioningDelegate {
-    
-    func animationController(forPresented presented: UIViewController,
-                             presenting: UIViewController,
-                             source: UIViewController)
-        -> UIViewControllerAnimatedTransitioning?
-    {
-        if presenting == self && presented == sideNavVC {
-            return RevealSideNav()
-        }
-        return nil
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        if dismissed == sideNavVC {
-            return HideSideNav(vcPresent: true)
-        }
-        return nil
-    }
-    
-    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
-    }
-    
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
-    }
 }

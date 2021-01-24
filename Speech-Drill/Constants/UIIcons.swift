@@ -45,3 +45,10 @@ let callIcon = UIImage(named: "phone.png")!
 
 
 let userPlaceholder = UIImage(named: "user-placeholder")!
+let smallUserPlaceholder = UIImage(named: "rsz_user-placeholder")!
+
+
+let practiceModeIcon = UIImage(named: "practice.png")!
+let smallPracticeModeIcon = UIImage(named: "rsz_1practice.png")!
+let testModeIcon = UIImage(named: "test.png")!
+let smallTestModeIcon = UIImage(named: "rsz_test.png")!

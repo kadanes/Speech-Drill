@@ -40,6 +40,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
         }
         
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
+        
+        let sideNav = SideNavigationController()
+        let sideNavigationController = SlidingNavigationController.init(rootViewController: sideNav)
+        self.window?.rootViewController = sideNavigationController
+        
+        
+        
         return true
     }
     

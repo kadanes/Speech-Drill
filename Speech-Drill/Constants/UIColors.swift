@@ -15,6 +15,9 @@ let enabledGray = UIColor(red:0.90, green:0.90, blue:0.90, alpha:1.0)
 //#424242
 let darkGrey = UIColor(red:0.26, green:0.26, blue:0.26, alpha:1.0)
 
+//#212121
+let mainGray = UIColor(red: 0.13, green: 0.13, blue: 0.13, alpha: 1.00)
+
 //REDS
 let enabledRed = UIColor.red
 //#8E0000

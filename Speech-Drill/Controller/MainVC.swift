@@ -16,8 +16,8 @@ import Firebase
 
 class MainVC: UIViewController {
     
-    static let mainVC = MainVC()
-    let sideNavVC = SideNavVC()
+//    static let mainVC = MainVC()
+//    let sideNavVC = SideNavVC()
     
     @IBOutlet weak var thinkTimeLbl: UILabel!
     
@@ -31,15 +31,15 @@ class MainVC: UIViewController {
     @IBOutlet weak var speakLbl: UILabel!
     @IBOutlet weak var speakInfoImgView: UIImageView!
     
-    @IBOutlet weak var thinkTimeChangeStackViewSeperator: UIView!
+//    @IBOutlet weak var thinkTimeChangeStackViewSeperator: UIView!
     
     @IBOutlet weak var thinkTimeChangeStackViewContainer: UIView!
     
-    @IBOutlet weak var displaySideNavBtn: UIButton!
+//    @IBOutlet weak var displaySideNavBtn: UIButton!
     
     @IBOutlet weak var thinkTimeChangeStackView: UIStackView!
     
-    @IBOutlet weak var switchModesBtn: RoundButton!
+//    @IBOutlet weak var switchModesBtn: RoundButton!
     
     @IBOutlet weak var recordBtn: UIButton!
     @IBOutlet weak var cancelRecordingBtn: UIButton!
@@ -74,8 +74,9 @@ class MainVC: UIViewController {
     @IBOutlet weak var exportPlayingSeeker: UISlider!
     @IBOutlet weak var totalPlayTimeLbl: UILabel!
     
+    let switchModeButton = UIButton()
     
-    let interactor = Interactor()
+//    let interactor = Interactor()
     
     var isTestMode = false
     var reducedTime = false
@@ -147,11 +148,11 @@ class MainVC: UIViewController {
         
         setHiddenVisibleSectionList()
         
-        addSlideGesture()
-    
+        addHeader()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barTintColor = mainGray
         super.viewWillAppear(true)
         toggleExportMenu()
     }
@@ -161,43 +162,51 @@ class MainVC: UIViewController {
         recordingTableView.reloadData()
     }
     
-    
-    func addSlideGesture() {
-        let edgeSlide = UIPanGestureRecognizer(target: self, action: #selector(presentSideNav(sender:)))
-        view.addGestureRecognizer(edgeSlide)
-    }
-    
-    @objc func presentSideNav(sender: UIPanGestureRecognizer) {
+    func addHeader() {
         
-        Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
-        cancelRecording()
-        let translation = sender.translation(in: view)
-        let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
         
-        MenuHelper.mapGestureStateToInteractor(gestureState: sender.state, progress: progress, interactor: interactor) {
-            sideNavVC.transitioningDelegate = self
-            sideNavVC.modalPresentationStyle = .custom
-            sideNavVC.interactor = interactor
-            sideNavVC.calledFromVC = MainVC.mainVC
-            self.present(sideNavVC, animated: true, completion: nil)
-            
-        }
+        title = "Practice Mode"
+        
+        let hamburgerBtn = UIButton()
+        hamburgerBtn.translatesAutoresizingMaskIntoConstraints = false
+        hamburgerBtn.setImage(sideNavIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        
+        hamburgerBtn.tintColor = accentColor
+        setBtnImgProp(button: hamburgerBtn, topPadding: 45/4, leftPadding: 5)
+        hamburgerBtn.addTarget(self, action: #selector(displaySideNavTapped), for: .touchUpInside)
+        hamburgerBtn.contentMode = .scaleAspectFit
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
+        
+        switchModeButton.translatesAutoresizingMaskIntoConstraints = false
+        switchModeButton.setImage(smallPracticeModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        switchModeButton.imageView?.contentMode = .scaleAspectFit
+        switchModeButton.tintColor = accentColor
+        switchModeButton.addTarget(self, action: #selector(switchModesTapped(_:)), for: .touchUpInside)
+        switchModeButton.clipsToBounds = true
+        switchModeButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: switchModeButton)
+
     }
-    
+        
     @IBAction func displaySideNavTapped(_ sender: Any) {
         Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
-        sideNavVC.transitioningDelegate = self
-        sideNavVC.modalPresentationStyle = .custom
-        sideNavVC.interactor = interactor
-        sideNavVC.calledFromVC = MainVC.mainVC
-        self.present(sideNavVC, animated: true, completion: nil)
+        cancelRecording()
+//        sideNavVC.transitioningDelegate = self
+//        sideNavVC.modalPresentationStyle = .custom
+//        sideNavVC.interactor = interactor
+//        sideNavVC.calledFromVC = MainVC.mainVC
+//        self.present(sideNavVC, animated: true, completion: nil)
+        
+        navigationController?.popViewController(animated: true)
         
     }
     
     
     func setUIButtonsProperty() {
         
-        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+//        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextFiftiethTopicBtn , topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -212,7 +221,7 @@ class MainVC: UIViewController {
     
     func setBtnImage() {
         
-        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
+//        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
         
         thinkTimeLbl.textColor = accentColor
         speakTimeLbl.textColor = accentColor
@@ -356,13 +365,17 @@ class MainVC: UIViewController {
         
         if checkIfRecordingIsOn() {return}
         
+        title = isTestMode ? "Practice Mode" : "Test Mode"
+        switchModeButton.setImage(isTestMode ? smallPracticeModeIcon.withRenderingMode(.alwaysTemplate) : smallTestModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        switchModeButton.tintColor = accentColor
+        
         if isTestMode {
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "practice" as NSObject])
             
             thinkTimeChangeStackViewContainer.isHidden = true
-            thinkTimeChangeStackViewSeperator.isHidden = true
+//            thinkTimeChangeStackViewSeperator.isHidden = true
             
-            switchModesBtn.setTitle("Practice", for: .normal)
+//            switchModesBtn.setTitle("Practice", for: .normal)
             
             
             changeTopicBtnsStackView.isHidden = false
@@ -376,9 +389,9 @@ class MainVC: UIViewController {
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "test" as NSObject])
             
             thinkTimeChangeStackViewContainer.isHidden = false
-            thinkTimeChangeStackViewSeperator.isHidden = false
+//            thinkTimeChangeStackViewSeperator.isHidden = false
             
-            self.switchModesBtn.setTitle("Test", for: .normal)
+//            self.switchModesBtn.setTitle("Test", for: .normal)
             self.changeTopicBtnsStackView.isHidden = true
             self.topicTxtView.text = "TEST MODE"
         }
@@ -797,7 +810,7 @@ extension MainVC: AVAudioRecorderDelegate {
     }
 }
 
-extension MainVC:UITableViewDataSource,UITableViewDelegate {
+extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     func reloadData() {
         updateUrlList()
@@ -1204,35 +1217,5 @@ extension MainVC {
         DispatchQueue.main.async {
             sender.minimumTrackTintColor = UIColor.white
         }
-    }
-}
-
-extension MainVC: UIViewControllerTransitioningDelegate {
-    
-    func animationController(forPresented presented: UIViewController,
-                             presenting: UIViewController,
-                             source: UIViewController)
-    -> UIViewControllerAnimatedTransitioning?
-    {
-        if presenting == self && presented == sideNavVC {
-            return RevealSideNav()
-        }
-        return nil
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        if dismissed == sideNavVC {
-            return HideSideNav(vcPresent: true)
-        }
-        return nil
-    }
-    
-    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
-    }
-    
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
     }
 }

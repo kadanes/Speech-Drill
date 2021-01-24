@@ -13,9 +13,9 @@ import GoogleSignIn
 
     class DiscussionsViewController: UIViewController {
         
-        static let discussionVC = DiscussionsViewController()
-        let interactor = Interactor()
-        let sideNavVC = SideNavVC()
+//        static let discussionVC = DiscussionsViewController()
+//        let interactor = Interactor()
+//        let sideNavVC = SideNavVC()
         
         let headerContainer = UIView()
         let countryCountView = UserCountryUIView()
@@ -34,7 +34,6 @@ import GoogleSignIn
         override func viewDidLoad() {
             
             view.backgroundColor = UIColor.black
-            addSlideGesture()
             addHeader()
             addCountryCountTableView()
             addDiscussionsMessageBox()
@@ -54,7 +53,7 @@ import GoogleSignIn
                 }
             }
 
-            
+            self.title = "Discussions"
         }
         
         deinit {
@@ -64,6 +63,7 @@ import GoogleSignIn
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             discussionChatView.scrollTableViewToEnd(animated: true)
+            navigationController?.navigationBar.barTintColor = .black
         }
         
         
@@ -85,12 +85,16 @@ import GoogleSignIn
             hamburgerBtn.addTarget(self, action: #selector(displaySideNavTapped), for: .touchUpInside)
             hamburgerBtn.contentMode = .scaleAspectFit
             
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
+            
+//            navigationItem.leftBarButtonItem = UIBarButtonItem(image: sideNavIcon.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(displaySideNavTapped))
+//            navigationItem.leftBarButtonItem?.buttonGroup?.barButtonItems[0].tintColor = accentColor
+//            navigationItem.leftBarButtonItem?.buttonGroup?.barButtonItems[0].imageInsets = UIEdgeInsets(top: 45/4, left: 5, bottom: 45/4, right: 5)
             
             userProfileButton.translatesAutoresizingMaskIntoConstraints = false
-            userProfileButton.setImage(userPlaceholder.withRenderingMode(.alwaysOriginal), for: .normal)
+            userProfileButton.setImage(smallUserPlaceholder.withRenderingMode(.alwaysOriginal), for: .normal)
             userProfileButton.imageView?.contentMode = .scaleToFill
     //        userProfileButton.tintColor = accentColor
-            userProfileButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             userProfileButton.addTarget(self, action: #selector(displayInfoTapped), for: .touchUpInside)
             userProfileButton.clipsToBounds = true
             userProfileButton.layer.cornerRadius = 20
@@ -98,31 +102,35 @@ import GoogleSignIn
             userProfileButton.layer.borderColor = UIColor.white.cgColor
             setUserProfileImage()
             
-            headerContainer.addSubview(hamburgerBtn)
-            headerContainer.addSubview(discussionsTitleLbl)
-            headerContainer.addSubview(userProfileButton)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: userProfileButton)
+            
+//            navigationItem.rightBarButtonItem = userProfileButton
+            
+//            headerContainer.addSubview(hamburgerBtn)
+//            headerContainer.addSubview(discussionsTitleLbl)
+//            headerContainer.addSubview(userProfileButton)
             view.addSubview(headerContainer)
             
-            NSLayoutConstraint.activate([
-                hamburgerBtn.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor),
-                hamburgerBtn.topAnchor.constraint(equalTo: headerContainer.topAnchor),
-                hamburgerBtn.heightAnchor.constraint(equalToConstant: 35),
-                hamburgerBtn.widthAnchor.constraint(equalToConstant: 35),
-                
-                discussionsTitleLbl.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
-                discussionsTitleLbl.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
-                discussionsTitleLbl.heightAnchor.constraint(equalToConstant: 50),
-                
-                userProfileButton.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor, constant: -4),
-                userProfileButton.topAnchor.constraint(equalTo: headerContainer.topAnchor),
-                userProfileButton.heightAnchor.constraint(equalToConstant: 40),
-                userProfileButton.widthAnchor.constraint(equalToConstant: 40),
-            
-                headerContainer.heightAnchor.constraint(equalToConstant: 50),
-                headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
-                headerContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 4),
-                headerContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -4),
-            ])
+//            NSLayoutConstraint.activate([
+//                hamburgerBtn.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor),
+//                hamburgerBtn.topAnchor.constraint(equalTo: headerContainer.topAnchor),
+//                hamburgerBtn.heightAnchor.constraint(equalToConstant: 35),
+//                hamburgerBtn.widthAnchor.constraint(equalToConstant: 35),
+//
+//                discussionsTitleLbl.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
+//                discussionsTitleLbl.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+//                discussionsTitleLbl.heightAnchor.constraint(equalToConstant: 50),
+//
+//                userProfileButton.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor, constant: -4),
+//                userProfileButton.topAnchor.constraint(equalTo: headerContainer.topAnchor),
+//                userProfileButton.heightAnchor.constraint(equalToConstant: 40),
+//                userProfileButton.widthAnchor.constraint(equalToConstant: 40),
+//
+//                headerContainer.heightAnchor.constraint(equalToConstant: 50),
+//                headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
+//                headerContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 4),
+//                headerContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -4),
+//            ])
         }
         
         func addCountryCountTableView() {
@@ -132,7 +140,7 @@ import GoogleSignIn
             NSLayoutConstraint.activate([
                 countryCountView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
                 countryCountView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                countryCountView.topAnchor.constraint(equalTo: headerContainer.bottomAnchor),
+                countryCountView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 countryCountView.heightAnchor.constraint(equalToConstant: 60)
             ])
         }
@@ -164,12 +172,6 @@ import GoogleSignIn
                 discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10),
             ])
         }
-        
-        func addSlideGesture() {
-            
-            let edgeSlide = UIPanGestureRecognizer(target: self, action: #selector(presentSideNav(sender:)))
-            view.addGestureRecognizer(edgeSlide)
-        }
     }
 
 
@@ -178,11 +180,12 @@ import GoogleSignIn
     extension DiscussionsViewController {
         @objc func displaySideNavTapped(_ sender: Any) {
             Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
-            sideNavVC.transitioningDelegate = self
-            sideNavVC.modalPresentationStyle = .custom
-            sideNavVC.interactor = interactor
-            sideNavVC.calledFromVC = DiscussionsViewController.discussionVC
-            self.present(sideNavVC, animated: true, completion: nil)
+//            sideNavVC.transitioningDelegate = self
+//            sideNavVC.modalPresentationStyle = .custom
+//            sideNavVC.interactor = interactor
+//            sideNavVC.calledFromVC = DiscussionsViewController.discussionVC
+//            self.present(sideNavVC, animated: true, completion: nil)
+            _ = navigationController?.popViewController(animated: true)
             
         }
         
@@ -215,55 +218,6 @@ import GoogleSignIn
                 postSignInAlert.addAction(signOutAction)
                 present(postSignInAlert, animated: true, completion: nil)
             }
-        }
-        
-        @objc func presentSideNav(sender: UIPanGestureRecognizer) {
-            
-            let translation = sender.translation(in: view)
-            let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
-            
-            MenuHelper.mapGestureStateToInteractor(gestureState: sender.state, progress: progress, interactor: interactor) {
-                
-                sideNavVC.transitioningDelegate = self
-                sideNavVC.modalPresentationStyle = .custom
-                sideNavVC.interactor = interactor
-                sideNavVC.calledFromVC = DiscussionsViewController.discussionVC
-                self.present(sideNavVC, animated: true, completion: nil)
-                
-            }
-        }
-    }
-
-
-    //MARK:- Transition Delegate
-
-    extension DiscussionsViewController: UIViewControllerTransitioningDelegate {
-        
-        func animationController(forPresented presented: UIViewController,
-                                 presenting: UIViewController,
-                                 source: UIViewController)
-        -> UIViewControllerAnimatedTransitioning?
-        {
-            if presenting == self && presented == sideNavVC {
-                return RevealSideNav()
-            }
-            return nil
-        }
-        
-        func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-            
-            if dismissed == sideNavVC {
-                return HideSideNav(vcPresent: true)
-            }
-            return nil
-        }
-        
-        func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-            return interactor.hasStarted ? interactor : nil
-        }
-        
-        func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-            return interactor.hasStarted ? interactor : nil
         }
     }
 
@@ -353,7 +307,7 @@ import GoogleSignIn
             guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
                 DispatchQueue.main.async {
                     [weak self] in
-                    self?.userProfileButton.setImage(userPlaceholder, for: .normal)
+                    self?.userProfileButton.setImage(smallUserPlaceholder, for: .normal)
                 }
             return
             }
