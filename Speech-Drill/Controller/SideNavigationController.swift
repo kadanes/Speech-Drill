@@ -16,7 +16,9 @@ class SideNavigationController: UIViewController {
     
     private let sideNavMenuItemReuseIdentifier = "SideNavMenuItemIdentifier"
     
-    static let sideNav = SideNavVC()
+    let simpleOver = SimpleOver()
+    let revealSideNav = RevealSideNav()
+    
     var interactor: Interactor? = nil
     var calledFromVC: UIViewController?
     
@@ -27,7 +29,15 @@ class SideNavigationController: UIViewController {
     private let versionInfoView: VersionInfoView
     private var menuItems = [sideNavMenuItemStruct]()
     
+    //Storyboard Based VC
+    private let mainVC: MainVC
+    private let infoVC: InfoVC
+    //Fully programatic VC - There is a reference to this in the VC too which I think will cause memory leaks
+    private let DiscussionsVC: DiscussionsViewController
+    
     var selectedIndex = 1
+    
+    var mainVCPresented = false
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         
@@ -36,6 +46,12 @@ class SideNavigationController: UIViewController {
         sideNavNoticesTableViewCell = SideNavNoticesTableViewCell()
         sideNavAdsTableViewCell = SideNavAdsTableViewCell()
         versionInfoView = VersionInfoView()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
+        infoVC = storyboard.instantiateViewController(withIdentifier: "InfoVC") as! InfoVC
+        //Fully programatic VC - There is a reference to this in the VC too which I think will cause memory leaks
+        DiscussionsVC = DiscussionsViewController()
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -47,6 +63,8 @@ class SideNavigationController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        navigationController?.delegate = self
         
         sideNavTableView.delegate = self
         sideNavTableView.dataSource = self
@@ -68,6 +86,12 @@ class SideNavigationController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+
+        if mainVCPresented == false {
+            calledFromVC = mainVC
+            navigationController?.pushViewController(calledFromVC!, animated: false)
+            mainVCPresented = true
+        }
         
         guard let calledFromVC = calledFromVC else { return }
         for (index,item) in menuItems.enumerated() {
@@ -78,6 +102,7 @@ class SideNavigationController: UIViewController {
                 break
             }
         }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -93,13 +118,6 @@ class SideNavigationController: UIViewController {
         
         sideNavContainer.addSubview(versionInfoView)
         versionInfoView.translatesAutoresizingMaskIntoConstraints = false
-        
-        //Storyboard Based VC
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
-        let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoVC") as! InfoVC
-        //Fully programatic VC - There is a reference to this in the VC too which I think will cause memory leaks
-        let DiscussionsVC = DiscussionsViewController()
         
         //        calledFromVC = mainVC
         
@@ -120,8 +138,8 @@ class SideNavigationController: UIViewController {
         NSLayoutConstraint.activate([
             sideNavContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             
-            sideNavContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
-            sideNavContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -70),
+            sideNavContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            sideNavContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
             
             sideNavContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
@@ -184,7 +202,11 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.row == 0 || indexPath.row == menuItems.count + 1 { return }
+        if indexPath.row == 0 || indexPath.row == menuItems.count + 1 {
+            
+//            tableView.selectRow(at: <#T##IndexPath?#>, animated: false, scrollPosition: .none)
+            return
+        }
         
         let vcToPresent = menuItems[indexPath.row - 1].presentedVC
         
@@ -194,3 +216,19 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
         
     }
 }
+
+////MARK:- Transition Animation
+//extension SideNavigationController: UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
+//    
+//    func navigationController(
+//            _ navigationController: UINavigationController,
+//            animationControllerFor operation: UINavigationControllerOperation,
+//            from fromVC: UIViewController,
+//            to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//            
+//            print("From: ", fromVC, " To: ", toVC, " Operation: ", operation)
+// 
+//            revealSideNav.pushStyle = operation == .push
+//            return revealSideNav
+//        }
+//}

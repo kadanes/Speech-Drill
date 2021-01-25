@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 class SlidingNavigationController:UINavigationController, UIGestureRecognizerDelegate, UINavigationControllerDelegate{
+    
+    let revealSideNav = RevealSideNav()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
@@ -31,4 +34,13 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
         return viewControllers.count > 1
     }
 
+//    func navigationController(
+//        _ navigationController: UINavigationController,
+//        animationControllerFor operation: UINavigationControllerOperation,
+//        from fromVC: UIViewController,
+//        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        
+//        revealSideNav.pushStyle = operation == .push
+//        return revealSideNav
+//    }
 }
