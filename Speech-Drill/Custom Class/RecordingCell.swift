@@ -93,21 +93,21 @@ class RecordingCell: UITableViewCell {
         }
     }
     
-    @IBAction func transcribeRecording(_ sender: Any) {
-        SFSpeechRecognizer.requestAuthorization {
-            [unowned self] (authStatus) in
-            switch authStatus {
-            case .authorized:
-                self.transcribeFile()
-            case .denied:
-                print("Speech recognition authorization denied")
-            case .restricted:
-                print("Not available on this device")
-            case .notDetermined:
-                print("Not determined")
-            }
-        }
-    }
+//    @IBAction func transcribeRecording(_ sender: Any) {
+//        SFSpeechRecognizer.requestAuthorization {
+//            [unowned self] (authStatus) in
+//            switch authStatus {
+//            case .authorized:
+//                self.transcribeFile()
+//            case .denied:
+//                print("Speech recognition authorization denied")
+//            case .restricted:
+//                print("Not available on this device")
+//            case .notDetermined:
+//                print("Not determined")
+//            }
+//        }
+//    }
     
     
     @IBAction func startPulsing(_ sender: UIButton) {

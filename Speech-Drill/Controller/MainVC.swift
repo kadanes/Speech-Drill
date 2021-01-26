@@ -24,13 +24,13 @@ class MainVC: UIViewController {
     
     @IBOutlet weak var thinkTimeInfoView: UIView!
     @IBOutlet weak var thinkLbl: UILabel!
-    @IBOutlet weak var thinkInfoImgView: UIImageView!
+//    @IBOutlet weak var thinkInfoImgView: UIImageView!
     
     @IBOutlet weak var speakTimeLbl: UILabel!
     
     @IBOutlet weak var speakTimeInfoView: UIView!
     @IBOutlet weak var speakLbl: UILabel!
-    @IBOutlet weak var speakInfoImgView: UIImageView!
+//    @IBOutlet weak var speakInfoImgView: UIImageView!
     
 //    @IBOutlet weak var thinkTimeChangeStackViewSeperator: UIView!
     
@@ -141,6 +141,12 @@ class MainVC: UIViewController {
         readTopics()
         topicNumber = userDefaults.integer(forKey: "topicNumber")
         renderTopic(topicNumber: topicNumber)
+
+        topicsContainer.layer.cornerRadius = 10
+        topicsContainer.clipsToBounds = true
+        topicTxtView.layer.cornerRadius = 10
+        topicTxtView.clipsToBounds = true
+//        topicTxtView.layer.borderWidth = 20
         
         exportSelectedActivityIndicator.stopAnimating()
         
@@ -180,14 +186,22 @@ class MainVC: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
         
         switchModeButton.translatesAutoresizingMaskIntoConstraints = false
-        switchModeButton.setImage(practiceModeIconFA.withRenderingMode(.alwaysTemplate), for: .normal)
+        switchModeButton.setImage(practiceModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
         switchModeButton.tintColor = accentColor
         switchModeButton.addTarget(self, action: #selector(switchModesTapped(_:)), for: .touchUpInside)
         switchModeButton.clipsToBounds = true
         switchModeButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: switchModeButton)
-
+        
+        let infoButton = UIButton()
+        infoButton.translatesAutoresizingMaskIntoConstraints = false
+        infoButton.setImage(infoIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        infoButton.tintColor = .white
+        infoButton.addTarget(self, action: #selector(displayInfo), for: .touchUpInside)
+        infoButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: infoButton), UIBarButtonItem(customView: switchModeButton)]
+        
     }
         
     @IBAction func displaySideNavTapped(_ sender: Any) {
@@ -227,25 +241,25 @@ class MainVC: UIViewController {
         speakTimeLbl.textColor = accentColor
         
         thinkLbl.textColor = accentColor
-        thinkInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
-        thinkInfoImgView.tintColor = accentColor
-        thinkTimeInfoView.clipsToBounds = true
+//        thinkInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
+//        thinkInfoImgView.tintColor = accentColor
+//        thinkTimeInfoView.clipsToBounds = true
         
         
-        let thinkPressGesture =  UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
-        thinkPressGesture.minimumPressDuration = 0
-        thinkTimeInfoView.isUserInteractionEnabled = true
-        thinkTimeInfoView.addGestureRecognizer(thinkPressGesture)
+//        let thinkPressGesture =  UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
+//        thinkPressGesture.minimumPressDuration = 0
+//        thinkTimeInfoView.isUserInteractionEnabled = true
+//        thinkTimeInfoView.addGestureRecognizer(thinkPressGesture)
         
         speakLbl.textColor = accentColor
-        speakInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
-        speakInfoImgView.tintColor = accentColor
-        speakTimeInfoView.clipsToBounds = true
+//        speakInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
+//        speakInfoImgView.tintColor = accentColor
+//        speakTimeInfoView.clipsToBounds = true
         
-        let speakPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseSpeakInfoView))
-        speakPressGesture.minimumPressDuration = 0
-        speakTimeInfoView.isUserInteractionEnabled = true
-        speakTimeInfoView.addGestureRecognizer(speakPressGesture)
+//        let speakPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseSpeakInfoView))
+//        speakPressGesture.minimumPressDuration = 0
+//        speakTimeInfoView.isUserInteractionEnabled = true
+//        speakTimeInfoView.addGestureRecognizer(speakPressGesture)
         
         playSelectedActivityIndicator.color = accentColor
         exportSelectedActivityIndicator.color = accentColor
@@ -298,41 +312,39 @@ class MainVC: UIViewController {
         topicNumberLbl.text = "\(topicNumberToShow)"
     }
     
-    @objc func pulseThinkInfoView(gesture: UILongPressGestureRecognizer) {
-        
-        if isPlaying || checkIfRecordingIsOn() {
-            return
-        }
-        
-        if gesture.state == .began {
-            let pulse = Pulsing(numberOfPulses: 1, diameter: thinkTimeInfoView.bounds.width, position: CGPoint(x:thinkTimeInfoView.bounds.width/2,y: thinkTimeInfoView.bounds.height/2))
-            thinkTimeInfoView.layer.addSublayer(pulse)
-            
-        } else if gesture.state == .ended {
-            displayInfo()
-            thinkTimeInfoView.layer.removeAllAnimations()
-        }
-    }
+//    @objc func pulseThinkInfoView(gesture: UILongPressGestureRecognizer) {
+//
+//        if isPlaying || checkIfRecordingIsOn() {
+//            return
+//        }
+//
+//        if gesture.state == .began {
+//            let pulse = Pulsing(numberOfPulses: 1, diameter: thinkTimeInfoView.bounds.width, position: CGPoint(x:thinkTimeInfoView.bounds.width/2,y: thinkTimeInfoView.bounds.height/2))
+//            thinkTimeInfoView.layer.addSublayer(pulse)
+//
+//        } else if gesture.state == .ended {
+//            displayInfo()
+//            thinkTimeInfoView.layer.removeAllAnimations()
+//        }
+//    }
     
-    @objc func pulseSpeakInfoView(gesture: UILongPressGestureRecognizer) {
-        
-        if isPlaying || checkIfRecordingIsOn() {
-            return
-        }
-        
-        if gesture.state == .began {
-            let pulse = Pulsing(numberOfPulses: 1, diameter: speakTimeInfoView.bounds.width, position: CGPoint(x:speakTimeInfoView.bounds.width/2,y: speakTimeInfoView.bounds.height/2))
-            speakTimeInfoView.layer.addSublayer(pulse)
-            
-            
-        } else if gesture.state == .ended {
-            displayInfo()
-        }
-        
-        
-    }
+//    @objc func pulseSpeakInfoView(gesture: UILongPressGestureRecognizer) {
+//
+//        if isPlaying || checkIfRecordingIsOn() {
+//            return
+//        }
+//
+//        if gesture.state == .began {
+//            let pulse = Pulsing(numberOfPulses: 1, diameter: speakTimeInfoView.bounds.width, position: CGPoint(x:speakTimeInfoView.bounds.width/2,y: speakTimeInfoView.bounds.height/2))
+//            speakTimeInfoView.layer.addSublayer(pulse)
+//
+//
+//        } else if gesture.state == .ended {
+//            displayInfo()
+//        }
+//    }
     
-    func displayInfo() {
+    @objc func displayInfo() {
         
         if isPlaying || checkIfRecordingIsOn() {
             return
@@ -366,21 +378,19 @@ class MainVC: UIViewController {
         if checkIfRecordingIsOn() {return}
         
         title = isTestMode ? "Practice Mode" : "Test Mode"
-//        switchModeButton.setImage(isTestMode ? smallPracticeModeIcon.withRenderingMode(.alwaysTemplate) : smallTestModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
-        switchModeButton.setImage(isTestMode ? practiceModeIconFA.withRenderingMode(.alwaysTemplate) : testModeIconFA.withRenderingMode(.alwaysTemplate), for: .normal)
+
+        switchModeButton.setImage(isTestMode ? practiceModeIcon.withRenderingMode(.alwaysTemplate) : testModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
         switchModeButton.tintColor = accentColor
         
         if isTestMode {
+
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "practice" as NSObject])
+
+//            UIView.animate(withDuration: 0.5) {
+//                            }
             
-            thinkTimeChangeStackViewContainer.isHidden = true
-//            thinkTimeChangeStackViewSeperator.isHidden = true
-            
-//            switchModesBtn.setTitle("Practice", for: .normal)
-            
-            
-//            changeTopicBtnsStackView.isHidden = false
-            topicsContainer.isHidden = false
+            self.thinkTimeChangeStackViewContainer.isHidden = true
+           self.topicsContainer.isHidden = false
             
             renderTopic(topicNumber: self.topicNumber)
             defaultThinkTime = 15
@@ -391,14 +401,16 @@ class MainVC: UIViewController {
         } else {
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "test" as NSObject])
             
-            thinkTimeChangeStackViewContainer.isHidden = false
+//            UIView.animate(withDuration: 0.5) {
+//                print("Going to test mode")
+//            }
+            
+            self.thinkTimeChangeStackViewContainer.isHidden = false
+            self.topicsContainer.isHidden = true
 //            thinkTimeChangeStackViewSeperator.isHidden = false
-            
 //            self.switchModesBtn.setTitle("Test", for: .normal)
-            
 //            self.changeTopicBtnsStackView.isHidden = true
-            topicsContainer.isHidden = true
-            self.topicTxtView.text = "TEST MODE"
+//            self.topicTxtView.text = "TEST MODE"
         }
         isTestMode = !isTestMode
         resetRecordingState()
@@ -440,7 +452,7 @@ class MainVC: UIViewController {
         thinkTime = defaultThinkTime
         
         resetRecordingState()
-        displayInfo()
+//        displayInfo()
     }
     
     ///Increment current displayed topic number by 1

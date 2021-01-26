@@ -17,6 +17,8 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
         delegate = self
+        navigationBar.titleTextAttributes = [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .xlarge)]
+        //Add a defualt hamburger buttons whose onclick is modified by child vcs
     }
 
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
@@ -39,7 +41,7 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
 //        animationControllerFor operation: UINavigationControllerOperation,
 //        from fromVC: UIViewController,
 //        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        
+//
 //        revealSideNav.pushStyle = operation == .push
 //        return revealSideNav
 //    }

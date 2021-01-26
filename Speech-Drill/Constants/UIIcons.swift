@@ -66,19 +66,19 @@ let sendMessageIcon = UIImage.fontAwesomeIcon(name: .paperPlane, style: .light, 
 
 
 let noImageLogo = UIImage(named: "no-image.png")!
-let goGeniusLogo = UIImage(named: "gogenius.png")!
+//let goGeniusLogo = UIImage(named: "gogenius.png")!
 //let callIcon = UIImage(named: "phone.png")!
 let callIcon = UIImage.fontAwesomeIcon(name: .phoneAlt, style: .solid, textColor: .white, size: smallSize)
 
 //let userPlaceholder = UIImage(named: "user-placeholder")!
-let smallUserPlaceholder = UIImage.fontAwesomeIcon(name: .user, style: .solid, textColor: .white, size: smallSize)
+let smallUserPlaceholder = UIImage.fontAwesomeIcon(name: .userCircle, style: .solid, textColor: .white, size: smallSize)
 //let smallUserPlaceholder = UIImage(named: "rsz_user-placeholder")!
 
-let practiceModeIcon = UIImage(named: "practice.png")!
-let smallPracticeModeIcon = UIImage(named: "rsz_1practice.png")!
-let testModeIcon = UIImage(named: "test.png")!
-let smallTestModeIcon = UIImage(named: "rsz_test.png")!
+//let practiceModeIcon = UIImage(named: "practice.png")!
+//let smallPracticeModeIcon = UIImage(named: "rsz_1practice.png")!
+//let testModeIcon = UIImage(named: "test.png")!
+//let smallTestModeIcon = UIImage(named: "rsz_test.png")!
 
 
-let practiceModeIconFA = UIImage.fontAwesomeIcon(name: .featherAlt, style: .solid, textColor: accentColor, size: smallSize)
-let testModeIconFA = UIImage.fontAwesomeIcon(name: .hourglassHalf, style: .solid, textColor: accentColor, size: smallSize)
+let practiceModeIcon = UIImage.fontAwesomeIcon(name: .pencilAlt, style: .solid, textColor: accentColor, size: smallSize)
+let testModeIcon = UIImage.fontAwesomeIcon(name: .hourglassHalf, style: .solid, textColor: accentColor, size: smallSize)
