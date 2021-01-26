@@ -56,9 +56,7 @@ class InfoVC: UIViewController {
         iconCollectionView.dataSource = self
         
         icons = icons.shuffled()
-        
-//        creditsTxtViewHeight.constant = self.view.bounds.height - 400
-        
+                
         fetchAndSetCredits()
         addHeader()
     }
@@ -115,18 +113,30 @@ class InfoVC: UIViewController {
         
 //        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
 //        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
+//        contactButton.setImage(buttonImage, for: .normal)
         
-        setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
+//        setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
+        setInfoButtonProps(button: githubBtn, image: githubIcon)
         githubBtn.backgroundColor = githubBlue.withAlphaComponent(0.8)
         
-        setBtnImgProp(button: gmailBtn, topPadding: 10, leftPadding: 1)
+//        setBtnImgProp(button: gmailBtn, topPadding: 10, leftPadding: 1)
+        setInfoButtonProps(button: gmailBtn, image: emailIcon)
         gmailBtn.backgroundColor = disabledRed.withAlphaComponent(0.8)
         
-        setBtnImgProp(button: twitterBtn, topPadding: 10, leftPadding: 1)
+//        setBtnImgProp(button: twitterBtn, topPadding: 10, leftPadding: 1)
+        setInfoButtonProps(button: twitterBtn, image: twitterIcon)
         twitterBtn.backgroundColor = twitterBlue.withAlphaComponent(0.8)
     
         fABtn.setTitleColor(accentColor, for: .normal)
         tTSBtn.setTitleColor(accentColor, for: .normal)
+    }
+    
+    func setInfoButtonProps(button: UIButton, image: UIImage) {
+        button.contentHorizontalAlignment = .center
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.titleLabel?.font = getFont(name: .HelveticaNeue, size: .medium)
     }
 
     @IBAction func gitHubTapped(_ sender: UIButton) {
@@ -147,7 +157,6 @@ class InfoVC: UIViewController {
         let webURL = NSURL(string: "https://twitter.com/\(screenName)")!
         
         let application = UIApplication.shared
-        
         if application.canOpenURL(appURL as URL) {
             application.open(appURL as URL)
         } else {

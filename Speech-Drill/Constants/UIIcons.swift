@@ -27,6 +27,8 @@ let emailIcon = UIImage.fontAwesomeIcon(name: .envelope, style: .solid, textColo
 //let smallEmailIcon = UIImage(named: "rsz_email.png")!
 //let githubIcon = UIImage(named: "github.png")!
 let githubIcon = UIImage.fontAwesomeIcon(name: .github, style: .brands, textColor: .white, size: smallSize)
+let twitterIcon = UIImage.fontAwesomeIcon(name: .twitter, style: .brands, textColor: .white, size: smallSize)
+
 
 let doubleLeftIcon = UIImage(named: "dleft.png")!
 let singleLeftIcon = UIImage(named: "sleft.png")!

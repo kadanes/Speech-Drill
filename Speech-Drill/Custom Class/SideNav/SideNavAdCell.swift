@@ -192,7 +192,8 @@ extension SideNavAdCell {
         contactButton.tintColor = .white
         contactButton.imageView?.contentMode = .scaleAspectFit
         contactButton.contentHorizontalAlignment = .left
-        contactButton.imageEdgeInsets = callsPhoneNumber ? UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20) : UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20)
+        contactButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 5)
+//        contactButton.imageEdgeInsets = callsPhoneNumber ? UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) : UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20)
     }
 }
 
