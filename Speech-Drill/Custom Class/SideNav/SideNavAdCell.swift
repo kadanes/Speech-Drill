@@ -187,7 +187,7 @@ extension SideNavAdCell {
     
     func toggleButtonIcon(_ contactButton: UIButton, callsPhoneNumber: Bool) {
         contactButton.backgroundColor = callsPhoneNumber ? confirmGreen.withAlphaComponent(0.6) : githubBlue.withAlphaComponent(0.6)
-        let buttonImage = callsPhoneNumber ? callIcon.withRenderingMode(.alwaysTemplate) : smallEmailIcon.withRenderingMode(.alwaysTemplate)
+        let buttonImage = callsPhoneNumber ? callIcon.withRenderingMode(.alwaysTemplate) : emailIcon.withRenderingMode(.alwaysTemplate)
         contactButton.setImage(buttonImage, for: .normal)
         contactButton.tintColor = .white
         contactButton.imageView?.contentMode = .scaleAspectFit

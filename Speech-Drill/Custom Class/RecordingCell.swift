@@ -156,9 +156,11 @@ class RecordingCell: UITableViewCell {
         }
         
         if isMerging {
-            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: disabledGray)
+//            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: disabledGray)
+            setButtonBgImage(button: shareRecordingBtn, bgImage: shareIcon, tintColor: disabledGray)
         } else {
-            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: enabledGray)
+//            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: enabledGray)
+            setButtonBgImage(button: shareRecordingBtn, bgImage: shareIcon, tintColor: enabledGray)
         }
         
         setButtonBgImage(button: confirmDeleteBtn, bgImage: checkIcon, tintColor: confirmGreen)

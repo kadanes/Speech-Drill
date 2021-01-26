@@ -37,7 +37,7 @@ class InfoVC: UIViewController {
     
     let ttsURL = URL(string: "http://www.fromtexttospeech.com")
     
-    var icons = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,deleteIcon,playBtnIcon,pauseBtnIcon,deleteBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,singleShareIcon,tripleRightIcon,plusIcon,minusIcon]
+    var icons = [boxIcon,infoIcon,emailIcon,shareIcon,checkIcon,closeIcon,githubIcon,deleteIcon,playBtnIcon,pauseBtnIcon,singleLeftIcon,doubleLeftIcon,tripleLeftIcon,doubleRightIcon,singleRightIcon,tripleRightIcon,plusIcon,minusIcon]
     
     var redIcons = [deleteIcon,closeIcon]
     

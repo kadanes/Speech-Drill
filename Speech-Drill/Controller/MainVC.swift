@@ -19,6 +19,7 @@ class MainVC: UIViewController {
 //    static let mainVC = MainVC()
 //    let sideNavVC = SideNavVC()
     
+    @IBOutlet weak var topicsContainer: UIView!
     @IBOutlet weak var thinkTimeLbl: UILabel!
     
     @IBOutlet weak var thinkTimeInfoView: UIView!
@@ -179,8 +180,7 @@ class MainVC: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
         
         switchModeButton.translatesAutoresizingMaskIntoConstraints = false
-        switchModeButton.setImage(smallPracticeModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
-        switchModeButton.imageView?.contentMode = .scaleAspectFit
+        switchModeButton.setImage(practiceModeIconFA.withRenderingMode(.alwaysTemplate), for: .normal)
         switchModeButton.tintColor = accentColor
         switchModeButton.addTarget(self, action: #selector(switchModesTapped(_:)), for: .touchUpInside)
         switchModeButton.clipsToBounds = true
@@ -366,7 +366,8 @@ class MainVC: UIViewController {
         if checkIfRecordingIsOn() {return}
         
         title = isTestMode ? "Practice Mode" : "Test Mode"
-        switchModeButton.setImage(isTestMode ? smallPracticeModeIcon.withRenderingMode(.alwaysTemplate) : smallTestModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+//        switchModeButton.setImage(isTestMode ? smallPracticeModeIcon.withRenderingMode(.alwaysTemplate) : smallTestModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        switchModeButton.setImage(isTestMode ? practiceModeIconFA.withRenderingMode(.alwaysTemplate) : testModeIconFA.withRenderingMode(.alwaysTemplate), for: .normal)
         switchModeButton.tintColor = accentColor
         
         if isTestMode {
@@ -378,7 +379,9 @@ class MainVC: UIViewController {
 //            switchModesBtn.setTitle("Practice", for: .normal)
             
             
-            changeTopicBtnsStackView.isHidden = false
+//            changeTopicBtnsStackView.isHidden = false
+            topicsContainer.isHidden = false
+            
             renderTopic(topicNumber: self.topicNumber)
             defaultThinkTime = 15
             defaultSpeakTime = 45
@@ -392,7 +395,9 @@ class MainVC: UIViewController {
 //            thinkTimeChangeStackViewSeperator.isHidden = false
             
 //            self.switchModesBtn.setTitle("Test", for: .normal)
-            self.changeTopicBtnsStackView.isHidden = true
+            
+//            self.changeTopicBtnsStackView.isHidden = true
+            topicsContainer.isHidden = true
             self.topicTxtView.text = "TEST MODE"
         }
         isTestMode = !isTestMode

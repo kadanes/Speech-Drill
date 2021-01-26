@@ -15,10 +15,7 @@ class SideNavigationController: UIViewController {
     private let noticesUrl = "https://github.com/parthv21/Speech-Drill/blob/master/Speech-Drill/Information/info.json"
     
     private let sideNavMenuItemReuseIdentifier = "SideNavMenuItemIdentifier"
-    
-    let simpleOver = SimpleOver()
-    let revealSideNav = RevealSideNav()
-    
+        
     var interactor: Interactor? = nil
     var calledFromVC: UIViewController?
     
@@ -225,9 +222,9 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
 //            animationControllerFor operation: UINavigationControllerOperation,
 //            from fromVC: UIViewController,
 //            to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//            
+//
 //            print("From: ", fromVC, " To: ", toVC, " Operation: ", operation)
-// 
+//
 //            revealSideNav.pushStyle = operation == .push
 //            return revealSideNav
 //        }

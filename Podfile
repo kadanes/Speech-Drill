@@ -12,4 +12,5 @@ target 'Speech-Drill' do
   pod 'Firebase/Auth'
   pod 'FirebaseStorage'
   pod 'GoogleSignIn'
+  pod 'FontAwesome.swift'
 end

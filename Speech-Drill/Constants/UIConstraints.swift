@@ -11,8 +11,10 @@ import UIKit
 let sectionHeaderHeight: CGFloat = 48
 //let expandedSectionHeaderHeight: CGFloat = 85
 
-let buttonVerticalInset: CGFloat = 45/4
-let buttonHorizontalInset: CGFloat = 5
+//let buttonVerticalInset: CGFloat = 45/4
+//let buttonHorizontalInset: CGFloat = 5
+let buttonVerticalInset: CGFloat = 8
+let buttonHorizontalInset: CGFloat = 2
 
 let recordingCellHeight: CGFloat = 50
 //let expandedRecordingCellHeight: CGFloat = 90
