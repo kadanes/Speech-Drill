@@ -35,6 +35,10 @@ class MainVC: UIViewController {
 //    @IBOutlet weak var thinkTimeChangeStackViewSeperator: UIView!
     
     @IBOutlet weak var thinkTimeChangeStackViewContainer: UIView!
+    @IBOutlet weak var thinkTimeChange15: UIButton!
+    @IBOutlet weak var thinkTimeChange30: UIButton!
+    @IBOutlet weak var thinkTimeChange20: UIButton!
+
     
 //    @IBOutlet weak var displaySideNavBtn: UIButton!
     
@@ -127,7 +131,6 @@ class MainVC: UIViewController {
         recordingTableView.estimatedRowHeight = recordingCellHeight
         recordingTableView.sectionHeaderHeight = UITableViewAutomaticDimension
         recordingTableView.estimatedSectionHeaderHeight = sectionHeaderHeight
-//        openEarsEventsObserver.delegate = self
         
         recordingTableView.register(UINib(nibName: "SectionHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: headerCellId)
         
@@ -142,11 +145,7 @@ class MainVC: UIViewController {
         topicNumber = userDefaults.integer(forKey: "topicNumber")
         renderTopic(topicNumber: topicNumber)
 
-        topicsContainer.layer.cornerRadius = 10
-        topicsContainer.clipsToBounds = true
-        topicTxtView.layer.cornerRadius = 10
-        topicTxtView.clipsToBounds = true
-//        topicTxtView.layer.borderWidth = 20
+        configureTopicsView()
         
         exportSelectedActivityIndicator.stopAnimating()
         
@@ -169,8 +168,27 @@ class MainVC: UIViewController {
         recordingTableView.reloadData()
     }
     
-    func addHeader() {
+    
+    func configureTopicsView() {
+        topicsContainer.layer.cornerRadius = 10
+        topicsContainer.clipsToBounds = true
+        topicTxtView.layer.cornerRadius = 10
+        topicTxtView.clipsToBounds = true
+        thinkTimeChangeStackViewContainer.layer.cornerRadius = 10
+        thinkTimeChangeStackViewContainer.clipsToBounds = true
         
+        configureThinkTimeChangeButton(thinkTimeChange15)
+        configureThinkTimeChangeButton(thinkTimeChange20)
+        configureThinkTimeChangeButton(thinkTimeChange30)
+    }
+    
+    func configureThinkTimeChangeButton(_ thinkTimeChangeButton: UIButton) {
+        thinkTimeChangeButton.clipsToBounds = true
+        thinkTimeChangeButton.layer.cornerRadius = 5
+        thinkTimeChangeButton.titleLabel?.textColor = accentColor
+    }
+    
+    func addHeader() {
         
         title = "Practice Mode"
         
@@ -187,7 +205,7 @@ class MainVC: UIViewController {
         
         switchModeButton.translatesAutoresizingMaskIntoConstraints = false
         switchModeButton.setImage(practiceModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
-        switchModeButton.tintColor = accentColor
+        switchModeButton.tintColor = .white
         switchModeButton.addTarget(self, action: #selector(switchModesTapped(_:)), for: .touchUpInside)
         switchModeButton.clipsToBounds = true
         switchModeButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -235,32 +253,13 @@ class MainVC: UIViewController {
     
     func setBtnImage() {
         
-//        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
         
         thinkTimeLbl.textColor = accentColor
         speakTimeLbl.textColor = accentColor
+
         
         thinkLbl.textColor = accentColor
-//        thinkInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
-//        thinkInfoImgView.tintColor = accentColor
-//        thinkTimeInfoView.clipsToBounds = true
-        
-        
-//        let thinkPressGesture =  UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseThinkInfoView))
-//        thinkPressGesture.minimumPressDuration = 0
-//        thinkTimeInfoView.isUserInteractionEnabled = true
-//        thinkTimeInfoView.addGestureRecognizer(thinkPressGesture)
-        
         speakLbl.textColor = accentColor
-//        speakInfoImgView.image = infoIcon.withRenderingMode(.alwaysTemplate)
-//        speakInfoImgView.tintColor = accentColor
-//        speakTimeInfoView.clipsToBounds = true
-        
-//        let speakPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainVC.pulseSpeakInfoView))
-//        speakPressGesture.minimumPressDuration = 0
-//        speakTimeInfoView.isUserInteractionEnabled = true
-//        speakTimeInfoView.addGestureRecognizer(speakPressGesture)
-        
         playSelectedActivityIndicator.color = accentColor
         exportSelectedActivityIndicator.color = accentColor
         
@@ -380,18 +379,19 @@ class MainVC: UIViewController {
         title = isTestMode ? "Practice Mode" : "Test Mode"
 
         switchModeButton.setImage(isTestMode ? practiceModeIcon.withRenderingMode(.alwaysTemplate) : testModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)
-        switchModeButton.tintColor = accentColor
+        switchModeButton.tintColor = .white
         
         if isTestMode {
 
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "practice" as NSObject])
+            
+            UIView.animate(withDuration: 0.2) {
+                self.thinkTimeChangeStackViewContainer.isHidden = true
+            } completion: { (completed) in
+                self.topicsContainer.isHidden = false
+            }
 
-//            UIView.animate(withDuration: 0.5) {
-//                            }
-            
-            self.thinkTimeChangeStackViewContainer.isHidden = true
-           self.topicsContainer.isHidden = false
-            
+                    
             renderTopic(topicNumber: self.topicNumber)
             defaultThinkTime = 15
             defaultSpeakTime = 45
@@ -401,12 +401,12 @@ class MainVC: UIViewController {
         } else {
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "test" as NSObject])
             
-//            UIView.animate(withDuration: 0.5) {
-//                print("Going to test mode")
-//            }
-            
-            self.thinkTimeChangeStackViewContainer.isHidden = false
-            self.topicsContainer.isHidden = true
+
+            UIView.animate(withDuration: 0.2) {
+                self.thinkTimeChangeStackViewContainer.isHidden = false
+                self.topicsContainer.isHidden = true
+            }
+       
 //            thinkTimeChangeStackViewSeperator.isHidden = false
 //            self.switchModesBtn.setTitle("Test", for: .normal)
 //            self.changeTopicBtnsStackView.isHidden = true
@@ -490,7 +490,9 @@ class MainVC: UIViewController {
             cancelRecordingBtn.isHidden = false
             
             DispatchQueue.main.async {
-                self.thinkTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+//                self.thinkTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+                self.speakTimeLbl.textColor = .white
+                self.speakLbl.textColor = .white
             }
             
             thinkTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(decrementThinkTime), userInfo: nil, repeats: true)
@@ -539,10 +541,14 @@ class MainVC: UIViewController {
                     DispatchQueue.main.async {
                         let duration = (self.audioPlayer?.duration)!/2
                         UIView.animate(withDuration: duration, animations: {
-                            self.thinkTimeInfoView.backgroundColor = .clear
+//                            self.thinkTimeInfoView.backgroundColor = .clear
+                            self.thinkTimeLbl.textColor = .white
+                            self.thinkLbl.textColor = .white
                         })
                         UIView.animate(withDuration: duration, animations: {
-                            self.speakTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+//                            self.speakTimeInfoView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+                            self.speakTimeLbl.textColor = accentColor
+                            self.speakLbl.textColor = accentColor
                         })
                     }
                     
@@ -576,7 +582,9 @@ class MainVC: UIViewController {
             timer.invalidate()
             speakTime = defaultSpeakTime
             DispatchQueue.main.async {
-                self.speakTimeInfoView.backgroundColor = .clear
+//                self.speakTimeInfoView.backgroundColor = .clear
+                self.thinkTimeLbl.textColor = accentColor
+                self.thinkLbl.textColor = accentColor
             }
         }
     }
@@ -621,8 +629,12 @@ class MainVC: UIViewController {
         blinking = false
         
         DispatchQueue.main.async {
-            self.speakTimeInfoView.backgroundColor = .clear
-            self.thinkTimeInfoView.backgroundColor = .clear
+//            self.speakTimeInfoView.backgroundColor = .clear
+//            self.thinkTimeInfoView.backgroundColor = .clear
+            self.thinkTimeLbl.textColor = accentColor
+            self.thinkLbl.textColor = accentColor
+            self.speakTimeLbl.textColor = accentColor
+            self.speakLbl.textColor = accentColor
         }
     }
     
