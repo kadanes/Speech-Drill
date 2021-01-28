@@ -314,3 +314,13 @@ func isCallKitSupported() -> Bool {
         return true
     }
 }
+
+func openAppSettings() {
+    if let bundleIdentifier = Bundle.main.bundleIdentifier, let appSettings = URL(string: UIApplicationOpenSettingsURLString + bundleIdentifier) {
+        if UIApplication.shared.canOpenURL(appSettings) {
+            UIApplication.shared.open(appSettings)
+        }
+    } else {
+        print("Can't open app's settings")
+    }
+}

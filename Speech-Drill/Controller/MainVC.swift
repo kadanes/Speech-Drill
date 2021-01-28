@@ -210,7 +210,7 @@ class MainVC: UIViewController {
         switchModeButton.tintColor = .white
         switchModeButton.addTarget(self, action: #selector(switchModesTapped(_:)), for: .touchUpInside)
         switchModeButton.clipsToBounds = true
-        switchModeButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        switchModeButton.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         
         let infoButton = UIButton()
@@ -218,7 +218,7 @@ class MainVC: UIViewController {
         infoButton.setImage(infoIcon.withRenderingMode(.alwaysTemplate), for: .normal)
         infoButton.tintColor = .white
         infoButton.addTarget(self, action: #selector(displayInfo), for: .touchUpInside)
-        infoButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        infoButton.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: infoButton), UIBarButtonItem(customView: switchModeButton)]
         

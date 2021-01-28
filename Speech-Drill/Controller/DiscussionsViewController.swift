@@ -102,7 +102,16 @@ import GoogleSignIn
             userProfileButton.layer.borderColor = UIColor.white.cgColor
             setUserProfileImage()
             
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: userProfileButton)
+            
+            let notificationsSettingButton = UIButton()
+            notificationsSettingButton.translatesAutoresizingMaskIntoConstraints = false
+            notificationsSettingButton.setImage(notificationBellIcon.withRenderingMode(.alwaysOriginal), for: .normal)
+            notificationsSettingButton.imageView?.contentMode = .scaleToFill
+                //        userProfileButton.tintColor = accentColor
+            notificationsSettingButton.addTarget(self, action: #selector(showSettingsTapped), for: .touchUpInside)
+                   
+
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: notificationsSettingButton), UIBarButtonItem(customView: userProfileButton)]
             
 //            navigationItem.rightBarButtonItem = userProfileButton
             
@@ -218,6 +227,10 @@ import GoogleSignIn
                 postSignInAlert.addAction(signOutAction)
                 present(postSignInAlert, animated: true, completion: nil)
             }
+        }
+        
+        @objc func showSettingsTapped() {
+            openAppSettings()
         }
     }
 

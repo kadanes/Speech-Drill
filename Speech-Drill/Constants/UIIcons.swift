@@ -82,3 +82,5 @@ let smallUserPlaceholder = UIImage.fontAwesomeIcon(name: .userCircle, style: .so
 
 let practiceModeIcon = UIImage.fontAwesomeIcon(name: .pencilAlt, style: .solid, textColor: accentColor, size: smallSize)
 let testModeIcon = UIImage.fontAwesomeIcon(name: .hourglassHalf, style: .solid, textColor: accentColor, size: smallSize)
+
+let notificationBellIcon =  UIImage.fontAwesomeIcon(name: .bell, style: .solid, textColor: .white, size: smallSize)
