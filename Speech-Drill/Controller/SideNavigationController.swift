@@ -17,7 +17,7 @@ class SideNavigationController: UIViewController {
     private let sideNavMenuItemReuseIdentifier = "SideNavMenuItemIdentifier"
         
     var interactor: Interactor? = nil
-    var calledFromVC: UIViewController?
+    var calledFromVCIndex: Int?
     
     private let sideNavContainer: UIView
     private let sideNavTableView: UITableView
@@ -73,9 +73,6 @@ class SideNavigationController: UIViewController {
         
         configureSideNav()
         
-//        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(closeViewWithPan(sender:)))
-//        view.addGestureRecognizer(panGesture)
-        
         view.backgroundColor = MenuHelper.menuBGColor
         
     }
@@ -85,20 +82,26 @@ class SideNavigationController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
         if mainVCPresented == false {
-            calledFromVC = mainVC
-            navigationController?.pushViewController(calledFromVC!, animated: false)
+            calledFromVCIndex = 0
+            navigationController?.pushViewController(menuItems[calledFromVCIndex!].presentedVC, animated: false)
             mainVCPresented = true
+            
+        } else {
+            guard let calledFromVCIndex = calledFromVCIndex else { return }
+            let indexPath = IndexPath(row: calledFromVCIndex, section: 1)
+            sideNavTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         }
         
-        guard let calledFromVC = calledFromVC else { return }
-        for (index,item) in menuItems.enumerated() {
-            if item.presentedVC.isKind(of: type(of: calledFromVC)) {
-                let indexPath = IndexPath(item: index + 1, section: 0)
-                sideNavTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-                selectedIndex = index
-                break
-            }
-        }
+        
+        
+//        for (index,item) in menuItems.enumerated() {
+//            if item.presentedVC.isKind(of: type(of: calledFromVC)) {
+//                let indexPath = IndexPath(item: index + 1, section: 0)
+//                sideNavTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+//                selectedIndex = index
+//                break
+//            }
+//        }
         
     }
     
@@ -136,62 +139,69 @@ class SideNavigationController: UIViewController {
             sideNavContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             
             sideNavContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            sideNavContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            sideNavContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             sideNavContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             versionInfoView.bottomAnchor.constraint(equalTo: sideNavContainer.bottomAnchor),
             versionInfoView.leadingAnchor.constraint(equalTo: sideNavContainer.leadingAnchor, constant: -8),
-            versionInfoView.trailingAnchor.constraint(equalTo: sideNavContainer.trailingAnchor, constant: 8),
+            versionInfoView.trailingAnchor.constraint(equalTo: sideNavContainer.trailingAnchor, constant: 16),
             
             sideNavTableView.topAnchor.constraint(equalTo: sideNavContainer.topAnchor),
             sideNavTableView.leadingAnchor.constraint(equalTo: sideNavContainer.leadingAnchor),
             sideNavTableView.trailingAnchor.constraint(equalTo: sideNavContainer.trailingAnchor),
             sideNavTableView.bottomAnchor.constraint(equalTo: versionInfoView.topAnchor)
         ])
+        
+        let edgePanGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(closeViewWithEdgeSwipe(sender:)))
+        edgePanGesture.edges = .right
+        view.addGestureRecognizer(edgePanGesture)
     }
     
-    @objc func closeViewWithPan(sender: UIPanGestureRecognizer) {
+    @objc func closeViewWithEdgeSwipe(sender: UIScreenEdgePanGestureRecognizer) {
         
-        guard let calledFromVC = calledFromVC else { return }
+        guard let calledFromVCIndex = calledFromVCIndex else { return }
+                
+        let presentedVC = menuItems[calledFromVCIndex].presentedVC
         
-        print("Presenting VC: ", navigationController?.presentingViewController)
-        
-        if navigationController?.presentingViewController == nil {
-            navigationController?.pushViewController(calledFromVC, animated: true)
+        if !(navigationController?.topViewController?.isKind(of: type(of: presentedVC)) ?? true) {
+            navigationController?.pushViewController(presentedVC, animated: true)
         }
         
-        Analytics.logEvent(AnalyticsEvent.HideSideNav.rawValue, parameters: [StringAnalyticsProperties.VCDisplayed.rawValue : "\(type(of: calledFromVC))".lowercased()])
+        Analytics.logEvent(AnalyticsEvent.HideSideNav.rawValue, parameters: [StringAnalyticsProperties.VCDisplayed.rawValue : "\(type(of: presentedVC))".lowercased()])
         
     }
 }
 
 extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItems.count + 2
+        if section == 1 { return menuItems.count}
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             return sideNavNoticesTableViewCell
         }
         
-        if indexPath.row == menuItems.count + 1 {
+        if indexPath.section == 2 {
             return sideNavAdsTableViewCell
         }
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: sideNavMenuItemReuseIdentifier) as? SideNavMenuItemCell else { return UITableViewCell() }
-        cell.configureCell(with: menuItems[indexPath.row - 1])
+        cell.configureCell(with: menuItems[indexPath.row])
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             return 190
-        } else if indexPath.row == menuItems.count + 1 {
+        } else if indexPath.section == 2 {
             return 300
         }
         return 40
@@ -199,17 +209,18 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.row == 0 || indexPath.row == menuItems.count + 1 {
-            
-//            tableView.selectRow(at: <#T##IndexPath?#>, animated: false, scrollPosition: .none)
+        guard let calledFromVCIndex = calledFromVCIndex else { return }
+        
+        if indexPath.section == 0 || indexPath.section == 2 {
+            let indexPath = IndexPath(row: calledFromVCIndex, section: 1)
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
             return
         }
         
-        let vcToPresent = menuItems[indexPath.row - 1].presentedVC
-        
-        calledFromVC = vcToPresent
-        vcToPresent.modalPresentationStyle = .fullScreen
-        self.navigationController?.pushViewController(vcToPresent, animated: true)
+        let presentedVC = menuItems[indexPath.row].presentedVC
+        self.calledFromVCIndex = indexPath.row
+        presentedVC.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(presentedVC, animated: true)
         
     }
 }
