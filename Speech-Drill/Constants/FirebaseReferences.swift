@@ -1,5 +1,5 @@
 //
-//  FirebaseDatabaseReferences.swift
+//  FirebaseReferences.swift
 //  Speech-Drill
 //
 //  Created by Parth Tamane on 12/01/21.
@@ -15,3 +15,6 @@ let noticesReference = ref.child("notices")
 let userLocationReference = ref.child("onlineUserLocations")
 let messagesReference = ref.child("discussionMessages")
 let sideNavAdsReference = ref.child("sideNavAds")
+
+
+let speechDrillDiscussionsFCMTopicName = "SpeechDrillDiscussions"

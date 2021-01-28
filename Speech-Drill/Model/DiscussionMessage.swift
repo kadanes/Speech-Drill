@@ -11,5 +11,5 @@ import Foundation
 struct DiscussionMessage: Codable {
     let message, userCountryCode, userCountryEmoji, userName, userEmailAddress: String
     let messageTimestamp: Double
-    let fcmToken, question, recordingUrl: String?
+    let fcmToken, question, recordingUrl, profilePictureUrl: String?
 }

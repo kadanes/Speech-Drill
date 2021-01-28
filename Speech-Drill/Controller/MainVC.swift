@@ -155,6 +155,8 @@ class MainVC: UIViewController {
         setHiddenVisibleSectionList()
         
         addHeader()
+        
+//        Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
     }
     
     override func viewWillAppear(_ animated: Bool) {

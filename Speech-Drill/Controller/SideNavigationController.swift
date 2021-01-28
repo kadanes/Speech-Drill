@@ -32,9 +32,7 @@ class SideNavigationController: UIViewController {
     //Fully programatic VC - There is a reference to this in the VC too which I think will cause memory leaks
     private let DiscussionsVC: DiscussionsViewController
     
-    var selectedIndex = 1
-    
-    var mainVCPresented = false
+    var shouldAutoNavigateToChild = true
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         
@@ -81,28 +79,16 @@ class SideNavigationController: UIViewController {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
-        if mainVCPresented == false {
-            calledFromVCIndex = 0
+        if shouldAutoNavigateToChild {
+            if calledFromVCIndex == nil { calledFromVCIndex = 0 }
             navigationController?.pushViewController(menuItems[calledFromVCIndex!].presentedVC, animated: false)
-            mainVCPresented = true
+            shouldAutoNavigateToChild = false
             
         } else {
             guard let calledFromVCIndex = calledFromVCIndex else { return }
             let indexPath = IndexPath(row: calledFromVCIndex, section: 1)
             sideNavTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         }
-        
-        
-        
-//        for (index,item) in menuItems.enumerated() {
-//            if item.presentedVC.isKind(of: type(of: calledFromVC)) {
-//                let indexPath = IndexPath(item: index + 1, section: 0)
-//                sideNavTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-//                selectedIndex = index
-//                break
-//            }
-//        }
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

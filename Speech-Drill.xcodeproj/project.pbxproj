@@ -36,7 +36,7 @@
 		B269D34B25AC58B00025E1DE /* UserCountryUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D34A25AC58B00025E1DE /* UserCountryUIView.swift */; };
 		B269D34F25AC5B410025E1DE /* UserCountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D34E25AC5B410025E1DE /* UserCountryCell.swift */; };
 		B269D3A625ACB7720025E1DE /* UserLocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3A525ACB7720025E1DE /* UserLocationHelper.swift */; };
-		B269D3A925ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */; };
+		B269D3A925ADB9EB0025E1DE /* FirebaseReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3A825ADB9EB0025E1DE /* FirebaseReferences.swift */; };
 		B269D3AC25ADEE650025E1DE /* DiscussionsMessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */; };
 		B26A36BD215ECE3C00628EC9 /* HideSideNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */; };
 		B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */; };
@@ -133,7 +133,7 @@
 		B269D34A25AC58B00025E1DE /* UserCountryUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCountryUIView.swift; sourceTree = "<group>"; };
 		B269D34E25AC5B410025E1DE /* UserCountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCountryCell.swift; sourceTree = "<group>"; };
 		B269D3A525ACB7720025E1DE /* UserLocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationHelper.swift; sourceTree = "<group>"; };
-		B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseReferences.swift; sourceTree = "<group>"; };
+		B269D3A825ADB9EB0025E1DE /* FirebaseReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseReferences.swift; sourceTree = "<group>"; };
 		B269D3AB25ADEE650025E1DE /* DiscussionsMessageBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionsMessageBox.swift; sourceTree = "<group>"; };
 		B26A36BC215ECE3C00628EC9 /* HideSideNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideSideNav.swift; sourceTree = "<group>"; };
 		B26C1B36212C8FDE0015795C /* CentralAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralAudioPlayer.swift; sourceTree = "<group>"; };
@@ -312,7 +312,7 @@
 				B25F80B8211F4F3200AD786C /* Enums.swift */,
 				B26DEB9E2161556D006FE754 /* SceenType.swift */,
 				B2D70CB32164A7520003232D /* AnalyticsEvents.swift */,
-				B269D3A825ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift */,
+				B269D3A825ADB9EB0025E1DE /* FirebaseReferences.swift */,
 				B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */,
 				B2BBE2C725B18DAD0054DE1F /* NotificationNames.swift */,
 				B2F0301125B5CCD3004A791D /* UIFonts.swift */,
@@ -631,7 +631,7 @@
 				B2BBE2B325AF50E90054DE1F /* DiscussionMessage.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
 				B2F0300925B59D0B004A791D /* SideNavAdsSaver.swift in Sources */,
-				B269D3A925ADB9EB0025E1DE /* FirebaseDatabaseReferences.swift in Sources */,
+				B269D3A925ADB9EB0025E1DE /* FirebaseReferences.swift in Sources */,
 				B2418C1D215EAC490020E078 /* Interactor.swift in Sources */,
 				B2F0305A25B6DF73004A791D /* NoticeStructure.swift in Sources */,
 				B2F0300C25B5C261004A791D /* SideNavAdsTableViewCell.swift in Sources */,

@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let locationManager: CLLocationManager = CLLocationManager()
     
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -40,12 +39,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
         }
         
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
+        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
         
         let sideNav = SideNavigationController()
         let sideNavigationController = SlidingNavigationController.init(rootViewController: sideNav)
         self.window?.rootViewController = sideNavigationController
+        
+        // For iOS 10 display notification (sent via APNS)
+        UNUserNotificationCenter.current().delegate = self
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: {_, _ in })
+        application.registerForRemoteNotifications()
+        InstanceID.instanceID().getID { (token, error) in
+            print("Token: ", token)
+            Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
+        }
         
         
         
@@ -67,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-
+        
         storeLocationInFirebase(locationManager: locationManager)
     }
     
@@ -100,4 +114,32 @@ extension AppDelegate: CLLocationManagerDelegate {
         }
         storeLocationInFirebase(locationManager: locationManager)
     }
+}
+
+//MARK:- Notification Helper
+
+extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
+    
+    func application(_ application: UIApplication,
+                 didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken as Data
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        // Print full message.
+        print("User Info: ")
+        print(userInfo)
+//        sideNav?.calledFromVCIndex = 1
+//        sideNav?.shouldAutoNavigateToChild = true
+    }
+
+    // This method will be called when app received push notifications in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    { completionHandler([UNNotificationPresentationOptions.alert,UNNotificationPresentationOptions.sound,UNNotificationPresentationOptions.badge])
+    }
+
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        print("received remote notification")
+    }
+    
 }

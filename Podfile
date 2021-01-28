@@ -13,4 +13,6 @@ target 'Speech-Drill' do
   pod 'FirebaseStorage'
   pod 'GoogleSignIn'
   pod 'FontAwesome.swift'
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Analytics'
 end

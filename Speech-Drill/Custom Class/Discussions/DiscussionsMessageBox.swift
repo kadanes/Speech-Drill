@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import GoogleSignIn
+import Firebase
 
     class DiscussionsMessageBox: UIView {
         
@@ -123,16 +124,18 @@ import GoogleSignIn
                 let userEmail = profile?.email ?? "EmailUnknown"
                 let userName = profile?.name ?? "UserNameUnknown"
                 let timestamp = NSDate().timeIntervalSince1970
-                
+                let userProfileUrl = String(describing: profile?.imageURL(withDimension: 40))
                 
                 var validatedMessage = messageTextView.text!
                 validatedMessage = validatedMessage.trimmingCharacters(in: .whitespacesAndNewlines)
                 
-                let message = DiscussionMessage(message: validatedMessage, userCountryCode: userCountryCode, userCountryEmoji: userCountryEmoji, userName: userName, userEmailAddress: userEmail, messageTimestamp: timestamp, fcmToken: nil, question: nil, recordingUrl: nil)
+                let message = DiscussionMessage(message: validatedMessage, userCountryCode: userCountryCode, userCountryEmoji: userCountryEmoji, userName: userName, userEmailAddress: userEmail, messageTimestamp: timestamp, fcmToken: nil, question: nil, recordingUrl: nil, profilePictureUrl: userProfileUrl)
                 
                 do {
                     let messageDictionary = try message.dictionary()
                     messagesReference.childByAutoId().setValue(messageDictionary)
+                    reregisterForTopicFCM()
+                    
                 } catch {
                     print(error)
                 }
@@ -144,6 +147,13 @@ import GoogleSignIn
                 updateSendButton()
             }
             
+        }
+        
+        func reregisterForTopicFCM() {
+            Messaging.messaging().unsubscribe(fromTopic: speechDrillDiscussionsFCMTopicName)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
+            }
         }
     }
 
