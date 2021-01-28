@@ -20,7 +20,7 @@ class RecordingCell: UITableViewCell {
     @IBOutlet weak var deleteRecordingBtn: RoundButton!
     @IBOutlet weak var shareRecordingBtn: RoundButton!
     @IBOutlet weak var playRecordningBtn: RoundButton!
-
+    
     @IBOutlet weak var confirmDeleteBtn: RoundButton!
     
     @IBOutlet weak var cancelDeleteBtn: RoundButton!
@@ -35,11 +35,11 @@ class RecordingCell: UITableViewCell {
     
     
     weak var delegate: MainVC?
-
+    
     var topicNumber = 0
     var timeStamp = 0
     var thinkTime = 15
-
+    
     var isRecordningSelected = false
     var recordingURL: URL?
     var isPlaying = false
@@ -47,12 +47,28 @@ class RecordingCell: UITableViewCell {
     
     private var recordingPlayBackTimer: Timer?
     
-    func configureCell(url:URL) {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        checkBoxBtn.setImage(boxIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        checkBoxBtn.imageView?.tintColor = .white
         
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+    }
+    
+    func configureCell(url:URL) {
         self.recordingURL = url
         getFileDetails()
         updatePlayingState()
-
+        
         setTopicLblTxt()
         isMerging = checkIfMerging()
         setBtnImage()
@@ -62,52 +78,52 @@ class RecordingCell: UITableViewCell {
         
     }
     
-    fileprivate func transcribeFile() {
-        
-        // 1
-        guard let recognizer = SFSpeechRecognizer() else {
-            print("Speech recognition not available for specified locale")
-            return
-        }
-        
-        if !recognizer.isAvailable {
-            print("Speech recognition not currently available")
-            return
-        }
-        
-        // 2
-        let request = SFSpeechURLRecognitionRequest(url: recordingURL!)
-        
-        // 3
-        recognizer.recognitionTask(with: request) {
-            [unowned self] (result, error) in
-            guard let result = result else {
-                print("There was an error transcribing that file")
-                return
-            }
-            
-            // 4
-            if result.isFinal {
-                print(result.bestTranscription.formattedString)
-            }
-        }
-    }
+    //    fileprivate func transcribeFile() {
+    //
+    //        // 1
+    //        guard let recognizer = SFSpeechRecognizer() else {
+    //            print("Speech recognition not available for specified locale")
+    //            return
+    //        }
+    //
+    //        if !recognizer.isAvailable {
+    //            print("Speech recognition not currently available")
+    //            return
+    //        }
+    //
+    //        // 2
+    //        let request = SFSpeechURLRecognitionRequest(url: recordingURL!)
+    //
+    //        // 3
+    //        recognizer.recognitionTask(with: request) {
+    //            [unowned self] (result, error) in
+    //            guard let result = result else {
+    //                print("There was an error transcribing that file")
+    //                return
+    //            }
+    //
+    //            // 4
+    //            if result.isFinal {
+    //                print(result.bestTranscription.formattedString)
+    //            }
+    //        }
+    //    }
     
-//    @IBAction func transcribeRecording(_ sender: Any) {
-//        SFSpeechRecognizer.requestAuthorization {
-//            [unowned self] (authStatus) in
-//            switch authStatus {
-//            case .authorized:
-//                self.transcribeFile()
-//            case .denied:
-//                print("Speech recognition authorization denied")
-//            case .restricted:
-//                print("Not available on this device")
-//            case .notDetermined:
-//                print("Not determined")
-//            }
-//        }
-//    }
+    //    @IBAction func transcribeRecording(_ sender: Any) {
+    //        SFSpeechRecognizer.requestAuthorization {
+    //            [unowned self] (authStatus) in
+    //            switch authStatus {
+    //            case .authorized:
+    //                self.transcribeFile()
+    //            case .denied:
+    //                print("Speech recognition authorization denied")
+    //            case .restricted:
+    //                print("Not available on this device")
+    //            case .notDetermined:
+    //                print("Not determined")
+    //            }
+    //        }
+    //    }
     
     
     @IBAction func startPulsing(_ sender: UIButton) {
@@ -144,9 +160,9 @@ class RecordingCell: UITableViewCell {
         let isRecordingUsedInMerging = checkIfMerging(date: date)
         
         if isRecordingUsedInMerging {
-             setButtonBgImage(button: deleteRecordingBtn, bgImage: deleteIcon, tintColor: disabledRed)
+            setButtonBgImage(button: deleteRecordingBtn, bgImage: deleteIcon, tintColor: disabledRed)
         } else {
-             setButtonBgImage(button: deleteRecordingBtn, bgImage: deleteIcon, tintColor: enabledRed)
+            setButtonBgImage(button: deleteRecordingBtn, bgImage: deleteIcon, tintColor: enabledRed)
         }
         
         if isPlaying {
@@ -156,16 +172,16 @@ class RecordingCell: UITableViewCell {
         }
         
         if isMerging {
-//            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: disabledGray)
+            //            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: disabledGray)
             setButtonBgImage(button: shareRecordingBtn, bgImage: shareIcon, tintColor: disabledGray)
         } else {
-//            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: enabledGray)
+            //            setButtonBgImage(button: shareRecordingBtn, bgImage: singleShareIcon, tintColor: enabledGray)
             setButtonBgImage(button: shareRecordingBtn, bgImage: shareIcon, tintColor: enabledGray)
         }
         
         setButtonBgImage(button: confirmDeleteBtn, bgImage: checkIcon, tintColor: confirmGreen)
-        setButtonBgImage(button: cancelDeleteBtn, bgImage: closeIcon, tintColor: confirmGreen)
-        
+        setButtonBgImage(button: cancelDeleteBtn, bgImage: closeIcon, tintColor: confirmGreen)        
+        checkBoxBtn.setBackgroundImage(boxIcon, for: .normal)
     }
     
     func setBtnProperty() {
@@ -174,12 +190,8 @@ class RecordingCell: UITableViewCell {
         setBtnImgProp(button: playRecordningBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: confirmDeleteBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: cancelDeleteBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset+5)
-        
-        if let checkBoxBg = checkBoxBtn.subviews.first as? UIImageView {
-            checkBoxBg.contentMode = .scaleAspectFit
-        }
     }
-
+    
     func selectCheckBox() {
         isRecordningSelected = true
         setButtonBgImage(button: checkBoxBtn, bgImage: checkIcon, tintColor: accentColor)
@@ -200,7 +212,7 @@ class RecordingCell: UITableViewCell {
     }
     
     @IBAction func shareRecordingPressed(_ sender: Any) {
-      
+        
         Analytics.logEvent(AnalyticsEvent.ShareRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Single.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : 1 as NSObject])
         
         if (delegate?.checkIfRecordingIsOn())! || isMerging { return }
@@ -234,7 +246,7 @@ class RecordingCell: UITableViewCell {
             seekerView.isHidden = false
             playingSeeker.setThumbImage(drawSliderThumb(diameter: normalThumbDiameter, backgroundColor: UIColor.white), for: .normal)
             playingSeeker.setThumbImage(drawSliderThumb(diameter: highlightedThumbDiameter, backgroundColor: accentColor), for: .highlighted)
-    
+            
             let currentTime = CentralAudioPlayer.player.getPlayBackCurrentTime()
             let totalTime = CentralAudioPlayer.player.getPlayBackDuration()
             
@@ -246,7 +258,7 @@ class RecordingCell: UITableViewCell {
             
             recordingPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updatePlaybackTime), userInfo: nil, repeats: true)
         } else {
-             seekerView.isHidden = true
+            seekerView.isHidden = true
         }
     }
     
@@ -297,7 +309,7 @@ class RecordingCell: UITableViewCell {
             }
         }
     }
-
+    
     func hideDeleteMenu() {
         self.playPauseBtn.isHidden = false
         self.cancelDeleteBtn.isHidden = true
@@ -311,7 +323,7 @@ class RecordingCell: UITableViewCell {
             
             self.shareRecordingBtn.isHidden = false
             self.cancelDeleteBtn.isHidden = true
-
+            
         }) { (completed) in
             if completed {
                 UIView.animate(withDuration: 0.15, animations: {
@@ -367,7 +379,7 @@ class RecordingCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
     }
 }
 

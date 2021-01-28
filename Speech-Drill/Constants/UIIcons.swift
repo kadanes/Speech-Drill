@@ -38,7 +38,7 @@ let singleRightIcon = UIImage(named: "sright.png")!
 let tripleRightIcon = UIImage(named: "tright.png")!
 
 //let boxIcon = UIImage(named: "box.png")!
-let boxIcon = UIImage.fontAwesomeIcon(name: .square, style: .solid, textColor: .white, size: smallSize)
+let boxIcon = UIImage.fontAwesomeIcon(name: .square, style: .regular, textColor: .white, size: smallSize)
 //let deleteIcon = UIImage(named: "delete.png")!
 let deleteIcon = UIImage.fontAwesomeIcon(name: .trash, style: .solid, textColor: accentColor, size: smallSize)
 //let checkIcon = UIImage(named: "check.png")!
