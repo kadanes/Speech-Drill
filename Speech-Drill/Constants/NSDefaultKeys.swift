@@ -12,3 +12,5 @@ import Foundation
 let userLocationCodeKey = "UserLocationCode"
 let userLocationEmojiKey = "UserLocationEmoji"
 let sideNavAdBannerPrefix = "AdBanner_"
+
+let chatViewSeenYContentOffset = "ChatViewSeenYContentOffset"

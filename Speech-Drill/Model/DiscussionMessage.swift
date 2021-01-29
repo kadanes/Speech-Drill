@@ -13,3 +13,7 @@ struct DiscussionMessage: Codable {
     let messageTimestamp: Double
     let fcmToken, question, recordingUrl, profilePictureUrl: String?
 }
+
+let disucssionMessageTimestampKey = "messageTimestamp"
+
+//print("Key: ", DiscussionMessage.CodingKeys.messageTimestamp.stringValue)

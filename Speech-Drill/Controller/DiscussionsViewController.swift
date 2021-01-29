@@ -17,6 +17,8 @@ import GoogleSignIn
 //        let interactor = Interactor()
 //        let sideNavVC = SideNavVC()
         
+        var oldKeyboardEndFrameY: CGFloat = 0
+        
         let headerContainer = UIView()
         let countryCountView = UserCountryUIView()
         let discussionsMessageBox = DiscussionsMessageBox()
@@ -48,10 +50,14 @@ import GoogleSignIn
                 switch event.type {
                 case .willChangeFrame:
                     self.handleKeyboardWillChangeFrame(keyboardEvent: event)
+//                case .willShow, .willHide:
+//                    self.handleKeyboardWillChangeFrame(keyboardEvent: event)
                 default:
                     break
                 }
             }
+//            NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+
 
             self.title = "Discussions"
         }
@@ -62,10 +68,14 @@ import GoogleSignIn
         
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
-            discussionChatView.scrollTableViewToEnd(animated: true)
+//            discussionChatView.scrollTableViewToEnd(animated: true)
+
+//            if !discussionsMessageBox.messageTextView.isFocused {
+//                discussionChatView.scrollToSavedContentOffset()
+//            }
+            
             navigationController?.navigationBar.barTintColor = .black
         }
-        
         
         func addHeader() {
             
@@ -238,29 +248,58 @@ import GoogleSignIn
 
     extension DiscussionsViewController {
         
-        @objc func keyboardWillShow(notification: Notification) {
-            if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
-                let keyboardRectangle = keyboardFrame.cgRectValue
-                let keyboardHeight = keyboardRectangle.height
-                print("Keyboard Height:", keyboardHeight)
-            }
+//        @objc func keyboardWillShow(notification: Notification) {
+//            if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+//                let keyboardRectangle = keyboardFrame.cgRectValue
+//                let keyboardHeight = keyboardRectangle.height
+//                print("Keyboard Height:", keyboardHeight)
+//            }
+//        }
+//
+//        func keyboardWillShow(keyboarEvent: KeyboardEvent ) {
+//            let keyboardFrame = keyboarEvent.keyboardFrameEnd
+//            let keyboardHeight = keyboardFrame.height
+//            print("Keyboard Height from observer:", keyboardHeight)
+//        }
+
+        func handleKeyboardDisplay(keyboardEvent: KeyboardEvent) {
+            print("Called handle keyboard")
+//        let info = (notification as NSNotification).userInfo
+            let value =  keyboardEvent.keyboardFrameEnd
+           if let rawFrame = (value as AnyObject).cgRectValue
+           {
+            let keyboardFrame = self.view.convert(rawFrame, from: nil)
+               let keyboardHeight = keyboardFrame.height //Height of the keyboard
+            print("Keyboard height: ", keyboardHeight)
+           }
         }
         
-        func keyboardWillShow(keyboarEvent: KeyboardEvent ) {
-            let keyboardFrame = keyboarEvent.keyboardFrameEnd
-            let keyboardHeight = keyboardFrame.height
-            print("Keyboard Height from observer:", keyboardHeight)
-        }
-        
+        @objc func handleKeyboardDisplay(_ notification: Notification) {
+                   print("Notif Called handle keyboard")
+                let info = (notification as NSNotification).userInfo
+                let value = info?[UIKeyboardFrameEndUserInfoKey]
+                  if let rawFrame = (value as AnyObject).cgRectValue
+                  {
+                   let keyboardFrame = self.view.convert(rawFrame, from: nil)
+                      let keyboardHeight = keyboardFrame.height //Height of the keyboard
+                   print("Notif Keyboard height: ", keyboardHeight)
+                  }
+               }
         
         func handleKeyboardWillChangeFrame(keyboardEvent: KeyboardEvent) {
           
             let uiScreenHeight = UIScreen.main.bounds.size.height
             let endFrame = keyboardEvent.keyboardFrameEnd
-            
             let endFrameY = endFrame.origin.y
             
+            if oldKeyboardEndFrameY == endFrameY {
+                return
+            }
+            oldKeyboardEndFrameY = endFrameY
+            
             let offset = -1 * endFrame.size.height
+            
+            print("Handling keyboard change frame:  End Y - ", endFrameY)
             
             if endFrameY >= uiScreenHeight {
                 self.discussionsMessageBoxBottomAnchor.constant = 0.0
@@ -268,10 +307,6 @@ import GoogleSignIn
             } else {
                 self.discussionsMessageBoxBottomAnchor.constant = offset
                 self.discussionChatView.discussionTableView.contentOffset.y -= offset
-//                var rect: CGRect = self.discussionChatView.discussionTableView.frame
-//                rect = CGRect(x: rect.minX, y: rect.minY, width: rect.width, height: rect.height + offset)
-//                self.discussionChatView.discussionTableView.scrollRectToVisible(rect, animated: true)
-                print("Shifted visible paths: ", self.discussionChatView.discussionTableView.indexPathsForVisibleRows)
             }
             
             UIView.animate(

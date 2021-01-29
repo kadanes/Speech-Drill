@@ -50,7 +50,6 @@ class DiscussionChatView: UIView {
             discussionTableView.topAnchor.constraint(equalTo: self.topAnchor),
             discussionTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-        
         loadInitialMessages()
         appendNewMessages()
     }
@@ -88,6 +87,7 @@ class DiscussionChatView: UIView {
                 }
                                 
                 self.discussionTableView.reloadData()
+                self.scrollToSavedContentOffset()
             } catch {
                 print(error)
             }
@@ -95,18 +95,17 @@ class DiscussionChatView: UIView {
     }
     
     func appendNewMessages() {
-        messagesReference.queryLimited(toLast: 1).observe(.childAdded) { (snapshot) in
-            
+//        messagesReference.queryLimited(toLast: 1).observe(.childAdded) { (snapshot) in
+//        if self.first {
+//                      self.scrollTableViewToEnd(animated: false)
+//                      self.first = false
+//                      return
+//                  }
+        
+        messagesReference.queryOrdered(byChild: disucssionMessageTimestampKey).queryStarting(atValue: NSDate().timeIntervalSince1970).observe(.childAdded) { (snapshot) in
+        
 //            print("Snapshot: ", snapshot)
-            
-            if self.first {
-                self.scrollTableViewToEnd(animated: false)
-                self.first = false
-                return
-            }
-            
-//            print("Here")
-            
+                        
             self.saveUserEmail()
             
             if  let value = snapshot.value {
@@ -140,23 +139,21 @@ class DiscussionChatView: UIView {
                             self.discussionTableView.insertSections(indexSet, with: .automatic)
                             
                         }) { (update) in
-                            print("Update Success")
-                            print("Last cell visible", lastCellWasVisible)
+                            print("After Update: Last cell visible", lastCellWasVisible)
                             self.insertMessage(dateString: dateString, message: message)
                         }
                     } else {
-                        print("Last cell visible", lastCellWasVisible)
+                        print("Without Update: Last cell visible", lastCellWasVisible)
                         self.insertMessage(dateString: dateString, message: message)
                     }
                     
                     if lastCellWasVisible {
                         self.scrollTableViewToEnd()
                         // This is not working
-                        // This is not working
-                        // This is not working
-                    } else {
-                        Toast.show(message: "New Message", type: .Info)
                     }
+//                    else {
+//                        Toast.show(message: "New Message", type: .Info)
+//                    }
                 } catch {
                     print(error)
                 }
@@ -203,7 +200,6 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
             previousMessage = messages[messageSendDates[previousSection], default: [DiscussionMessage]()][previousRow]
         }
             
-        
         discussionChatMessageCell.configureCell(message:message, isSender: message.userEmailAddress == userEmail, previousMessage: previousMessage)
         
         return discussionChatMessageCell
@@ -238,15 +234,6 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
     
-    //    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
-    //        return true
-    //    }
-    //
-    //    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    //        return true
-    //    }
-    
-    
     func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -264,7 +251,16 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        storeContentOffset()
+    }
     
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            return
+        }
+        storeContentOffset()
+    }
 }
 
 //MARK:- Utility Functions
@@ -320,13 +316,29 @@ extension DiscussionChatView {
     }
     
     func scrollTableViewToEnd(animated: Bool = true) {
-        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
             let indexPath = IndexPath(row: self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1, section: self.messageSendDates.count - 1)
             if self.discussionTableView.isValid(indexPath: indexPath) {
                 self.discussionTableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: animated)
             }
         })
+    }
+    
+    func storeContentOffset() {
+        let defaults = UserDefaults.standard
+        let oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset) )
+        let currentYOffset = discussionTableView.contentOffset.y
+    
+        if currentYOffset > oldYOffset {
+            defaults.set(currentYOffset, forKey: chatViewSeenYContentOffset)
+        }
+    }
+    
+    func scrollToSavedContentOffset() {
+        let defaults = UserDefaults.standard
+        let oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset) )
+        let offset = CGPoint(x: 0, y: oldYOffset)
+        self.discussionTableView.setContentOffset(offset, animated: true)
     }
 }
 
