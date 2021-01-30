@@ -62,7 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        
+        print("Key: ", DiscussionMessage.CodingKeys.messageTimestamp.stringValue)
+
         return true
     }
     

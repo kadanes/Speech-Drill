@@ -18,7 +18,8 @@ import GoogleSignIn
 //        let sideNavVC = SideNavVC()
         
         var oldKeyboardEndFrameY: CGFloat = 0
-        
+        var scrolledChatViewToSavedOffset: Bool = false
+            
         let headerContainer = UIView()
         let countryCountView = UserCountryUIView()
         let discussionsMessageBox = DiscussionsMessageBox()
@@ -70,13 +71,15 @@ import GoogleSignIn
             super.viewWillAppear(animated)
 //            discussionChatView.scrollTableViewToEnd(animated: true)
 
-//            if !discussionsMessageBox.messageTextView.isFocused {
-//                discussionChatView.scrollToSavedContentOffset()
-//            }
-            
-            navigationController?.navigationBar.barTintColor = .black
+            DispatchQueue.main.async { // Giving time for `viewDidLayoutSubviews` to do its thing
+                if !self.scrolledChatViewToSavedOffset {
+                    self.discussionChatView.scrollToSavedContentOffset()
+                    self.scrolledChatViewToSavedOffset = true
+               }
+            }
+//            navigationController?.navigationBar.barTintColor = .black
         }
-        
+    
         func addHeader() {
             
             headerContainer.translatesAutoresizingMaskIntoConstraints = false

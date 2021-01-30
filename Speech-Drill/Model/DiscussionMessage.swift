@@ -12,8 +12,12 @@ struct DiscussionMessage: Codable {
     let message, userCountryCode, userCountryEmoji, userName, userEmailAddress: String
     let messageTimestamp: Double
     let fcmToken, question, recordingUrl, profilePictureUrl: String?
+    
+    enum CodingKeys: CodingKey {
+        case message, userCountryCode, userCountryEmoji, userName, userEmailAddress
+        case messageTimestamp
+        case fcmToken, question, recordingUrl, profilePictureUrl
+    }
 }
 
-let disucssionMessageTimestampKey = "messageTimestamp"
-
-//print("Key: ", DiscussionMessage.CodingKeys.messageTimestamp.stringValue)
+//let disucssionMessageTimestampKey = "messageTimestamp"

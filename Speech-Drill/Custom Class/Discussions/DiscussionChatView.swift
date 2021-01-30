@@ -13,6 +13,14 @@ import FirebaseAuth
 
 class DiscussionChatView: UIView {
     
+    var scrolledToSavedPositionAfterLoadingChats = false
+    var chatDataIsLoaded = false {
+        didSet {
+            print("New value: ", chatDataIsLoaded)
+            scrollTableViewToEnd()
+        }
+    }
+    
     let discussionChatId = "DiscussionChatID"
     let discussionTableView: UITableView
     var messages: [String: [DiscussionMessage]]  = [:]
@@ -87,7 +95,11 @@ class DiscussionChatView: UIView {
                 }
                                 
                 self.discussionTableView.reloadData()
-                self.scrollToSavedContentOffset()
+                self.chatDataIsLoaded = true
+//                if !self.scrolledToSavedPositionAfterLoadingChats {
+//                  self.scrollToSavedContentOffset()
+//                }
+//
             } catch {
                 print(error)
             }
@@ -101,9 +113,9 @@ class DiscussionChatView: UIView {
 //                      self.first = false
 //                      return
 //                  }
-        
-        messagesReference.queryOrdered(byChild: disucssionMessageTimestampKey).queryStarting(atValue: NSDate().timeIntervalSince1970).observe(.childAdded) { (snapshot) in
-        
+        let discussionMessageTimestampKey = DiscussionMessage.CodingKeys.messageTimestamp.stringValue
+        messagesReference.queryOrdered(byChild: discussionMessageTimestampKey).queryStarting(atValue: NSDate().timeIntervalSince1970).observe(.childAdded) { (snapshot) in
+                    
 //            print("Snapshot: ", snapshot)
                         
             self.saveUserEmail()
@@ -325,20 +337,49 @@ extension DiscussionChatView {
     }
     
     func storeContentOffset() {
+        discussionTableView.layoutIfNeeded()
         let defaults = UserDefaults.standard
-        let oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset) )
+        let maxOffsetY = max(0, discussionTableView.maxContentOffset.y)
+        var oldYOffset = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset))
+        oldYOffset = min(oldYOffset, maxOffsetY)
         let currentYOffset = discussionTableView.contentOffset.y
-    
-        if currentYOffset > oldYOffset {
+        let shouldSaveNewOffset: Bool = currentYOffset > oldYOffset
+        
+        print("Will save new chat scroll offset \(currentYOffset)? \(shouldSaveNewOffset)")
+        if shouldSaveNewOffset {
             defaults.set(currentYOffset, forKey: chatViewSeenYContentOffset)
         }
     }
     
     func scrollToSavedContentOffset() {
+        
+        if !chatDataIsLoaded {
+            print("Not scrolling to saved offset as chat data is not loaded")
+            return
+        }
+        
+        discussionTableView.layoutIfNeeded()
         let defaults = UserDefaults.standard
-        let oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset) )
+        var oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset))
+        let maxOffsetY = self.discussionTableView.maxContentOffset.y
+        print("Max offset: ",maxOffsetY, " Saved offset: ", oldYOffset)
+        
+        if maxOffsetY < 0 {
+            return
+        }
+        if scrolledToSavedPositionAfterLoadingChats {
+            print("Already scrolled to saved position after loading chats")
+            return
+        }
+        
+        oldYOffset =  min(oldYOffset, maxOffsetY)
         let offset = CGPoint(x: 0, y: oldYOffset)
-        self.discussionTableView.setContentOffset(offset, animated: true)
+        
+        DispatchQueue.main.async {
+            print("Scrolling to seen end:")
+            self.discussionTableView.setContentOffset(offset, animated: true)
+            self.scrolledToSavedPositionAfterLoadingChats = true
+        }
     }
 }
 

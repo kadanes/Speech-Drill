@@ -66,6 +66,8 @@
 		B2BF9F08214009820015F330 /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BF9F07214009820015F330 /* Pulsing.swift */; };
 		B2D70CB42164A7520003232D /* AnalyticsEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D70CB32164A7520003232D /* AnalyticsEvents.swift */; };
 		B2DB3F232148EE72000DD50E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DB3F222148EE72000DD50E /* ProgressBar.swift */; };
+		B2E0F31D25C46C7400796318 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F31C25C46C7400796318 /* UIScrollView.swift */; };
+		B2E0F32025C532A400796318 /* UserInfoStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F31F25C532A400796318 /* UserInfoStruct.swift */; };
 		B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D7212B1D0E00FC7E28 /* dleft.png */; };
 		B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D8212B1D0F00FC7E28 /* tleft.png */; };
 		B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D9212B1D0F00FC7E28 /* tright.png */; };
@@ -166,6 +168,8 @@
 		B2D70CB32164A7520003232D /* AnalyticsEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
 		B2D70CB7216506E70003232D /* bars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bars.png; sourceTree = "<group>"; };
 		B2DB3F222148EE72000DD50E /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		B2E0F31C25C46C7400796318 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
+		B2E0F31F25C532A400796318 /* UserInfoStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoStruct.swift; sourceTree = "<group>"; };
 		B2E5F5D7212B1D0E00FC7E28 /* dleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dleft.png; sourceTree = "<group>"; };
 		B2E5F5D8212B1D0F00FC7E28 /* tleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tleft.png; sourceTree = "<group>"; };
 		B2E5F5D9212B1D0F00FC7E28 /* tright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tright.png; sourceTree = "<group>"; };
@@ -380,6 +384,7 @@
 				B2BBE30E25B406750054DE1F /* SideNavMenuItemStruct.swift */,
 				B2BBE31125B4096B0054DE1F /* SideNavAdStructure.swift */,
 				B2F0305925B6DF73004A791D /* NoticeStructure.swift */,
+				B2E0F31F25C532A400796318 /* UserInfoStruct.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -427,6 +432,7 @@
 				B2BBE2BB25B0243E0054DE1F /* SequenceExtension.swift */,
 				B2BBE2C325B16B050054DE1F /* UITableViewExtension.swift */,
 				B2F0301725B5D233004A791D /* UIViewEdgeBordersExtension.swift */,
+				B2E0F31C25C46C7400796318 /* UIScrollView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -628,6 +634,7 @@
 				B2E5F5F7212B420900FC7E28 /* ShuffleExtension.swift in Sources */,
 				B2D70CB42164A7520003232D /* AnalyticsEvents.swift in Sources */,
 				B2BBE30925B402EA0054DE1F /* SideNavMenuItemCell.swift in Sources */,
+				B2E0F31D25C46C7400796318 /* UIScrollView.swift in Sources */,
 				B2BBE2B325AF50E90054DE1F /* DiscussionMessage.swift in Sources */,
 				B2BF9F08214009820015F330 /* Pulsing.swift in Sources */,
 				B2F0300925B59D0B004A791D /* SideNavAdsSaver.swift in Sources */,
@@ -657,6 +664,7 @@
 				B2BBE29A25AEF5BD0054DE1F /* DiscussionChatMessageCell.swift in Sources */,
 				B2F0301B25B5D7B8004A791D /* SideNavNoticesTableViewCell.swift in Sources */,
 				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
+				B2E0F32025C532A400796318 /* UserInfoStruct.swift in Sources */,
 				B26DEB9F2161556D006FE754 /* SceenType.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
 				B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */,

@@ -83,15 +83,18 @@ class DiscussionChatMessageCell: UITableViewCell {
             
             senderNameLabel.topAnchor.constraint(equalTo: messageBubble.topAnchor, constant: 10),
             senderNameLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
+//          Causes constraint errors that need to be broken
             senderNameLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
-            
+//          Causes lesser constraint errors that need to be broken
+//            senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
+
             messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 10),
             messageLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
             messageLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
             messageLabel.bottomAnchor.constraint(equalTo: messageSentTimeLabel.topAnchor, constant: -10),
             
             messageSentTimeLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
-            messageSentTimeLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
+//            messageSentTimeLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
             messageSentTimeLabel.bottomAnchor.constraint(equalTo: messageBubble.bottomAnchor, constant: -10),
             
         ])

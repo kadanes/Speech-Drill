@@ -40,7 +40,6 @@ class SideNavNoticeCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(notice: NoticeStructure) {
-        print("Notice: ", notice)
         noticeLabel.text = notice.notice + "\n\n" + notice.date
     }
 }

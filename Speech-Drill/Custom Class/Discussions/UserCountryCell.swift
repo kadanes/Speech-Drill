@@ -49,7 +49,7 @@ class UserCountryCell: UICollectionViewCell {
             countryUserCountLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             countryUserCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant:0),
             countryUserCountLabel.heightAnchor.constraint(equalToConstant: 50),
-            countryUserCountLabel.widthAnchor.constraint(equalToConstant: 40)
+//            countryUserCountLabel.widthAnchor.constraint(equalToConstant: 40)
 //            countryUserCountLabel.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
