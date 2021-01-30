@@ -47,7 +47,7 @@
 		B2B3C66A25BD579000DC9B86 /* SlidingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3C66925BD579000DC9B86 /* SlidingNavigationController.swift */; };
 		B2BBE29725AEF1DD0054DE1F /* DiscussionChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29625AEF1DD0054DE1F /* DiscussionChatView.swift */; };
 		B2BBE29A25AEF5BD0054DE1F /* DiscussionChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29925AEF5BD0054DE1F /* DiscussionChatMessageCell.swift */; };
-		B2BBE29D25AF46000054DE1F /* NSDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */; };
+		B2BBE29D25AF46000054DE1F /* DictionaryKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29C25AF46000054DE1F /* DictionaryKeys.swift */; };
 		B2BBE2B325AF50E90054DE1F /* DiscussionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2B225AF50E90054DE1F /* DiscussionMessage.swift */; };
 		B2BBE2B625B023630054DE1F /* EncodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2B525B023630054DE1F /* EncodableExtension.swift */; };
 		B2BBE2B925B024010054DE1F /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE2B825B024010054DE1F /* DataExtension.swift */; };
@@ -68,6 +68,7 @@
 		B2DB3F232148EE72000DD50E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DB3F222148EE72000DD50E /* ProgressBar.swift */; };
 		B2E0F31D25C46C7400796318 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F31C25C46C7400796318 /* UIScrollView.swift */; };
 		B2E0F32025C532A400796318 /* UserInfoStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F31F25C532A400796318 /* UserInfoStruct.swift */; };
+		B2E0F32325C5555F00796318 /* UserInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F32225C5555F00796318 /* UserInfoHelper.swift */; };
 		B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D7212B1D0E00FC7E28 /* dleft.png */; };
 		B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D8212B1D0F00FC7E28 /* tleft.png */; };
 		B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D9212B1D0F00FC7E28 /* tright.png */; };
@@ -148,7 +149,7 @@
 		B2B3C66925BD579000DC9B86 /* SlidingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingNavigationController.swift; sourceTree = "<group>"; };
 		B2BBE29625AEF1DD0054DE1F /* DiscussionChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionChatView.swift; sourceTree = "<group>"; };
 		B2BBE29925AEF5BD0054DE1F /* DiscussionChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionChatMessageCell.swift; sourceTree = "<group>"; };
-		B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDefaultKeys.swift; sourceTree = "<group>"; };
+		B2BBE29C25AF46000054DE1F /* DictionaryKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryKeys.swift; sourceTree = "<group>"; };
 		B2BBE2B225AF50E90054DE1F /* DiscussionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionMessage.swift; sourceTree = "<group>"; };
 		B2BBE2B525B023630054DE1F /* EncodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableExtension.swift; sourceTree = "<group>"; };
 		B2BBE2B825B024010054DE1F /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 		B2DB3F222148EE72000DD50E /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B2E0F31C25C46C7400796318 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		B2E0F31F25C532A400796318 /* UserInfoStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoStruct.swift; sourceTree = "<group>"; };
+		B2E0F32225C5555F00796318 /* UserInfoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHelper.swift; sourceTree = "<group>"; };
 		B2E5F5D7212B1D0E00FC7E28 /* dleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dleft.png; sourceTree = "<group>"; };
 		B2E5F5D8212B1D0F00FC7E28 /* tleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tleft.png; sourceTree = "<group>"; };
 		B2E5F5D9212B1D0F00FC7E28 /* tright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tright.png; sourceTree = "<group>"; };
@@ -317,7 +319,7 @@
 				B26DEB9E2161556D006FE754 /* SceenType.swift */,
 				B2D70CB32164A7520003232D /* AnalyticsEvents.swift */,
 				B269D3A825ADB9EB0025E1DE /* FirebaseReferences.swift */,
-				B2BBE29C25AF46000054DE1F /* NSDefaultKeys.swift */,
+				B2BBE29C25AF46000054DE1F /* DictionaryKeys.swift */,
 				B2BBE2C725B18DAD0054DE1F /* NotificationNames.swift */,
 				B2F0301125B5CCD3004A791D /* UIFonts.swift */,
 				B2F0301425B5CDAA004A791D /* ExternalLinks.swift */,
@@ -373,6 +375,7 @@
 				B269D3A525ACB7720025E1DE /* UserLocationHelper.swift */,
 				B2BBE36525B498DF0054DE1F /* KeyboardObserver.swift */,
 				B2F0300825B59D0B004A791D /* SideNavAdsSaver.swift */,
+				B2E0F32225C5555F00796318 /* UserInfoHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -647,7 +650,7 @@
 				B2418C1B215EA6A30020E078 /* RevealSideNav.swift in Sources */,
 				B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */,
 				B25F80C8211F667500AD786C /* RoundLabel.swift in Sources */,
-				B2BBE29D25AF46000054DE1F /* NSDefaultKeys.swift in Sources */,
+				B2BBE29D25AF46000054DE1F /* DictionaryKeys.swift in Sources */,
 				B2F0301825B5D233004A791D /* UIViewEdgeBordersExtension.swift in Sources */,
 				B2418C18215E8E490020E078 /* SideNavVC.swift in Sources */,
 				B2F0301225B5CCD3004A791D /* UIFonts.swift in Sources */,
@@ -667,6 +670,7 @@
 				B2E0F32025C532A400796318 /* UserInfoStruct.swift in Sources */,
 				B26DEB9F2161556D006FE754 /* SceenType.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,
+				B2E0F32325C5555F00796318 /* UserInfoHelper.swift in Sources */,
 				B23F7F1621483BA5009B6ECA /* UIConstraints.swift in Sources */,
 				B269D3AC25ADEE650025E1DE /* DiscussionsMessageBox.swift in Sources */,
 				B26C1B37212C8FDE0015795C /* CentralAudioPlayer.swift in Sources */,

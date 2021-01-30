@@ -13,7 +13,7 @@ import UIKit
 func storeLocationInFirebase(locationManager: CLLocationManager) {
     
     let defaults = UserDefaults.standard
-   
+    
     if let isoCode = defaults.string(forKey: userLocationCodeKey) {
         print("Previous default: ", isoCode)
         saveUserLocation(isoCode: isoCode)
@@ -23,7 +23,7 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
     
     let uuid = UIDevice.current.identifierForVendor!.uuidString
     var isoCode = "UNK"
-
+    
     if  CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied
             || !CLLocationManager.locationServicesEnabled() {
         
@@ -31,7 +31,7 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
         
     } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse && CLLocationManager.locationServicesEnabled()  {
         
-
+        
         let geoCoder = CLGeocoder()
         
         guard let currentLocation = locationManager.location else {
@@ -59,7 +59,12 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
 
 func removeLocationFromFirebase() {
     let uuid = UIDevice.current.identifierForVendor!.uuidString
-    userLocationReference.child(uuid).setValue(nil)
+    //    userLocationReference.child(uuid).setValue(nil)
+    userLocationReference.child(uuid).setValue(nil) { (error, reference) in
+        if let error = error {
+            print("Error marking \(uuid) offline: \(error)")
+        }
+    }
 }
 
 func saveUserLocation(isoCode: String) {
@@ -69,7 +74,13 @@ func saveUserLocation(isoCode: String) {
     defaults.set(isoCode, forKey: userLocationCodeKey)
     defaults.set(flag(from: isoCode), forKey: userLocationEmojiKey)
     
-    userLocationReference.child(uuid).setValue(isoCode)
+    //    userLocationReference.child(uuid).setValue(isoCode)
+    userLocationReference.child(uuid).setValue(isoCode) { (error, reference) in
+        if let error = error {
+            print("Error saving \(uuid) location: \(error)")
+        }
+    }
+    
 }
 
 func flag(from country:String) -> String {

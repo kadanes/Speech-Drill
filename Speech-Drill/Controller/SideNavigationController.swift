@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import GoogleSignIn
 
 class SideNavigationController: UIViewController {
     
@@ -18,6 +19,7 @@ class SideNavigationController: UIViewController {
         
     var interactor: Interactor? = nil
     var calledFromVCIndex: Int?
+    let indexOfVCToShowOnLoad: Int = 0
     
     private let sideNavContainer: UIView
     private let sideNavTableView: UITableView
@@ -73,6 +75,8 @@ class SideNavigationController: UIViewController {
         
         view.backgroundColor = MenuHelper.menuBGColor
         
+        print("Google User (SideNav VC): ", GIDSignIn.sharedInstance()?.currentUser)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +84,7 @@ class SideNavigationController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
         if shouldAutoNavigateToChild {
-            if calledFromVCIndex == nil { calledFromVCIndex = 0 }
+            if calledFromVCIndex == nil { calledFromVCIndex = indexOfVCToShowOnLoad }
             navigationController?.pushViewController(menuItems[calledFromVCIndex!].presentedVC, animated: false)
             shouldAutoNavigateToChild = false
             

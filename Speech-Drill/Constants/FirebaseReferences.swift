@@ -16,5 +16,8 @@ let userLocationReference = ref.child("onlineUserLocations")
 let messagesReference = ref.child("discussionMessages")
 let sideNavAdsReference = ref.child("sideNavAds")
 
+let usersReference = ref.child("users")
+let authenticatedUsersReference = usersReference.child("authenticated")
+let unauthenticatedUsersReferences = usersReference.child("unauhtenticated")
 
 let speechDrillDiscussionsFCMTopicName = "SpeechDrillDiscussions"

@@ -59,31 +59,27 @@ class VersionInfoView: UIView {
         ])
         
         
-        var currentVersion = ""
-        let currentBuildNo = getBuildNumber()
-        var latestVersion = ""
-        if let installedVersion = getInstalledVersion() {
-            currentVersion = installedVersion
-        }
-        if let appstoreVersion = getAppstoreVersion() {
-            latestVersion = appstoreVersion
-        }
+        let installedVersion = getInstalledVersionNumber() ?? "NA"
+        let fullInstalledVersion = getFullInstalledAppVersion() ?? "-"
+        let latestVersion = getAppstoreVersion()
         
         
         let versionInfoString = NSMutableAttributedString(string: "ⓘ ", attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .xxlarge)])
     
-        var versionInfo = " v\(currentVersion)"
-        if currentBuildNo != "" {
-            versionInfo += " (\(currentBuildNo))"
-        }
         
-        versionInfoString.append(NSMutableAttributedString(string: versionInfo, attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .small)]))
+        versionInfoString.append(NSMutableAttributedString(string: "v\(fullInstalledVersion)", attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .small)]))
         
-        if currentVersion == latestVersion {
-            appstoreBtn.setTitle("App Store", for: .normal)
+        
+        if let latestVersion = latestVersion {
+            if installedVersion == latestVersion {
+                appstoreBtn.setTitle("App Store", for: .normal)
+            } else {
+                appstoreBtn.setTitle("Download (v\(latestVersion))", for: .normal)
+            }
         } else {
-            appstoreBtn.setTitle("Download (v\(latestVersion))", for: .normal)
+            appstoreBtn.setTitle("App Store", for: .normal)
         }
+        
         versionInfoLbl.attributedText = versionInfoString
         
         addTopBorder(with: .darkGray, andWidth: 1)
@@ -99,7 +95,7 @@ class VersionInfoView: UIView {
         var latestVersion = "0"
         var isVersionSame: Int = 1
         
-        if let cv = getInstalledVersion(), let lv = getAppstoreVersion() {
+        if let cv = getInstalledVersionNumber(), let lv = getAppstoreVersion() {
             currentVersion = cv
             latestVersion = lv
         }

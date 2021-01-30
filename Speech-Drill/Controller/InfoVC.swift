@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import Firebase
+import GoogleSignIn
 
 class InfoVC: UIViewController {
 
@@ -59,6 +60,9 @@ class InfoVC: UIViewController {
                 
         fetchAndSetCredits()
         addHeader()
+        
+        print("Google User (Info VC): ", GIDSignIn.sharedInstance()?.currentUser)
+
     }
     
     

@@ -14,3 +14,7 @@ let userLocationEmojiKey = "UserLocationEmoji"
 let sideNavAdBannerPrefix = "AdBanner_"
 
 let chatViewSeenYContentOffset = "ChatViewSeenYContentOffset"
+
+let appIdKey = "CFBundleIdentifier"
+let appVersionNumberKey = "CFBundleShortVersionString"
+let appBuildNumberKey = "CFBundleVersion"

@@ -12,7 +12,7 @@ import CallKit
 import CoreTelephony
 import Mute
 import Firebase
-
+import GoogleSignIn
 
 class MainVC: UIViewController {
     
@@ -156,7 +156,23 @@ class MainVC: UIViewController {
         
         addHeader()
         
-//        Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
+//        saveBasicUserInfo()
+//        let email = "parthv.21.email@gmail.com"
+//        print("Stripped Email: ", email.replacingOccurrences(of: ".", with: ""))
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+//            saveBasicUserInfo()
+////            print("Google User (Main VC): ", GIDSignIn.sharedInstance()?.currentUser)
+//        }
+        
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if let _ = user {
+                print("User is not nil")
+                saveBasicUserInfo(deleteUUIDInfo: true)
+            } else {
+                print("User is nil")
+                saveBasicUserInfo()
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -133,7 +133,14 @@ import Firebase
                 
                 do {
                     let messageDictionary = try message.dictionary()
-                    messagesReference.childByAutoId().setValue(messageDictionary)
+//                    messagesReference.childByAutoId().setValue(messageDictionary)
+                    
+                    messagesReference.childByAutoId().setValue(messageDictionary) { (error, reference) in
+                        if let error = error {
+                            print("Failed to save message \(messageDictionary) in database: \(error)")
+                        }
+                    }
+                    
                     reregisterForTopicFCM()
                     
                 } catch {

@@ -257,42 +257,49 @@ func convertToMins(seconds: Double) -> String {
 
 func getAppstoreVersion() -> String? {
     let infoDictionary = Bundle.main.infoDictionary
-    let appID = infoDictionary!["CFBundleIdentifier"] as! String
+    let appID = infoDictionary![appIdKey] as! String
     guard let url = URL(string: "http://itunes.apple.com/lookup?bundleId=\(appID)") else {
         print("Bad Appstore URL")
         return nil
-        
     }
+    
     guard let data = try? Data(contentsOf: url) else {
         print("App data not found")
         return nil
         
     }
     
-    let lookup = (try? JSONSerialization.jsonObject(with: data , options: [])) as? [String: Any]
-    if let resultCount = lookup!["resultCount"] as? Int, resultCount == 1 {
-        if let results = lookup!["results"] as? [[String:Any]] {
-            if let appStoreVersion = results[0]["version"] as? String{
-                return appStoreVersion
+    do {
+        guard let lookup = (try JSONSerialization.jsonObject(with: data , options: [])) as? [String: Any] else { return nil }
+            if let resultCount = lookup["resultCount"] as? Int, resultCount == 1 {
+                if let results = lookup["results"] as? [[String:Any]] {
+                    if let appStoreVersion = results[0]["version"] as? String{
+                        return appStoreVersion
+                    }
+                }
             }
-        }
+    } catch {
+        print("Error getting app store version: ", error)
     }
+
     return nil
 }
 
-func getInstalledVersion() -> String? {
-    let infoDictionary = Bundle.main.infoDictionary
-    let currentVersion = infoDictionary!["CFBundleShortVersionString"] as? String
-    return currentVersion
+func getInstalledVersionNumber() -> String? {
+    guard let infoDictionary = Bundle.main.infoDictionary, let currentVersionNumber = infoDictionary[appVersionNumberKey] as? String else { return nil}
+    return currentVersionNumber
 }
 
-func getBuildNumber() -> String {
-    if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-        return build
-    }
-    return ""
+func getInstalledBuildNumber() -> String? {
+    guard let infoDictionary = Bundle.main.infoDictionary, let currentBuildNumber = infoDictionary[appBuildNumberKey] as? String else { return nil}
+    return currentBuildNumber
 }
 
+func getFullInstalledAppVersion() -> String? {
+    guard let installedVersionNumber = getInstalledVersionNumber() else { return nil }
+    guard let installedBuildNumber = getInstalledBuildNumber() else { return "\(installedVersionNumber)(_)" }
+    return "\(installedVersionNumber)(\(installedBuildNumber))"
+}
 
 func validateTextView(textView: UITextView) -> Bool {
     guard let text = textView.text,
