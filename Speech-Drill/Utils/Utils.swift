@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import Mute
+import Firebase
 
 func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
     
@@ -331,3 +332,26 @@ func openAppSettings() {
         print("Can't open app's settings")
     }
 }
+
+func getAuthenticatedUsername() -> String? {
+    
+    guard let user = Auth.auth().currentUser, let userEmail = user.email else { return nil }
+        
+    let userEmailComponents = userEmail.components(separatedBy: "@")
+    if userEmailComponents.count == 0  { return nil }
+    let username = userEmailComponents[0].replacingOccurrences(of: ".", with: "")
+    
+    return username
+}
+
+/// Returns a UUID to idendify users not logged in.
+/// - Returns: Will return unique identifierForVendor if not nil else a randomly generated UUID. Generated will be stored in user defaults with key uuidKey so same value gets returned if possibke when app is reinstalled or identifierForVendor is nil.
+func getUUID() -> String {
+    let defaults = UserDefaults.standard
+    if let storedUUID = defaults.string(forKey: uuidKey) { return storedUUID }
+    
+    let newUUID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+    defaults.setValue(newUUID, forKey: uuidKey)
+    return newUUID
+}
+

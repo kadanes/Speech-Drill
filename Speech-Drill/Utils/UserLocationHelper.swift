@@ -21,7 +21,8 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
     }
     
     
-    let uuid = UIDevice.current.identifierForVendor!.uuidString
+//    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    let uuid = getUUID()
     var isoCode = "UNK"
     
     if  CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied
@@ -58,8 +59,9 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
 
 
 func removeLocationFromFirebase() {
-    let uuid = UIDevice.current.identifierForVendor!.uuidString
-    //    userLocationReference.child(uuid).setValue(nil)
+//    let uuid = UIDevice.current.identifierForVendor!.uuidString
+//    userLocationReference.child(uuid).setValue(nil)
+    let uuid = getUUID()
     userLocationReference.child(uuid).setValue(nil) { (error, reference) in
         if let error = error {
             print("Error marking \(uuid) offline: \(error)")
@@ -68,8 +70,8 @@ func removeLocationFromFirebase() {
 }
 
 func saveUserLocation(isoCode: String) {
-    let uuid = UIDevice.current.identifierForVendor!.uuidString
-    
+//    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    let uuid = getUUID()
     let defaults = UserDefaults.standard
     defaults.set(isoCode, forKey: userLocationCodeKey)
     defaults.set(flag(from: isoCode), forKey: userLocationEmojiKey)

@@ -9,12 +9,14 @@
 import Foundation
 
 
+// NSDefault Setter Keys
 let userLocationCodeKey = "UserLocationCode"
 let userLocationEmojiKey = "UserLocationEmoji"
-let sideNavAdBannerPrefix = "AdBanner_"
+let sideNavAdBannerPrefixKey = "AdBanner_"
+let chatViewSeenYContentOffsetKey = "ChatViewSeenYContentOffset"
+let uuidKey = "DeviceUUID"
 
-let chatViewSeenYContentOffset = "ChatViewSeenYContentOffset"
-
+// Bundle Info Getter Keys
 let appIdKey = "CFBundleIdentifier"
 let appVersionNumberKey = "CFBundleShortVersionString"
 let appBuildNumberKey = "CFBundleVersion"

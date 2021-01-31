@@ -12,7 +12,7 @@ let goGeniusAd = SideNavAdStructure(bannerUrl: "gogenius.png", tagLine: "Call us
 
 let adAdsAdd = SideNavAdStructure(bannerUrl: "ads-here.jpeg", tagLine: "Place ads for study resources!", contact1: SideNavAdContactDetailsStruct(contactTitle: "Send an email", contactNumber: nil, contactEmail: "parthv21@gmail.com"), contact2: SideNavAdContactDetailsStruct(contactTitle: "Umang", contactNumber: "9167884007", contactEmail: nil), websiteUrl: "https://docs.google.com/forms/d/e/1FAIpQLSdvvrBIeeHW0-Q6WBnu6lEBaUS5ZRnpC0hWWSlWuw71aVdzcQ/viewform")
 
-func saveAllAds() {
+fileprivate func saveAllAds() {
         let ads = [goGeniusAd, adAdsAdd]
 
 

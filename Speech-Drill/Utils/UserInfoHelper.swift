@@ -10,68 +10,128 @@ import Foundation
 import Firebase
 import GoogleSignIn
 
-func saveBasicUserInfo(deleteUUIDInfo: Bool = false) {
-        
-    let uuid = UIDevice.current.identifierForVendor?.uuidString ?? valueNotAvailableIndicatorString
-    let appVersion = getFullInstalledAppVersion() ?? valueNotAvailableIndicatorString
-    let lastSeenTimestamp = Double(Date().timeIntervalSince1970)
-    
-    //Gmail Login
-    if let GIDSignInInstance = GIDSignIn.sharedInstance(), let currentUser = GIDSignInInstance.currentUser, let profile = currentUser.profile, let userEmail = profile.email {
-        
-        let userEmailComponents = userEmail.components(separatedBy: "@")
-        
-        if userEmailComponents.count == 0  { return }
-        
-        let username = userEmailComponents[0].replacingOccurrences(of: ".", with: "")
-        
-        var userName: String = valueNotAvailableIndicatorString
-        if let firstName = profile.givenName {
-            userName = firstName
-        }
-        if let familyName = profile.familyName {
-            userName += " \(familyName)"
-        }
-        var userProfilePictureURL = valueNotAvailableIndicatorString
-        if let unwrappedUserProfilePictureURL = profile.imageURL(withDimension: 100) {
-            userProfilePictureURL = String(describing: unwrappedUserProfilePictureURL)
-        }
-        
-        let userInfo = UserInfo(userName: userName, userEmailID: userEmail, userProfilePictureURL: userProfilePictureURL, deviceUUID: uuid, authenticationType: .gmail, appVersion: appVersion, lastSeenTimestamp: lastSeenTimestamp)
-        
-        do {
-            let userInfoDict = try userInfo.dictionary()
-            authenticatedUsersReference.child(username).setValue(userInfoDict) { (error, ref) in
-                if let error = error {
-                    print("Error storing authenticated user info in firebase: \(error)")
-                } else {
-                    print("Deleting UUID Info")
-                    unauthenticatedUsersReferences.child(uuid).setValue(nil) { (error, reference) in
-                        if let error = error {
-                            print("Error deleting unauthenticated user info from firebase: \(error)")
-                        }
-                    }
-                }
-            }
-        } catch {
-            print("Error saving authenticated user info ", error)
-        }
-        
-    } else {
-        
-        let userInfo = UserInfo(deviceUUID: uuid, authenticationType: .none, appVersion: appVersion, lastSeenTimestamp: lastSeenTimestamp)
-                
-        do {
-            let userInfoDict = try userInfo.dictionary()
-            unauthenticatedUsersReferences.child(uuid).setValue(userInfoDict) { (error, ref) in
-                if let error = error {
-                    print("Error storing unauthenticated user info in firebase: \(error)")
-                }
-            }
-        } catch {
-            print("Error saving unauthenticated user info ", error)
+
+fileprivate func setUserInfoValueWithErrorLogging(ref: DatabaseReference, value: Any?) {
+    ref.setValue(value) { (error, ref) in
+        if let error = error {
+            print("Error storing user info  '\(value)' for key '\(ref)' to firebase.\n\(String(describing: error))")
         }
     }
+}
+
+
+fileprivate func getUserInfoReference() -> DatabaseReference {
+    var userInfoReference: DatabaseReference
+    if let username = getAuthenticatedUsername() {
+        userInfoReference = authenticatedUsersReference.child(username)
+    } else {
+        userInfoReference = unauthenticatedUsersReferences.child(getUUID())
+    }
+    return userInfoReference
+}
+
+fileprivate func saveUserInfo(for key: UserInfo.CodingKeys, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
+    //Authenticated
+    var userInfoReference = getUserInfoReference()
+    userInfoReference = userInfoReference.child(key.stringValue)
+    if once {
+        userInfoReference.observeSingleEvent(of: .value) { (snapshot) in
+            if !snapshot.exists() {
+                setUserInfoValueWithErrorLogging(ref: userInfoReference, value: value)
+            }
+        }
+    } else {
+        setUserInfoValueWithErrorLogging(ref: userInfoReference, value: value)
+    }
+}
+
+fileprivate func unwrapUserInfo(from value: String?) -> String {
+    if let value = value { return value }
+    return valueNotAvailableIndicatorString
+}
+
+fileprivate func unwrapUserInfo(from value: Double?) -> Double {
+    if let value = value { return value }
+    return valueNotAvailableIndicatorDouble
+}
+
+fileprivate func unwrapUserInfo(from value: Int?) -> Int {
+    if let value = value { return value }
+    return valueNotAvailableIndicatorInt
+}
+
+fileprivate func unwrapUserInfo(from value: URL?) -> String {
+    if let value = value {
+        return value.absoluteString
+    }
+    return valueNotAvailableIndicatorString
+}
+
+func saveUserEmail() {
+//    let userEmail: String = unwrapUserInfo(from: Auth.auth().currentUser?.email ?? nil)
+    let userEmail: String? = Auth.auth().currentUser?.email ?? nil
+    saveUserInfo(for: .userEmailID, as: userEmail, once: true)
+}
+
+func saveUserDisplayName() {
+//    let userDisplayName: String = unwrapUserInfo(from: Auth.auth().currentUser?.displayName ?? nil)
+    let userDisplayName: String? = Auth.auth().currentUser?.displayName ?? nil
+    saveUserInfo(for: .userDisplayName, as: userDisplayName, once: false)
+}
+
+func saveUserProfilePictureURL() {
+//    let userProfilePictureURL: String = unwrapUserInfo(from: Auth.auth().currentUser?.photoURL ?? nil)
+    let userProfilePictureURL: String? = Auth.auth().currentUser?.photoURL?.absoluteString ?? nil
+    saveUserInfo(for: .userProfilePictureURL, as: userProfilePictureURL, once: false)
+}
+
+func saveDeviceUUID() {
+    saveUserInfo(for: .deviceUUID, as: getuid(), once: false)
+}
+
+func saveAuthenticationType() {
+    let authenticationType: String = Auth.auth().currentUser?.providerID ?? AuthenticationType.none.rawValue
+    saveUserInfo(for: .authenticationType, as: authenticationType, once: false)
+}
+
+func saveInstalledAppVersion() {
+//    let installedAppVersion: String = unwrapUserInfo(from: getFullInstalledAppVersion())
+    let installedAppVersion: String? = getFullInstalledAppVersion()
+    saveUserInfo(for: .installedAppVersion, as: installedAppVersion, once: false)
+}
+
+func saveSeenTimestamp() {
+    let seenTimestamp = Double(Date().timeIntervalSince1970)
+    saveUserInfo(for: .lastSeenTimestamp, as: seenTimestamp, once: false)
+    saveUserInfo(for: .firstSeenTimestamp, as: seenTimestamp, once: true)
+}
+
+func saveUserLocationInfo() {
+    let currentUserLocation: String = UserDefaults.standard.string(forKey: userLocationCodeKey) ?? "UNK"
+    saveUserInfo(for: .currentUserLocation, as: currentUserLocation, once: false)
+    
+    let allUserLocationsInfoReference = getUserInfoReference().child(UserInfo.CodingKeys.allUserLocations.stringValue)
+    allUserLocationsInfoReference.observeSingleEvent(of: .value) { (snapshot) in
+        if snapshot.exists() {
+            if var value = snapshot.value as? [String] {
+                if !value.contains(currentUserLocation) {
+                    value.append(currentUserLocation)
+                    setUserInfoValueWithErrorLogging(ref: allUserLocationsInfoReference, value: value)
+                }
+            }
+        } else {
+            setUserInfoValueWithErrorLogging(ref: allUserLocationsInfoReference, value: [currentUserLocation])
+        }
+    }
+}
+
+
+
+func saveBasicUserInfo(deleteUUIDInfo: Bool = false) {
+    saveUserDisplayName()
+    saveUserEmail()
+    saveUserProfilePictureURL()
+    saveSeenTimestamp()
 }
 
 func saveUserLocationInfo(isoCode: String, countryEmoji: String) {

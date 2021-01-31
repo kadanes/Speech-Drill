@@ -13,56 +13,59 @@ let valueNotAvailableIndicatorDouble: Double = 0
 let valueNotAvailableIndicatorInt: Int = 0
 
 struct UserInfo: Codable {
-    let userName, userEmailID, userProfilePictureURL: String
-    let deviceUUID, fcmToken, currentUserLocation: String
+    let userDisplayName, userEmailID, userProfilePictureURL, fcmToken, currentUserLocation: String?
+    let installedAppVersion, lastReadMesssageID: String?
+    let deviceUUID: String
     let allUserLocations: [String]
-    let appVersion, lastReadMesssageID: String
     let currentNumberOfSavedRecordings: Int
-    let lastSeenTimestamp: Double
+    let lastSeenTimestamp, firstSeenTimestamp: Double
+    let lastReadMesssageTimestamp: Double?
     let authenticationType: AuthenticationType
     
     enum CodingKeys: CodingKey {
-        case userName, userEmailID, deviceUUID, userProfilePictureURL, appVersion, fcmToken, lastReadMesssageID, currentUserLocation
+        case userDisplayName, userEmailID, deviceUUID, userProfilePictureURL, installedAppVersion, fcmToken, lastReadMesssageID, currentUserLocation
         case allUserLocations
         case currentNumberOfSavedRecordings
-        case lastSeenTimestamp
+        case lastSeenTimestamp, firstSeenTimestamp, lastReadMesssageTimestamp
         case authenticationType
     }
 }
 
-extension UserInfo {
-    init(userName: String, userEmailID: String, userProfilePictureURL: String, deviceUUID: String, authenticationType: AuthenticationType, appVersion: String, lastSeenTimestamp: Double) {
-        self.userName = userName
-        self.userEmailID = userEmailID
-        self.userProfilePictureURL = userProfilePictureURL
-        self.deviceUUID = deviceUUID
-        self.authenticationType = authenticationType
-        self.appVersion = appVersion
-        self.lastSeenTimestamp = lastSeenTimestamp
-
-        fcmToken = valueNotAvailableIndicatorString
-        currentUserLocation = valueNotAvailableIndicatorString
-        lastReadMesssageID = valueNotAvailableIndicatorString
-        allUserLocations = [valueNotAvailableIndicatorString]
-        currentNumberOfSavedRecordings = valueNotAvailableIndicatorInt
-    }
-    
-    init(deviceUUID: String, authenticationType: AuthenticationType, appVersion: String, lastSeenTimestamp: Double) {
-        self.deviceUUID = deviceUUID
-        self.authenticationType = authenticationType
-        self.appVersion = appVersion
-        self.lastSeenTimestamp = lastSeenTimestamp
-
-        userName = valueNotAvailableIndicatorString
-        userEmailID = valueNotAvailableIndicatorString
-        userProfilePictureURL = valueNotAvailableIndicatorString
-        fcmToken = valueNotAvailableIndicatorString
-        currentUserLocation = valueNotAvailableIndicatorString
-        lastReadMesssageID = valueNotAvailableIndicatorString
-        allUserLocations = [valueNotAvailableIndicatorString]
-        currentNumberOfSavedRecordings = valueNotAvailableIndicatorInt
-    }
-}
+//extension UserInfo {
+//    init(userName: String, userEmailID: String, userProfilePictureURL: String, deviceUUID: String, authenticationType: AuthenticationType, appVersion: String, lastSeenTimestamp: Double) {
+//        self.userDisplayName = userName
+//        self.userEmailID = userEmailID
+//        self.userProfilePictureURL = userProfilePictureURL
+//        self.deviceUUID = deviceUUID
+//        self.authenticationType = authenticationType
+//        self.installedAppVersion = appVersion
+//        self.lastSeenTimestamp = lastSeenTimestamp
+//
+//        fcmToken = valueNotAvailableIndicatorString
+//        currentUserLocation = valueNotAvailableIndicatorString
+//        lastReadMesssageID = valueNotAvailableIndicatorString
+//        allUserLocations = [valueNotAvailableIndicatorString]
+//        currentNumberOfSavedRecordings = valueNotAvailableIndicatorInt
+//        firstSeenTimestamp = valueNotAvailableIndicatorDouble
+//    }
+//
+//    init(deviceUUID: String, authenticationType: AuthenticationType, appVersion: String, lastSeenTimestamp: Double) {
+//        self.deviceUUID = deviceUUID
+//        self.authenticationType = authenticationType
+//        self.installedAppVersion = appVersion
+//        self.lastSeenTimestamp = lastSeenTimestamp
+//
+//        userDisplayName = valueNotAvailableIndicatorString
+//        userEmailID = valueNotAvailableIndicatorString
+//        userProfilePictureURL = valueNotAvailableIndicatorString
+//        fcmToken = valueNotAvailableIndicatorString
+//        currentUserLocation = valueNotAvailableIndicatorString
+//        lastReadMesssageID = valueNotAvailableIndicatorString
+//        allUserLocations = [valueNotAvailableIndicatorString]
+//        currentNumberOfSavedRecordings = valueNotAvailableIndicatorInt
+//        firstSeenTimestamp = valueNotAvailableIndicatorDouble
+//    }
+//}
 
 enum AuthenticationType: String, Codable {
     case none, gmail

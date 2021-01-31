@@ -340,14 +340,14 @@ extension DiscussionChatView {
         discussionTableView.layoutIfNeeded()
         let defaults = UserDefaults.standard
         let maxOffsetY = max(0, discussionTableView.maxContentOffset.y)
-        var oldYOffset = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset))
+        var oldYOffset = CGFloat(defaults.double(forKey: chatViewSeenYContentOffsetKey))
         oldYOffset = min(oldYOffset, maxOffsetY)
         let currentYOffset = discussionTableView.contentOffset.y
         let shouldSaveNewOffset: Bool = currentYOffset > oldYOffset
         
         print("Will save new chat scroll offset \(currentYOffset)? \(shouldSaveNewOffset)")
         if shouldSaveNewOffset {
-            defaults.set(currentYOffset, forKey: chatViewSeenYContentOffset)
+            defaults.set(currentYOffset, forKey: chatViewSeenYContentOffsetKey)
         }
     }
     
@@ -360,7 +360,7 @@ extension DiscussionChatView {
         
         discussionTableView.layoutIfNeeded()
         let defaults = UserDefaults.standard
-        var oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffset))
+        var oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffsetKey))
         let maxOffsetY = self.discussionTableView.maxContentOffset.y
         print("Max offset: ",maxOffsetY, " Saved offset: ", oldYOffset)
         

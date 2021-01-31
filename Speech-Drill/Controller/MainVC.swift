@@ -167,7 +167,7 @@ class MainVC: UIViewController {
         Auth.auth().addStateDidChangeListener { (auth, user) in
             if let _ = user {
                 print("User is not nil")
-                saveBasicUserInfo(deleteUUIDInfo: true)
+                saveBasicUserInfo(deleteUUIDInfo: false)
             } else {
                 print("User is nil")
                 saveBasicUserInfo()

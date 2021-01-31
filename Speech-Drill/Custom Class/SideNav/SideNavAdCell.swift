@@ -121,7 +121,7 @@ class SideNavAdCell: UICollectionViewCell {
         
         
         let bannerFilePath: String = adInformation.bannerUrl
-        let bannerFileUserDefaultsKey = sideNavAdBannerPrefix + bannerFilePath
+        let bannerFileUserDefaultsKey = sideNavAdBannerPrefixKey + bannerFilePath
         
         if let bannerImageData = userDefaults.object(forKey: bannerFileUserDefaultsKey) as? Data {
             let bannerImage = UIImage(data: bannerImageData)
