@@ -167,7 +167,7 @@ class MainVC: UIViewController {
         Auth.auth().addStateDidChangeListener { (auth, user) in
             if let _ = user {
                 print("User is not nil")
-                saveBasicUserInfo(deleteUUIDInfo: false)
+                saveBasicUserInfo(deleteUUIDInfo: true)
             } else {
                 print("User is nil")
                 saveBasicUserInfo()
@@ -657,7 +657,7 @@ class MainVC: UIViewController {
     }
     
     ///Check if user is recording a topic
-    func checkIfRecordingIsOn()->Bool{
+    func checkIfRecordingIsOn() -> Bool {
         return isThinking || isRecording
     }
     
@@ -686,17 +686,17 @@ class MainVC: UIViewController {
                         
                         let url = URL(fileURLWithPath: documents+"/"+"\(file)")
                         
-                        var recordingURLs = recordingUrlsDict[date]
+                        var recordingURLs = recordingUrlsDict[date, default: [URL]()]
                         
-                        if recordingURLs == nil {
-                            recordingURLs = [URL]()
-                        }
+//                        if recordingURLs == nil {
+//                            recordingURLs = [URL]()
+//                        }
                         
                         if (url == currentRecordingURL && !isRecording || url != currentRecordingURL){
-                            recordingURLs?.append(url)
+                            recordingURLs.append(url)
                         }
                         
-                        if (recordingURLs?.count)! > 0 {
+                        if (recordingURLs.count) > 0 {
                             recordingUrlsDict[date] = recordingURLs
                         }
                         
@@ -704,6 +704,10 @@ class MainVC: UIViewController {
                 }
             }
         }
+        
+        print("Number of recordings: ", countNumberOfRecordings())
+        userDefaults.setValue(countNumberOfRecordings(), forKey: recordingsCountKey)
+        saveCurrentNumberOfSavedRecordings()
     }
     
     func setHiddenVisibleSectionList() {
@@ -778,6 +782,12 @@ class MainVC: UIViewController {
     func getAudioFilesList(date: String) -> [URL] {
         guard let urlList = recordingUrlsDict[date] else {return [URL]()}
         return urlList
+    }
+    
+    func countNumberOfRecordings() -> Int {
+        let datedRecordingsCount = recordingUrlsDict.values.map { $0.count }
+        let recordingsCount = datedRecordingsCount.reduce(0, { $0 + $1 })
+        return recordingsCount
     }
 }
 
@@ -870,6 +880,9 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
         
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
+        
+        userDefaults.setValue(countNumberOfRecordings() + 1, forKey: recordingsCountKey)
+        saveCurrentNumberOfSavedRecordings()
         
         if !recordingUrlsDict.keys.contains(date) {
             var urls = [URL]()

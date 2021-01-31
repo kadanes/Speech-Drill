@@ -82,7 +82,7 @@ func saveUserLocation(isoCode: String) {
             print("Error saving \(uuid) location: \(error)")
         }
     }
-    
+    saveUserLocationInfo()
 }
 
 func flag(from country:String) -> String {

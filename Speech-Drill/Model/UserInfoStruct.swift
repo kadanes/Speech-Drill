@@ -14,7 +14,7 @@ let valueNotAvailableIndicatorInt: Int = 0
 
 struct UserInfo: Codable {
     let userDisplayName, userEmailID, userProfilePictureURL, fcmToken, currentUserLocation: String?
-    let installedAppVersion, lastReadMesssageID: String?
+    let firstInstalledAppVersion, currentInstalledAppVersion, lastReadMesssageID: String?
     let deviceUUID: String
     let allUserLocations: [String]
     let currentNumberOfSavedRecordings: Int
@@ -23,7 +23,7 @@ struct UserInfo: Codable {
     let authenticationType: AuthenticationType
     
     enum CodingKeys: CodingKey {
-        case userDisplayName, userEmailID, deviceUUID, userProfilePictureURL, installedAppVersion, fcmToken, lastReadMesssageID, currentUserLocation
+        case userDisplayName, userEmailID, deviceUUID, userProfilePictureURL, firstInstalledAppVersion, currentInstalledAppVersion, fcmToken, lastReadMesssageID, currentUserLocation
         case allUserLocations
         case currentNumberOfSavedRecordings
         case lastSeenTimestamp, firstSeenTimestamp, lastReadMesssageTimestamp

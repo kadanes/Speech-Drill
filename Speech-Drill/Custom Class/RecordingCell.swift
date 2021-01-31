@@ -352,6 +352,11 @@ class RecordingCell: UITableViewCell {
             let deleted = deleteStoredRecording(recordingURL: url)
             if deleted == .Success {
                 delegate?.deleteRow(with: url)
+                let userDefaults = UserDefaults.standard
+                var newRecordingsCount = userDefaults.integer(forKey: recordingsCountKey) - 1
+                newRecordingsCount = max(newRecordingsCount, 0)
+                userDefaults.setValue(newRecordingsCount, forKey: recordingsCountKey)
+                saveCurrentNumberOfSavedRecordings()
             }
         }
     }

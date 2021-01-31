@@ -142,12 +142,8 @@ class DiscussionChatMessageCell: UITableViewCell {
         let nonSenderCorners: CACornerMask =  [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         
         
-        messageBubble.layer.maskedCorners = isSender ?
-            // topLeft, topRight, bottomRight
-            senderCorners
-            :
-            // topLeft, topRight, bottomLeft
-            nonSenderCorners
+        messageBubble.layer.maskedCorners = isSender ? senderCorners : nonSenderCorners
+        updateLastReadMessageTimestamp(message: message)
 //
 //        if let previousMessage = previousMessage {
 //            if message.userEmailAddress == previousMessage.userEmailAddress && message.userCountryCode == previousMessage.userCountryCode && isSender {
@@ -158,6 +154,16 @@ class DiscussionChatMessageCell: UITableViewCell {
 //        } else {
 //            senderNameLabel.isHidden = false
 //        }
+    }
+    
+    func updateLastReadMessageTimestamp(message: DiscussionMessage) {
+        let defaults = UserDefaults.standard
+        let previousLastReadMessageTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
+        if previousLastReadMessageTimestamp < message.messageTimestamp {
+            defaults.setValue(message.messageTimestamp, forKey: lastReadMessageTimestampKey)
+            saveLastReadMessageTimestamp()
+        }
+        
     }
 }
 

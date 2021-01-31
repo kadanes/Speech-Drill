@@ -97,13 +97,19 @@ func saveAuthenticationType() {
 func saveInstalledAppVersion() {
 //    let installedAppVersion: String = unwrapUserInfo(from: getFullInstalledAppVersion())
     let installedAppVersion: String? = getFullInstalledAppVersion()
-    saveUserInfo(for: .installedAppVersion, as: installedAppVersion, once: false)
+    saveUserInfo(for: .currentInstalledAppVersion, as: installedAppVersion, once: false)
+    saveUserInfo(for: .firstInstalledAppVersion, as: installedAppVersion, once: true)
 }
 
 func saveSeenTimestamp() {
     let seenTimestamp = Double(Date().timeIntervalSince1970)
-    saveUserInfo(for: .lastSeenTimestamp, as: seenTimestamp, once: false)
+    saveUserInfo(for: .lastSeenTimestamp, as: nil, once: false)
     saveUserInfo(for: .firstSeenTimestamp, as: seenTimestamp, once: true)
+}
+
+func saveLastSeenTimestamp(once: Bool = false) {
+    let seenTimestamp = Double(Date().timeIntervalSince1970)
+    saveUserInfo(for: .lastSeenTimestamp, as: seenTimestamp, once: once)
 }
 
 func saveUserLocationInfo() {
@@ -125,6 +131,19 @@ func saveUserLocationInfo() {
     }
 }
 
+func saveFCMToken() {    
+    saveUserInfo(for: .fcmToken, as: Messaging.messaging().fcmToken, once: false)
+}
+
+func saveCurrentNumberOfSavedRecordings() {
+    let currentNumberOfSavedRecordings = UserDefaults.standard.integer(forKey: recordingsCountKey)
+    saveUserInfo(for: .currentNumberOfSavedRecordings, as: currentNumberOfSavedRecordings, once: false)
+}
+
+func saveLastReadMessageTimestamp() {
+    let lastReadMessageTimestamp = UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)
+    saveUserInfo(for: .lastReadMesssageTimestamp, as: lastReadMessageTimestamp, once: false)
+}
 
 
 func saveBasicUserInfo(deleteUUIDInfo: Bool = false) {
@@ -132,8 +151,8 @@ func saveBasicUserInfo(deleteUUIDInfo: Bool = false) {
     saveUserEmail()
     saveUserProfilePictureURL()
     saveSeenTimestamp()
-}
-
-func saveUserLocationInfo(isoCode: String, countryEmoji: String) {
-    
+    saveInstalledAppVersion()
+    saveAuthenticationType()
+    saveFCMToken()
+    saveUserLocationInfo()
 }

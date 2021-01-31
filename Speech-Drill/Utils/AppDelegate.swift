@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let userDefaults = UserDefaults.standard
         
-        let topicNumber  = userDefaults.integer(forKey: "topicNumber")
+        let topicNumber = userDefaults.integer(forKey: currentTopicNumberKey)
         if (topicNumber == 0) {
-            userDefaults.set(1, forKey: "topicNumber")
+            userDefaults.set(1, forKey: currentTopicNumberKey)
         }
         
         FirebaseApp.configure()
@@ -56,10 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             options: authOptions,
             completionHandler: {_, _ in })
         application.registerForRemoteNotifications()
-        InstanceID.instanceID().getID { (token, error) in
-            print("Token: ", token)
-            Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
-        }
+//        InstanceID.instanceID().getID { (token, error) in
+//            Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
+//        }
                 
         return true
     }
@@ -74,13 +73,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
         removeLocationFromFirebase()
-        
+        saveLastSeenTimestamp()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        
+
         storeLocationInFirebase(locationManager: locationManager)
+        saveSeenTimestamp()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -98,7 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("Error marking \(uuid) offline: \(error)")
             }
         }
-        
+        saveLastSeenTimestamp(once: true)
         print("Making uuid ", uuid, "ofline")
     }
     
@@ -125,11 +125,13 @@ extension AppDelegate: CLLocationManagerDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     
-    func application(_ application: UIApplication,
-                 didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Messaging.messaging().apnsToken = deviceToken as Data
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("FCM Token: ", fcmToken)
+        Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
+        UserDefaults.standard.setValue(fcmToken, forKey: fcmTokenKey)
+        saveFCMToken()
     }
-
+    
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         // Print full message.
         print("User Info: ")
