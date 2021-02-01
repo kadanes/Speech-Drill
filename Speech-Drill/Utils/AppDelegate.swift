@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     let locationManager: CLLocationManager = CLLocationManager()
+    var sideNav: SideNavigationController?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -42,9 +43,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         //        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
         
-        let sideNav = SideNavigationController()
-        let sideNavigationController = SlidingNavigationController.init(rootViewController: sideNav)
+        sideNav = SideNavigationController()
+        let sideNavigationController = SlidingNavigationController.init(rootViewController: sideNav!)
         self.window?.rootViewController = sideNavigationController
+        
+        if let launchOptions = launchOptions, let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable : Any] {
+            NSLog("app recieved notification from remote \(notification)")
+            self.application(application, didReceiveRemoteNotification: notification)
+        } else {
+            NSLog("app did not recieve notification")
+        }
         
         // For iOS 10 display notification (sent via APNS)
         UNUserNotificationCenter.current().delegate = self
@@ -138,6 +146,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         print(userInfo)
 //        sideNav?.calledFromVCIndex = 1
 //        sideNav?.shouldAutoNavigateToChild = true
+        guard let sideNav = sideNav else { return }
+        if sideNav.shouldAutoNavigateToChild && sideNav.calledFromVCIndex == nil {
+            sideNav.calledFromVCIndex = 1
+        } else {
+            sideNav.viewDiscussions(with: userInfo)
+        }
     }
 
     // This method will be called when app received push notifications in foreground

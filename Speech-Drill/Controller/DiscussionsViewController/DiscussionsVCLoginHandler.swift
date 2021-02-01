@@ -1,0 +1,61 @@
+//
+//  DiscussionsVCLoginHandler.swift
+//  Speech-Drill
+//
+//  Created by Parth Tamane on 01/02/21.
+//  Copyright © 2021 Parth Tamane. All rights reserved.
+//
+
+import Foundation
+import GoogleSignIn
+import FirebaseAuth
+
+//MARK:- Login Handler
+extension DiscussionsViewController: GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        // ...
+        if let error = error {
+            // ...
+            print("Error signing in")
+            print(error)
+            return
+        }
+        
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        
+        Auth.auth().signIn(with: credential) { (authResult, error) in
+            if let error = error {
+                print("authentication error \(error.localizedDescription)")
+            }
+        }
+        setUserProfileImage()
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
+    }
+    
+    func setUserProfileImage() {
+        discussionChatView.saveUserEmail()
+        guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
+            DispatchQueue.main.async {
+                [weak self] in
+                self?.userProfileButton.setImage(smallUserPlaceholder, for: .normal)
+            }
+            return
+        }
+        guard let userImageUrl = googleUser.profile.imageURL(withDimension: 40) else { return }
+        URLSession.shared.dataTask(with: userImageUrl) { (data, response, error) in
+            
+            guard let data = data, error == nil else { return }
+            DispatchQueue.main.async() { [weak self] in
+                let userImage = UIImage(data: data)
+                self?.userProfileButton.setImage(userImage, for: .normal)
+            }
+        }.resume()
+    }
+}
+

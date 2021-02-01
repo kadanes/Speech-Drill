@@ -90,7 +90,7 @@ func saveDeviceUUID() {
 }
 
 func saveAuthenticationType() {
-    let authenticationType: String = Auth.auth().currentUser?.providerID ?? AuthenticationType.none.rawValue
+    let authenticationType: String = Auth.auth().currentUser?.providerData[0].providerID ?? AuthenticationType.none.rawValue
     saveUserInfo(for: .authenticationType, as: authenticationType, once: false)
 }
 
