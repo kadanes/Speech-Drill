@@ -16,8 +16,14 @@ class DiscussionChatView: UIView {
     var scrolledToSavedPositionAfterLoadingChats = false
     var chatDataIsLoaded = false {
         didSet {
-            print("New value: ", chatDataIsLoaded)
-            scrollTableViewToEnd()
+//            scrollTableViewToEnd()
+            scrollToLastReadMessage()
+        }
+    }
+    
+    var isPresentedForTheFirstTime = false {
+        didSet {
+            scrollToLastReadMessage()
         }
     }
     
@@ -42,7 +48,7 @@ class DiscussionChatView: UIView {
         discussionTableView.delegate = self
         discussionTableView.dataSource = self
     
-        discussionTableView.estimatedRowHeight = 30
+        discussionTableView.estimatedRowHeight = 300
         discussionTableView.rowHeight = UITableViewAutomaticDimension
         
         self.addSubview(discussionTableView)
@@ -191,10 +197,18 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+//        print("Presenting cell: ", indexPath)
+        
         guard let discussionChatMessageCell = tableView.dequeueReusableCell(withIdentifier: discussionChatId, for: indexPath) as? DiscussionChatMessageCell else { return UITableViewCell()}
         
+        guard indexPath.section < messageSendDates.count, let messagesForSection = messages[messageSendDates[indexPath.section]], indexPath.row < messagesForSection.count else {
+            print("\(indexPath) is out of bounds for displaying message cell")
+            return UITableViewCell()
+        }
         
-        let message = messages[messageSendDates[indexPath.section], default: [DiscussionMessage]()][indexPath.row]
+        let message = messagesForSection[indexPath.row]
+//        let message = messages[messageSendDates[indexPath.section], default: [DiscussionMessage]()][indexPath.row]
         
         var previousRow = indexPath.row - 1
         var previousSection = indexPath.section
@@ -212,6 +226,12 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         }
             
         discussionChatMessageCell.configureCell(message:message, isSender: message.userEmailAddress == userEmail, previousMessage: previousMessage)
+        
+        if let visibleRows = tableView.indexPathsForVisibleRows, visibleRows.contains(indexPath) {
+//            print("Presenting Cell is visible: ", indexPath)
+            discussionChatMessageCell.updateLastReadMessageTimestamp(message: message)
+        }
+        
         
         return discussionChatMessageCell
     }
@@ -239,6 +259,10 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = .clear
+        
+        if let visibleRows = tableView.indexPathsForVisibleRows, visibleRows.contains(indexPath) {
+//            print("Displaying Cell is visible: ", indexPath)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -264,6 +288,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         storeContentOffset()
+        saveReadTimestampForVisibleCell()
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -271,15 +296,14 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
             return
         }
         storeContentOffset()
+        saveReadTimestampForVisibleCell()
     }
 }
 
 //MARK:- Utility Functions
-
 extension DiscussionChatView {
     
     func saveUserEmail() {
-        print("Saving email: ", Auth.auth().currentUser)
         guard let currentUser = Auth.auth().currentUser, let userEmail = currentUser.email else {
             if self.userEmail == notLoggedInUserEmailId {
                 return
@@ -345,7 +369,7 @@ extension DiscussionChatView {
         let currentYOffset = discussionTableView.contentOffset.y
         let shouldSaveNewOffset: Bool = currentYOffset > oldYOffset
         
-        print("Will save new chat scroll offset \(currentYOffset)? \(shouldSaveNewOffset)")
+//        print("Will save new chat scroll offset \(currentYOffset)? \(shouldSaveNewOffset)")
         if shouldSaveNewOffset {
             defaults.set(currentYOffset, forKey: chatViewSeenYContentOffsetKey)
         }
@@ -354,7 +378,7 @@ extension DiscussionChatView {
     func scrollToSavedContentOffset() {
         
         if !chatDataIsLoaded {
-            print("Not scrolling to saved offset as chat data is not loaded")
+//            print("Not scrolling to saved offset as chat data is not loaded")
             return
         }
         
@@ -362,13 +386,13 @@ extension DiscussionChatView {
         let defaults = UserDefaults.standard
         var oldYOffset: CGFloat = CGFloat(defaults.double(forKey: chatViewSeenYContentOffsetKey))
         let maxOffsetY = self.discussionTableView.maxContentOffset.y
-        print("Max offset: ",maxOffsetY, " Saved offset: ", oldYOffset)
+//        print("Max offset: ",maxOffsetY, " Saved offset: ", oldYOffset)
         
         if maxOffsetY < 0 {
             return
         }
         if scrolledToSavedPositionAfterLoadingChats {
-            print("Already scrolled to saved position after loading chats")
+//            print("Already scrolled to saved position after loading chats")
             return
         }
         
@@ -376,7 +400,7 @@ extension DiscussionChatView {
         let offset = CGPoint(x: 0, y: oldYOffset)
         
         DispatchQueue.main.async {
-            print("Scrolling to seen end:")
+//            print("Scrolling to seen end:")
             self.discussionTableView.setContentOffset(offset, animated: true)
             self.scrolledToSavedPositionAfterLoadingChats = true
         }
@@ -384,9 +408,98 @@ extension DiscussionChatView {
 }
 
 //MARK:- Actions
-
 extension DiscussionChatView {
     @objc func sendTapNotification() {
         NotificationCenter.default.post(name: NSNotification.Name(chatViewTappedNotificationName), object: nil)
+    }
+    
+    
+    func scrollToLastReadMessage(messageTimestamp: Double? = nil, messageId: String? = nil) {
+//        return
+        let defaults = UserDefaults.standard
+        
+        var lastReadMessageTimestamp: Double = 0
+        var lastReadMessageID: String? = nil
+        
+        if let messageTimestamp = messageTimestamp {
+            lastReadMessageTimestamp = messageTimestamp
+            lastReadMessageID = messageId
+        } else {
+            lastReadMessageTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
+            lastReadMessageID = defaults.string(forKey: lastReadMessageIDKey)
+        }
+        
+       NSLog("Last Read Message TS: \(lastReadMessageTimestamp), ID: \(lastReadMessageID)")
+        
+        if !chatDataIsLoaded || !isPresentedForTheFirstTime {
+            print("Not scrolling to saved offset as chat data loaded \(chatDataIsLoaded) or is presented for the first time \(isPresentedForTheFirstTime)")
+            return
+        }
+        
+//        return
+        
+        if lastReadMessageTimestamp == 0 {
+            return
+        }
+        
+        if let lastMessageDate = messageSendDates.last {
+            if let lastMessage = messages[lastMessageDate, default: [DiscussionMessage]()].last {
+                if lastMessage.messageTimestamp <= lastReadMessageTimestamp {
+                    if lastMessage.messageTimestamp < lastReadMessageTimestamp {
+                        defaults.setValue(lastMessage.messageTimestamp, forKey: lastReadMessageTimestampKey)
+                        defaults.setValue(lastMessage.messageID, forKey: lastReadMessageIDKey)
+                        saveLastReadMessageTimestamp()
+                    }
+                    print("Scrolling tableview to end")
+                    scrollTableViewToEnd()
+                    return
+                }
+            }
+        }
+        
+        let lastReadMessageDateString = getDateString(from: lastReadMessageTimestamp)
+        guard let lastReadMessageDayIndex = messageSendDates.index(of: lastReadMessageDateString), let lastReadMessageDayMessages = messages[messageSendDates[lastReadMessageDayIndex]] else { return }
+        
+        var foundLastReadMessage = false
+        var lastReadMessageIndex = 0
+        for (row, message) in lastReadMessageDayMessages.enumerated() {
+            if let lastReadMessageID = lastReadMessageID, let messageID = message.messageID {
+                if messageID == lastReadMessageID {
+                    foundLastReadMessage = true
+                    lastReadMessageIndex = row
+                    break
+                }
+            } else {
+                if message.messageTimestamp == lastReadMessageTimestamp {
+                    foundLastReadMessage = true
+                    lastReadMessageIndex = row
+                    break
+                }
+            }
+        }
+        if foundLastReadMessage {
+            let indexPath = IndexPath(row: lastReadMessageIndex, section: lastReadMessageDayIndex)
+            if let visibleRows = discussionTableView.indexPathsForVisibleRows, !visibleRows.contains(indexPath) {
+                print("Scrolling to: ", indexPath)
+                discussionTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            }
+        }
+    }
+    
+    func saveReadTimestampForVisibleCell() {
+        guard let visibleRows = discussionTableView.indexPathsForVisibleRows else { return }
+        print(visibleRows)
+        for visibleRow in visibleRows {
+            if let discussionCell = discussionTableView.cellForRow(at: visibleRow) as? DiscussionChatMessageCell {
+//                print("Visible row: \(visibleRow)")
+                if visibleRow.section < messageSendDates.count {
+                    let messageSendDate = messageSendDates[visibleRow.section]
+                    if let messagesOnSendDate = messages[messageSendDate], visibleRow.row < messagesOnSendDate.count {
+                        let message = messagesOnSendDate[visibleRow.row]
+                        discussionCell.updateLastReadMessageTimestamp(message: message)
+                    }
+                }
+            }
+        }
     }
 }

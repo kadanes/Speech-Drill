@@ -141,8 +141,12 @@ func saveCurrentNumberOfSavedRecordings() {
 }
 
 func saveLastReadMessageTimestamp() {
-    let lastReadMessageTimestamp = UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)
+    let defaults = UserDefaults.standard
+    let lastReadMessageTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
+    let lastReadMessageID = defaults.string(forKey: lastReadMessageIDKey)
     saveUserInfo(for: .lastReadMesssageTimestamp, as: lastReadMessageTimestamp, once: false)
+    saveUserInfo(for: .lastReadMesssageID, as: lastReadMessageID, once: false)
+
 }
 
 

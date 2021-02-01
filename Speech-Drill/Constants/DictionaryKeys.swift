@@ -19,6 +19,7 @@ let uuidKey = "DeviceUUID"
 let fcmTokenKey = "FCMToken"
 let recordingsCountKey = "RecordingsCount"
 let lastReadMessageTimestampKey = "LastReadMessageTimestamp"
+let lastReadMessageIDKey = "LastReadMessageID"
 
 // Bundle Info Getter Keys
 let appIdKey = "CFBundleIdentifier"

@@ -143,7 +143,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         
         
         messageBubble.layer.maskedCorners = isSender ? senderCorners : nonSenderCorners
-        updateLastReadMessageTimestamp(message: message)
+//        updateLastReadMessageTimestamp(message: message)
 //
 //        if let previousMessage = previousMessage {
 //            if message.userEmailAddress == previousMessage.userEmailAddress && message.userCountryCode == previousMessage.userCountryCode && isSender {
@@ -161,9 +161,10 @@ class DiscussionChatMessageCell: UITableViewCell {
         let previousLastReadMessageTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
         if previousLastReadMessageTimestamp < message.messageTimestamp {
             defaults.setValue(message.messageTimestamp, forKey: lastReadMessageTimestampKey)
+            defaults.setValue(message.messageID, forKey: lastReadMessageIDKey)
+//            print("Saving last read message timestamp: ", message.messageTimestamp, " message id: ", message.messageID)
             saveLastReadMessageTimestamp()
         }
-        
     }
 }
 
