@@ -11,12 +11,12 @@ import Foundation
 struct DiscussionMessage: Codable {
     let message, userCountryCode, userCountryEmoji, userName, userEmailAddress: String
     let messageTimestamp: Double
-    let fcmToken, question, recordingUrl, profilePictureUrl: String?
+    let fcmToken, question, recordingURL, profilePictureURL, messageID, providerID: String?
     
     enum CodingKeys: CodingKey {
         case message, userCountryCode, userCountryEmoji, userName, userEmailAddress
         case messageTimestamp
-        case fcmToken, question, recordingUrl, profilePictureUrl
+        case fcmToken, question, recordingURL, profilePictureURL, messageID, providerID
     }
 }
 

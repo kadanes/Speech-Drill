@@ -107,42 +107,43 @@ import Firebase
         
         @objc func sendMessageButtonPressed(_ sender: UIButton) {
             
-            let googleUser = GIDSignIn.sharedInstance()?.currentUser
+//            let googleUser = GIDSignIn.sharedInstance()?.currentUser
+            let currentUser = Auth.auth().currentUser
             
-            if googleUser == nil {
+            if currentUser == nil {
                 let notSignedInAlert = UIAlertController(title: "Please Login", message: "You will have to login with your gmail account before you can send a message. Tap the user icon on the top right corner of the screen to be logged in.", preferredStyle: .alert)
                 let dismissAction = UIAlertAction(title: "Okay", style: .cancel) { _ in }
                 notSignedInAlert.addAction(dismissAction)
                 UIApplication.shared.windows.last?.rootViewController?.present(notSignedInAlert, animated: true)
                 
-            } else if validateTextView(textView: messageTextView) {
+            } else if validateTextView(textView: messageTextView), let currentUser = currentUser {
                 
+                let providerId = currentUser.providerData[0].providerID
                 let defaults = UserDefaults.standard
                 let userCountryCode = defaults.string(forKey: userLocationCodeKey) ?? "UNK"
                 let userCountryEmoji = defaults.string(forKey: userLocationEmojiKey) ?? flag(from: "UNK")
-                let profile = googleUser?.profile
-                let userEmail = profile?.email ?? "EmailUnknown"
-                let userName = profile?.name ?? "UserNameUnknown"
+                let userEmail = currentUser.email ?? "Email_Unknown"
+                let userName = currentUser.displayName ?? "User_Name_Unknown"
                 let timestamp = NSDate().timeIntervalSince1970
-                let userProfileUrl = String(describing: profile?.imageURL(withDimension: 40))
+                let userProfileUrl = currentUser.photoURL?.absoluteString
+                let fcmToken = defaults.string(forKey: fcmTokenKey)
+
+                let newMessageReference = messagesReference.childByAutoId()
+                let messageId = newMessageReference.key
                 
                 var validatedMessage = messageTextView.text!
                 validatedMessage = validatedMessage.trimmingCharacters(in: .whitespacesAndNewlines)
                 
-                let message = DiscussionMessage(message: validatedMessage, userCountryCode: userCountryCode, userCountryEmoji: userCountryEmoji, userName: userName, userEmailAddress: userEmail, messageTimestamp: timestamp, fcmToken: nil, question: nil, recordingUrl: nil, profilePictureUrl: userProfileUrl)
+                let message = DiscussionMessage(message: validatedMessage, userCountryCode: userCountryCode, userCountryEmoji: userCountryEmoji, userName: userName, userEmailAddress: userEmail, messageTimestamp: timestamp, fcmToken: fcmToken, question: nil, recordingURL: nil, profilePictureURL: userProfileUrl, messageID: messageId, providerID: providerId)
                 
                 do {
                     let messageDictionary = try message.dictionary()
-//                    messagesReference.childByAutoId().setValue(messageDictionary)
-                    
-                    messagesReference.childByAutoId().setValue(messageDictionary) { (error, reference) in
+                    newMessageReference.setValue(messageDictionary) { (error, reference) in
                         if let error = error {
                             print("Failed to save message \(messageDictionary) in database: \(error)")
                         }
                     }
-                    
                     reregisterForTopicFCM()
-                    
                 } catch {
                     print(error)
                 }

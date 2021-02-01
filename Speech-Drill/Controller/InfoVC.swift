@@ -61,8 +61,6 @@ class InfoVC: UIViewController {
         fetchAndSetCredits()
         addHeader()
         
-        print("Google User (Info VC): ", GIDSignIn.sharedInstance()?.currentUser)
-
     }
     
     

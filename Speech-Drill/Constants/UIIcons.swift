@@ -12,7 +12,7 @@ import FontAwesome_swift
 
     
 let smallSize: CGSize = CGSize(width: 40, height: 40)
-
+let navItemSize: CGSize = CGSize(width: 30, height: 30)
 
 //let playBtnIcon = UIImage(named: "playg.png")!
 let playBtnIcon = UIImage.fontAwesomeIcon(name: .play, style: .solid, textColor: .white, size: smallSize)
@@ -47,7 +47,7 @@ let checkIcon = UIImage.fontAwesomeIcon(name: .check, style: .solid, textColor: 
 let closeIcon = UIImage.fontAwesomeIcon(name: .times, style: .solid, textColor: confirmGreen, size: smallSize)
 
 //let infoIcon = UIImage(named: "info.png")!
-let infoIcon = UIImage.fontAwesomeIcon(name: .info, style: .solid, textColor: .white, size: smallSize)
+let infoIcon = UIImage.fontAwesomeIcon(name: .info, style: .solid, textColor: .white, size: navItemSize)
 //let shareIcon = UIImage(named: "share.png")!
 let shareIcon = UIImage.fontAwesomeIcon(name: .share, style: .solid, textColor: .white, size: smallSize)
 
@@ -66,21 +66,13 @@ let sendMessageIcon = UIImage.fontAwesomeIcon(name: .paperPlane, style: .light, 
 
 
 let noImageLogo = UIImage(named: "no-image.png")!
-//let goGeniusLogo = UIImage(named: "gogenius.png")!
-//let callIcon = UIImage(named: "phone.png")!
 let callIcon = UIImage.fontAwesomeIcon(name: .phoneAlt, style: .solid, textColor: .white, size: smallSize)
 
 //let userPlaceholder = UIImage(named: "user-placeholder")!
-let smallUserPlaceholder = UIImage.fontAwesomeIcon(name: .userCircle, style: .solid, textColor: .white, size: smallSize)
-//let smallUserPlaceholder = UIImage(named: "rsz_user-placeholder")!
+let userPlaceholder = UIImage.fontAwesomeIcon(name: .user, style: .solid, textColor: .white, size: navItemSize)
+let loggedInUserPlaceholder = UIImage.fontAwesomeIcon(name: .userSecret, style: .solid, textColor: .white, size: navItemSize)
 
-//let practiceModeIcon = UIImage(named: "practice.png")!
-//let smallPracticeModeIcon = UIImage(named: "rsz_1practice.png")!
-//let testModeIcon = UIImage(named: "test.png")!
-//let smallTestModeIcon = UIImage(named: "rsz_test.png")!
+let practiceModeIcon = UIImage.fontAwesomeIcon(name: .pencilAlt, style: .solid, textColor: accentColor, size: navItemSize)
+let testModeIcon = UIImage.fontAwesomeIcon(name: .hourglassHalf, style: .solid, textColor: accentColor, size: navItemSize)
 
-
-let practiceModeIcon = UIImage.fontAwesomeIcon(name: .pencilAlt, style: .solid, textColor: accentColor, size: smallSize)
-let testModeIcon = UIImage.fontAwesomeIcon(name: .hourglassHalf, style: .solid, textColor: accentColor, size: smallSize)
-
-let notificationBellIcon =  UIImage.fontAwesomeIcon(name: .bell, style: .solid, textColor: .white, size: smallSize)
+let notificationBellIcon =  UIImage.fontAwesomeIcon(name: .bell, style: .solid, textColor: .white, size: navItemSize)

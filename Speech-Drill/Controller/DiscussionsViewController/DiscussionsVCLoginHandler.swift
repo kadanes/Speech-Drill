@@ -28,9 +28,9 @@ extension DiscussionsViewController: GIDSignInDelegate {
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
                 print("authentication error \(error.localizedDescription)")
+                return
             }
         }
-        setUserProfileImage()
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
@@ -40,20 +40,33 @@ extension DiscussionsViewController: GIDSignInDelegate {
     
     func setUserProfileImage() {
         discussionChatView.saveUserEmail()
-        guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
+//        guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
+        guard let currentUser = Auth.auth().currentUser else {
             DispatchQueue.main.async {
                 [weak self] in
-                self?.userProfileButton.setImage(smallUserPlaceholder, for: .normal)
+                self?.userProfileButton.setImage(userPlaceholder, for: .normal)
             }
             return
         }
-        guard let userImageUrl = googleUser.profile.imageURL(withDimension: 40) else { return }
+//        guard let userImageUrl = googleUser.profile.imageURL(withDimension: 40) else { return }
+        guard let userImageUrl = currentUser.photoURL else {
+            DispatchQueue.main.async {
+                [weak self] in
+                self?.userProfileButton.setImage(loggedInUserPlaceholder, for: .normal)
+            }
+            return
+        }
         URLSession.shared.dataTask(with: userImageUrl) { (data, response, error) in
             
             guard let data = data, error == nil else { return }
             DispatchQueue.main.async() { [weak self] in
                 let userImage = UIImage(data: data)
-                self?.userProfileButton.setImage(userImage, for: .normal)
+                if let userImage = userImage?.resize(maxWidthHeight: 30) {
+                    self?.userProfileButton.setImage(userImage, for: .normal)
+//                    self?.userProfileButton.setImage(loggedInUserPlaceholder, for: .normal)
+                } else {
+                    self?.userProfileButton.setImage(loggedInUserPlaceholder, for: .normal)
+                }
             }
         }.resume()
     }

@@ -26,19 +26,18 @@ class DiscussionChatView: UIView {
     var messages: [String: [DiscussionMessage]]  = [:]
     var messageSendDates: [String] = []
     
-    var userEmail = "UserNotLoggedIn"
+    let notLoggedInUserEmailId = "UserNotLoggedIn"
+    var userEmail: String
     var first = true
     
     override init(frame: CGRect) {
         discussionTableView = UITableView()
-        
+        userEmail = notLoggedInUserEmailId
         super.init(frame: frame)
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(sendTapNotification))
         discussionTableView.addGestureRecognizer(tapRecognizer)
-        
-        //        saveUserEmail()
-        
+            
         discussionTableView.register(DiscussionChatMessageCell.self, forCellReuseIdentifier: discussionChatId)
         discussionTableView.delegate = self
         discussionTableView.dataSource = self
@@ -280,18 +279,19 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
 extension DiscussionChatView {
     
     func saveUserEmail() {
-        
-        guard let currrentUser = GIDSignIn.sharedInstance()?.currentUser  else {
-            if userEmail == "UserNotLoggedIn" {
+        print("Saving email: ", Auth.auth().currentUser)
+        guard let currentUser = Auth.auth().currentUser, let userEmail = currentUser.email else {
+            if self.userEmail == notLoggedInUserEmailId {
                 return
             } else {
-                userEmail = "UserNotLoggedIn"
+                self.userEmail = notLoggedInUserEmailId
                 discussionTableView.reloadData()
             }
             return
         }
-        
-       userEmail = currrentUser.profile.email
+       
+    
+        self.userEmail = userEmail
        print("Email: ", userEmail)
        discussionTableView.reloadData()
     }

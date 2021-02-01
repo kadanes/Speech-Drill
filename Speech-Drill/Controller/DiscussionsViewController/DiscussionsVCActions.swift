@@ -21,7 +21,8 @@ extension DiscussionsViewController {
     
     @objc func displayInfoTapped(_ sender: UIButton) {
         
-        if GIDSignIn.sharedInstance()?.currentUser == nil {
+//        if GIDSignIn.sharedInstance()?.currentUser == nil {
+        if Auth.auth().currentUser == nil {
             let preSignInAlert = UIAlertController(title: "Discussions", message: preLoginInfoMessage, preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Okay", style: .cancel) { _ in }
             let loginAction = UIAlertAction(title: "Login", style: .default) { (alert) in
@@ -39,7 +40,7 @@ extension DiscussionsViewController {
                     try Auth.auth().signOut()
                     GIDSignIn.sharedInstance().signOut()
                     //Reset user email, photo, chatview
-                    self.setUserProfileImage()
+//                    self.setUserProfileImage()
                 } catch {
                     print ("Error signing out: %@", error)
                 }

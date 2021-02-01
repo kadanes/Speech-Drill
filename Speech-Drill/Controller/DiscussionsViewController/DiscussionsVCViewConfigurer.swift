@@ -28,27 +28,24 @@ extension DiscussionsViewController {
         hamburgerBtn.contentMode = .scaleAspectFit
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
-        
-        //            navigationItem.leftBarButtonItem = UIBarButtonItem(image: sideNavIcon.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(displaySideNavTapped))
-        //            navigationItem.leftBarButtonItem?.buttonGroup?.barButtonItems[0].tintColor = accentColor
-        //            navigationItem.leftBarButtonItem?.buttonGroup?.barButtonItems[0].imageInsets = UIEdgeInsets(top: 45/4, left: 5, bottom: 45/4, right: 5)
-        
+                
         userProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        userProfileButton.setImage(smallUserPlaceholder.withRenderingMode(.alwaysOriginal), for: .normal)
-        userProfileButton.imageView?.contentMode = .scaleToFill
-        //        userProfileButton.tintColor = accentColor
+        userProfileButton.setImage(userPlaceholder.withRenderingMode(.alwaysOriginal), for: .normal)
+        userProfileButton.imageView?.contentMode = .scaleAspectFit
         userProfileButton.addTarget(self, action: #selector(displayInfoTapped), for: .touchUpInside)
         userProfileButton.clipsToBounds = true
-        userProfileButton.layer.cornerRadius = 20
-        userProfileButton.layer.borderWidth = 1
-        userProfileButton.layer.borderColor = UIColor.white.cgColor
-        setUserProfileImage()
-        
+        userProfileButton.imageView?.layer.cornerRadius = 15
+        userProfileButton.imageView?.layer.borderWidth = 1
+        userProfileButton.imageView?.layer.borderColor = UIColor.white.cgColor
+        userProfileButton.imageView?.clipsToBounds = true
+        setBtnImgProp(button: userProfileButton, topPadding: 5, leftPadding: 5)
+
+//        setUserProfileImage()
         
         let notificationsSettingButton = UIButton()
         notificationsSettingButton.translatesAutoresizingMaskIntoConstraints = false
         notificationsSettingButton.setImage(notificationBellIcon.withRenderingMode(.alwaysOriginal), for: .normal)
-        notificationsSettingButton.imageView?.contentMode = .scaleToFill
+        notificationsSettingButton.imageView?.contentMode = .scaleAspectFit
         notificationsSettingButton.addTarget(self, action: #selector(showSettingsTapped), for: .touchUpInside)
         
         

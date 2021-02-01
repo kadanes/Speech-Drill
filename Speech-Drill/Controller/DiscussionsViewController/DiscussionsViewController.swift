@@ -35,7 +35,19 @@ import GoogleSignIn
         override func viewDidLoad() {
                         
             view.backgroundColor = UIColor.black
+            
+            let googleUser = GIDSignIn.sharedInstance()?.currentUser
+            let currentUser = Auth.auth().currentUser
+            if currentUser == nil && googleUser != nil {
+                NSLog("User was incorrectly signed in, signing him out from gmail account")
+                GIDSignIn.sharedInstance().signOut()
+            }
+            
             addHeader()
+            Auth.auth().addStateDidChangeListener { (auth, user) in
+                self.setUserProfileImage()
+            }
+            
             addCountryCountTableView()
             addDiscussionsMessageBox()
             addDiscussionChatView()

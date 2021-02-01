@@ -82,6 +82,7 @@
 		B2E0F34E25C7E33A00796318 /* SideNavigationVCTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F34D25C7E33A00796318 /* SideNavigationVCTableView.swift */; };
 		B2E0F35125C7E37900796318 /* SideNavigationVCViewConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F35025C7E37900796318 /* SideNavigationVCViewConfigurer.swift */; };
 		B2E0F35425C7E41700796318 /* SideNavigationVCActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F35325C7E41700796318 /* SideNavigationVCActions.swift */; };
+		B2E0F35725C80AA900796318 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F35625C80AA900796318 /* UIImage.swift */; };
 		B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D7212B1D0E00FC7E28 /* dleft.png */; };
 		B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D8212B1D0F00FC7E28 /* tleft.png */; };
 		B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D9212B1D0F00FC7E28 /* tright.png */; };
@@ -198,6 +199,7 @@
 		B2E0F34D25C7E33A00796318 /* SideNavigationVCTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVCTableView.swift; sourceTree = "<group>"; };
 		B2E0F35025C7E37900796318 /* SideNavigationVCViewConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVCViewConfigurer.swift; sourceTree = "<group>"; };
 		B2E0F35325C7E41700796318 /* SideNavigationVCActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVCActions.swift; sourceTree = "<group>"; };
+		B2E0F35625C80AA900796318 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		B2E5F5D7212B1D0E00FC7E28 /* dleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dleft.png; sourceTree = "<group>"; };
 		B2E5F5D8212B1D0F00FC7E28 /* tleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tleft.png; sourceTree = "<group>"; };
 		B2E5F5D9212B1D0F00FC7E28 /* tright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tright.png; sourceTree = "<group>"; };
@@ -461,6 +463,7 @@
 				B2BBE2C325B16B050054DE1F /* UITableViewExtension.swift */,
 				B2F0301725B5D233004A791D /* UIViewEdgeBordersExtension.swift */,
 				B2E0F31C25C46C7400796318 /* UIScrollView.swift */,
+				B2E0F35625C80AA900796318 /* UIImage.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -720,6 +723,7 @@
 				B2F0300C25B5C261004A791D /* SideNavAdsTableViewCell.swift in Sources */,
 				B25F80B9211F4F3200AD786C /* Enums.swift in Sources */,
 				B2F0301525B5CDAA004A791D /* ExternalLinks.swift in Sources */,
+				B2E0F35725C80AA900796318 /* UIImage.swift in Sources */,
 				B2E0F32F25C7D80800796318 /* MainVCAudioRecorder.swift in Sources */,
 				B2418C1B215EA6A30020E078 /* RevealSideNav.swift in Sources */,
 				B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */,
