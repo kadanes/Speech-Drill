@@ -25,9 +25,19 @@ extension SideNavigationController {
         
     }
 
-    @objc func viewDiscussions(with userInfo: [AnyHashable : Any] ) {
-        print("Recived Notification: ", userInfo)
-        let presentedVC = menuItems[1].presentedVC
+    @objc func viewDiscussions(with userInfo: [AnyHashable : Any], viewAnimated: Bool = true ) {
+        NSLog("\(#function) Parsing Notification: ", userInfo)
+        var messageID: String? = nil
+        var messageTimestamp: Double = 0
+        
+        if let dict = userInfo as? [String: Any] {
+            if let userInfoMessageID = dict["messageID"] as? String { messageID = userInfoMessageID }
+            if let userInfoMessageTimestamp = dict["messageTimestamp"] as? String {
+                messageTimestamp =  Double(userInfoMessageTimestamp) ?? 0
+            }
+        }
+
+        guard let presentedVC = menuItems[1].presentedVC as? DiscussionsViewController else { return }
         
         guard let alreadyPresentedDiscussions = navigationController?.topViewController?.isKind(of: type(of: presentedVC)) else { return }
         
@@ -41,5 +51,6 @@ extension SideNavigationController {
             
             navigationController?.pushViewController(presentedVC, animated: true)
         }
+        presentedVC.discussionChatView.setReseivedMessageInfo(at: messageTimestamp, with: messageID, viewAnimated: viewAnimated)
     }
 }

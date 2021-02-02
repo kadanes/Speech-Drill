@@ -20,6 +20,7 @@ class DiscussionsViewController: UIViewController {
     var oldKeyboardEndFrameY: CGFloat = 0
 //    var scrolledChatViewToSavedOffset: Bool = false
     var scrolledChatViewToLastReadMessage: Bool = false
+    var scrolledChatViewToRecivedMessage: Bool = false
     
     let countryCountView = UserCountryUIView()
     let discussionsMessageBox = DiscussionsMessageBox()
@@ -91,13 +92,18 @@ class DiscussionsViewController: UIViewController {
 //                self.discussionChatView.scrollToSavedContentOffset()
 //                self.scrolledChatViewToSavedOffset = true
 //            }
-            
-            if !self.scrolledChatViewToLastReadMessage {
-                self.discussionChatView.isPresentedForTheFirstTime = true
-//                self.discussionChatView.scrollToLastReadMessage()
+            self.discussionChatView.isPresented = true
+
+            if !self.discussionChatView.shouldScrollToMessageFromNotification && !self.scrolledChatViewToLastReadMessage {
+                self.discussionChatView.shouldScrollToLastReadMessage = true
                 self.scrolledChatViewToLastReadMessage = true
             }
         }
         navigationController?.navigationBar.barTintColor = .black
+    }
+    
+    override func viewWillDisappear(_ animated: Bool){
+        super.viewWillDisappear(animated)
+        self.discussionChatView.isPresented = false
     }
 }

@@ -16,7 +16,10 @@ exports.sendSpeechDrillDiscussionsMessageNotification = functions.database
     const senderCountry = message.userCountryEmoji;
     const title = senderName + " " + senderCountry;
     const messageText = message.message;
-
+    const messageTimestamp = message.messageTimestamp.toString();
+    const messageID = message.hasOwnProperty("messageID")
+      ? message.messageID
+      : undefined;
     /*
     const optionalUserProfileUrl = message.profilePictureUrl || undefined;
 
@@ -38,6 +41,11 @@ exports.sendSpeechDrillDiscussionsMessageNotification = functions.database
         title: title,
         body: messageText,
       },
+      data: {
+        messageID: messageID,
+        messageTimestamp: messageTimestamp,
+      },
+      topic: topicName,
     };
 
     /*
@@ -65,7 +73,7 @@ exports.sendSpeechDrillDiscussionsMessageNotification = functions.database
 
     return admin
       .messaging()
-      .sendToTopic(topicName, payload)
+      .send(payload)
       .then(function (response) {
         console.log("Notification sent successfully:", response);
         return true;

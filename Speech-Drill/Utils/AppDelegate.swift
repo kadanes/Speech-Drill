@@ -141,14 +141,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        // Print full message.
-        print("User Info: ")
-        print(userInfo)
-//        sideNav?.calledFromVCIndex = 1
-//        sideNav?.shouldAutoNavigateToChild = true
+
         guard let sideNav = sideNav else { return }
         if sideNav.shouldAutoNavigateToChild && sideNav.calledFromVCIndex == nil {
-            sideNav.calledFromVCIndex = 1
+//            sideNav.calledFromVCIndex = 1
+            sideNav.notificationUserInfo = userInfo
+//            sideNav.viewDiscussions(with: userInfo)
         } else {
             sideNav.viewDiscussions(with: userInfo)
         }

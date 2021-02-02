@@ -31,6 +31,7 @@ class SideNavigationController: UIViewController {
     let DiscussionsVC: DiscussionsViewController
     
     var shouldAutoNavigateToChild = true
+    var notificationUserInfo: [AnyHashable : Any]? = nil
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         
@@ -74,11 +75,14 @@ class SideNavigationController: UIViewController {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
-        if shouldAutoNavigateToChild {
+        if let userInfo = notificationUserInfo {
+            calledFromVCIndex = 1
+            viewDiscussions(with: userInfo, viewAnimated: true)
+            notificationUserInfo = nil
+        } else if shouldAutoNavigateToChild {
             if calledFromVCIndex == nil { calledFromVCIndex = indexOfVCToShowOnLoad }
             navigationController?.pushViewController(menuItems[calledFromVCIndex!].presentedVC, animated: false)
             shouldAutoNavigateToChild = false
-            
         } else {
             guard let calledFromVCIndex = calledFromVCIndex else { return }
             let indexPath = IndexPath(row: calledFromVCIndex, section: 1)
