@@ -13,20 +13,51 @@ let valueNotAvailableIndicatorDouble: Double = 0
 let valueNotAvailableIndicatorInt: Int = 0
 
 struct UserInfo: Codable {
-    let userDisplayName, userEmailID, userProfilePictureURL, fcmToken, currentUserLocation: String?
-    let firstInstalledAppVersion, currentInstalledAppVersion, lastReadMesssageID: String?
-    let deviceUUID: String
+    let profile: ProfileInfo
+    let activity: ActivityInfo
+    let stats: StatsInfo
+
+    enum CodingKeys: CodingKey {
+        case profile
+        case activity
+        case stats
+
+    }
+}
+
+
+struct ProfileInfo: Codable {
     let allUserLocations: [String]
+    let userDisplayName, userEmailID, userProfilePictureURL, currentUserLocation: String?
+    
+    enum CodingKeys: CodingKey {
+        case allUserLocations
+        case userDisplayName, userEmailID, userProfilePictureURL, currentUserLocation
+    }
+}
+
+struct ActivityInfo: Codable {
     let currentNumberOfSavedRecordings: Int
     let lastSeenTimestamp, firstSeenTimestamp: Double
     let lastReadMesssageTimestamp: Double?
+    let lastReadMesssageID: String?
+    
+    enum CodingKeys: CodingKey {
+        case currentNumberOfSavedRecordings
+        case lastSeenTimestamp, firstSeenTimestamp
+        case lastReadMesssageTimestamp
+        case lastReadMesssageID
+    }
+}
+
+struct StatsInfo: Codable {
+    let fcmToken: String?
+    let firstInstalledAppVersion, currentInstalledAppVersion: String
+    let deviceUUID: String
     let authenticationType: AuthenticationType
     
     enum CodingKeys: CodingKey {
-        case userDisplayName, userEmailID, deviceUUID, userProfilePictureURL, firstInstalledAppVersion, currentInstalledAppVersion, fcmToken, lastReadMesssageID, currentUserLocation
-        case allUserLocations
-        case currentNumberOfSavedRecordings
-        case lastSeenTimestamp, firstSeenTimestamp, lastReadMesssageTimestamp
+        case deviceUUID, firstInstalledAppVersion, currentInstalledAppVersion, fcmToken
         case authenticationType
     }
 }

@@ -7,3 +7,4 @@ Podfile.lock
 Pods/
 Speech-Drill/GoogleService-Info.plist
 .DS_Store
+firebase-debug.log

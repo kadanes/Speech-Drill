@@ -19,6 +19,18 @@ fileprivate func setUserInfoValueWithErrorLogging(ref: DatabaseReference, value:
     }
 }
 
+fileprivate func saveUserInfo(at ref: DatabaseReference, with value: Any?, once: Bool) {
+    //Authenticated
+    if once {
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if !snapshot.exists() {
+                setUserInfoValueWithErrorLogging(ref: ref, value: value)
+            }
+        }
+    } else {
+        setUserInfoValueWithErrorLogging(ref: ref, value: value)
+    }
+}
 
 fileprivate func getUserInfoReference() -> DatabaseReference {
     var userInfoReference: DatabaseReference
@@ -29,6 +41,39 @@ fileprivate func getUserInfoReference() -> DatabaseReference {
     }
     return userInfoReference
 }
+
+fileprivate func getUnauthenticatedUserInfoReference() -> DatabaseReference {
+    return unauthenticatedUsersReferences.child(getUUID())
+}
+
+
+fileprivate func saveUserInfo(at childKey: String, for key: String, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
+    let userInfoReference = getUserInfoReference().child(childKey).child(key)
+    saveUserInfo(at: userInfoReference, with: value, once: once)
+    if deleteUnauth {
+        getUnauthenticatedUserInfoReference().child(childKey).child(key).setValue(nil) { (error, ref) in
+            if let error = error {
+                NSLog("Error deleteing unauthenticated user data at \(userInfoReference) \n\(error)")
+            }
+        }
+    }
+}
+
+fileprivate func saveUserProfileInfo(for key: ProfileInfo.CodingKeys, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
+    let profileKey = UserInfo.CodingKeys.profile.stringValue
+    saveUserInfo(at: profileKey, for: key.stringValue, as: value, once: once, deleteUnauth: deleteUnauth)
+}
+
+fileprivate func saveUserActivityInfo(for key: ActivityInfo.CodingKeys, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
+    let activityKey = UserInfo.CodingKeys.activity.stringValue
+    saveUserInfo(at: activityKey, for: key.stringValue, as: value, once: once, deleteUnauth: deleteUnauth)
+}
+
+fileprivate func saveUserStatsInfo(for key: StatsInfo.CodingKeys, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
+    let statsKey = UserInfo.CodingKeys.stats.stringValue
+    saveUserInfo(at: statsKey, for: key.stringValue, as: value, once: once, deleteUnauth: deleteUnauth)
+}
+
 
 fileprivate func saveUserInfo(for key: UserInfo.CodingKeys, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
     //Authenticated
@@ -67,56 +112,56 @@ fileprivate func unwrapUserInfo(from value: URL?) -> String {
     return valueNotAvailableIndicatorString
 }
 
-func saveUserEmail() {
+func saveUserEmail(deleteUnauth: Bool = false) {
 //    let userEmail: String = unwrapUserInfo(from: Auth.auth().currentUser?.email ?? nil)
     let userEmail: String? = Auth.auth().currentUser?.email ?? nil
-    saveUserInfo(for: .userEmailID, as: userEmail, once: true)
+    saveUserProfileInfo(for: .userEmailID, as: userEmail, once: true, deleteUnauth: deleteUnauth)
 }
 
-func saveUserDisplayName() {
+func saveUserDisplayName(deleteUnauth: Bool = false) {
 //    let userDisplayName: String = unwrapUserInfo(from: Auth.auth().currentUser?.displayName ?? nil)
     let userDisplayName: String? = Auth.auth().currentUser?.displayName ?? nil
-    saveUserInfo(for: .userDisplayName, as: userDisplayName, once: false)
+    saveUserProfileInfo(for: .userDisplayName, as: userDisplayName, once: false, deleteUnauth: deleteUnauth)
 }
 
-func saveUserProfilePictureURL() {
+func saveUserProfilePictureURL(deleteUnauth: Bool = false) {
 //    let userProfilePictureURL: String = unwrapUserInfo(from: Auth.auth().currentUser?.photoURL ?? nil)
     let userProfilePictureURL: String? = Auth.auth().currentUser?.photoURL?.absoluteString ?? nil
-    saveUserInfo(for: .userProfilePictureURL, as: userProfilePictureURL, once: false)
+    saveUserProfileInfo(for: .userProfilePictureURL, as: userProfilePictureURL, once: false, deleteUnauth: deleteUnauth)
 }
 
-func saveDeviceUUID() {
-    saveUserInfo(for: .deviceUUID, as: getuid(), once: false)
+func saveDeviceUUID(deleteUnauth: Bool = false) {
+    saveUserStatsInfo(for: .deviceUUID, as: getuid(), once: false, deleteUnauth: deleteUnauth)
 }
 
-func saveAuthenticationType() {
+func saveAuthenticationType(deleteUnauth: Bool = false) {
     let authenticationType: String = Auth.auth().currentUser?.providerData[0].providerID ?? AuthenticationType.none.rawValue
-    saveUserInfo(for: .authenticationType, as: authenticationType, once: false)
+    saveUserStatsInfo(for: .authenticationType, as: authenticationType, once: false, deleteUnauth: deleteUnauth)
 }
 
-func saveInstalledAppVersion() {
+func saveInstalledAppVersion(deleteUnauth: Bool = false) {
 //    let installedAppVersion: String = unwrapUserInfo(from: getFullInstalledAppVersion())
     let installedAppVersion: String? = getFullInstalledAppVersion()
-    saveUserInfo(for: .currentInstalledAppVersion, as: installedAppVersion, once: false)
-    saveUserInfo(for: .firstInstalledAppVersion, as: installedAppVersion, once: true)
+    saveUserStatsInfo(for: .currentInstalledAppVersion, as: installedAppVersion, once: false, deleteUnauth: deleteUnauth)
+    saveUserStatsInfo(for: .firstInstalledAppVersion, as: installedAppVersion, once: true, deleteUnauth: deleteUnauth)
 }
 
-func saveSeenTimestamp() {
+func saveSeenTimestamp(deleteUnauth: Bool = false) {
     let seenTimestamp = Double(Date().timeIntervalSince1970)
-    saveUserInfo(for: .lastSeenTimestamp, as: nil, once: false)
-    saveUserInfo(for: .firstSeenTimestamp, as: seenTimestamp, once: true)
+    saveUserActivityInfo(for: .lastSeenTimestamp, as: nil, once: false, deleteUnauth: deleteUnauth)
+    saveUserActivityInfo(for: .firstSeenTimestamp, as: seenTimestamp, once: true, deleteUnauth: deleteUnauth)
 }
 
-func saveLastSeenTimestamp(once: Bool = false) {
+func saveLastSeenTimestamp(once: Bool = false, deleteUnauth: Bool = false) {
     let seenTimestamp = Double(Date().timeIntervalSince1970)
-    saveUserInfo(for: .lastSeenTimestamp, as: seenTimestamp, once: once)
+    saveUserActivityInfo(for: .lastSeenTimestamp, as: seenTimestamp, once: once, deleteUnauth: deleteUnauth)
 }
 
-func saveUserLocationInfo() {
+func saveUserLocationInfo(deleteUnauth: Bool = false) {
     let currentUserLocation: String = UserDefaults.standard.string(forKey: userLocationCodeKey) ?? "UNK"
-    saveUserInfo(for: .currentUserLocation, as: currentUserLocation, once: false)
+    saveUserProfileInfo(for: .currentUserLocation, as: currentUserLocation, once: false, deleteUnauth: deleteUnauth)
     
-    let allUserLocationsInfoReference = getUserInfoReference().child(UserInfo.CodingKeys.allUserLocations.stringValue)
+    let allUserLocationsInfoReference = getUserInfoReference().child(UserInfo.CodingKeys.profile.stringValue) .child(ProfileInfo.CodingKeys.allUserLocations.stringValue)
     allUserLocationsInfoReference.observeSingleEvent(of: .value) { (snapshot) in
         if snapshot.exists() {
             if var value = snapshot.value as? [String] {
@@ -131,32 +176,30 @@ func saveUserLocationInfo() {
     }
 }
 
-func saveFCMToken() {    
-    saveUserInfo(for: .fcmToken, as: Messaging.messaging().fcmToken, once: false)
+func saveFCMToken(deleteUnauth: Bool = false) {
+    saveUserStatsInfo(for: .fcmToken, as: Messaging.messaging().fcmToken, once: false, deleteUnauth: deleteUnauth)
 }
 
-func saveCurrentNumberOfSavedRecordings() {
+func saveCurrentNumberOfSavedRecordings(deleteUnauth: Bool = false) {
     let currentNumberOfSavedRecordings = UserDefaults.standard.integer(forKey: recordingsCountKey)
-    saveUserInfo(for: .currentNumberOfSavedRecordings, as: currentNumberOfSavedRecordings, once: false)
+    saveUserActivityInfo(for: .currentNumberOfSavedRecordings, as: currentNumberOfSavedRecordings, once: false, deleteUnauth: deleteUnauth)
 }
 
-func saveLastReadMessageTimestamp() {
+func saveLastReadMessageTimestamp(deleteUnauth: Bool = false) {
     let defaults = UserDefaults.standard
     let lastReadMessageTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
     let lastReadMessageID = defaults.string(forKey: lastReadMessageIDKey)
-    saveUserInfo(for: .lastReadMesssageTimestamp, as: lastReadMessageTimestamp, once: false)
-    saveUserInfo(for: .lastReadMesssageID, as: lastReadMessageID, once: false)
-
+    saveUserActivityInfo(for: .lastReadMesssageTimestamp, as: lastReadMessageTimestamp, once: false, deleteUnauth: deleteUnauth)
+    saveUserActivityInfo(for: .lastReadMesssageID, as: lastReadMessageID, once: false, deleteUnauth: deleteUnauth)
 }
 
-
-func saveBasicUserInfo(deleteUUIDInfo: Bool = false) {
-    saveUserDisplayName()
-    saveUserEmail()
-    saveUserProfilePictureURL()
-    saveSeenTimestamp()
-    saveInstalledAppVersion()
-    saveAuthenticationType()
-    saveFCMToken()
-    saveUserLocationInfo()
+func saveBasicUserInfo(deleteUnauth: Bool = false) {
+    saveUserDisplayName(deleteUnauth: deleteUnauth)
+    saveUserEmail(deleteUnauth: deleteUnauth)
+    saveUserProfilePictureURL(deleteUnauth: deleteUnauth)
+    saveSeenTimestamp(deleteUnauth: deleteUnauth)
+    saveInstalledAppVersion(deleteUnauth: deleteUnauth)
+    saveAuthenticationType(deleteUnauth: deleteUnauth)
+    saveFCMToken(deleteUnauth: deleteUnauth)
+    saveUserLocationInfo(deleteUnauth: deleteUnauth)
 }
