@@ -55,10 +55,14 @@ struct StatsInfo: Codable {
     let firstInstalledAppVersion, currentInstalledAppVersion: String
     let deviceUUID: String
     let authenticationType: AuthenticationType
+    let groups: [String]?
+    let likelyUserNames: [String]?
     
     enum CodingKeys: CodingKey {
         case deviceUUID, firstInstalledAppVersion, currentInstalledAppVersion, fcmToken
         case authenticationType
+        case groups
+        case likelyUserNames
     }
 }
 

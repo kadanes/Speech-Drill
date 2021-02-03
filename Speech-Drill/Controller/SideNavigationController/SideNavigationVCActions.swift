@@ -53,4 +53,12 @@ extension SideNavigationController {
         }
         presentedVC.discussionChatView.setReseivedMessageInfo(at: messageTimestamp, with: messageID, viewAnimated: viewAnimated)
     }
+    
+    func updateUnreadCount() {
+        messagesReference.queryOrdered(byChild: DiscussionMessage.CodingKeys.messageTimestamp.stringValue).queryStarting(atValue: UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)).observe(.value) { (snapshot) in
+            if let value = snapshot.value as? [String: Any] {
+//                print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
+            }
+        }
+    }
 }

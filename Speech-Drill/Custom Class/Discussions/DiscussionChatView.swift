@@ -17,7 +17,10 @@ class DiscussionChatView: UIView {
     var chatDataIsLoaded = false {
         didSet {
 //            scrollTableViewToEnd()
-            if chatDataIsLoaded { discussionTableView.hideActivityIndicator() }
+            if chatDataIsLoaded {
+                discussionTableView.hideActivityIndicator()
+                filterMessages()
+            }
             
             if shouldScrollToMessageFromNotification {
             scrollToReceivedMessage(at: messageFromNotificationTimestamp, with: messageFromNotificationID)
@@ -49,15 +52,32 @@ class DiscussionChatView: UIView {
         }
     }
     
+    var loadedAdminUsers = false {
+        didSet {
+            filterMessages()
+        }
+    }
+    
+    var loadedFilteredUsers = false {
+        didSet {
+            filterMessages()
+        }
+    }
+    
     var messageFromNotificationTimestamp: Double = 0
     var messageFromNotificationID: String? = nil
     var viewNotificationMessageAnimated: Bool = true
     
     let discussionChatId = "DiscussionChatID"
     let discussionTableView: UITableView
-    var messages: [String: [DiscussionMessage]]  = [:]
-    var messageSendDates: [String] = []
+    var unfilteredMessages: [String: [DiscussionMessage]]  = [:]
+    var unfilteredMessageSendDates: [String] = []
     
+    var filteredMessages: [String: [DiscussionMessage]] = [:]
+    var filteredMessageSendDates: [String] = []
+    var adminUsers: [String]? = nil
+    var filteredUsers: [String]? = nil
+        
     let notLoggedInUserEmailId = "UserNotLoggedIn"
     var userEmail: String
     var first = true
@@ -90,12 +110,86 @@ class DiscussionChatView: UIView {
             discussionTableView.topAnchor.constraint(equalTo: self.topAnchor),
             discussionTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+        loadAdminAndFilteredUserList()
         loadInitialMessages()
         appendNewMessages()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func loadAdminAndFilteredUserList() {
+        adminGroupReference.observe(.value) { (snapshot) in
+            if let admins = snapshot.value as? [String: Any] {
+                self.adminUsers = Array(admins.keys)
+                self.loadedAdminUsers = true
+            } else if !snapshot.exists() {
+                self.loadedAdminUsers = true
+            }
+        }
+        filteredGroupReference.observe(.value) { (snapshot) in
+            if let filtered = snapshot.value as? [String: Any] {
+                self.filteredUsers = Array(filtered.keys)
+                self.loadedFilteredUsers = true
+            } else if !snapshot.exists() {
+                self.loadedFilteredUsers = true
+            }
+        }
+    }
+    
+    func shouldFilterMessages() -> Bool {
+        guard let filteredUsers = filteredUsers else { return false }
+        let adminUsers = self.adminUsers ?? [String]()
+        let currentUserName = getAuthenticatedUsername() ?? ""
+        
+        if adminUsers.contains(currentUserName) || filteredUsers.contains(currentUserName)  {
+//            print("Should not filter messages")
+            return false
+        }
+//        print("Should filter messages")
+        return true
+    }
+    
+    func filterMessages() {
+        
+        if !chatDataIsLoaded || !loadedFilteredUsers || !loadedAdminUsers { return }
+        
+        if !shouldFilterMessages() { return }
+        guard let filteredUsers = filteredUsers else { return }
+        
+        filteredMessages = [String: [DiscussionMessage]]()
+        filteredMessageSendDates = [String]()
+        
+        for messageSendDate in unfilteredMessageSendDates {
+            if let messagesForDate = unfilteredMessages[messageSendDate] {
+                let filteredMessagesForDate = messagesForDate.filter({
+                    !(filteredUsers.contains(getUsernameFromEmail(email: $0.userEmailAddress) ?? "" ))
+                    
+                })
+                if filteredMessagesForDate.count > 0 {
+                    filteredMessageSendDates.append(messageSendDate)
+                    filteredMessages[messageSendDate] = filteredMessagesForDate
+                }
+            }
+        }
+        discussionTableView.reloadData()
+    }
+    
+    func shouldFilterIn(message: DiscussionMessage) -> Bool {
+        if let filteredUsers = filteredUsers {
+            let messageSenderUserName = getUsernameFromEmail(email: message.userEmailAddress) ?? ""
+            if filteredUsers.contains(messageSenderUserName) { return false}
+        }
+        return true
+    }
+    
+    func getMessages() -> [String: [DiscussionMessage]] {
+        return shouldFilterMessages() ? filteredMessages : unfilteredMessages
+    }
+    
+    func getMessageSendDates() -> [String] {
+        return shouldFilterMessages() ? filteredMessageSendDates : unfilteredMessageSendDates
     }
     
     func loadInitialMessages() {
@@ -120,19 +214,16 @@ class DiscussionChatView: UIView {
                     
                     let dateString = self.getDateString(from: message.messageTimestamp)
                     
-                    if !self.messageSendDates.contains(dateString) {
-                        self.messageSendDates.append(dateString)
+                    if !self.unfilteredMessageSendDates.contains(dateString) {
+                        self.unfilteredMessageSendDates.append(dateString)
                     }
                     
-                    self.messages[dateString, default: [DiscussionMessage]()].append(message)
+                    self.unfilteredMessages[dateString, default: [DiscussionMessage]()].append(message)
                 }
                                 
                 self.discussionTableView.reloadData()
                 self.chatDataIsLoaded = true
-//                if !self.scrolledToSavedPositionAfterLoadingChats {
-//                  self.scrollToSavedContentOffset()
-//                }
-//
+
             } catch {
                 print(error)
             }
@@ -165,31 +256,15 @@ class DiscussionChatView: UIView {
 //                        print("Sections: ", self.messageSendDates.count - 1)
 //                        print("Row: ", self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1)
                         
-                        lastCellWasVisible = visiblePaths.contains([self.messageSendDates.count - 1, self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1])
+                        lastCellWasVisible = visiblePaths.contains([self.unfilteredMessageSendDates.count - 1, self.unfilteredMessages[self.unfilteredMessageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1])
                     }
                     
                     let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
                     let message = try JSONDecoder().decode(DiscussionMessage.self, from: data)
                     
-                    let dateString = self.getDateString(from: message.messageTimestamp)
-                    
-//                    print("Date string: ", dateString, " All dates:", self.messageSendDates)
-                    
-                    if !self.messageSendDates.contains(dateString) {
-                        self.messageSendDates.append(dateString)
-                        let indexSet = IndexSet(integer: self.messageSendDates.count - 1)
-                        self.discussionTableView.performBatchUpdates({
-//                            print("Index set")
-                            self.discussionTableView.insertSections(indexSet, with: .automatic)
-                            
-                        }) { (update) in
-//                            print("After Update: Last cell visible", lastCellWasVisible)
-                            self.insertMessage(dateString: dateString, message: message)
-                        }
-                    } else {
-//                        print("Without Update: Last cell visible", lastCellWasVisible)
-                        self.insertMessage(dateString: dateString, message: message)
-                    }
+//                    let dateString = self.getDateString(from: message.messageTimestamp)
+                                
+                    self.insertNewMessage(message: message)
                     
                     if lastCellWasVisible {
                         self.scrollTableViewToEnd()
@@ -205,10 +280,62 @@ class DiscussionChatView: UIView {
         }
     }
     
-    func insertMessage(dateString: String, message: DiscussionMessage) {
-        messages[dateString, default: [DiscussionMessage]()].append(message)
-        let indexPath = IndexPath(row:(self.messages[dateString, default: [DiscussionMessage]()].count - 1), section: self.messageSendDates.index(of: dateString) ?? 0)
-//        print("Index path: ", indexPath)
+    func insertNewMessage(message: DiscussionMessage) {
+        
+        let sentDateString = getDateString(from: message.messageTimestamp)
+        let shouldFilterInMessage = shouldFilterIn(message: message)
+        
+        var isNewSection = false
+        
+        if !unfilteredMessageSendDates.contains(sentDateString) {
+            unfilteredMessageSendDates.append(sentDateString)
+            if !shouldFilterMessages() {
+                isNewSection = true
+            }
+        }
+        
+        if shouldFilterMessages() && !shouldFilterInMessage {
+            unfilteredMessages[sentDateString, default: [DiscussionMessage]()].append(message)
+            return
+        }
+        
+        if shouldFilterInMessage && !filteredMessageSendDates.contains(sentDateString) {
+            filteredMessageSendDates.append(sentDateString)
+            if shouldFilterMessages() {
+                isNewSection = true
+            }
+        }
+
+        if isNewSection {
+            let indexSet = IndexSet(integer: self.getMessageSendDates().count - 1)
+                    
+            discussionTableView.performBatchUpdates({
+                discussionTableView.insertSections(indexSet, with: .automatic)
+                
+            }) { (update) in
+                self.insertRow(with: message, at: sentDateString)
+            }
+        } else {
+            self.insertRow(with: message, at: sentDateString)
+        }
+    }
+    
+    func insertNewMessage(message: DiscussionMessage,at sentAtDateString: String) {
+        if shouldFilterIn(message: message) {
+            filteredMessages[sentAtDateString, default: [DiscussionMessage]()].append(message)
+                    }
+        unfilteredMessages[sentAtDateString, default: [DiscussionMessage]()].append(message)
+    }
+    
+    func insertRow(with message: DiscussionMessage,at sentAtDateString: String) {
+        
+        insertNewMessage(message: message, at: sentAtDateString)
+        
+        let messages = getMessages()
+        let messageSendDates = getMessageSendDates()
+        
+        let indexPath = IndexPath(row:(messages[sentAtDateString, default: [DiscussionMessage]()].count - 1), section: messageSendDates.index(of: sentAtDateString) ?? 0)
+        
         self.discussionTableView.insertRows(at: [indexPath], with: .automatic)
     }
 }
@@ -216,11 +343,25 @@ class DiscussionChatView: UIView {
 extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return messageSendDates.count
+        
+        return getMessageSendDates().count
+        
+//        if shouldFilterMessage() {
+//            return filteredMessages.count
+//        }
+//        return unfilteredMessageSendDates.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages[messageSendDates[section], default: [DiscussionMessage]()] .count
+        
+        let messages = getMessages()
+        let messageSendDates = getMessageSendDates()
+        return messages[messageSendDates[section], default: [DiscussionMessage]()].count
+        
+//        if shouldFilterMessage() {
+//            return filteredMessages[filteredMessageSendDates[section], default: [DiscussionMessage]()].count
+//        }
+//        return unfilteredMessages[unfilteredMessageSendDates[section], default: [DiscussionMessage]()].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -229,8 +370,11 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         
         guard let discussionChatMessageCell = tableView.dequeueReusableCell(withIdentifier: discussionChatId, for: indexPath) as? DiscussionChatMessageCell else { return UITableViewCell()}
         
+        let messages = getMessages()
+        let messageSendDates = getMessageSendDates()
+        
         guard indexPath.section < messageSendDates.count, let messagesForSection = messages[messageSendDates[indexPath.section]], indexPath.row < messagesForSection.count else {
-            print("\(indexPath) is out of bounds for displaying message cell")
+            NSLog("\(indexPath) is out of bounds for displaying message cell")
             return UITableViewCell()
         }
         
@@ -259,7 +403,6 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
             discussionChatMessageCell.updateLastReadMessageTimestamp(message: message)
         }
         
-        
         return discussionChatMessageCell
     }
     
@@ -278,7 +421,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         headerLabel.clipsToBounds = true
         headerLabel.layer.cornerRadius = 10
         
-        headerLabel.text = getDateStringForHeaderText(dateString: messageSendDates[section])
+        headerLabel.text = getDateStringForHeaderText(dateString: getMessageSendDates()[section])
         
         return headerLabelView
         
@@ -380,7 +523,9 @@ extension DiscussionChatView {
     
     func scrollTableViewToEnd(animated: Bool = true) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
-            let indexPath = IndexPath(row: self.messages[self.messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1, section: self.messageSendDates.count - 1)
+            let messages = self.getMessages()
+            let messageSendDates = self.getMessageSendDates()
+            let indexPath = IndexPath(row: messages[messageSendDates.last ?? "", default: [DiscussionMessage]()].count - 1, section: messageSendDates.count - 1)
             if self.discussionTableView.isValid(indexPath: indexPath) {
                 self.discussionTableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: animated)
             }
@@ -449,6 +594,10 @@ extension DiscussionChatView {
         if messageTimestamp == 0 {
             completion(0, 0)
         }
+        
+        let messages = self.getMessages()
+        let messageSendDates = self.getMessageSendDates()
+        
                 
         if let lastMessageDate = messageSendDates.last {
             if let lastSendDateMessages = messages[lastMessageDate], let lastMessage = lastSendDateMessages.last {
@@ -568,6 +717,10 @@ extension DiscussionChatView {
     func saveReadTimestampForVisibleCell() {
         guard let visibleRows = discussionTableView.indexPathsForVisibleRows else { return }
         print(visibleRows)
+        
+        let messages = getMessages()
+        let messageSendDates = getMessageSendDates()
+        
         for visibleRow in visibleRows {
             if let discussionCell = discussionTableView.cellForRow(at: visibleRow) as? DiscussionChatMessageCell {
 //                print("Visible row: \(visibleRow)")

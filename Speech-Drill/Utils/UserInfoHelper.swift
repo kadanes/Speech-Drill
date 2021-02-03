@@ -11,6 +11,10 @@ import Firebase
 import GoogleSignIn
 
 
+/// Saves value at passed reference else loggs errors
+/// - Parameters:
+///   - ref: Reference to store value at
+///   - value: Value to be stored at reference
 fileprivate func setUserInfoValueWithErrorLogging(ref: DatabaseReference, value: Any?) {
     ref.setValue(value) { (error, ref) in
         if let error = error {
@@ -19,6 +23,12 @@ fileprivate func setUserInfoValueWithErrorLogging(ref: DatabaseReference, value:
     }
 }
 
+
+/// Saves user info by runing a check to see if data already exists at passed reference. Won't save if once is true and data exists.
+/// - Parameters:
+///   - ref: Reference to store value at
+///   - value: The value to be stored at reference
+///   - once: Should the value be set only once
 fileprivate func saveUserInfo(at ref: DatabaseReference, with value: Any?, once: Bool) {
     //Authenticated
     if once {
@@ -131,7 +141,7 @@ func saveUserProfilePictureURL(deleteUnauth: Bool = false) {
 }
 
 func saveDeviceUUID(deleteUnauth: Bool = false) {
-    saveUserStatsInfo(for: .deviceUUID, as: getuid(), once: false, deleteUnauth: deleteUnauth)
+    saveUserStatsInfo(for: .deviceUUID, as: getUUID(), once: false, deleteUnauth: deleteUnauth)
 }
 
 func saveAuthenticationType(deleteUnauth: Bool = false) {
@@ -177,7 +187,44 @@ func saveUserLocationInfo(deleteUnauth: Bool = false) {
 }
 
 func saveFCMToken(deleteUnauth: Bool = false) {
-    saveUserStatsInfo(for: .fcmToken, as: Messaging.messaging().fcmToken, once: false, deleteUnauth: deleteUnauth)
+    let fcmToken = Messaging.messaging().fcmToken
+        
+    saveUserStatsInfo(for: .fcmToken, as: fcmToken, once: false, deleteUnauth: deleteUnauth)
+    if let userName = getAuthenticatedUsername() {
+        let userGroupsInfoRef = getUserInfoReference().child("stats").child("groups")
+            userGroupsInfoRef.observeSingleEvent(of: .value) { (snapshot) in
+                if let groups = snapshot.value as? [String] {
+                    for group in groups {
+                        let currentGroupsReference = groupsReference.child(group).child(userName)
+                        saveUserInfo(at: currentGroupsReference, with: fcmToken, once: false)
+                    }
+                }
+            }
+    } else if let fcmToken = fcmToken {
+        print("User reference: ", authenticatedUsersReference)
+        print("FCM key:", fcmToken)
+
+        let fcmTokenKey = StatsInfo.CodingKeys.fcmToken.stringValue
+        let statsKey = UserInfo.CodingKeys.stats.stringValue
+
+        authenticatedUsersReference.queryOrdered(byChild: "\(statsKey)/\(fcmTokenKey)").queryEqual(toValue: fcmToken).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists() {
+                let likelyUserName = snapshot.value
+                print("Likely username: \(likelyUserName)")
+                getUnauthenticatedUserInfoReference().child(StatsInfo.CodingKeys.likelyUserNames.stringValue).observe(.value) { (snapshot) in
+                    if var likelyUsernames = snapshot.value as? [String] {
+                        if !likelyUsernames.contains(likelyUserName) {
+                            likelyUsernames.append(likelyUserName)
+                            saveUserInfo(at: snapshot.ref, with: likelyUsernames, once: false)
+                        }
+                    } else {
+                        saveUserInfo(at: snapshot.ref, with: [likelyUserName], once: false)
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 func saveCurrentNumberOfSavedRecordings(deleteUnauth: Bool = false) {
@@ -202,4 +249,5 @@ func saveBasicUserInfo(deleteUnauth: Bool = false) {
     saveAuthenticationType(deleteUnauth: deleteUnauth)
     saveFCMToken(deleteUnauth: deleteUnauth)
     saveUserLocationInfo(deleteUnauth: deleteUnauth)
+    saveDeviceUUID(deleteUnauth: deleteUnauth)
 }

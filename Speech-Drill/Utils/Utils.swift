@@ -333,14 +333,18 @@ func openAppSettings() {
     }
 }
 
+/// Get the user name of logged in user
+/// - Returns: Will return the user's email id by stripping part after @ and removing full stops. E.g: my.dotted.email@domain.com will return mydottedemail.
 func getAuthenticatedUsername() -> String? {
     
     guard let user = Auth.auth().currentUser, let userEmail = user.email else { return nil }
-        
-    let userEmailComponents = userEmail.components(separatedBy: "@")
-    if userEmailComponents.count == 0  { return nil }
-    let username = userEmailComponents[0].replacingOccurrences(of: ".", with: "")
-    
+    return getUsernameFromEmail(email: userEmail)
+}
+
+func getUsernameFromEmail(email: String) -> String? {
+    let emailComponents = email.components(separatedBy: "@")
+    if emailComponents.count == 0  { return nil }
+    let username = emailComponents[0].replacingOccurrences(of: ".", with: "")
     return username
 }
 

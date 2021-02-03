@@ -69,6 +69,8 @@ class SideNavigationController: UIViewController {
         configureSideNav()
         
         view.backgroundColor = MenuHelper.menuBGColor
+        
+        updateUnreadCount()
     }
     
     override func viewWillAppear(_ animated: Bool) {
