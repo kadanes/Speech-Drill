@@ -141,7 +141,10 @@ func saveUserProfilePictureURL(deleteUnauth: Bool = false) {
 }
 
 func saveDeviceUUID(deleteUnauth: Bool = false) {
-    saveUserStatsInfo(for: .deviceUUID, as: getUUID(), once: false, deleteUnauth: deleteUnauth)
+    let deviceUUID = getUUID()
+    saveUserStatsInfo(for: .deviceUUID, as: deviceUUID, once: false, deleteUnauth: deleteUnauth)
+//    let uuidKey = StatsInfo.CodingKeys.deviceUUID.stringValue
+//    saveLikelyUserName(using: uuidKey, with: deviceUUID)
 }
 
 func saveAuthenticationType(deleteUnauth: Bool = false) {
@@ -201,31 +204,47 @@ func saveFCMToken(deleteUnauth: Bool = false) {
                 }
             }
     } else if let fcmToken = fcmToken {
-        print("User reference: ", authenticatedUsersReference)
-        print("FCM key:", fcmToken)
-
+        
         let fcmTokenKey = StatsInfo.CodingKeys.fcmToken.stringValue
-        let statsKey = UserInfo.CodingKeys.stats.stringValue
+        saveLikelyUserName(using: fcmTokenKey, with: fcmToken)
+    }
+}
 
-        authenticatedUsersReference.queryOrdered(byChild: "\(statsKey)/\(fcmTokenKey)").queryEqual(toValue: fcmToken).observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.exists() {
-                let likelyUserName = snapshot.value
-                print("Likely username: \(likelyUserName)")
-                getUnauthenticatedUserInfoReference().child(StatsInfo.CodingKeys.likelyUserNames.stringValue).observe(.value) { (snapshot) in
-                    if var likelyUsernames = snapshot.value as? [String] {
-                        if !likelyUsernames.contains(likelyUserName) {
-                            likelyUsernames.append(likelyUserName)
-                            saveUserInfo(at: snapshot.ref, with: likelyUsernames, once: false)
-                        }
-                    } else {
-                        saveUserInfo(at: snapshot.ref, with: [likelyUserName], once: false)
-                    }
+
+/// Saves likely usernames accociated with an unauthenticated user
+/// - Parameters:
+///   - property: Key of the property whoes value to match with in other authenticated user's stats. For example: "fcmToken"
+///   - value: Value of the property to look for in other authenticated user's stats. For example: "abc...45fgg3"
+func saveLikelyUserName(using property: String, with value: String) {
+    //Function only to be run if the user is unauthenticated
+    if let _ = getAuthenticatedUsername() { return }
+    
+    let statsKey = UserInfo.CodingKeys.stats.stringValue
+    let likelyUserNamesKey = StatsInfo.CodingKeys.likelyUserNames.stringValue
+            
+    authenticatedUsersReference.queryOrdered(byChild: "\(statsKey)/\(property)").queryEqual(toValue: value).observeSingleEvent(of: .value) { (snapshot) in
+        if snapshot.exists() {
+            
+            guard let semiParsedSnapshot = snapshot.value as? [String: Any] else { return }
+            let newLikelyUserNames = Array(semiParsedSnapshot.keys)
+            print("New Likely Usernames: ", newLikelyUserNames)
+
+            let ref = getUnauthenticatedUserInfoReference().child(statsKey).child(likelyUserNamesKey)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if var likelyUsernames = snapshot.value as? [String] {
+                    print("Old likely usernames: ", likelyUsernames)
+                    let setLikelyUserNames = Set(likelyUsernames)
+                    likelyUsernames = setLikelyUserNames + newLikelyUserNames.filter { !setLikelyUserNames.contains($0) }
+                    
+                    saveUserInfo(at: ref, with: likelyUsernames, once: false)
+                } else {
+                    saveUserInfo(at: ref, with: newLikelyUserNames, once: false)
                 }
-            }
+            })
         }
     }
-    
 }
+
 
 func saveCurrentNumberOfSavedRecordings(deleteUnauth: Bool = false) {
     let currentNumberOfSavedRecordings = UserDefaults.standard.integer(forKey: recordingsCountKey)
@@ -247,7 +266,7 @@ func saveBasicUserInfo(deleteUnauth: Bool = false) {
     saveSeenTimestamp(deleteUnauth: deleteUnauth)
     saveInstalledAppVersion(deleteUnauth: deleteUnauth)
     saveAuthenticationType(deleteUnauth: deleteUnauth)
-    saveFCMToken(deleteUnauth: deleteUnauth)
+//    saveFCMToken(deleteUnauth: deleteUnauth)
     saveUserLocationInfo(deleteUnauth: deleteUnauth)
     saveDeviceUUID(deleteUnauth: deleteUnauth)
 }
