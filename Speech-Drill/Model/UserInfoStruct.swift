@@ -55,7 +55,7 @@ struct StatsInfo: Codable {
     let firstInstalledAppVersion, currentInstalledAppVersion: String
     let deviceUUID: String
     let authenticationType: AuthenticationType
-    let groups: [String]?
+    let groups: [UserGroup]? //Make this enum
     let likelyUserNames: [String]?
     
     enum CodingKeys: CodingKey {
@@ -64,6 +64,12 @@ struct StatsInfo: Codable {
         case groups
         case likelyUserNames
     }
+}
+
+enum UserGroup: String, Codable {
+    case ADMIN = "admin"
+    case FILTERED = "filtered"
+    case BLOCKED = "blocked"
 }
 
 //extension UserInfo {
@@ -103,5 +109,6 @@ struct StatsInfo: Codable {
 //}
 
 enum AuthenticationType: String, Codable {
-    case none, gmail
+    case NONE="none"
+    case GMAIL = "gmail.com"
 }

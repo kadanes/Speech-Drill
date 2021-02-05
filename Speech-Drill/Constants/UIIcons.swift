@@ -13,6 +13,7 @@ import FontAwesome_swift
     
 let smallSize: CGSize = CGSize(width: 40, height: 40)
 let navItemSize: CGSize = CGSize(width: 30, height: 30)
+let swipeActionSize: CGSize = CGSize(width: 30, height: 30)
 
 //let playBtnIcon = UIImage(named: "playg.png")!
 let playBtnIcon = UIImage.fontAwesomeIcon(name: .play, style: .solid, textColor: .white, size: smallSize)
@@ -76,3 +77,13 @@ let practiceModeIcon = UIImage.fontAwesomeIcon(name: .pencilAlt, style: .solid, 
 let testModeIcon = UIImage.fontAwesomeIcon(name: .hourglassHalf, style: .solid, textColor: accentColor, size: navItemSize)
 
 let notificationBellIcon =  UIImage.fontAwesomeIcon(name: .bell, style: .solid, textColor: .white, size: navItemSize)
+
+let filteredUserIcon = UIImage.fontAwesomeIcon(name: .userTimes, style: .solid, textColor: .white, size: swipeActionSize)
+
+let unfilteredUserIcon = UIImage.fontAwesomeIcon(name: .userCheck, style: .solid, textColor: .white, size: swipeActionSize)
+
+let blockedUserIcon = UIImage.fontAwesomeIcon(name: .userSlash, style: .solid, textColor: .white, size: swipeActionSize)
+
+let unblockedUserIcon = UIImage.fontAwesomeIcon(name: .userEdit, style: .solid, textColor: .white, size: swipeActionSize)
+
+let deleteMessageIcon = UIImage.fontAwesomeIcon(name: .trash, style: .solid, textColor: .white, size: swipeActionSize)

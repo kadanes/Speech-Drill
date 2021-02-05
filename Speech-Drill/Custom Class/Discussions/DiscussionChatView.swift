@@ -64,6 +64,15 @@ class DiscussionChatView: UIView {
         }
     }
     
+    var loadededBlockedUsers = false {
+        didSet {
+            print("Loaded blocked users \(loadededBlockedUsers)")
+//            if loadededBlockedUsers {
+//                discussionTableView.reloadData()
+//            }
+        }
+    }
+    
     var messageFromNotificationTimestamp: Double = 0
     var messageFromNotificationID: String? = nil
     var viewNotificationMessageAnimated: Bool = true
@@ -75,9 +84,10 @@ class DiscussionChatView: UIView {
     
     var filteredMessages: [String: [DiscussionMessage]] = [:]
     var filteredMessageSendDates: [String] = []
-    var adminUsers: [String]? = nil
-    var filteredUsers: [String]? = nil
-        
+    var adminUsers: [String] = [String]()
+    var filteredUsers: [String] = [String]()
+    var blockedUsers: [String] = [String]()
+    
     let notLoggedInUserEmailId = "UserNotLoggedIn"
     var userEmail: String
     var first = true
@@ -110,7 +120,7 @@ class DiscussionChatView: UIView {
             discussionTableView.topAnchor.constraint(equalTo: self.topAnchor),
             discussionTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-        loadAdminAndFilteredUserList()
+        loadGroupUserList()
         loadInitialMessages()
         appendNewMessages()
     }
@@ -119,13 +129,14 @@ class DiscussionChatView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func loadAdminAndFilteredUserList() {
+    func loadGroupUserList() {
         adminGroupReference.observe(.value) { (snapshot) in
             if let admins = snapshot.value as? [String: Any] {
                 self.adminUsers = Array(admins.keys)
                 self.loadedAdminUsers = true
             } else if !snapshot.exists() {
                 self.loadedAdminUsers = true
+                self.adminUsers = [String]()
             }
         }
         filteredGroupReference.observe(.value) { (snapshot) in
@@ -134,13 +145,24 @@ class DiscussionChatView: UIView {
                 self.loadedFilteredUsers = true
             } else if !snapshot.exists() {
                 self.loadedFilteredUsers = true
+                self.filteredUsers = [String]()
             }
+        }
+        blockedGroupReference.observe(.value) { (snapshot) in
+            if let blocked = snapshot.value as? [String: Any] {
+                self.blockedUsers = Array(blocked.keys)
+                self.loadededBlockedUsers = true
+            } else if !snapshot.exists() {
+                self.loadededBlockedUsers = true
+                self.blockedUsers = [String]()
+            }
+            self.discussionTableView.reloadData()
         }
     }
     
     func shouldFilterMessages() -> Bool {
-        guard let filteredUsers = filteredUsers else { return false }
-        let adminUsers = self.adminUsers ?? [String]()
+//        guard let filteredUsers = filteredUsers else { return false }
+//        let adminUsers = self.adminUsers
         let currentUserName = getAuthenticatedUsername() ?? ""
         
         if adminUsers.contains(currentUserName) || filteredUsers.contains(currentUserName)  {
@@ -152,11 +174,14 @@ class DiscussionChatView: UIView {
     }
     
     func filterMessages() {
-        
-        if !chatDataIsLoaded || !loadedFilteredUsers || !loadedAdminUsers { return }
+        NSLog("Trying to filter messages with senders: \(filteredUsers)")
+        if !chatDataIsLoaded || !loadedFilteredUsers || !loadedAdminUsers {
+            print("Returning without filtering")
+            return
+        }
         
         if !shouldFilterMessages() { return }
-        guard let filteredUsers = filteredUsers else { return }
+//        guard let filteredUsers = filteredUsers else { return }
         
         filteredMessages = [String: [DiscussionMessage]]()
         filteredMessageSendDates = [String]()
@@ -173,14 +198,15 @@ class DiscussionChatView: UIView {
                 }
             }
         }
+        NSLog("Reloading chat tableview")
         discussionTableView.reloadData()
     }
     
     func shouldFilterIn(message: DiscussionMessage) -> Bool {
-        if let filteredUsers = filteredUsers {
+//        if let filteredUsers = filteredUsers {
             let messageSenderUserName = getUsernameFromEmail(email: message.userEmailAddress) ?? ""
             if filteredUsers.contains(messageSenderUserName) { return false}
-        }
+//        }
         return true
     }
     
@@ -344,6 +370,8 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
+//        print("Section dates: \( getMessageSendDates()), count: \(getMessageSendDates().count)")
+        
         return getMessageSendDates().count
         
 //        if shouldFilterMessage() {
@@ -456,6 +484,161 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        guard let userName = getAuthenticatedUsername(), //let adminUsers = adminUsers,
+//              adminUsers.contains(userName) else {
+//            return nil
+//        }
+//
+//        var contextualActions: [UIContextualAction] = [UIContextualAction]()
+//
+//        let showToggleGroupAction: (Bool, DiscussionMessage?) = shouldShowToggleGroupAction(indexPath: indexPath)
+//
+//        if showToggleGroupAction.0, let message = showToggleGroupAction.1 {
+//            contextualActions.append(getToggleFilterUserContextualAction(message: message))
+//            contextualActions.append(getToggleBlockedUserContextualAction(message: message))
+//        }
+//
+//        return UISwipeActionsConfiguration(actions: contextualActions)
+//    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let userName = getAuthenticatedUsername(), //let adminUsers = adminUsers,
+              adminUsers.contains(userName) else {
+            return nil
+        }
+        
+        var contextualActions: [UIContextualAction] = [UIContextualAction]()
+        
+        let showToggleGroupAction: (Bool, DiscussionMessage?) = shouldShowToggleGroupAction(indexPath: indexPath)
+        
+        if showToggleGroupAction.0, let message = showToggleGroupAction.1 {
+            contextualActions.append(getToggleFilterUserContextualAction(message: message))
+            contextualActions.append(getToggleBlockedUserContextualAction(message: message))
+        }
+        
+        let showDeleteAction = shouldShowDeleteMessageAction(indexPath: indexPath)
+        
+        if showDeleteAction.0, let messageID = showDeleteAction.1 {
+            contextualActions.insert(getDeleteMessageContextualAction(messageID: messageID), at: 0)
+        }
+        
+        if contextualActions.count == 0 { return nil }
+        
+        return UISwipeActionsConfiguration(actions: contextualActions)
+    }
+    
+    func safeGetMessage(at indexPath: IndexPath) -> DiscussionMessage? {
+        let messageSendDates = getMessageSendDates()
+        let messages = getMessages()
+        
+        guard let messageSendDate = messageSendDates[safe: indexPath.section], let messagesOnSendDate = messages[messageSendDate], let message = messagesOnSendDate[safe: indexPath.row] else { return  nil }
+        return message
+      }
+    
+    func shouldShowToggleGroupAction(indexPath: IndexPath) -> (Bool, DiscussionMessage?) {
+        guard let message = safeGetMessage(at: indexPath) else { return (false, nil)}
+                        
+        guard let senderUserName = getUsernameFromEmail(email: message.userEmailAddress), !adminUsers.contains(senderUserName) else {
+            return  (false, nil)
+        }
+        
+        return (true, message)
+    }
+    
+    func shouldShowDeleteMessageAction(indexPath: IndexPath) -> (Bool, String?) {
+        guard let message = safeGetMessage(at: indexPath), let messageID = message.messageID else { return (false, nil)}
+        return (true, messageID)
+    }
+    
+    func getToggleFilterUserContextualAction(message: DiscussionMessage) -> UIContextualAction {
+       
+//        let filteredUsers = self.filteredUsers ?? [String]()
+                    
+        var canAddUserToFilteredGroup = true
+        let senderUserName = getUsernameFromEmail(email: message.userEmailAddress)
+              
+        if filteredUsers.contains(senderUserName ?? "") {
+            canAddUserToFilteredGroup = false
+        }
+        
+        
+        let action = UIContextualAction(style: .normal, title: "Filter") { (action, view, completion) in
+            
+//            guard let filteredUsers = self.filteredUsers else { completion(false) }
+            
+            guard let senderUserName = senderUserName else {
+                completion(false)
+                return
+            }
+                
+            addOrRemoveUser(from: .FILTERED, userName: senderUserName, fcmToken: message.fcmToken)
+                                
+            completion(true)
+            
+        }
+        
+        action.image = canAddUserToFilteredGroup ? filteredUserIcon : unfilteredUserIcon
+        action.backgroundColor = canAddUserToFilteredGroup ? .orange : confirmGreen
+        action.title = canAddUserToFilteredGroup ? "Filter" : "Unfilter"
+        action
+        return action
+    }
+    
+    func getToggleBlockedUserContextualAction(message: DiscussionMessage) -> UIContextualAction {
+           
+    //        let filteredUsers = self.filteredUsers ?? [String]()
+                        
+            var canAddUserToBlockedGroup = true
+            let senderUserName = getUsernameFromEmail(email: message.userEmailAddress)
+       
+            if blockedUsers.contains(senderUserName ?? "") {
+                canAddUserToBlockedGroup = false
+            }
+            
+            
+            let action = UIContextualAction(style: .normal, title: "Block User") { (action, view, completion) in
+                
+    //            guard let filteredUsers = self.filteredUsers else { completion(false) }
+                
+                guard let senderUserName = senderUserName else {
+                    completion(false)
+                    return
+                }
+                    
+                addOrRemoveUser(from: .BLOCKED, userName: senderUserName, fcmToken: message.fcmToken)
+                                    
+                completion(true)
+                
+            }
+            
+            action.image = canAddUserToBlockedGroup ? blockedUserIcon : unblockedUserIcon
+            action.backgroundColor = canAddUserToBlockedGroup ? enabledRed : confirmGreen
+            action.title = canAddUserToBlockedGroup ? "Block" : "Unblock"
+            return action
+        }
+    
+    
+    func getDeleteMessageContextualAction(messageID: String) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            
+            messagesReference.child(messageID).setValue(nil) { (error, ref) in
+                guard error == nil else {
+                    completion(false)
+                    return
+                }
+                self.deleteMessage(with: messageID)
+                self.discussionTableView.reloadData()
+                completion(true)
+            }
+        }
+        
+        action.image = deleteMessageIcon
+        action.backgroundColor = disabledRed
+        return action
+    }
+    
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         storeContentOffset()
         saveReadTimestampForVisibleCell()
@@ -475,19 +658,30 @@ extension DiscussionChatView {
     
     func saveUserEmail() {
         guard let currentUser = Auth.auth().currentUser, let userEmail = currentUser.email else {
-            if self.userEmail == notLoggedInUserEmailId {
-                return
-            } else {
-                self.userEmail = notLoggedInUserEmailId
-                discussionTableView.reloadData()
-            }
+            //            if self.userEmail == notLoggedInUserEmailId {
+            //                print("userEmail == notLoggedInUserEmailId")
+            //                discussionTableView.reloadData()
+            //            } else {
+            //                print("userEmail != notLoggedInUserEmailId")
+            //                self.userEmail = notLoggedInUserEmailId
+            //                discussionTableView.reloadData()
+            //            }
+            self.userEmail = notLoggedInUserEmailId
+            discussionTableView.reloadData()
+            print("Email is null or user is not logged in")
+            print("Messages: ", self.unfilteredMessages)
+            print("Send Dates: ", self.unfilteredMessageSendDates)
+            print("Should filter message? \(shouldFilterMessages()), Filtered Users: \(filteredUsers)")
             return
         }
-       
-    
+        
+        
         self.userEmail = userEmail
-       print("Email: ", userEmail)
-       discussionTableView.reloadData()
+        print("Email: ", userEmail)
+        print("Messages: ", self.unfilteredMessages)
+        print("Send Dates: ", self.unfilteredMessageSendDates)
+        print("Should filter message? \(shouldFilterMessages()), Filtered Users: \(filteredUsers)")
+        discussionTableView.reloadData()
     }
     
     func getDateFormatter() -> DateFormatter {
@@ -585,6 +779,46 @@ extension DiscussionChatView {
         NotificationCenter.default.post(name: NSNotification.Name(chatViewTappedNotificationName), object: nil)
     }
     
+    
+    func deleteMessage(with messageID: String) {
+        
+        (unfilteredMessageSendDates, unfilteredMessages) = deleteMessage(with: messageID, sendDates: unfilteredMessageSendDates, messages: unfilteredMessages)
+//        unfilteredMessageSendDates = updatedUnfilteredMessages.0
+//        unfilteredMessages = updatedUnfilteredMessages.1
+        
+        (filteredMessageSendDates, filteredMessages) = deleteMessage(with: messageID, sendDates: filteredMessageSendDates, messages: filteredMessages)
+        
+    }
+    
+    func deleteMessage(with messageID: String, sendDates: [String], messages: [String: [DiscussionMessage]]) -> ([String], [String: [DiscussionMessage]]) {
+        findMessageUsingMessageID(sendDates: sendDates, messages: messages, messageID: messageID) { (section, row) in
+            
+            var localMessages = messages
+            var localSendDates = sendDates
+
+            localMessages[localSendDates[section]]?.remove(at: row)
+            if localMessages[localSendDates[section]]?.count == 0 {
+                localSendDates.remove(at: section)
+            }
+            
+            return (localSendDates, localMessages)
+        }
+    }
+    
+    func findMessageUsingMessageID(sendDates: [String], messages: [String: [DiscussionMessage]], messageID: String, completion: @escaping (_ section: Int, _ row: Int) -> ([String], [String: [DiscussionMessage]])) -> ([String], [String: [DiscussionMessage]]) {
+        
+        for (section, sendDate) in sendDates.enumerated().reversed() {
+            print("Found \(sendDate) at position \(section)")
+            for (row, message) in messages[sendDate, default: [DiscussionMessage]()].enumerated().reversed() {
+                print("Found \(message.messageID) at position \(row)")
+                if messageID == message.messageID {
+                    return completion(section, row)
+                }
+            }
+        }
+        
+        return ([String](), [String: [DiscussionMessage]]())
+    }
     
     func findMessageUsingTimestampOrID(messageTimestamp: Double, messageID: String?,  completion: @escaping (_ section: Int, _ row: Int) -> Void) {
         let defaults = UserDefaults.standard
@@ -716,8 +950,7 @@ extension DiscussionChatView {
     
     func saveReadTimestampForVisibleCell() {
         guard let visibleRows = discussionTableView.indexPathsForVisibleRows else { return }
-        print(visibleRows)
-        
+//        print(visibleRows)
         let messages = getMessages()
         let messageSendDates = getMessageSendDates()
         

@@ -92,4 +92,34 @@ extension DiscussionsViewController {
             discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10),
         ])
     }
+    
+    func loadBlockedUserList() {
+        blockedGroupReference.observe(.value) { (snapshot) in
+            if let value = snapshot.value as? [String: Any] {
+                self.blockedUsers = Array(value.keys)
+                if let currentUserName = getAuthenticatedUsername() {
+                    if self.blockedUsers.contains(currentUserName) {
+                        self.discussionsMessageBox.isHidden = true
+                    } else {
+                        self.discussionsMessageBox.isHidden = false
+                    }
+                }
+            } else {
+                self.blockedUsers = [String]()
+                self.discussionsMessageBox.isHidden = false
+            }
+        }
+    }
+    
+    func readBlockedUserList() {
+        if let userName = getAuthenticatedUsername() {
+            if blockedUsers.contains(userName) {
+                self.discussionsMessageBox.isHidden = true
+            } else {
+                self.discussionsMessageBox.isHidden = false
+            }
+        } else {
+            self.discussionsMessageBox.isHidden = false
+        }
+    }
 }

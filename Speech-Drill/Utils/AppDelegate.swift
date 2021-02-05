@@ -107,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         saveLastSeenTimestamp(once: true)
-        print("Making uuid ", uuid, "ofline")
+        NSLog("Marking uuid", uuid, "ofline")
     }
     
     open func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -158,7 +158,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     }
 
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-        print("received remote notification")
+        NSLog("\(#function) received remote notification")
     }
     
 }

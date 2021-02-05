@@ -21,7 +21,8 @@ let usersReference = peopleReference.child("users")
 let authenticatedUsersReference = usersReference.child("authenticated")
 let unauthenticatedUsersReferences = usersReference.child("unauhtenticated")
 let groupsReference = peopleReference.child("groups")
-let adminGroupReference = groupsReference.child("admin")
-let filteredGroupReference = groupsReference.child("filtered")
+let adminGroupReference = groupsReference.child(UserGroup.ADMIN.rawValue)
+let filteredGroupReference = groupsReference.child(UserGroup.FILTERED.rawValue)
+let blockedGroupReference = groupsReference.child(UserGroup.BLOCKED.rawValue)
 
 let speechDrillDiscussionsFCMTopicName = "SpeechDrillDiscussions"

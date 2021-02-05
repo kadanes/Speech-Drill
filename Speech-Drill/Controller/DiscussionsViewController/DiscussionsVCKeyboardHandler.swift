@@ -25,7 +25,7 @@ import UIKit
          
          let offset = -1 * endFrame.size.height
          
-         print("Handling keyboard change frame:  End Y - ", endFrameY)
+//         print("Handling keyboard change frame:  End Y - ", endFrameY)
          
          if endFrameY >= uiScreenHeight {
              self.discussionsMessageBoxBottomAnchor.constant = 0.0

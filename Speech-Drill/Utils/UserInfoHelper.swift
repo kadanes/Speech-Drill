@@ -148,7 +148,7 @@ func saveDeviceUUID(deleteUnauth: Bool = false) {
 }
 
 func saveAuthenticationType(deleteUnauth: Bool = false) {
-    let authenticationType: String = Auth.auth().currentUser?.providerData[0].providerID ?? AuthenticationType.none.rawValue
+    let authenticationType: String = Auth.auth().currentUser?.providerData[0].providerID ?? AuthenticationType.NONE.rawValue
     saveUserStatsInfo(for: .authenticationType, as: authenticationType, once: false, deleteUnauth: deleteUnauth)
 }
 
@@ -232,7 +232,6 @@ func saveLikelyUserName(using property: String, with value: String) {
             let ref = getUnauthenticatedUserInfoReference().child(statsKey).child(likelyUserNamesKey)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if var likelyUsernames = snapshot.value as? [String] {
-                    print("Old likely usernames: ", likelyUsernames)
                     let setLikelyUserNames = Set(likelyUsernames)
                     likelyUsernames = setLikelyUserNames + newLikelyUserNames.filter { !setLikelyUserNames.contains($0) }
                     
@@ -258,6 +257,57 @@ func saveLastReadMessageTimestamp(deleteUnauth: Bool = false) {
     saveUserActivityInfo(for: .lastReadMesssageTimestamp, as: lastReadMessageTimestamp, once: false, deleteUnauth: deleteUnauth)
     saveUserActivityInfo(for: .lastReadMesssageID, as: lastReadMessageID, once: false, deleteUnauth: deleteUnauth)
 }
+
+func addInFirebaseArray(ref: DatabaseReference, value entry: String) {
+    ref.observeSingleEvent(of: .value) { (snapshot) in
+        if var value = snapshot.value as? [String] {
+            if value.contains(entry) {
+                return
+            } else {
+                value.append(entry)
+                saveUserInfo(at: ref, with: value, once: false)
+            }
+        } else {
+            saveUserInfo(at: ref, with: [entry], once: false)
+        }
+    }
+}
+
+func removeFromFirebaseArray(ref: DatabaseReference, value entry: String) {
+    ref.observeSingleEvent(of: .value) { (snapshot) in
+        if var value = snapshot.value as? [String] {
+            if value.contains(entry) {
+                value = value.filter({$0 != entry})
+                saveUserInfo(at: ref, with: value, once: false)
+            }
+        }
+    }
+}
+
+func addOrRemoveUser(from group: UserGroup, userName: String, fcmToken: String?) {
+    var filteredRef = groupsReference.child(group.rawValue).child(userName)
+    let statsKey = UserInfo.CodingKeys.stats.stringValue
+    let groupsKey = StatsInfo.CodingKeys.groups.stringValue
+    let childGroupStatsReference = authenticatedUsersReference.child(userName).child(statsKey).child(groupsKey)
+
+//    print("Filtering user \(userName)")
+    
+    filteredRef.observeSingleEvent(of: .value) { (snapshot) in
+//        print("Value: \(snapshot.value)")
+        if snapshot.exists() {
+        //User belongs to filtered group
+        NSLog("Removing user \(userName) at \(filteredRef)")
+        saveUserInfo(at: filteredRef, with: nil, once: false)
+        removeFromFirebaseArray(ref: childGroupStatsReference, value: group.rawValue)
+        
+        } else {
+            NSLog("Adding user \(userName) at \(filteredRef)")
+            saveUserInfo(at: filteredRef, with: fcmToken, once: false)
+            addInFirebaseArray(ref: childGroupStatsReference, value: group.rawValue)
+        }
+    }
+}
+
 
 func saveBasicUserInfo(deleteUnauth: Bool = false) {
     saveUserDisplayName(deleteUnauth: deleteUnauth)

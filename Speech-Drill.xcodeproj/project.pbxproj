@@ -16,6 +16,7 @@
 		B21ABB28210FF664009C678C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB26210FF664009C678C /* Main.storyboard */; };
 		B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB29210FF664009C678C /* Assets.xcassets */; };
 		B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */; };
+		B221BED225CC31FD00C7F40E /* SafeArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */; };
 		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
 		B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */; };
@@ -130,6 +131,7 @@
 		B21ABB29210FF664009C678C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B21ABB2C210FF664009C678C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B21ABB2E210FF664009C678C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeArrayExtension.swift; sourceTree = "<group>"; };
 		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
 		B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBorderedBtn.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 				B2F0301725B5D233004A791D /* UIViewEdgeBordersExtension.swift */,
 				B2E0F31C25C46C7400796318 /* UIScrollView.swift */,
 				B2E0F35625C80AA900796318 /* UIImage.swift */,
+				B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -685,6 +688,7 @@
 				B2B3C66725BD49F000DC9B86 /* SideNavigationController.swift in Sources */,
 				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
 				B206B61221609CA700B1CCBA /* SlideInVC.swift in Sources */,
+				B221BED225CC31FD00C7F40E /* SafeArrayExtension.swift in Sources */,
 				B2E0F35425C7E41700796318 /* SideNavigationVCActions.swift in Sources */,
 				B2E5F5E8212B260C00FC7E28 /* InfoVC.swift in Sources */,
 				B2E0F33C25C7DE4400796318 /* MainVCViewConfigurer.swift in Sources */,

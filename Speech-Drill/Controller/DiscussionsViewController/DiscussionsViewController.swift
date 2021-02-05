@@ -31,6 +31,13 @@ class DiscussionsViewController: UIViewController {
     var isKeyboardFullyVisible = false
     let keyboard = KeyboardObserver()
     
+    var blockedUsers = [String]()
+//    var blockedUsers = [String]() {
+//        didSet {
+//            readBlockedUserList()
+//        }
+//    }
+    
     let postLoginInfoMessage =  "This is a chatroom created to help students discuss topics with each other and get advice. Use it to ask questions, get tips, etc. "
     var preLoginInfoMessage = "You will have to login with your gmail account to send messages."
     
@@ -52,6 +59,14 @@ class DiscussionsViewController: UIViewController {
         
         addCountryCountTableView()
         addDiscussionsMessageBox()
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if user == nil {
+                self.discussionsMessageBox.isHidden = false
+            } else {
+                self.readBlockedUserList()
+            }
+        }
+        loadBlockedUserList()
         addDiscussionChatView()
         
         preLoginInfoMessage = postLoginInfoMessage + preLoginInfoMessage
