@@ -93,7 +93,7 @@ class DiscussionChatView: UIView {
     var first = true
     
     override init(frame: CGRect) {
-        discussionTableView = UITableView()
+        discussionTableView = UITableView(frame: CGRect.zero, style: .grouped)
         userEmail = notLoggedInUserEmailId
         super.init(frame: frame)
         
@@ -175,12 +175,15 @@ class DiscussionChatView: UIView {
     
     func filterMessages() {
         NSLog("Trying to filter messages with senders: \(filteredUsers)")
-        if !chatDataIsLoaded || !loadedFilteredUsers || !loadedAdminUsers {
+        if !chatDataIsLoaded {
             print("Returning without filtering")
             return
         }
         
-        if !shouldFilterMessages() { return }
+        if !shouldFilterMessages() {
+            print("Returning without filtering as should not filter")
+            return
+        }
 //        guard let filteredUsers = filteredUsers else { return }
         
         filteredMessages = [String: [DiscussionMessage]]()
@@ -246,9 +249,10 @@ class DiscussionChatView: UIView {
                     
                     self.unfilteredMessages[dateString, default: [DiscussionMessage]()].append(message)
                 }
-                                
+                
                 self.discussionTableView.reloadData()
                 self.chatDataIsLoaded = true
+                self.filterMessages()
 
             } catch {
                 print(error)
@@ -436,14 +440,14 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let headerLabelView = UILabel(frame: CGRect(x: 0, y: 0, width: discussionTableView.frame.size.width, height: 60))
-        let headerLabel = UILabel(frame: CGRect(x: (discussionTableView.frame.size.width-100)/2, y: 20, width: 100, height: 40))
+        let headerLabelView = UILabel(frame: CGRect(x: 0, y: 0, width: discussionTableView.frame.size.width, height: 40))
+        let headerLabel = UILabel(frame: CGRect(x: (discussionTableView.frame.size.width-100)/2, y: 0, width: 100, height: 40))
         
         headerLabel.adjustsFontSizeToFitWidth = true
-        headerLabel.font = getFont(name: .HelveticaNeue, size: .medium)
-        headerLabel.backgroundColor = UIColor.white
+        headerLabel.font = getFont(name: .HelveticaNeueBold, size: .medium)
+        headerLabel.backgroundColor = .clear
         headerLabel.textAlignment = .center
-        headerLabel.textColor = UIColor.black
+        headerLabel.textColor = UIColor.white
         
         headerLabelView.addSubview(headerLabel)
         headerLabel.clipsToBounds = true
@@ -464,7 +468,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
+        return 40
     }
     
     func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
@@ -657,6 +661,7 @@ extension DiscussionChatView: UITableViewDelegate, UITableViewDataSource {
 extension DiscussionChatView {
     
     func saveUserEmail() {
+        filterMessages()
         guard let currentUser = Auth.auth().currentUser, let userEmail = currentUser.email else {
             //            if self.userEmail == notLoggedInUserEmailId {
             //                print("userEmail == notLoggedInUserEmailId")

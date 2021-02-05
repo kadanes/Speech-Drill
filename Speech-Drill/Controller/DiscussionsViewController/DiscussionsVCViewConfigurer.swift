@@ -61,7 +61,7 @@ extension DiscussionsViewController {
             countryCountView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             countryCountView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             countryCountView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            countryCountView.heightAnchor.constraint(equalToConstant: 60)
+            countryCountView.heightAnchor.constraint(equalToConstant: 34)
         ])
     }
     
@@ -88,8 +88,8 @@ extension DiscussionsViewController {
         NSLayoutConstraint.activate([
             discussionChatView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             discussionChatView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            discussionChatView.topAnchor.constraint(equalTo: countryCountView.bottomAnchor  , constant: 10),
-            discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10),
+            discussionChatView.topAnchor.constraint(equalTo: countryCountView.bottomAnchor  , constant: 5),
+            discussionChatView.bottomAnchor.constraint(equalTo: discussionsMessageBox.topAnchor, constant: -10)
         ])
     }
     

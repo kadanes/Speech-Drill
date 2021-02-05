@@ -69,7 +69,7 @@ class UserCountryUIView: UIView{
             countryCollectionView.leadingAnchor.constraint(equalTo: viewTitleLabel.trailingAnchor, constant: 10),
             countryCollectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             countryCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            countryCollectionView.heightAnchor.constraint(equalToConstant: 50)
+            countryCollectionView.heightAnchor.constraint(equalToConstant: 30)
             
         ])
     }
@@ -97,7 +97,7 @@ class UserCountryUIView: UIView{
 extension UserCountryUIView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 70, height: 50)
+        return CGSize(width: 70, height: 30)
 //        return CGSize.zero
     }
     
