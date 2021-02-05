@@ -15,6 +15,11 @@ extension MainVC {
         topicsContainer.clipsToBounds = true
         topicTxtView.layer.cornerRadius = 10
         topicTxtView.clipsToBounds = true
+        topicTxtView.font = getFont(name: .HelveticaNeue, size: .large)
+        topicTxtView.textAlignment = .center
+        topicTxtView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+
+        
         thinkTimeChangeStackViewContainer.layer.cornerRadius = 10
         thinkTimeChangeStackViewContainer.clipsToBounds = true
         
@@ -26,7 +31,8 @@ extension MainVC {
     func configureThinkTimeChangeButton(_ thinkTimeChangeButton: UIButton) {
         thinkTimeChangeButton.clipsToBounds = true
         thinkTimeChangeButton.layer.cornerRadius = 5
-        thinkTimeChangeButton.titleLabel?.textColor = accentColor
+        thinkTimeChangeButton.setTitleColor(accentColor, for: .normal)
+        thinkTimeChangeButton.titleLabel?.font = getFont(name: .HelveticaNeueBold, size: .medium)
     }
     
     func addHeader() {

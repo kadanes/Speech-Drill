@@ -116,12 +116,16 @@ extension MainVC {
             
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "practice" as NSObject])
             
-            UIView.animate(withDuration: 0.2) {
+//            UIView.animate(withDuration: 0.2) {
+//                self.thinkTimeChangeStackViewContainer.isHidden = true
+//            } completion: { (completed) in
+//                self.topicsContainer.isHidden = false
+//            }
+            
+            UIView.animate(withDuration: 0.3) {
                 self.thinkTimeChangeStackViewContainer.isHidden = true
-            } completion: { (completed) in
                 self.topicsContainer.isHidden = false
             }
-            
             
             renderTopic(topicNumber: self.topicNumber)
             defaultThinkTime = 15
@@ -133,7 +137,12 @@ extension MainVC {
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "test" as NSObject])
             
             
-            UIView.animate(withDuration: 0.2) {
+//            UIView.animate(withDuration: 0.2) {
+//                self.thinkTimeChangeStackViewContainer.isHidden = false
+//                self.topicsContainer.isHidden = true
+//            }
+            
+            UIView.animate(withDuration: 0.3) {
                 self.thinkTimeChangeStackViewContainer.isHidden = false
                 self.topicsContainer.isHidden = true
             }

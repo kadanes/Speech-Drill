@@ -134,7 +134,8 @@ extension MainVC {
         if(thinkTime > 0) {
             isThinking = true
             thinkTime -= 1
-            thinkTimeLbl.text = "\(thinkTime)"
+//            thinkTimeLbl.text = "\(thinkTime)"
+            thinkTimeLbl.text = String(format: "%02d", thinkTime)
             
         } else {
             
@@ -186,8 +187,8 @@ extension MainVC {
     @objc func decrementSpeakTime(timer: Timer) {
         if(speakTime > 0) {
             speakTime -= 1
-            speakTimeLbl.text = "\(speakTime)"
-            
+//            speakTimeLbl.text = "\(speakTime)"
+            speakTimeLbl.text = String(format: "%02d", speakTime)
         } else {
             timer.invalidate()
             speakTime = defaultSpeakTime
