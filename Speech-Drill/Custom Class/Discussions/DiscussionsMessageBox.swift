@@ -143,6 +143,7 @@ import Firebase
                             print("Failed to save message \(messageDictionary) in database: \(error)")
                         }
                     }
+                    askForReview()
                     reregisterForTopicFCM()
                 } catch {
                     print(error)

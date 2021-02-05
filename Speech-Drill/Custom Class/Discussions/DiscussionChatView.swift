@@ -238,7 +238,7 @@ class DiscussionChatView: UIView {
                 
                 for message in messagesList {
                     
-                    let dateString = self.getDateString(from: message.messageTimestamp)
+                    let dateString = getDateString(from: message.messageTimestamp)
                     
                     if !self.unfilteredMessageSendDates.contains(dateString) {
                         self.unfilteredMessageSendDates.append(dateString)
@@ -668,40 +668,22 @@ extension DiscussionChatView {
             //            }
             self.userEmail = notLoggedInUserEmailId
             discussionTableView.reloadData()
-            print("Email is null or user is not logged in")
-            print("Messages: ", self.unfilteredMessages)
-            print("Send Dates: ", self.unfilteredMessageSendDates)
-            print("Should filter message? \(shouldFilterMessages()), Filtered Users: \(filteredUsers)")
+            printMessageDetails()
             return
         }
         
-        
         self.userEmail = userEmail
-        print("Email: ", userEmail)
-        print("Messages: ", self.unfilteredMessages)
-        print("Send Dates: ", self.unfilteredMessageSendDates)
-        print("Should filter message? \(shouldFilterMessages()), Filtered Users: \(filteredUsers)")
+        printMessageDetails()
         discussionTableView.reloadData()
     }
     
-    func getDateFormatter() -> DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .current
-        dateFormatter.dateFormat = "dd MMM yyyy"
-        return dateFormatter
-    }
-    
-    func getDate(from dateString: String) -> Date? {
-        //        print("Date String: ", dateString)
-        let dateFormatter = getDateFormatter()
-        return dateFormatter.date(from: dateString) ?? nil
-    }
-    
-    func getDateString(from timestamp: Double) -> String {
-        let dateFormatter = getDateFormatter()
-        let date = Date(timeIntervalSince1970: timestamp)
-        let dateString = dateFormatter.string(from: date)
-        return dateString
+    func printMessageDetails() {
+        print("Email: ", userEmail)
+        print("Messages: ", self.unfilteredMessages)
+        print("Send Dates: ", self.unfilteredMessageSendDates)
+        print("Filtered Messages: ", self.filteredMessages)
+        print("Filtered Send Dates: ", self.filteredMessageSendDates)
+        print("Should filter message? \(shouldFilterMessages()), Filtered Users: \(filteredUsers)")
     }
     
     func getDateStringForHeaderText(dateString: String) -> String {

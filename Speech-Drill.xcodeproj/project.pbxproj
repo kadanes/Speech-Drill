@@ -17,6 +17,7 @@
 		B21ABB2A210FF664009C678C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB29210FF664009C678C /* Assets.xcassets */; };
 		B21ABB2D210FF664009C678C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21ABB2B210FF664009C678C /* LaunchScreen.storyboard */; };
 		B221BED225CC31FD00C7F40E /* SafeArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */; };
+		B221BED525CD8A8900C7F40E /* DateTimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B221BED425CD8A8800C7F40E /* DateTimeIntervalExtension.swift */; };
 		B22C81372114133300104E02 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C81362114133300104E02 /* RoundButton.swift */; };
 		B22C813B2114366E00104E02 /* topics.csv in Resources */ = {isa = PBXBuildFile; fileRef = B22C813A2114366E00104E02 /* topics.csv */; };
 		B22F8FC4214922EF00B05A87 /* RoundBorderedBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */; };
@@ -132,6 +133,7 @@
 		B21ABB2C210FF664009C678C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B21ABB2E210FF664009C678C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeArrayExtension.swift; sourceTree = "<group>"; };
+		B221BED425CD8A8800C7F40E /* DateTimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeIntervalExtension.swift; sourceTree = "<group>"; };
 		B22C81362114133300104E02 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		B22C813A2114366E00104E02 /* topics.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topics.csv; sourceTree = "<group>"; };
 		B22F8FC3214922EF00B05A87 /* RoundBorderedBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBorderedBtn.swift; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 				B2E0F31C25C46C7400796318 /* UIScrollView.swift */,
 				B2E0F35625C80AA900796318 /* UIImage.swift */,
 				B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */,
+				B221BED425CD8A8800C7F40E /* DateTimeIntervalExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 				B269D34F25AC5B410025E1DE /* UserCountryCell.swift in Sources */,
 				B21ABB25210FF664009C678C /* MainVC.swift in Sources */,
 				B2BC4A3A213C55E800EDEB74 /* RecordingsMerger.swift in Sources */,
+				B221BED525CD8A8900C7F40E /* DateTimeIntervalExtension.swift in Sources */,
 				B2F0300F25B5C9E4004A791D /* VersionInfoView.swift in Sources */,
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,

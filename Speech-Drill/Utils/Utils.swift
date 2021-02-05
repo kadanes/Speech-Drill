@@ -11,6 +11,7 @@ import UIKit
 import AVFoundation
 import Mute
 import Firebase
+import StoreKit
 
 func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
     
@@ -27,7 +28,7 @@ func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
             return .Failed
         }
     } else {
-       return .FileNotFound
+        return .FileNotFound
     }
 }
 
@@ -49,10 +50,10 @@ func findAndUpdateSection(date: String, recordingUrlsDict:Dictionary<String,Arra
 
 func openURL(url: URL?) {
     guard let url = url else { return }
-//    if UIApplication.shared.canOpenURL(url) {
-//    }
+    //    if UIApplication.shared.canOpenURL(url) {
+    //    }
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
-
+    
 }
 
 func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
@@ -100,7 +101,7 @@ func splitFileURL(url: URL) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
 func checkIfDate(date: String) -> Bool {
     let dateFormatterGet = DateFormatter()
     dateFormatterGet.dateFormat = "dd/MM/yyyy"
-
+    
     if dateFormatterGet.date(from: date) != nil {
         return true
     } else {
@@ -207,7 +208,7 @@ func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActiv
                     print(error.localizedFailureReason ?? "ERROR COPYING")
                 }
             }
-        
+            
         } else {
             mergeAudioFiles(audioFileUrls: sortedRecordingsList) {
                 completion()
@@ -272,17 +273,17 @@ func getAppstoreVersion() -> String? {
     
     do {
         guard let lookup = (try JSONSerialization.jsonObject(with: data , options: [])) as? [String: Any] else { return nil }
-            if let resultCount = lookup["resultCount"] as? Int, resultCount == 1 {
-                if let results = lookup["results"] as? [[String:Any]] {
-                    if let appStoreVersion = results[0]["version"] as? String{
-                        return appStoreVersion
-                    }
+        if let resultCount = lookup["resultCount"] as? Int, resultCount == 1 {
+            if let results = lookup["results"] as? [[String:Any]] {
+                if let appStoreVersion = results[0]["version"] as? String{
+                    return appStoreVersion
                 }
             }
+        }
     } catch {
         print("Error getting app store version: ", error)
     }
-
+    
     return nil
 }
 
@@ -304,7 +305,7 @@ func getFullInstalledAppVersion() -> String? {
 
 func validateTextView(textView: UITextView) -> Bool {
     guard let text = textView.text,
-        !text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
+          !text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
         return false
     }
     return true
@@ -359,3 +360,78 @@ func getUUID() -> String {
     return newUUID
 }
 
+
+/// Get a date formatter that parses Date to current timestamp as dd MM yyyy
+/// - Returns: A date formatter object to parse dates
+func getDateFormatter() -> DateFormatter {
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = .current
+    dateFormatter.dateFormat = "dd MMM yyyy"
+    return dateFormatter
+}
+
+
+/// Get a date from a string  of date format dd MMM yyyy.
+/// - Parameter dateString: Date string formated as dd MMM yyyy
+/// - Returns: A date object by parsing date in dd MMM yyy format
+func getDate(from dateString: String) -> Date? {
+    //        print("Date String: ", dateString)
+    let dateFormatter = getDateFormatter()
+    return dateFormatter.date(from: dateString) ?? nil
+}
+
+/// Get a string representation in current local time for a timestamp
+/// - Parameter timestamp: Timestamp to be converted to date string
+/// - Returns: A date string from passed timestamp in dd MMM yyy format
+func getDateString(from timestamp: Double) -> String {
+    let dateFormatter = getDateFormatter()
+    let date = Date(timeIntervalSince1970: timestamp)
+    let dateString = dateFormatter.string(from: date)
+    return dateString
+}
+
+
+/// Requests review from user based on certain conditions.
+/// 1. Should have recorderd at least 3 recordings (if you want to force attept a review ask don't pass any parameter)
+/// 2. Has not already asked for a review today
+/// 3. A probabitly of 50% if will ask today
+/// 4. If review has not been asked more than 30 times in the same year for the current version
+/// - Parameter numberOfRecordings: If the number of recordings is greater than 3 then a review will be asked.
+func askForReview(numberOfRecordings: Int = 5) {
+    let defaults = UserDefaults.standard
+    let lastAskedReviewAt = defaults.double(forKey: lastAskedReviewAtKey)
+    let dateStringForLastReviewAsk = getDateString(from: lastAskedReviewAt)
+    let dateForLastReviewAsk = getDate(from: dateStringForLastReviewAsk) ?? Date(timeIntervalSince1970: 0)
+    let askedReviewToday = Calendar.current.isDateInToday(dateForLastReviewAsk)
+    var appReviewRequestsCount = defaults.integer(forKey: appReviewRequestsCountKey)
+    
+    if Date().localDate().years(from: dateForLastReviewAsk) >= 1 {
+        defaults.setValue(0, forKey: appReviewRequestsCountKey)
+        appReviewRequestsCount = 0
+    }
+    
+    var isAskingReviewForSameVersion = false
+    
+    if let currentlyInstalledVersion = getInstalledVersionNumber(), let lastReviewAskedForVersion = defaults.string(forKey: lastReviewAskedForVersionKey) {
+        if currentlyInstalledVersion == lastReviewAskedForVersion {
+            isAskingReviewForSameVersion = true
+        } else {
+            appReviewRequestsCount = 0
+            defaults.setValue(0, forKey: appReviewRequestsCountKey)
+        }
+    }
+    
+    let askingReviewTooManyTimes = appReviewRequestsCount >= 30 && isAskingReviewForSameVersion
+    
+    let totalRecordingsTillDateCount = defaults.integer(forKey: totalRecordingsTillDateCountKey)
+    let localNumberOfRecordings = max(numberOfRecordings, totalRecordingsTillDateCount)
+    
+    if localNumberOfRecordings > 3 && Bool.random() && !askedReviewToday && !askingReviewTooManyTimes {
+        SKStoreReviewController.requestReview()
+        defaults.setValue(Date().timeIntervalSince1970, forKey: lastAskedReviewAtKey)
+        if let versionNumber = getInstalledVersionNumber() {
+            defaults.setValue(versionNumber, forKey: lastReviewAskedForVersionKey)
+        }
+        defaults.setValue(appReviewRequestsCount + 1, forKey: appReviewRequestsCountKey)
+    }
+}

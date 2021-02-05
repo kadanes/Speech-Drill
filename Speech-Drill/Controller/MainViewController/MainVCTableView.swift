@@ -23,8 +23,15 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         
-        userDefaults.setValue(countNumberOfRecordings() + 1, forKey: recordingsCountKey)
+        let totalRecordingsTillDateCount = userDefaults.integer(forKey: totalRecordingsTillDateCountKey)
+        NSLog("Total recordings till date: \(totalRecordingsTillDateCount)")
+        
+        let currentNumberOfRecordings = countNumberOfRecordings() + 1
+        userDefaults.setValue(currentNumberOfRecordings, forKey: recordingsCountKey)
+        userDefaults.setValue(totalRecordingsTillDateCount + 1, forKey: totalRecordingsTillDateCountKey)
         saveCurrentNumberOfSavedRecordings()
+        askForReview(numberOfRecordings: currentNumberOfRecordings)
+        
         
         if !recordingUrlsDict.keys.contains(date) {
             var urls = [URL]()

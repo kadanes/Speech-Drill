@@ -20,6 +20,10 @@ let fcmTokenKey = "FCMToken"
 let recordingsCountKey = "RecordingsCount"
 let lastReadMessageTimestampKey = "LastReadMessageTimestamp"
 let lastReadMessageIDKey = "LastReadMessageID"
+let lastAskedReviewAtKey = "LastAskedReviewAt"
+let appReviewRequestsCountKey = "AppReviewRequestsCount"
+let lastReviewAskedForVersionKey = "AskedReviewForVersion"
+let totalRecordingsTillDateCountKey = "TotalRecordingsTillDateCount"
 
 // Bundle Info Getter Keys
 let appIdKey = "CFBundleIdentifier"
