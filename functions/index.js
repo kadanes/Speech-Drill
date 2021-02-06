@@ -57,6 +57,11 @@ exports.sendSpeechDrillDiscussionsMessageNotification = functions.database
         senderUserName
       );
 
+      console.log(
+        "Will attempt to send notification for message with message id: ",
+        messageID
+      );
+
       var payload = {
         notification: {
           title: title,
@@ -78,117 +83,45 @@ exports.sendSpeechDrillDiscussionsMessageNotification = functions.database
 
       if (isSenderFiltered) {
         adminFIRTokens = Object.values(adminUsersFIRTokens);
-
-        const useSendToDevice = false;
-
-        if (!useSendToDevice) {
-          console.log("Sending filtered notification with sendMulticast");
-
-          payload.tokens = adminFIRTokens; //Needed for sendMulticast
-          return admin
-            .messaging()
-            .sendMulticast(payload)
-            .then(function (response) {
+        console.log("Sending filtered notification with sendMulticast()");
+        payload.tokens = adminFIRTokens; //Needed for sendMulticast
+        return admin
+          .messaging()
+          .sendMulticast(payload)
+          .then((response) => {
+            console.log(
+              "Sent filtered message (using sendMulticast) notification: ",
+              JSON.stringify(response)
+            );
+            if (response.failureCount > 0) {
+              const failedTokens = [];
+              response.responses.forEach((resp, idx) => {
+                if (!resp.success) {
+                  failedTokens.push(adminFIRTokens[idx]);
+                }
+              });
               console.log(
-                "Sent filtered message (using sendMulticast) notification: ",
-                response
+                "List of tokens that caused failures: " + failedTokens
               );
-              if (response.failureCount > 0) {
-                const failedTokens = [];
-                response.responses.forEach((resp, idx) => {
-                  if (!resp.success) {
-                    failedTokens.push(adminFIRTokens[idx]);
-                  }
-                });
-                console.log(
-                  "List of tokens that caused failures: " + failedTokens
-                );
-              }
-              return true;
-            });
-        } else {
-          console.log("Sending filtered message with sendToDevice");
-          return admin
-            .messaging()
-            .sendToDevice(adminFIRTokens, payload)
-            .then(function (response) {
-              console.log(
-                "Sent filtered message with (using sendToDevice) notification: ",
-                response
-              );
-              return true;
-            });
-        }
+            }
+            return true;
+          });
       } else {
-        const useSendToTopic = false;
-        if (!useSendToTopic) {
-          console.log("Sending topic message with send");
-          payload.topic = topicName;
-          return admin
-            .messaging()
-            .send(payload)
-            .then(function (response) {
-              console.log(
-                "Sent topic message (using send) notification: ",
-                response
-              );
-              return true;
-            });
-        } else {
-          console.log("Sending topic message with sendToTopic");
-          return admin
-            .messaging()
-            .sendToTopic(topicName, payload)
-            .then(function (response) {
-              console.log(
-                "Sent topic message (using sendToTopic) notification: ",
-                response
-              );
-              return true;
-            });
-        }
+        console.log("Sending topic message with send()");
+        payload.topic = topicName;
+        return admin
+          .messaging()
+          .send(payload)
+          .then((response) => {
+            console.log(
+              "Sent topic message (using send) notification: ",
+              JSON.stringify(response)
+            );
+            return true;
+          });
       }
     } catch (error) {
       console.log("Notification sent failed:", error);
       return false;
     }
   });
-
-/*
-    const optionalUserProfileUrl = message.profilePictureUrl || undefined;
-
-    console.log("Optional User Profile: ", optionalUserProfileUrl);
-
-    const userProfileUrl =
-      optionalUserProfileUrl === undefined
-        ? undefined
-        : optionalUserProfileUrl.substring(
-            9,
-            optionalUserProfileUrl.length - 1
-          );
-
-    console.log("Profile URL: ", userProfileUrl);
-    */
-
-/*
-    var apnsPayload = {
-      payload: {
-        aps: {
-          "mutable-content": 1,
-        },
-      },
-      fcm_options: {
-        image: undefined,
-      },
-    };
-
-    console.log("Is url defined? ", !(userProfileUrl === undefined));
-
-    if (!(userProfileUrl === undefined)) {
-      payload.notification.image = userProfileUrl;
-      //   apnsPayload.fcm_options.image = userProfileUrl;
-      //   payload.apns = apnsPayload;
-    }
-
-    console.log("Payload Body: ", payload);
-    */
