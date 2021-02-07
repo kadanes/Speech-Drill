@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import CoreLocation
+import Siren
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -67,7 +68,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        InstanceID.instanceID().getID { (token, error) in
 //            Messaging.messaging().subscribe(toTopic: speechDrillDiscussionsFCMTopicName)
 //        }
-                
+          
+        if #available(iOS 13.0, *) {
+            setupSiren()
+        }
+        
         return true
     }
     
@@ -161,4 +166,31 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         NSLog("\(#function) received remote notification")
     }
     
+}
+
+extension AppDelegate {
+    
+    /// Major, Minor, Patch, and Revision specific rules implementations.
+    func setupSiren() {
+        let siren = Siren.shared
+        
+        siren.presentationManager = PresentationManager(alertTintColor: accentColor, forceLanguageLocalization: .english)
+        
+        siren.rulesManager = RulesManager(majorUpdateRules: .critical,
+                                          minorUpdateRules: .annoying,
+                                          patchUpdateRules: .default,
+                                          revisionUpdateRules: Rules(promptFrequency: .weekly, forAlertType: .option))
+        
+        siren.wail { results in
+            switch results {
+            case .success(let updateResults):
+                print("AlertAction ", updateResults.alertAction)
+                print("Localization ", updateResults.localization)
+                print("Model ", updateResults.model)
+                print("UpdateType ", updateResults.updateType)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }    
 }

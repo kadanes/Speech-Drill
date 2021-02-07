@@ -15,4 +15,5 @@ target 'Speech-Drill' do
   pod 'FontAwesome.swift'
   pod 'Firebase/Messaging'
   pod 'Firebase/Analytics'
+  pod 'Siren'
 end
