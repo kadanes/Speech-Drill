@@ -107,6 +107,7 @@ class DiscussionChatView: UIView {
         
         discussionTableView.estimatedRowHeight = 300
         discussionTableView.rowHeight = UITableViewAutomaticDimension
+        discussionTableView.sectionFooterHeight = 0
         
         self.addSubview(discussionTableView)
         discussionTableView.translatesAutoresizingMaskIntoConstraints = false

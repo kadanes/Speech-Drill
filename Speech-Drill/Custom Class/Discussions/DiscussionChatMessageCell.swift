@@ -37,7 +37,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
         senderNameLabel.numberOfLines = 0
         senderNameLabel.lineBreakMode = .byCharWrapping
-        senderNameLabel.font =  getFont(name: .HelveticaNeueBold, size: .large)
+        senderNameLabel.font =  getFont(name: .HelveticaNeueBold, size: .medium)
         senderNameLabel.textColor = .white
         
         messageBubble.addSubview(messageLabel)
@@ -58,6 +58,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         messageSentTimeLabel.lineBreakMode = .byCharWrapping
         messageSentTimeLabel.numberOfLines = 0
         messageSentTimeLabel.font = getFont(name: .HelveticaNeueItalic, size: .small)
+        messageSentTimeLabel.textAlignment = .right
         
         // set hugging and compression resistance for Name label
         senderNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -88,13 +89,13 @@ class DiscussionChatMessageCell: UITableViewCell {
 //          Causes lesser constraint errors that need to be broken
 //            senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
 
-            messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 10),
+            messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 0),
             messageLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
             messageLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
-            messageLabel.bottomAnchor.constraint(equalTo: messageSentTimeLabel.topAnchor, constant: -10),
+            messageLabel.bottomAnchor.constraint(equalTo: messageSentTimeLabel.topAnchor, constant: 0),
             
             messageSentTimeLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
-//            messageSentTimeLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
+            messageSentTimeLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
             messageSentTimeLabel.bottomAnchor.constraint(equalTo: messageBubble.bottomAnchor, constant: -10),
             
         ])
@@ -125,14 +126,14 @@ class DiscussionChatMessageCell: UITableViewCell {
         let dateString = dayTimePeriodFormatter.string(from: date)
         
         messageLabel.text = message.message
-        
         messageSentTimeLabel.text = dateString
-        
-        messageLabel.textColor = isSender ? .black : .white
+
         senderNameLabel.textColor = isSender ? .black : .white
+        messageLabel.textColor = isSender ? .black : .white
         messageSentTimeLabel.textColor = isSender ? .black : .white
-        messageSentTimeLabel.textAlignment = isSender ? .right : .left
-        
+//        messageSentTimeLabel.shadowColor = isSender ? transparentBlack : transparentWhite
+//        messageSentTimeLabel.shadowOffset = CGSize(width: 0, height: 1)
+            
         bubbleLeadingConstraint.priority = isSender ? .defaultLow : .defaultHigh
         bubbleTrailingConstraint.priority = isSender ? .defaultHigh : .defaultLow
         
