@@ -85,6 +85,9 @@
 		B2E0F35125C7E37900796318 /* SideNavigationVCViewConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F35025C7E37900796318 /* SideNavigationVCViewConfigurer.swift */; };
 		B2E0F35425C7E41700796318 /* SideNavigationVCActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F35325C7E41700796318 /* SideNavigationVCActions.swift */; };
 		B2E0F35725C80AA900796318 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E0F35625C80AA900796318 /* UIImage.swift */; };
+		B2E1D0C225D2D1DC005140EB /* LogginConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1D0C125D2D1DC005140EB /* LogginConfiguration.swift */; };
+		B2E1D0C625D2D236005140EB /* LoggingProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1D0C525D2D236005140EB /* LoggingProxy.swift */; };
+		B2E1D0CA25D2D2C1005140EB /* EmojiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1D0C925D2D2C1005140EB /* EmojiModifier.swift */; };
 		B2E5F5DD212B1D1200FC7E28 /* dleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D7212B1D0E00FC7E28 /* dleft.png */; };
 		B2E5F5DE212B1D1200FC7E28 /* tleft.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D8212B1D0F00FC7E28 /* tleft.png */; };
 		B2E5F5DF212B1D1200FC7E28 /* tright.png in Resources */ = {isa = PBXBuildFile; fileRef = B2E5F5D9212B1D0F00FC7E28 /* tright.png */; };
@@ -204,6 +207,9 @@
 		B2E0F35025C7E37900796318 /* SideNavigationVCViewConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVCViewConfigurer.swift; sourceTree = "<group>"; };
 		B2E0F35325C7E41700796318 /* SideNavigationVCActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationVCActions.swift; sourceTree = "<group>"; };
 		B2E0F35625C80AA900796318 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		B2E1D0C125D2D1DC005140EB /* LogginConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogginConfiguration.swift; sourceTree = "<group>"; };
+		B2E1D0C525D2D236005140EB /* LoggingProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingProxy.swift; sourceTree = "<group>"; };
+		B2E1D0C925D2D2C1005140EB /* EmojiModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiModifier.swift; sourceTree = "<group>"; };
 		B2E5F5D7212B1D0E00FC7E28 /* dleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dleft.png; sourceTree = "<group>"; };
 		B2E5F5D8212B1D0F00FC7E28 /* tleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tleft.png; sourceTree = "<group>"; };
 		B2E5F5D9212B1D0F00FC7E28 /* tright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tright.png; sourceTree = "<group>"; };
@@ -396,6 +402,7 @@
 		B27F31382122027700872047 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B2E1D0C425D2D1ED005140EB /* Logging */,
 				B2BC4A39213C55E800EDEB74 /* RecordingsMerger.swift */,
 				B2BC4A37213C535E00EDEB74 /* IconMaker.swift */,
 				B2E5F5E9212B2C5900FC7E28 /* Utils.swift */,
@@ -510,6 +517,16 @@
 				B2E0F35325C7E41700796318 /* SideNavigationVCActions.swift */,
 			);
 			path = SideNavigationController;
+			sourceTree = "<group>";
+		};
+		B2E1D0C425D2D1ED005140EB /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				B2E1D0C125D2D1DC005140EB /* LogginConfiguration.swift */,
+				B2E1D0C525D2D236005140EB /* LoggingProxy.swift */,
+				B2E1D0C925D2D2C1005140EB /* EmojiModifier.swift */,
+			);
+			path = Logging;
 			sourceTree = "<group>";
 		};
 		C2DE69F64CE1AF011AEF432A /* Pods */ = {
@@ -704,8 +721,10 @@
 				B21ABB23210FF664009C678C /* AppDelegate.swift in Sources */,
 				B2E5F5F2212B340D00FC7E28 /* IconCell.swift in Sources */,
 				B23F7F1421483B02009B6ECA /* IDs.swift in Sources */,
+				B2E1D0C225D2D1DC005140EB /* LogginConfiguration.swift in Sources */,
 				B2DB3F232148EE72000DD50E /* ProgressBar.swift in Sources */,
 				B2E0F35125C7E37900796318 /* SideNavigationVCViewConfigurer.swift in Sources */,
+				B2E1D0CA25D2D2C1005140EB /* EmojiModifier.swift in Sources */,
 				B204ECB021134A2200A51E8B /* RecordingCell.swift in Sources */,
 				B2E0F32825C7D42000796318 /* MainVCTableView.swift in Sources */,
 				B2BBE31525B40F4C0054DE1F /* SideNavAdCell.swift in Sources */,
@@ -754,6 +773,7 @@
 				B2BBE29A25AEF5BD0054DE1F /* DiscussionChatMessageCell.swift in Sources */,
 				B2F0301B25B5D7B8004A791D /* SideNavNoticesTableViewCell.swift in Sources */,
 				B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */,
+				B2E1D0C625D2D236005140EB /* LoggingProxy.swift in Sources */,
 				B2E0F32025C532A400796318 /* UserInfoStruct.swift in Sources */,
 				B26DEB9F2161556D006FE754 /* SceenType.swift in Sources */,
 				B2E5F5EA212B2C5900FC7E28 /* Utils.swift in Sources */,

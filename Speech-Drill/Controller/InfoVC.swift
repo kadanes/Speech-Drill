@@ -12,11 +12,11 @@ import Firebase
 import GoogleSignIn
 
 class InfoVC: UIViewController {
-
-//    static let infoVC = InfoVC()
-//    let sideNavVC = SideNavVC()
     
-//    @IBOutlet weak var displaySideNavBtn: UIButton!
+    //    static let infoVC = InfoVC()
+    //    let sideNavVC = SideNavVC()
+    
+    //    @IBOutlet weak var displaySideNavBtn: UIButton!
     @IBOutlet weak var infoContainer: UIView!
     @IBOutlet weak var githubBtn: UIButton!
     @IBOutlet weak var gmailBtn: UIButton!
@@ -26,9 +26,9 @@ class InfoVC: UIViewController {
     @IBOutlet weak var iconCollectionView: UICollectionView!
     @IBOutlet weak var creditsTextView: UITextView!
     
-//    @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
+    //    @IBOutlet weak var creditsTxtViewHeight: NSLayoutConstraint!
     
-//    let interactor = Interactor()
+    //    let interactor = Interactor()
     
     let repoURL = URL(string: "https://github.com/parthv21/TOEFL-Speaking")
     
@@ -45,9 +45,10 @@ class InfoVC: UIViewController {
     var accentedIcons = [checkIcon,singleLeftIcon,singleRightIcon,doubleLeftIcon,doubleRightIcon,tripleLeftIcon,tripleRightIcon,infoIcon,sideNavIcon]
     
     override func viewDidLoad() {
-        
-        super.viewDidLoad()
+        logger.info()
 
+        super.viewDidLoad()
+        
         setButtonProp()
         
         infoContainer.layer.cornerRadius = 5
@@ -57,14 +58,15 @@ class InfoVC: UIViewController {
         iconCollectionView.dataSource = self
         
         icons = icons.shuffled()
-                
+        
         fetchAndSetCredits()
         addHeader()
         
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
+        logger.info()
+
         super.viewWillAppear(true)
         navigationController?.navigationBar.barTintColor = .black
     }
@@ -80,9 +82,11 @@ class InfoVC: UIViewController {
             }
         })
     }
-
+    
     
     func addHeader() {
+        logger.info()
+
         title = "About"
         
         let hamburgerBtn = UIButton()
@@ -95,64 +99,74 @@ class InfoVC: UIViewController {
         hamburgerBtn.contentMode = .scaleAspectFit
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
-                
+        
     }
     
     
     @IBAction func displaySideNavTapped(_ sender: Any) {
+        logger.info()
+
         Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
         
-//        sideNavVC.transitioningDelegate = self
-//        sideNavVC.modalPresentationStyle = .custom
-//        sideNavVC.interactor = interactor
-//        sideNavVC.calledFromVC = InfoVC.infoVC
-//        self.present(sideNavVC, animated: true, completion: nil)
+        //        sideNavVC.transitioningDelegate = self
+        //        sideNavVC.modalPresentationStyle = .custom
+        //        sideNavVC.interactor = interactor
+        //        sideNavVC.calledFromVC = InfoVC.infoVC
+        //        self.present(sideNavVC, animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
     }
     
     
     func setButtonProp() {
+        logger.info()
+
         
-//        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
-//        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
-//        contactButton.setImage(buttonImage, for: .normal)
+        //        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
+        //        setButtonBgImage(button: displaySideNavBtn, bgImage: sideNavIcon, tintColor: accentColor)
+        //        contactButton.setImage(buttonImage, for: .normal)
         
-//        setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
+        //        setBtnImgProp(button: githubBtn, topPadding: 10, leftPadding: 1)
         setInfoButtonProps(button: githubBtn, image: githubIcon)
         githubBtn.backgroundColor = githubBlue.withAlphaComponent(0.8)
         
-//        setBtnImgProp(button: gmailBtn, topPadding: 10, leftPadding: 1)
+        //        setBtnImgProp(button: gmailBtn, topPadding: 10, leftPadding: 1)
         setInfoButtonProps(button: gmailBtn, image: emailIcon)
         gmailBtn.backgroundColor = disabledRed.withAlphaComponent(0.8)
         
-//        setBtnImgProp(button: twitterBtn, topPadding: 10, leftPadding: 1)
+        //        setBtnImgProp(button: twitterBtn, topPadding: 10, leftPadding: 1)
         setInfoButtonProps(button: twitterBtn, image: twitterIcon)
         twitterBtn.backgroundColor = twitterBlue.withAlphaComponent(0.8)
-    
+        
         fABtn.setTitleColor(accentColor, for: .normal)
         tTSBtn.setTitleColor(accentColor, for: .normal)
     }
     
     func setInfoButtonProps(button: UIButton, image: UIImage) {
+        logger.info()
+
         button.contentHorizontalAlignment = .center
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         button.titleLabel?.font = getFont(name: .HelveticaNeue, size: .medium)
     }
-
+    
     @IBAction func gitHubTapped(_ sender: UIButton) {
+        logger.info()
+
         Analytics.logEvent(AnalyticsEvent.OpenRepo.rawValue, parameters: nil)
         openURL(url: repoURL)
     }
     
-    @IBAction func gmailTapped(_ sender: UIButton) {
+    @IBAction func gmailTapped(_ sender: UIButton) {        logger.info()
+
         Analytics.logEvent(AnalyticsEvent.SendMail.rawValue, parameters: nil)
         openURL(url: reportBugURL)
     }
     
     @IBAction func twitterTapped(_ sender: Any) {
-        
+        logger.info()
+
         Analytics.logEvent(AnalyticsEvent.SendTweet.rawValue, parameters: nil)
         let screenName =  "parthv21"
         let appURL = NSURL(string: "twitter://user?screen_name=\(screenName)")!
@@ -166,19 +180,22 @@ class InfoVC: UIViewController {
         }
     }
     
-    @IBAction func showLicenseTapped(_ sender: UIButton) {
+    @IBAction func showLicenseTapped(_ sender: UIButton) {        logger.info()
+
         Analytics.logEvent(AnalyticsEvent.OpenFontAwesome.rawValue, parameters: nil)
         openURL(url: licenseURL)
     }
     
-    @IBAction func fromTTSTapped(_ sender: UIButton) {
+    @IBAction func fromTTSTapped(_ sender: UIButton) {        logger.info()
+
         Analytics.logEvent(AnalyticsEvent.OpenTextToSpeech.rawValue, parameters: nil)
         openURL(url: ttsURL)
     }
-  
+    
 }
 
 extension InfoVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return icons.count
     }
@@ -206,5 +223,5 @@ extension InfoVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
         
         return CGSize(width: 40, height: 40)
     }
-
+    
 }

@@ -12,15 +12,18 @@ import UIKit
 extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  {
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        logger.info()
         return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        logger.info()
         if section == 1 { return menuItems.count}
         return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        logger.info()
         if indexPath.section == 0 {
             return sideNavNoticesTableViewCell
         }
@@ -35,6 +38,7 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        logger.info()
         if indexPath.section == 0 {
             return 190
         } else if indexPath.section == 2 {
@@ -44,7 +48,7 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        logger.info()
         guard let calledFromVCIndex = calledFromVCIndex else { return }
         
         if indexPath.section == 0 || indexPath.section == 2 {

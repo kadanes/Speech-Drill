@@ -122,8 +122,8 @@ class MainVC: UIViewController {
     let callObserver = CXCallObserver()
     
     override func viewDidLoad() {
+        logger.info()
         super.viewDidLoad()
-        
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
         recordingTableView.rowHeight = UITableViewAutomaticDimension
@@ -165,22 +165,24 @@ class MainVC: UIViewController {
         
         Auth.auth().addStateDidChangeListener { (auth, user) in
             if let _ = user {
-//                print("User is not nil")
+                //                print("User is not nil")
                 saveBasicUserInfo(deleteUnauth: false)
             } else {
-//                print("User is nil")
+                //                print("User is nil")
                 saveBasicUserInfo()
             }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        logger.info()
         navigationController?.navigationBar.barTintColor = mainGray
         super.viewWillAppear(true)
         toggleExportMenu()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        logger.info()
         super.viewDidAppear(true)
         recordingTableView.reloadData()
     }

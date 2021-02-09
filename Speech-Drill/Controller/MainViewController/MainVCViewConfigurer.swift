@@ -11,6 +11,7 @@ import UIKit
 
 extension MainVC {
     func configureTopicsView() {
+        logger.info()
         topicsContainer.layer.cornerRadius = 10
         topicsContainer.clipsToBounds = true
         topicTxtView.layer.cornerRadius = 10
@@ -18,7 +19,7 @@ extension MainVC {
         topicTxtView.font = getFont(name: .HelveticaNeue, size: .large)
         topicTxtView.textAlignment = .center
         topicTxtView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-
+        
         
         thinkTimeChangeStackViewContainer.layer.cornerRadius = 10
         thinkTimeChangeStackViewContainer.clipsToBounds = true
@@ -29,6 +30,7 @@ extension MainVC {
     }
     
     func configureThinkTimeChangeButton(_ thinkTimeChangeButton: UIButton) {
+        logger.info()
         thinkTimeChangeButton.clipsToBounds = true
         thinkTimeChangeButton.layer.cornerRadius = 5
         thinkTimeChangeButton.setTitleColor(accentColor, for: .normal)
@@ -36,6 +38,7 @@ extension MainVC {
     }
     
     func addHeader() {
+        logger.info()
         
         title = "Practice Mode"
         
@@ -70,7 +73,8 @@ extension MainVC {
     }
     
     func setUIButtonsProperty() {
-        
+        logger.info()
+
         //        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTopicBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: loadNextTenthTopicBtn ,topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -85,7 +89,8 @@ extension MainVC {
     }
     
     func setBtnImage() {
-        
+        logger.info()
+
         thinkTimeLbl.textColor = accentColor
         speakTimeLbl.textColor = accentColor
         

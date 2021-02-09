@@ -16,12 +16,12 @@ struct UserInfo: Codable {
     let profile: ProfileInfo
     let activity: ActivityInfo
     let stats: StatsInfo
-
+    
     enum CodingKeys: CodingKey {
         case profile
         case activity
         case stats
-
+        
     }
 }
 

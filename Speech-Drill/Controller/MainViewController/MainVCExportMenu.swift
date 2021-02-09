@@ -15,6 +15,7 @@ extension MainVC {
     
     ///Show or Hide export menu
     func toggleExportMenu() {
+        logger.info()
         if recordingUrlsListToExport.count > 0 {
             DispatchQueue.main.async {
                 self.exportMenuStackView.isHidden = false
@@ -30,6 +31,7 @@ extension MainVC {
     }
     
     func toggleSeeker() {
+        logger.info()
         isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: selectedAudioId)
         if isPlaying {
             DispatchQueue.main.async {
@@ -51,6 +53,7 @@ extension MainVC {
     
     ///Add a recording url to list of recordings to export
     func addToExportList(url: URL) {
+        logger.info()
         CentralAudioPlayer.player.stopPlaying()
         recordingUrlsListToExport.append(url)
         toggleExportMenu()
@@ -58,6 +61,7 @@ extension MainVC {
     
     ///Remove a recording url to list of recordings to export
     func removeFromExportList(url: URL) {
+        logger.info()
         CentralAudioPlayer.player.stopPlaying()
         recordingUrlsListToExport = recordingUrlsListToExport.filter {$0 != url}
         toggleExportMenu()
@@ -65,6 +69,7 @@ extension MainVC {
     
     ///Remove all selected recordings and reset UI
     func clearSelected() {
+        logger.info()
         recordingUrlsListToExport.removeAll()
         toggleExportMenu()
         reloadData()
@@ -72,6 +77,7 @@ extension MainVC {
     
     ///Export selected recordings
     @IBAction func exportSelectedTapped(_ sender: UIButton) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.ShareRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Selected.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : recordingUrlsListToExport.count as NSObject])
         
         if checkIfRecordingIsOn() || checkIfMerging() {
@@ -88,6 +94,7 @@ extension MainVC {
     
     ///Play selected recordings
     @IBAction func playSelectedAudioTapped(_ sender: UIButton) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.PlayRecordings.rawValue, parameters: [StringAnalyticsProperties.RecordingsType.rawValue : RecordingsType.Selected.rawValue as NSObject, IntegerAnalyticsPropertites.NumberOfTopics.rawValue : recordingUrlsListToExport.count as NSObject])
         
         if checkIfRecordingIsOn() || checkIfMerging() { return }
@@ -111,12 +118,14 @@ extension MainVC {
     
     ///Hide export menu
     @IBAction func cancelSelectedTapped(_ sender: UIButton) {
+        logger.info()
         CentralAudioPlayer.player.stopPlaying()
         clearSelected()
     }
     
     ///Set properties of playback seeker view
     func configureExportMenuPlayBackSeeker() {
+        logger.info()
         if isPlaying {
             
             DispatchQueue.main.async {
@@ -143,7 +152,7 @@ extension MainVC {
     }
     
     @objc func updateExportPlaybackTime(timer: Timer) {
-        
+        logger.info()
         if !CentralAudioPlayer.player.checkIfPlaying(id: selectedAudioId) {
             timer.invalidate()
             toggleSeeker()
@@ -158,6 +167,7 @@ extension MainVC {
     
     ///On slider touchdown invalidate the update timer
     @IBAction func headerStopPlaybackUIUpdate(_ sender: UISlider) {
+        logger.info()
         exportPlayBackTimer?.invalidate()
         exportPlayBackTimer = nil
         sender.minimumTrackTintColor = accentColor
@@ -165,6 +175,7 @@ extension MainVC {
     
     ///On value change play to new time
     @IBAction func headerUpdatePlaybackTimeWithSlider(_ sender: UISlider) {
+        logger.info()
         let playbackTime = Double(sender.value)
         DispatchQueue.main.async {
             self.exportCurrentPlayTimeLbl.text = convertToMins(seconds: playbackTime)
@@ -175,6 +186,7 @@ extension MainVC {
     
     ///On touch up fire the playback time update timer
     @IBAction func headerStartPlaybackUIUpdate(_ sender: UISlider) {
+        logger.info()
         exportPlayBackTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateExportPlaybackTime), userInfo: nil, repeats: true)
         DispatchQueue.main.async {
             sender.minimumTrackTintColor = UIColor.white

@@ -27,7 +27,7 @@ extension HideSideNav: UIViewControllerAnimatedTransitioning {
         guard
             let toVC = transitionContext.viewController(forKey: .to),
             let fromVC = transitionContext.viewController(forKey: .from)
-            else { return }
+        else { return }
         
         let initalScale = MenuHelper.initialMenuScale
         
@@ -35,7 +35,7 @@ extension HideSideNav: UIViewControllerAnimatedTransitioning {
         
         let snapshot = containerView.viewWithTag(MenuHelper.snapshotNumber)
         containerView.insertSubview(fromVC.view, belowSubview: snapshot!)
-
+        
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             snapshot?.frame = CGRect(origin: CGPoint.zero, size: UIScreen.main.bounds.size)
             snapshot?.layer.opacity = 1

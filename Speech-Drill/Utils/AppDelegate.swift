@@ -30,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         FirebaseApp.configure()
-        
+        LoggingConfiguration.configure()
+
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance()?.restorePreviousSignIn()
         
@@ -72,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13.0, *) {
             setupSiren()
         }
-        
+            
         return true
     }
     

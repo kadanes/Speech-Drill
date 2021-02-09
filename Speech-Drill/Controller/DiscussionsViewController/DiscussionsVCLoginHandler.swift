@@ -13,6 +13,7 @@ import FirebaseAuth
 //MARK:- Login Handler
 extension DiscussionsViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        logger.info()
         // ...
         if let error = error {
             // ...
@@ -34,13 +35,15 @@ extension DiscussionsViewController: GIDSignInDelegate {
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        logger.info()
         // Perform any operations when the user disconnects from app here.
         // ...
     }
     
     func setUserProfileImage() {
+        logger.info()
         discussionChatView.saveUserEmail()
-//        guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
+        //        guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
         guard let currentUser = Auth.auth().currentUser else {
             DispatchQueue.main.async {
                 [weak self] in
@@ -48,7 +51,7 @@ extension DiscussionsViewController: GIDSignInDelegate {
             }
             return
         }
-//        guard let userImageUrl = googleUser.profile.imageURL(withDimension: 40) else { return }
+        //        guard let userImageUrl = googleUser.profile.imageURL(withDimension: 40) else { return }
         guard let userImageUrl = currentUser.photoURL else {
             DispatchQueue.main.async {
                 [weak self] in
@@ -63,7 +66,7 @@ extension DiscussionsViewController: GIDSignInDelegate {
                 let userImage = UIImage(data: data)
                 if let userImage = userImage?.resize(maxWidthHeight: 30) {
                     self?.userProfileButton.setImage(userImage, for: .normal)
-//                    self?.userProfileButton.setImage(loggedInUserPlaceholder, for: .normal)
+                    //                    self?.userProfileButton.setImage(loggedInUserPlaceholder, for: .normal)
                 } else {
                     self?.userProfileButton.setImage(loggedInUserPlaceholder, for: .normal)
                 }

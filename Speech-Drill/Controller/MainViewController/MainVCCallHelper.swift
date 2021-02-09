@@ -12,7 +12,7 @@ import CallKit
 //MARK :- Check for call interrupt
 extension MainVC: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
-    
+        logger.info()
         print("Call: ", call)
         
         if call.hasEnded == true {

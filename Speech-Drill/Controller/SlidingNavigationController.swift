@@ -14,35 +14,41 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
     let revealSideNav = RevealSideNav()
     
     override func viewDidLoad() {
+        logger.info()
+
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
         delegate = self
         navigationBar.titleTextAttributes = [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .xlarge)]
         //Add a defualt hamburger buttons whose onclick is modified by child vcs
     }
-
+    
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        logger.info()
+        
         super.pushViewController(viewController, animated: animated)
         interactivePopGestureRecognizer?.isEnabled = false
     }
+    
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {        logger.info()
 
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         interactivePopGestureRecognizer?.isEnabled = true
     }
-
+    
     // IMPORTANT: without this if you attempt swipe on
     // first view controller you may be unable to push the next one
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        logger.info()
         return viewControllers.count > 1
     }
-
-//    func navigationController(
-//        _ navigationController: UINavigationController,
-//        animationControllerFor operation: UINavigationControllerOperation,
-//        from fromVC: UIViewController,
-//        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//
-//        revealSideNav.pushStyle = operation == .push
-//        return revealSideNav
-//    }
+    
+    //    func navigationController(
+    //        _ navigationController: UINavigationController,
+    //        animationControllerFor operation: UINavigationControllerOperation,
+    //        from fromVC: UIViewController,
+    //        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    //
+    //        revealSideNav.pushStyle = operation == .push
+    //        return revealSideNav
+    //    }
 }

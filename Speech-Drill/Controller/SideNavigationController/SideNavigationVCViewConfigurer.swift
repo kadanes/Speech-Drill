@@ -12,13 +12,13 @@ import UIKit
 extension SideNavigationController {
     
     func configureSideNav() {
-        
+        logger.info()
         view.addSubview(sideNavContainer)
         sideNavContainer.translatesAutoresizingMaskIntoConstraints = false
         
         sideNavContainer.addSubview(versionInfoView)
         versionInfoView.translatesAutoresizingMaskIntoConstraints = false
-                
+        
         let mainVCMenuItem = sideNavMenuItemStruct(itemName: "Recordings", itemImg: recordIcon, itemImgClr: accentColor, presentedVC: mainVC)
         let infoVCMenuItem = sideNavMenuItemStruct(itemName: "About", itemImg: infoIcon, itemImgClr: accentColor, presentedVC: infoVC)
         let discussionsVCMenuItem = sideNavMenuItemStruct(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: accentColor, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: T##String)
@@ -55,5 +55,4 @@ extension SideNavigationController {
         edgePanGesture.edges = .right
         view.addGestureRecognizer(edgePanGesture)
     }
-
 }

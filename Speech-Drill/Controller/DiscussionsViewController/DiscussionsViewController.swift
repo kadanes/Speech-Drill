@@ -18,7 +18,7 @@ class DiscussionsViewController: UIViewController {
     //        let sideNavVC = SideNavVC()
     
     var oldKeyboardEndFrameY: CGFloat = 0
-//    var scrolledChatViewToSavedOffset: Bool = false
+    //    var scrolledChatViewToSavedOffset: Bool = false
     var scrolledChatViewToLastReadMessage: Bool = false
     var scrolledChatViewToRecivedMessage: Bool = false
     
@@ -32,17 +32,17 @@ class DiscussionsViewController: UIViewController {
     let keyboard = KeyboardObserver()
     
     var blockedUsers = [String]()
-//    var blockedUsers = [String]() {
-//        didSet {
-//            readBlockedUserList()
-//        }
-//    }
+    //    var blockedUsers = [String]() {
+    //        didSet {
+    //            readBlockedUserList()
+    //        }
+    //    }
     
     let postLoginInfoMessage =  "This is a chatroom created to help students discuss topics with each other and get advice. Use it to ask questions, get tips, etc. "
     var preLoginInfoMessage = "You will have to login with your gmail account to send messages."
     
     override func viewDidLoad() {
-        
+        logger.info()
         view.backgroundColor = UIColor.black
         
         let googleUser = GIDSignIn.sharedInstance()?.currentUser
@@ -94,21 +94,21 @@ class DiscussionsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("Discussion Chat View will appear...")
+        logger.info()
         super.viewWillAppear(animated)
         //            discussionChatView.scrollTableViewToEnd(animated: true)
         
-//        let defaults = UserDefaults.standard
-//        defaults.setValue(0, forKey: lastReadMessageTimestampKey)
-//        defaults.setValue(nil, forKey: lastReadMessageIDKey)
+        //        let defaults = UserDefaults.standard
+        //        defaults.setValue(0, forKey: lastReadMessageTimestampKey)
+        //        defaults.setValue(nil, forKey: lastReadMessageIDKey)
         
         DispatchQueue.main.async { // Giving time for `viewDidLayoutSubviews` to do its thing
-//            if !self.scrolledChatViewToSavedOffset {
-//                self.discussionChatView.scrollToSavedContentOffset()
-//                self.scrolledChatViewToSavedOffset = true
-//            }
+            //            if !self.scrolledChatViewToSavedOffset {
+            //                self.discussionChatView.scrollToSavedContentOffset()
+            //                self.scrolledChatViewToSavedOffset = true
+            //            }
             self.discussionChatView.isPresented = true
-
+            
             if !self.discussionChatView.shouldScrollToMessageFromNotification && !self.scrolledChatViewToLastReadMessage {
                 self.discussionChatView.shouldScrollToLastReadMessage = true
                 self.scrolledChatViewToLastReadMessage = true
@@ -118,6 +118,7 @@ class DiscussionsViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool){
+        logger.info()
         super.viewWillDisappear(animated)
         self.discussionChatView.isPresented = false
     }

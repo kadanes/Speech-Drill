@@ -11,7 +11,7 @@ import UIKit
 
 extension DiscussionsViewController {
     func addHeader() {
-        
+        logger.info()
         let discussionsTitleLbl = UILabel()
         discussionsTitleLbl.translatesAutoresizingMaskIntoConstraints = false
         discussionsTitleLbl.text = "Discussions"
@@ -28,7 +28,7 @@ extension DiscussionsViewController {
         hamburgerBtn.contentMode = .scaleAspectFit
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
-                
+        
         userProfileButton.translatesAutoresizingMaskIntoConstraints = false
         userProfileButton.setImage(userPlaceholder.withRenderingMode(.alwaysOriginal), for: .normal)
         userProfileButton.imageView?.contentMode = .scaleAspectFit
@@ -39,8 +39,8 @@ extension DiscussionsViewController {
         userProfileButton.imageView?.layer.borderColor = UIColor.white.cgColor
         userProfileButton.imageView?.clipsToBounds = true
         setBtnImgProp(button: userProfileButton, topPadding: 5, leftPadding: 5)
-
-//        setUserProfileImage()
+        
+        //        setUserProfileImage()
         
         let notificationsSettingButton = UIButton()
         notificationsSettingButton.translatesAutoresizingMaskIntoConstraints = false
@@ -54,6 +54,7 @@ extension DiscussionsViewController {
     }
     
     func addCountryCountTableView() {
+        logger.info()
         countryCountView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(countryCountView)
         
@@ -66,6 +67,7 @@ extension DiscussionsViewController {
     }
     
     func addDiscussionsMessageBox() {
+        logger.info()
         view.addSubview(discussionsMessageBox)
         discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
         
@@ -81,6 +83,7 @@ extension DiscussionsViewController {
     }
     
     func addDiscussionChatView() {
+        logger.info()
         self.view.addSubview(discussionChatView)
         discussionChatView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -94,6 +97,7 @@ extension DiscussionsViewController {
     }
     
     func loadBlockedUserList() {
+        logger.info()
         blockedGroupReference.observe(.value) { (snapshot) in
             if let value = snapshot.value as? [String: Any] {
                 self.blockedUsers = Array(value.keys)
@@ -112,6 +116,7 @@ extension DiscussionsViewController {
     }
     
     func readBlockedUserList() {
+        logger.info()
         if let userName = getAuthenticatedUsername() {
             if blockedUsers.contains(userName) {
                 self.discussionsMessageBox.isHidden = true

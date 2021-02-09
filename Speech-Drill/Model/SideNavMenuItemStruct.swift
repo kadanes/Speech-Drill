@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
- struct sideNavMenuItemStruct {
-        let itemName: String
-        let itemImg: UIImage
-        let itemImgClr: UIColor
-        let presentedVC: UIViewController
-    }
+struct sideNavMenuItemStruct {
+    let itemName: String
+    let itemImg: UIImage
+    let itemImgClr: UIColor
+    let presentedVC: UIViewController
+}

@@ -16,4 +16,5 @@ target 'Speech-Drill' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Analytics'
   pod 'Siren'
+  pod 'Willow', '6.0.0'
 end

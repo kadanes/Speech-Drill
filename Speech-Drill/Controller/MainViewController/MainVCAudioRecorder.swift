@@ -12,7 +12,7 @@ import AVFoundation
 extension MainVC: AVAudioRecorderDelegate {
     
     func recordAudio() {
-        
+        logger.info()
         do {
             audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(AVAudioSessionCategoryRecord)
@@ -62,7 +62,7 @@ extension MainVC: AVAudioRecorderDelegate {
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        
+        logger.info()
         if !cancelledRecording{
             Toast.show(message: "Recorded successfully!",type: .Success)
             if let url = currentRecordingURL {
@@ -81,12 +81,13 @@ extension MainVC: AVAudioRecorderDelegate {
     }
     
     func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
+        logger.info()
         cancelRecording()
     }
     
     ///Reset display of think and speak time
     func resetRecordingState() {
-        
+        logger.info()
         if reducedTime {
             defaultSpeakTime = 2
             defaultThinkTime = 2
@@ -109,8 +110,8 @@ extension MainVC: AVAudioRecorderDelegate {
         blinking = false
         
         DispatchQueue.main.async {
-//            self.speakTimeInfoView.backgroundColor = .clear
-//            self.thinkTimeInfoView.backgroundColor = .clear
+            //            self.speakTimeInfoView.backgroundColor = .clear
+            //            self.thinkTimeInfoView.backgroundColor = .clear
             self.thinkTimeLbl.textColor = accentColor
             self.thinkLbl.textColor = accentColor
             self.speakTimeLbl.textColor = accentColor
@@ -120,10 +121,12 @@ extension MainVC: AVAudioRecorderDelegate {
     
     ///Check if user is recording a topic
     func checkIfRecordingIsOn() -> Bool {
+        logger.info()
         return isThinking || isRecording
     }
     
     func cancelRecording() {
+        logger.info()
         if isRecording {
             audioRecorder.stop()
             resetRecordingState()
@@ -136,5 +139,5 @@ extension MainVC: AVAudioRecorderDelegate {
             resetRecordingState()
         }
     }
-
+    
 }

@@ -12,6 +12,7 @@ import UIKit
 extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     func reloadData() {
+        logger.info()
         updateUrlList()
         DispatchQueue.main.async {
             self.recordingTableView.reloadData()
@@ -19,7 +20,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func insertRow(with url:URL ) {
-        
+        logger.info()
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         
@@ -60,6 +61,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     ///Delete a row refering to the recording url
     func deleteRow(with url: URL) {
+        logger.info()
         removeFromExportList(url: url)
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
@@ -89,6 +91,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func reloadRow(url: URL) {
+        logger.info()
         let timestamp = splitFileURL(url:url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
@@ -100,6 +103,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func reloadSection(date: String) {
+        logger.info()
         DispatchQueue.main.async {
             findAndUpdateSection(date: date, recordingUrlsDict: self.recordingUrlsDict) { (section, _) in
                 self.recordingTableView.reloadSections([section], with: .automatic)
@@ -108,6 +112,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func togglePlayIconsFor(previouslyPlayingId: String, nowPlayingId: String) {
+        logger.info()
         reloadPlayedRow(playingId: previouslyPlayingId, pause: true) {
             //self.reloadPlayedRow(playingId: nowPlayingId, pause: false) {}
         }
@@ -115,6 +120,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     
     func reloadPlayedRow(playingId: String, pause: Bool, completion: @escaping ()->()) {
+        logger.info()
         if checkIfDate(date: playingId) {
             findAndUpdateSection(date: playingId, recordingUrlsDict: recordingUrlsDict) { (section, _) in
                 self.recordingTableView.reloadSections([section], with: .none)
@@ -160,7 +166,6 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerCellId) as? SectionHeader {
             let date = sortDict(recordingUrlsDict: recordingUrlsDict)[section].key
             headerView.delegate = self
@@ -235,70 +240,74 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func setHiddenVisibleSectionList() {
-          
-          let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
-              guard let convertedDate1 = convertToDate(date: date1) else { return false }
-              guard let convertedDate2 = convertToDate(date: date2) else { return false }
-              return convertedDate1 > convertedDate2
-          }
-          if dateSortedKeys.count == 0 {return}
-          
-          if visibleSections.count == 0 {
-              visibleSections.append(dateSortedKeys[0])
-              for ind in 1..<dateSortedKeys.count {
-                  hiddenSections.append(dateSortedKeys[ind])
-              }
-          } else {
-              if !visibleSections.contains(dateSortedKeys[0]) {
-                  showSection(date: dateSortedKeys[0])
-              }
-          }
-      }
-      
-      func toggleSection(date: String) {
-          if visibleSections.contains(date) {
-              hideSection(date: date)
-          } else {
-              showSection(date: date)
-          }
-          updateRowsFor(recordingsOn: date)
-          
-          if visibleSections.contains(date) {
-              DispatchQueue.main.async {
-                  let dateSortedKeys = self.recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
-                      guard let convertedDate1 = convertToDate(date: date1) else { return false }
-                      guard let convertedDate2 = convertToDate(date: date2) else { return false }
-                      return convertedDate1 > convertedDate2
-                  }
-                  
-                  guard let sectionInd = dateSortedKeys.index(of : date) else { return }
-                  let indexPath = IndexPath(row: 0, section: sectionInd)
-                  self.recordingTableView.scrollToRow(at: indexPath, at: .top, animated: true)
-              }
-          }
-      }
-      
-      func updateRowsFor(recordingsOn date: String) {
-          
-          findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
-              
-              self.recordingTableView.reloadSections([section], with: .automatic)
-          }
-      }
-      
-      func hideSection(date: String) {
-          if hiddenSections.contains(date) {return}
-          visibleSections = visibleSections.filter {$0 != date}
-          hiddenSections.append(date)
-      }
-      
-      func showSection(date: String) {
-          if visibleSections.contains(date) {return}
-          hiddenSections = hiddenSections.filter{$0 != date}
-          visibleSections.append(date)
-      }
-      
-      func checkIfHidden(date:String) -> Bool {
-          return hiddenSections.contains(date)
-      }
+        logger.info()
+        let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
+            guard let convertedDate1 = convertToDate(date: date1) else { return false }
+            guard let convertedDate2 = convertToDate(date: date2) else { return false }
+            return convertedDate1 > convertedDate2
+        }
+        if dateSortedKeys.count == 0 {return}
+        
+        if visibleSections.count == 0 {
+            visibleSections.append(dateSortedKeys[0])
+            for ind in 1..<dateSortedKeys.count {
+                hiddenSections.append(dateSortedKeys[ind])
+            }
+        } else {
+            if !visibleSections.contains(dateSortedKeys[0]) {
+                showSection(date: dateSortedKeys[0])
+            }
+        }
+    }
+    
+    func toggleSection(date: String) {
+        logger.info()
+        if visibleSections.contains(date) {
+            hideSection(date: date)
+        } else {
+            showSection(date: date)
+        }
+        updateRowsFor(recordingsOn: date)
+        
+        if visibleSections.contains(date) {
+            DispatchQueue.main.async {
+                let dateSortedKeys = self.recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
+                    guard let convertedDate1 = convertToDate(date: date1) else { return false }
+                    guard let convertedDate2 = convertToDate(date: date2) else { return false }
+                    return convertedDate1 > convertedDate2
+                }
+                
+                guard let sectionInd = dateSortedKeys.index(of : date) else { return }
+                let indexPath = IndexPath(row: 0, section: sectionInd)
+                self.recordingTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
+        }
+    }
+    
+    func updateRowsFor(recordingsOn date: String) {
+        logger.info()
+        findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
+            
+            self.recordingTableView.reloadSections([section], with: .automatic)
+        }
+    }
+    
+    func hideSection(date: String) {
+        logger.info()
+        if hiddenSections.contains(date) {return}
+        visibleSections = visibleSections.filter {$0 != date}
+        hiddenSections.append(date)
+    }
+    
+    func showSection(date: String) {
+        logger.info()
+        if visibleSections.contains(date) {return}
+        hiddenSections = hiddenSections.filter{$0 != date}
+        visibleSections.append(date)
+    }
+    
+    func checkIfHidden(date:String) -> Bool {
+        logger.info()
+        return hiddenSections.contains(date)
+    }
 }

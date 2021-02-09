@@ -12,9 +12,9 @@ import Firebase
 import GoogleSignIn
 
 class SideNavigationController: UIViewController {
-        
+    
     let sideNavMenuItemReuseIdentifier = "SideNavMenuItemIdentifier"
-        
+    
     var interactor: Interactor? = nil
     var calledFromVCIndex: Int?
     let indexOfVCToShowOnLoad: Int = 0
@@ -34,7 +34,7 @@ class SideNavigationController: UIViewController {
     var notificationUserInfo: [AnyHashable : Any]? = nil
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        
+        logger.info()
         sideNavContainer = UIView()
         sideNavTableView = UITableView()
         sideNavNoticesTableViewCell = SideNavNoticesTableViewCell()
@@ -56,8 +56,9 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewDidLoad() {
+        logger.info()
         super.viewDidLoad()
-            
+        
         sideNavTableView.delegate = self
         sideNavTableView.dataSource = self
         sideNavTableView.register(SideNavMenuItemCell.self, forCellReuseIdentifier: sideNavMenuItemReuseIdentifier)
@@ -74,9 +75,10 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        logger.info()
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-
+        
         if let userInfo = notificationUserInfo {
             calledFromVCIndex = 1
             viewDiscussions(with: userInfo, viewAnimated: true)
@@ -93,6 +95,7 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        logger.info()
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }        

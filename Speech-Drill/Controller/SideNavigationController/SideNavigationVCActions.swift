@@ -12,9 +12,9 @@ import FirebaseAnalytics
 extension SideNavigationController {
     
     @objc func closeViewWithEdgeSwipe(sender: UIScreenEdgePanGestureRecognizer) {
-        
+        logger.info()
         guard let calledFromVCIndex = calledFromVCIndex else { return }
-                
+        
         let presentedVC = menuItems[calledFromVCIndex].presentedVC
         
         if !(navigationController?.topViewController?.isKind(of: type(of: presentedVC)) ?? true) {
@@ -24,9 +24,9 @@ extension SideNavigationController {
         Analytics.logEvent(AnalyticsEvent.HideSideNav.rawValue, parameters: [StringAnalyticsProperties.VCDisplayed.rawValue : "\(type(of: presentedVC))".lowercased()])
         
     }
-
+    
     @objc func viewDiscussions(with userInfo: [AnyHashable : Any], viewAnimated: Bool = true ) {
-        NSLog("\(#function) Parsing Notification: ", userInfo)
+        logger.info()
         var messageID: String? = nil
         var messageTimestamp: Double = 0
         
@@ -36,7 +36,7 @@ extension SideNavigationController {
                 messageTimestamp =  Double(userInfoMessageTimestamp) ?? 0
             }
         }
-
+        
         guard let presentedVC = menuItems[1].presentedVC as? DiscussionsViewController else { return }
         
         guard let alreadyPresentedDiscussions = navigationController?.topViewController?.isKind(of: type(of: presentedVC)) else { return }
@@ -55,9 +55,10 @@ extension SideNavigationController {
     }
     
     func updateUnreadCount() {
+        logger.info()
         messagesReference.queryOrdered(byChild: DiscussionMessage.CodingKeys.messageTimestamp.stringValue).queryStarting(atValue: UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)).observe(.value) { (snapshot) in
             if let value = snapshot.value as? [String: Any] {
-//                print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
+                //                print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
             }
         }
     }

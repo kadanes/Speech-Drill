@@ -10,7 +10,7 @@ import UIKit
 
 class SlideInVC: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-       return 0.2
+        return 0.2
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -21,7 +21,7 @@ class SlideInVC: NSObject, UIViewControllerAnimatedTransitioning {
             
             let initalScale = MenuHelper.initialMenuScale
             let containerView  = transitionContext.containerView
-
+            
             containerView.addSubview(fromVC.view)
             containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
             containerView.insertSubview(toVCSnapShot, aboveSubview: fromVC.view)

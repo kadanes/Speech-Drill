@@ -16,6 +16,7 @@ import StoreKit
 extension MainVC {
     
     @IBAction func displaySideNavTapped(_ sender: Any) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
         cancelRecording()
         navigationController?.popViewController(animated: true)
@@ -23,11 +24,13 @@ extension MainVC {
     }
     
     @IBAction func startPulsing(_ sender: UIButton) {
+        logger.info()
         let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.layer.bounds.width/2,y: sender.layer.bounds.height/2))
         sender.layer.addSublayer(pulse)
     }
     
     @objc func displayInfo() {
+        logger.info()
         
         if isPlaying || checkIfRecordingIsOn() {
             return
@@ -53,10 +56,12 @@ extension MainVC {
     }
     
     @IBAction func switchModesTapped(_ sender: UIButton) {
+        logger.info()
         switchModes()
     }
     
     @IBAction func changeThinkTimeTapped(_ sender: RoundButton) {
+        logger.info()
         
         Analytics.logEvent(AnalyticsEvent.SetThinkTime.rawValue, parameters: [IntegerAnalyticsPropertites.ThinkTime.rawValue : sender.tag as NSObject])
         
@@ -87,6 +92,7 @@ extension MainVC {
     
     ///Increment current displayed topic number base on button pressed
     @IBAction func nextQuestionTapped(_ sender: UIButton) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.ShowNextTopic.rawValue, parameters: [IntegerAnalyticsPropertites.NumberOfTopics.rawValue : sender.tag as NSObject ])
         
         let increment = sender.tag
@@ -96,6 +102,7 @@ extension MainVC {
     
     ///Decrement current displayed topic number base on button pressed
     @IBAction func previousQuestionTapped(_ sender: UIButton) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.ShowPreviousTopic.rawValue, parameters: [IntegerAnalyticsPropertites.NumberOfTopics.rawValue : sender.tag as NSObject ])
         
         let decrement = sender.tag
@@ -105,6 +112,7 @@ extension MainVC {
     
     ///Start recording of speech
     @IBAction func startRecordingPressed(_ sender: Any) {
+        logger.info()
         
         Analytics.logEvent(AnalyticsEvent.RecordTopic.rawValue, parameters:nil)
         
@@ -126,16 +134,18 @@ extension MainVC {
     
     ///Stop recording
     @IBAction func cancelRecordingTapped(_ sender: Any) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.CancelRecording.rawValue, parameters: nil)
         cancelRecording()
     }
     
     ///Function to reduce and render think time
     @objc func decrementThinkTime(timer: Timer) {
+        logger.info()
         if(thinkTime > 0) {
             isThinking = true
             thinkTime -= 1
-//            thinkTimeLbl.text = "\(thinkTime)"
+            //            thinkTimeLbl.text = "\(thinkTime)"
             thinkTimeLbl.text = String(format: "%02d", thinkTime)
             
         } else {
@@ -186,9 +196,10 @@ extension MainVC {
     
     ///Function to reduce and render speak time
     @objc func decrementSpeakTime(timer: Timer) {
+        logger.info()
         if(speakTime > 0) {
             speakTime -= 1
-//            speakTimeLbl.text = "\(speakTime)"
+            //            speakTimeLbl.text = "\(speakTime)"
             speakTimeLbl.text = String(format: "%02d", speakTime)
         } else {
             timer.invalidate()
@@ -203,6 +214,7 @@ extension MainVC {
     
     ///Function to make recording logo blink
     @objc func blinkRecordBtn(timer: Timer) {
+        logger.info()
         if speakTime > 0 {
             if !blinking {
                 setButtonBgImage(button: recordBtn, bgImage: recordIcon, tintColor: .red)

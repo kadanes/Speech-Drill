@@ -15,13 +15,14 @@ import GoogleSignIn
 //MARK:- All Actions
 extension DiscussionsViewController {
     @objc func displaySideNavTapped(_ sender: Any) {
+        logger.info()
         Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
         _ = navigationController?.popViewController(animated: true)
     }
     
     @objc func displayInfoTapped(_ sender: UIButton) {
-        
-//        if GIDSignIn.sharedInstance()?.currentUser == nil {
+        logger.info()
+        //        if GIDSignIn.sharedInstance()?.currentUser == nil {
         if Auth.auth().currentUser == nil {
             let preSignInAlert = UIAlertController(title: "Discussions", message: preLoginInfoMessage, preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Okay", style: .cancel) { _ in }
@@ -40,7 +41,7 @@ extension DiscussionsViewController {
                     try Auth.auth().signOut()
                     GIDSignIn.sharedInstance().signOut()
                     //Reset user email, photo, chatview
-//                    self.setUserProfileImage()
+                    //                    self.setUserProfileImage()
                 } catch {
                     print ("Error signing out: %@", error)
                 }
@@ -52,6 +53,7 @@ extension DiscussionsViewController {
     }
     
     @objc func showSettingsTapped() {
+        logger.info()
         openAppSettings()
     }
 }

@@ -13,6 +13,7 @@ import FirebaseAnalytics
 extension MainVC {
     
     func countNumberOfRecordings() -> Int {
+        logger.info()
         let datedRecordingsCount = recordingUrlsDict.values.map { $0.count }
         let recordingsCount = datedRecordingsCount.reduce(0, { $0 + $1 })
         return recordingsCount
@@ -21,7 +22,8 @@ extension MainVC {
     
     ///Update local list with newly added recording urls
     func updateUrlList() {
-        
+        logger.info()
+
         recordingUrlsDict.removeAll()
         
         let documents = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0]
@@ -70,10 +72,12 @@ extension MainVC {
     
     ///Fetch a list of recordings urls for a day
     func getAudioFilesList(date: String) -> [URL] {
+        logger.info()
         return recordingUrlsDict[date, default: [URL]()]
     }
     
     func readTopics() {
+        logger.info()
         do{
             let fileURL = Bundle.main.url(forResource: "topics", withExtension: "csv")
             let content = try String(contentsOf: fileURL!, encoding: String.Encoding.utf8)
@@ -84,12 +88,14 @@ extension MainVC {
     }
     
     ///Increment current displayed topic number by 1
-        func incrementTopicNumber() {
-            topicNumber = min(topicNumber + 1, topics.count)
-            //topicNumber + 1 < topics.count ? topicNumber + 1 : topicNumber
-        }
+    func incrementTopicNumber() {
+        logger.info()
+        topicNumber = min(topicNumber + 1, topics.count)
+        //topicNumber + 1 < topics.count ? topicNumber + 1 : topicNumber
+    }
     
     func renderTopic(topicNumber: Int) {
+        logger.info()
         var topicNumberToShow = 1
         if ( topicNumber > topics.count - 1) {
             topicNumberToShow = topics.count - 1
@@ -104,7 +110,7 @@ extension MainVC {
     
     
     func switchModes() {
-        
+        logger.info()
         if checkIfRecordingIsOn() {return}
         
         title = isTestMode ? "Practice Mode" : "Test Mode"
@@ -116,11 +122,11 @@ extension MainVC {
             
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "practice" as NSObject])
             
-//            UIView.animate(withDuration: 0.2) {
-//                self.thinkTimeChangeStackViewContainer.isHidden = true
-//            } completion: { (completed) in
-//                self.topicsContainer.isHidden = false
-//            }
+            //            UIView.animate(withDuration: 0.2) {
+            //                self.thinkTimeChangeStackViewContainer.isHidden = true
+            //            } completion: { (completed) in
+            //                self.topicsContainer.isHidden = false
+            //            }
             
             UIView.animate(withDuration: 0.3) {
                 self.thinkTimeChangeStackViewContainer.isHidden = true
@@ -137,10 +143,10 @@ extension MainVC {
             Analytics.logEvent(AnalyticsEvent.ToggleSpeakingMode.rawValue, parameters: [StringAnalyticsProperties.ModeName.rawValue: "test" as NSObject])
             
             
-//            UIView.animate(withDuration: 0.2) {
-//                self.thinkTimeChangeStackViewContainer.isHidden = false
-//                self.topicsContainer.isHidden = true
-//            }
+            //            UIView.animate(withDuration: 0.2) {
+            //                self.thinkTimeChangeStackViewContainer.isHidden = false
+            //                self.topicsContainer.isHidden = true
+            //            }
             
             UIView.animate(withDuration: 0.3) {
                 self.thinkTimeChangeStackViewContainer.isHidden = false
@@ -157,11 +163,13 @@ extension MainVC {
     }
     
     func setToTestMode() {
+        logger.info()
         isTestMode = false
         switchModes()
     }
     
     func setToPracticeMode() {
+        logger.info()
         isTestMode = true
         switchModes()
     }
