@@ -13,7 +13,7 @@ class SideNavAdsTableViewCell: UITableViewCell {
     private let adsTitleLable: UILabel
     private let adsCollectionView: UICollectionView
     private let adsPagingIndicator: UIPageControl
-    private var fetchedAds: [SideNavAdStructure] = []
+    private var fetchedAds: [SideNavAdStructure] = [addAdsAd]
     
     private let sideNavAdCellReuseIdentifier = "SideNavAdCellReuseIdentifier"
     
