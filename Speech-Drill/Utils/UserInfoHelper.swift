@@ -18,7 +18,7 @@ import GoogleSignIn
 fileprivate func setUserInfoValueWithErrorLogging(ref: DatabaseReference, value: Any?) {
     ref.setValue(value) { (error, ref) in
         if let error = error {
-            print("Error storing user info  '\(value)' for key '\(ref)' to firebase.\n\(String(describing: error))")
+            logger.error("Error storing user info  '\(String(describing: value))' for key '\(ref)' to firebase.\n\(String(describing: error))")
         }
     }
 }
@@ -30,6 +30,7 @@ fileprivate func setUserInfoValueWithErrorLogging(ref: DatabaseReference, value:
 ///   - value: The value to be stored at reference
 ///   - once: Should the value be set only once
 fileprivate func saveUserInfo(at ref: DatabaseReference, with value: Any?, once: Bool) {
+    logger.debug("Saving user info at \(ref) with value: \(String(describing: value))")
     //Authenticated
     if once {
         ref.observeSingleEvent(of: .value) { (snapshot) in
@@ -58,12 +59,14 @@ fileprivate func getUnauthenticatedUserInfoReference() -> DatabaseReference {
 
 
 fileprivate func saveUserInfo(at childKey: String, for key: String, as value: Any?, once: Bool, deleteUnauth: Bool = false) {
+    logger.info("Saving user info \(String(describing: value)) at \(childKey)/\(key)")
+    
     let userInfoReference = getUserInfoReference().child(childKey).child(key)
     saveUserInfo(at: userInfoReference, with: value, once: once)
     if deleteUnauth {
         getUnauthenticatedUserInfoReference().child(childKey).child(key).setValue(nil) { (error, ref) in
             if let error = error {
-                NSLog("Error deleteing unauthenticated user data at \(userInfoReference) \n\(error)")
+                logger.error("Error deleteing unauthenticated user data at \(userInfoReference) \n\(error)")
             }
         }
     }
@@ -100,42 +103,42 @@ fileprivate func saveUserInfo(for key: UserInfo.CodingKeys, as value: Any?, once
     }
 }
 
-fileprivate func unwrapUserInfo(from value: String?) -> String {
-    if let value = value { return value }
-    return valueNotAvailableIndicatorString
-}
-
-fileprivate func unwrapUserInfo(from value: Double?) -> Double {
-    if let value = value { return value }
-    return valueNotAvailableIndicatorDouble
-}
-
-fileprivate func unwrapUserInfo(from value: Int?) -> Int {
-    if let value = value { return value }
-    return valueNotAvailableIndicatorInt
-}
-
-fileprivate func unwrapUserInfo(from value: URL?) -> String {
-    if let value = value {
-        return value.absoluteString
-    }
-    return valueNotAvailableIndicatorString
-}
+//fileprivate func unwrapUserInfo(from value: String?) -> String {
+//    if let value = value { return value }
+//    return valueNotAvailableIndicatorString
+//}
+//
+//fileprivate func unwrapUserInfo(from value: Double?) -> Double {
+//    if let value = value { return value }
+//    return valueNotAvailableIndicatorDouble
+//}
+//
+//fileprivate func unwrapUserInfo(from value: Int?) -> Int {
+//    if let value = value { return value }
+//    return valueNotAvailableIndicatorInt
+//}
+//
+//fileprivate func unwrapUserInfo(from value: URL?) -> String {
+//    if let value = value {
+//        return value.absoluteString
+//    }
+//    return valueNotAvailableIndicatorString
+//}
 
 func saveUserEmail(deleteUnauth: Bool = false) {
-//    let userEmail: String = unwrapUserInfo(from: Auth.auth().currentUser?.email ?? nil)
+    //    let userEmail: String = unwrapUserInfo(from: Auth.auth().currentUser?.email ?? nil)
     let userEmail: String? = Auth.auth().currentUser?.email ?? nil
     saveUserProfileInfo(for: .userEmailID, as: userEmail, once: true, deleteUnauth: deleteUnauth)
 }
 
 func saveUserDisplayName(deleteUnauth: Bool = false) {
-//    let userDisplayName: String = unwrapUserInfo(from: Auth.auth().currentUser?.displayName ?? nil)
+    //    let userDisplayName: String = unwrapUserInfo(from: Auth.auth().currentUser?.displayName ?? nil)
     let userDisplayName: String? = Auth.auth().currentUser?.displayName ?? nil
     saveUserProfileInfo(for: .userDisplayName, as: userDisplayName, once: false, deleteUnauth: deleteUnauth)
 }
 
 func saveUserProfilePictureURL(deleteUnauth: Bool = false) {
-//    let userProfilePictureURL: String = unwrapUserInfo(from: Auth.auth().currentUser?.photoURL ?? nil)
+    //    let userProfilePictureURL: String = unwrapUserInfo(from: Auth.auth().currentUser?.photoURL ?? nil)
     let userProfilePictureURL: String? = Auth.auth().currentUser?.photoURL?.absoluteString ?? nil
     saveUserProfileInfo(for: .userProfilePictureURL, as: userProfilePictureURL, once: false, deleteUnauth: deleteUnauth)
 }
@@ -143,8 +146,8 @@ func saveUserProfilePictureURL(deleteUnauth: Bool = false) {
 func saveDeviceUUID(deleteUnauth: Bool = false) {
     let deviceUUID = getUUID()
     saveUserStatsInfo(for: .deviceUUID, as: deviceUUID, once: false, deleteUnauth: deleteUnauth)
-//    let uuidKey = StatsInfo.CodingKeys.deviceUUID.stringValue
-//    saveLikelyUserName(using: uuidKey, with: deviceUUID)
+    //    let uuidKey = StatsInfo.CodingKeys.deviceUUID.stringValue
+    //    saveLikelyUserName(using: uuidKey, with: deviceUUID)
 }
 
 func saveAuthenticationType(deleteUnauth: Bool = false) {
@@ -153,7 +156,7 @@ func saveAuthenticationType(deleteUnauth: Bool = false) {
 }
 
 func saveInstalledAppVersion(deleteUnauth: Bool = false) {
-//    let installedAppVersion: String = unwrapUserInfo(from: getFullInstalledAppVersion())
+    //    let installedAppVersion: String = unwrapUserInfo(from: getFullInstalledAppVersion())
     let installedAppVersion: String? = getFullInstalledAppVersion()
     saveUserStatsInfo(for: .currentInstalledAppVersion, as: installedAppVersion, once: false, deleteUnauth: deleteUnauth)
     saveUserStatsInfo(for: .firstInstalledAppVersion, as: installedAppVersion, once: true, deleteUnauth: deleteUnauth)
@@ -191,18 +194,21 @@ func saveUserLocationInfo(deleteUnauth: Bool = false) {
 
 func saveFCMToken(deleteUnauth: Bool = false) {
     let fcmToken = Messaging.messaging().fcmToken
-        
+    
     saveUserStatsInfo(for: .fcmToken, as: fcmToken, once: false, deleteUnauth: deleteUnauth)
     if let userName = getAuthenticatedUsername() {
-        let userGroupsInfoRef = getUserInfoReference().child("stats").child("groups")
-            userGroupsInfoRef.observeSingleEvent(of: .value) { (snapshot) in
-                if let groups = snapshot.value as? [String] {
-                    for group in groups {
-                        let currentGroupsReference = groupsReference.child(group).child(userName)
-                        saveUserInfo(at: currentGroupsReference, with: fcmToken, once: false)
-                    }
+        let statsKey = UserInfo.CodingKeys.stats.stringValue
+        let groupsKey = StatsInfo.CodingKeys.groups.stringValue
+        
+        let userGroupsInfoRef = getUserInfoReference().child(statsKey).child(groupsKey)
+        userGroupsInfoRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let groups = snapshot.value as? [String] {
+                for group in groups {
+                    let currentGroupsReference = groupsReference.child(group).child(userName)
+                    saveUserInfo(at: currentGroupsReference, with: fcmToken, once: false)
                 }
             }
+        }
     } else if let fcmToken = fcmToken {
         
         let fcmTokenKey = StatsInfo.CodingKeys.fcmToken.stringValue
@@ -221,14 +227,14 @@ func saveLikelyUserName(using property: String, with value: String) {
     
     let statsKey = UserInfo.CodingKeys.stats.stringValue
     let likelyUserNamesKey = StatsInfo.CodingKeys.likelyUserNames.stringValue
-            
+    
     authenticatedUsersReference.queryOrdered(byChild: "\(statsKey)/\(property)").queryEqual(toValue: value).observeSingleEvent(of: .value) { (snapshot) in
         if snapshot.exists() {
             
             guard let semiParsedSnapshot = snapshot.value as? [String: Any] else { return }
             let newLikelyUserNames = Array(semiParsedSnapshot.keys)
-            print("New Likely Usernames: ", newLikelyUserNames)
-
+            logger.debug("New Likely Usernames: \(newLikelyUserNames)")
+            
             let ref = getUnauthenticatedUserInfoReference().child(statsKey).child(likelyUserNamesKey)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if var likelyUsernames = snapshot.value as? [String] {
@@ -259,6 +265,7 @@ func saveLastReadMessageTimestamp(deleteUnauth: Bool = false) {
 }
 
 func addInFirebaseArray(ref: DatabaseReference, value entry: String) {
+    logger.info("Adding \(entry) in array at \(ref)")
     ref.observeSingleEvent(of: .value) { (snapshot) in
         if var value = snapshot.value as? [String] {
             if value.contains(entry) {
@@ -274,6 +281,7 @@ func addInFirebaseArray(ref: DatabaseReference, value entry: String) {
 }
 
 func removeFromFirebaseArray(ref: DatabaseReference, value entry: String) {
+    logger.info("Removing \(entry) from array at \(ref)")
     ref.observeSingleEvent(of: .value) { (snapshot) in
         if var value = snapshot.value as? [String] {
             if value.contains(entry) {
@@ -285,29 +293,30 @@ func removeFromFirebaseArray(ref: DatabaseReference, value entry: String) {
 }
 
 func addOrRemoveUser(from group: UserGroup, userName: String, fcmToken: String?) {
-    var filteredRef = groupsReference.child(group.rawValue).child(userName)
+    logger.info("Changing membership of \(userName) from \(group)")
+    
+    let subgroupRef = groupsReference.child(group.rawValue).child(userName)
     let statsKey = UserInfo.CodingKeys.stats.stringValue
     let groupsKey = StatsInfo.CodingKeys.groups.stringValue
     let childGroupStatsReference = authenticatedUsersReference.child(userName).child(statsKey).child(groupsKey)
-
-//    print("Filtering user \(userName)")
     
-    filteredRef.observeSingleEvent(of: .value) { (snapshot) in
-//        print("Value: \(snapshot.value)")
+    //    print("Filtering user \(userName)")
+    
+    subgroupRef.observeSingleEvent(of: .value) { (snapshot) in
+        //        print("Value: \(snapshot.value)")
         if snapshot.exists() {
-        //User belongs to filtered group
-        NSLog("Removing user \(userName) at \(filteredRef)")
-        saveUserInfo(at: filteredRef, with: nil, once: false)
-        removeFromFirebaseArray(ref: childGroupStatsReference, value: group.rawValue)
-        
+            //User belongs to filtered group
+            logger.debug("Removing user \(userName) at \(subgroupRef)")
+            saveUserInfo(at: subgroupRef, with: nil, once: false)
+            removeFromFirebaseArray(ref: childGroupStatsReference, value: group.rawValue)
+            
         } else {
-            NSLog("Adding user \(userName) at \(filteredRef)")
-            saveUserInfo(at: filteredRef, with: fcmToken, once: false)
+            logger.debug("Adding user \(userName) at \(subgroupRef)")
+            saveUserInfo(at: subgroupRef, with: fcmToken, once: false)
             addInFirebaseArray(ref: childGroupStatsReference, value: group.rawValue)
         }
     }
 }
-
 
 func saveBasicUserInfo(deleteUnauth: Bool = false) {
     saveUserDisplayName(deleteUnauth: deleteUnauth)
@@ -316,7 +325,7 @@ func saveBasicUserInfo(deleteUnauth: Bool = false) {
     saveSeenTimestamp(deleteUnauth: deleteUnauth)
     saveInstalledAppVersion(deleteUnauth: deleteUnauth)
     saveAuthenticationType(deleteUnauth: deleteUnauth)
-//    saveFCMToken(deleteUnauth: deleteUnauth)
+    //    saveFCMToken(deleteUnauth: deleteUnauth)
     saveUserLocationInfo(deleteUnauth: deleteUnauth)
     saveDeviceUUID(deleteUnauth: deleteUnauth)
 }

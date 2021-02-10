@@ -13,6 +13,8 @@ class SideNavNoticeCollectionViewCell: UICollectionViewCell {
     let noticeLabel: UILabel
     
     override init(frame: CGRect) {
+        logger.info("Initializing side nav notice collection view cell")
+        
         noticeLabel = UILabel()
         super.init(frame: frame)
         

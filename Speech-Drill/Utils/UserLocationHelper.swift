@@ -11,17 +11,18 @@ import CoreLocation
 import UIKit
 
 func storeLocationInFirebase(locationManager: CLLocationManager) {
+    logger.info("Saving user location in firebase")
     
     let defaults = UserDefaults.standard
     
     if let isoCode = defaults.string(forKey: userLocationCodeKey) {
-        print("Previous default: ", isoCode)
+        logger.debug("Previous isoCode default: \(isoCode)")
         saveUserLocation(isoCode: isoCode)
         return
     }
     
     
-//    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    //    let uuid = UIDevice.current.identifierForVendor!.uuidString
     let uuid = getUUID()
     var isoCode = "UNK"
     
@@ -49,7 +50,7 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
             print(currentLocPlacemark.isoCountryCode ?? "No country code found")
             isoCode = currentLocPlacemark.isoCountryCode ?? isoCode
             
-            print("Saving status for: ", uuid, " as", isoCode)
+            logger.debug("Saving status for: \(uuid) as \(isoCode)")
             saveUserLocation(isoCode: isoCode)
             //SAVE ISO CODE +1 TO FIREBASE
             
@@ -59,18 +60,19 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
 
 
 func removeLocationFromFirebase() {
-//    let uuid = UIDevice.current.identifierForVendor!.uuidString
-//    userLocationReference.child(uuid).setValue(nil)
+    //    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    //    userLocationReference.child(uuid).setValue(nil)
     let uuid = getUUID()
     userLocationReference.child(uuid).setValue(nil) { (error, reference) in
         if let error = error {
-            print("Error marking \(uuid) offline: \(error)")
+            logger.error("Error marking \(uuid) offline: \(error)")
         }
     }
 }
 
 func saveUserLocation(isoCode: String) {
-//    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    logger.info("Setting uuid location to isoCode: \(isoCode)")
+    //    let uuid = UIDevice.current.identifierForVendor!.uuidString
     let uuid = getUUID()
     let defaults = UserDefaults.standard
     defaults.set(isoCode, forKey: userLocationCodeKey)
@@ -79,13 +81,14 @@ func saveUserLocation(isoCode: String) {
     //    userLocationReference.child(uuid).setValue(isoCode)
     userLocationReference.child(uuid).setValue(isoCode) { (error, reference) in
         if let error = error {
-            print("Error saving \(uuid) location: \(error)")
+            logger.error("Error saving \(uuid) location: \(error)")
         }
     }
     saveUserLocationInfo()
 }
 
 func flag(from country:String) -> String {
+    logger.info("Converting isoCode \(country) to flag emoji")
     
     if country == "UNK" {
         return "🏴‍☠️"

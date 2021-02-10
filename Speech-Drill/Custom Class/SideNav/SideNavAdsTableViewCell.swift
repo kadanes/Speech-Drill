@@ -18,7 +18,8 @@ class SideNavAdsTableViewCell: UITableViewCell {
     private let sideNavAdCellReuseIdentifier = "SideNavAdCellReuseIdentifier"
     
     override init(style:  UITableViewCell.CellStyle, reuseIdentifier: String?) {
-
+        logger.info("Creating side nav ad cell")
+        
         adsTitleLable = UILabel()
         let adsCollectionViewLayout = UICollectionViewFlowLayout()
         adsCollectionViewLayout.scrollDirection = .horizontal
@@ -52,12 +53,12 @@ class SideNavAdsTableViewCell: UITableViewCell {
         adsCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
         adsCollectionView.showsHorizontalScrollIndicator = false
         adsCollectionView.isPagingEnabled = true
-
+        
         adsCollectionView.register(SideNavAdCell.self, forCellWithReuseIdentifier: sideNavAdCellReuseIdentifier)
         
         adsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        
+            
             adsTitleLable.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
             adsTitleLable.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             adsTitleLable.heightAnchor.constraint(equalToConstant: 30),
@@ -68,7 +69,7 @@ class SideNavAdsTableViewCell: UITableViewCell {
             adsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             adsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             adsCollectionView.bottomAnchor.constraint(equalTo: adsPagingIndicator.topAnchor, constant: -3),
-//            adsCollectionView.heightAnchor.constraint(equalToConstant: 250),
+            //            adsCollectionView.heightAnchor.constraint(equalToConstant: 250),
             adsPagingIndicator.centerXAnchor.constraint(equalTo: adsCollectionView.centerXAnchor)
         ])
     }
@@ -81,6 +82,8 @@ class SideNavAdsTableViewCell: UITableViewCell {
 extension SideNavAdsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        logger.debug("Number of ads \(fetchedAds.count)")
+        
         adsPagingIndicator.numberOfPages = fetchedAds.count
         return fetchedAds.count
     }
@@ -102,20 +105,22 @@ extension SideNavAdsTableViewCell: UICollectionViewDelegate, UICollectionViewDat
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         adsPagingIndicator.currentPage = Int(
             (adsCollectionView.contentOffset.x / adsCollectionView.frame.width)
-            .rounded(.toNearestOrAwayFromZero)
+                .rounded(.toNearestOrAwayFromZero)
         )
     }
     
     func fetchAds() {
+        logger.info("Fetching ads...")
+        
         sideNavAdsReference.observe(.value) { (snapshot) in
             if let value = snapshot.value as? [[String: Any]] {
                 do {
                     let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
                     self.fetchedAds = try JSONDecoder().decode([SideNavAdStructure].self, from: data)
                     self.adsCollectionView.reloadData()
+                    logger.debug("Fetched ads: \(self.fetchedAds)")
                 } catch {
-                    print("Error fetching ad data")
-                    print(error)
+                    logger.error("Failed to fetch ads: \(error)")
                 }
             }
         }

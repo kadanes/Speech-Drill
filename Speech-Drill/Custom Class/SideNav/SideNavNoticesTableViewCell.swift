@@ -17,12 +17,13 @@ class SideNavNoticesTableViewCell: UITableViewCell {
     let noticesPagingIndicatorContainer: UIView
     let noticesPagingIndicator: UIPageControl
     private var noticeNumber = 0
-
+    
     private var notices: [NoticeStructure] = [NoticeStructure(date:"29/09/18", notice:"No new notice")]
     
     private let sideNavNoticesCellReuseIdentifier = "SideNavNoticesCollectionViewCell"
     
     override init(style:  UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        logger.info("Initializing side nav notices table view cell")
         
         noticeStackView = UIStackView()
         updatesTextView = UITextView()
@@ -36,7 +37,7 @@ class SideNavNoticesTableViewCell: UITableViewCell {
         noticesPagingIndicator = UIPageControl()
         noticesPagingIndicatorContainer = UIView()
         noticesPagingIndicator.currentPageIndicatorTintColor = accentColor
-
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
@@ -57,14 +58,14 @@ class SideNavNoticesTableViewCell: UITableViewCell {
         noticeLbl.font = getFont(name: .HelveticaNeueBold, size: .xlarge)
         contentView.addSubview(noticeLbl)
         noticeLbl.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             noticeLbl.topAnchor.constraint(equalTo: contentView.topAnchor),
             noticeLbl.heightAnchor.constraint(equalToConstant: 30),
             noticeLbl.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
         
-   
+        
         contentView.addSubview(noticesPagingIndicator)
         noticesPagingIndicator.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(noticesCollectionView)
@@ -79,7 +80,7 @@ class SideNavNoticesTableViewCell: UITableViewCell {
             noticesCollectionView.bottomAnchor.constraint(equalTo: noticesPagingIndicator.bottomAnchor, constant: -8),
             noticesCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             noticesCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-
+            
         ])
         
         contentView.addBottomBorder(with: .darkGray, andWidth: 1)
@@ -95,7 +96,7 @@ class SideNavNoticesTableViewCell: UITableViewCell {
 extension SideNavNoticesTableViewCell {
     func fetchNotices() {
         
-//        notesFIRBRef.keepSynced(true)
+        //        notesFIRBRef.keepSynced(true)
         noticesReference.observe(.value) { (snapshot) in
             guard let value = snapshot.value as? [[String: Any]] else { return }
             
@@ -107,14 +108,14 @@ extension SideNavNoticesTableViewCell {
                 self.notices = unsortedNotices.sorted(by: {(arg0,arg1) in
                     let date1 = arg0.date, date2 = arg1.date
                     guard let dateObj1 = convertToDate(date: date1), let dateObj2 = convertToDate(date: date2) else { return false }
-                                return dateObj1 > dateObj2
-                            })
+                    return dateObj1 > dateObj2
+                })
                 
                 self.noticesCollectionView.reloadData()
+                logger.debug("Fetched notices \(self.notices)")
                 
             } catch {
-                print("Error parsing notices")
-                print(error)
+                logger.error("Error fetching notices: \(error)")
             }
         }
     }
@@ -123,33 +124,33 @@ extension SideNavNoticesTableViewCell {
 extension SideNavNoticesTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            noticesPagingIndicator.numberOfPages = notices.count
-            return notices.count
+        noticesPagingIndicator.numberOfPages = notices.count
+        return notices.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sideNavNoticesCellReuseIdentifier, for: indexPath) as? SideNavNoticeCollectionViewCell else {
+            return UICollectionViewCell()
         }
         
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sideNavNoticesCellReuseIdentifier, for: indexPath) as? SideNavNoticeCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            
-            cell.configureCell(notice: notices[indexPath.row])
-            
-            return cell
-        }
+        cell.configureCell(notice: notices[indexPath.row])
         
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: frame.size.width - 16, height: 140)
-        }
-
-        func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            noticesPagingIndicator.currentPage = Int(
-                (noticesCollectionView.contentOffset.x / noticesCollectionView.frame.width)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: frame.size.width - 16, height: 140)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        noticesPagingIndicator.currentPage = Int(
+            (noticesCollectionView.contentOffset.x / noticesCollectionView.frame.width)
                 .rounded(.toNearestOrAwayFromZero)
-            )
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 0
-        }
+        )
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
     
 }

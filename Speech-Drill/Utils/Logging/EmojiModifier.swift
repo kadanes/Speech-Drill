@@ -22,22 +22,22 @@ struct EmojiModifier: LogModifier {
      - returns: The modified log message.
      */
     func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
-        
+        let logPrefix = "[\(name)/\(logLevel)]"
         switch logLevel {
         case .method:
-            return "💬💬💬 [\(name)] => \(message)"
+            return "💬 \(logPrefix) => \(message)"
         case .debug:
-            return "🔬🔬🔬 [\(name)] => \(message)"
+            return "🔬 \(logPrefix) => \(message)"
         case .info:
-            return "💡💡💡 [\(name)] => \(message)"
+            return "💡 \(logPrefix) => \(message)"
         case .event:
-            return "🔵🔵🔵 [\(name)] => \(message)"
+            return "🔵 \(logPrefix) => \(message)"
         case .warn:
-            return "⚠️⚠️⚠️ [\(name)] => \(message)"
+            return "⚠️ \(logPrefix) => \(message)"
         case .error:
-            return "🚨💣💥 [\(name)] => \(message)"
+            return "💥 \(logPrefix)=> \(message)"
         default:
-            return "[\(name)] => \(message)"
+            return "\(logPrefix) => \(message)"
         }
     }
 }

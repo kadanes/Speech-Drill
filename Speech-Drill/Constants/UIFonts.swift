@@ -36,5 +36,6 @@ enum FontSize: CGFloat {
 ///   - size: Size of the font to be returned
 /// - Returns: Returns font of specified name and size if valid name is passed else returns system font of specified size
 func getFont(name: FontName, size: FontSize) -> UIFont {
+    logger.debug("Creating font of name \(name.rawValue) and size \(size.rawValue)")
     return UIFont(name: name.rawValue, size: size.rawValue) ?? UIFont.systemFont(ofSize: size.rawValue)
 }

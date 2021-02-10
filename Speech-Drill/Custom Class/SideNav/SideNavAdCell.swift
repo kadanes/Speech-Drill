@@ -23,6 +23,7 @@ class SideNavAdCell: UICollectionViewCell {
     var adInformation: SideNavAdStructure?
     
     override init(frame: CGRect) {
+        logger.info()
         
         adView = UIView()
         bannerImageView = UIImageView()
@@ -35,7 +36,7 @@ class SideNavAdCell: UICollectionViewCell {
         let spacing: CGFloat = 8
         let callBtnHeight: CGFloat = 30
         let tagLineHeight: CGFloat = 50
-
+        
         adView.layer.borderWidth = 1
         adView.layer.borderColor = UIColor.white.cgColor
         adView.clipsToBounds = true
@@ -175,6 +176,7 @@ class SideNavAdCell: UICollectionViewCell {
 extension SideNavAdCell {
     
     func configureContactButton(name: String, contactButton: UIButton) {
+        logger.info()
         
         contactButton.layer.cornerRadius = 10
         contactButton.clipsToBounds = true
@@ -186,6 +188,8 @@ extension SideNavAdCell {
     }
     
     func toggleButtonIcon(_ contactButton: UIButton, callsPhoneNumber: Bool) {
+        logger.info()
+        
         contactButton.backgroundColor = callsPhoneNumber ? confirmGreen.withAlphaComponent(0.6) : githubBlue.withAlphaComponent(0.6)
         let buttonImage = callsPhoneNumber ? callIcon.withRenderingMode(.alwaysTemplate) : emailIcon.withRenderingMode(.alwaysTemplate)
         contactButton.setImage(buttonImage, for: .normal)
@@ -193,7 +197,7 @@ extension SideNavAdCell {
         contactButton.imageView?.contentMode = .scaleAspectFit
         contactButton.contentHorizontalAlignment = .left
         contactButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 5)
-//        contactButton.imageEdgeInsets = callsPhoneNumber ? UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) : UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20)
+        //        contactButton.imageEdgeInsets = callsPhoneNumber ? UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) : UIEdgeInsets(top: 10, left: 5, bottom:10, right: 20)
     }
 }
 
@@ -202,6 +206,8 @@ extension SideNavAdCell {
 extension SideNavAdCell {
     
     @objc func contactPerson(_ sender: UIButton) {
+        logger.event()
+        
         guard let contactDetails = sender.tag == 1 ? adInformation?.contact1 ?? nil : adInformation?.contact2 ?? nil else { return }
         
         if let phoneNumber = contactDetails.contactNumber {
@@ -212,7 +218,7 @@ extension SideNavAdCell {
     }
     
     func placeCall(phoneNumber: String, contactName: String) {
-        
+        logger.info("Calling \(contactName) with number \(phoneNumber)")
         
         Analytics.logEvent(AnalyticsEvent.CallCouncillor.rawValue, parameters: [StringAnalyticsProperties.CouncillorName.rawValue : contactName as NSObject])
         
@@ -220,12 +226,16 @@ extension SideNavAdCell {
     }
     
     func sendEmail(emailId: String) {
+        logger.info("Emailing \(emailId)")
+        
         let urlEncodedTagLine = adInformation?.tagLine.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let mailUrl = URL(string: "googlegmail:///co?to=" + emailId + "&subject=" + urlEncodedTagLine )
         openURL(url: mailUrl)
     }
     
     @objc func openAdWebsite(_ sender: UIButton) {
+        logger.event("Opening ad url \(adInformation?.websiteUrl ?? "")")
+        
         guard let url = URL(string: adInformation?.websiteUrl ?? "") else { return }
         openURL(url: url)
     }

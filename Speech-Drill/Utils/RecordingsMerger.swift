@@ -12,16 +12,23 @@ import AVFoundation
 private var previouslyMergedUrlsList = [URL]()
 private var isMerging = false
 private var assetExport: AVAssetExportSession?
+
 func checkIfMerging() -> Bool {
+    logger.info("Checking if currently merging? \(isMerging)")
+    
     return isMerging
 }
 
 func checkIfMerging(audioFileUrls: [URL]) -> Bool {
+    logger.info("Checking if currently merging urls \(audioFileUrls)")
+    
     return sortUrlList(recordingsUrlList: audioFileUrls)  == sortUrlList(recordingsUrlList: previouslyMergedUrlsList)  && isMerging
 }
 
 ///Check if the urls in list being merged belongs to this date
 func checkIfMerging(date: String) -> Bool {
+    logger.info("Checking if currently merging for date \(date)")
+
     if previouslyMergedUrlsList.count == 0 {
         return false
     }
@@ -38,6 +45,8 @@ func checkIfMerging(date: String) -> Bool {
 }
 
 func getMergedFileUrl() -> URL {
+    logger.info("Getting merged file url")
+    
     let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! as NSURL
     let mergeAudioURL = documentDirectoryURL.appendingPathComponent(mergedFileName)!
     
@@ -45,8 +54,10 @@ func getMergedFileUrl() -> URL {
 }
 
 func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
+    logger.info("Merging audio in urls from passed list")
+    
     if previouslyMergedUrlsList == audioFileUrls {
-        print("New url list matches old url list")
+        logger.debug("New url list matches old url list")
         completion()
     } else {
         isMerging = true
@@ -106,9 +117,7 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                 
                 
             } catch let error as NSError {
-                print("Error while inserting ",i+1)
-                print(error.localizedDescription)
-                
+                logger.error("Error while inserting recordig number \(i+1). Error: \(error)")
             }
         }
         
@@ -136,17 +145,17 @@ func mergeAudioFiles(audioFileUrls: [URL],completion: @escaping () -> ()) {
                 switch assetExport!.status
                 {
                 case AVAssetExportSessionStatus.failed:
-                    print("failed \(assetExport?.error ?? "FAILED" as! Error)")
+                    logger.error("failed \(assetExport?.error ?? "FAILED" as! Error)")
                 case AVAssetExportSessionStatus.cancelled:
-                    print("cancelled \(assetExport?.error ?? "CANCELLED" as! Error)")
+                    logger.warn("cancelled \(assetExport?.error ?? "CANCELLED" as! Error)")
                 case AVAssetExportSessionStatus.unknown:
-                    print("unknown\(assetExport?.error ?? "UNKNOWN" as! Error)")
+                    logger.error("unknown\(assetExport?.error ?? "UNKNOWN" as! Error)")
                 case AVAssetExportSessionStatus.waiting:
-                    print("waiting\(assetExport?.error ?? "WAITING" as! Error)")
+                    logger.info("waiting\(assetExport?.error ?? "WAITING" as! Error)")
                 case AVAssetExportSessionStatus.exporting:
-                    print("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
+                    logger.info("exporting\(assetExport?.error ?? "EXPORTING" as! Error)")
                 default:
-//                    Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
+                    Toast.show(message: "Merged \(audioFileUrls.count) recordings!", type: .Info)
                     exportMonitorTimer.invalidate()
                     ProgressBar.bar.updateWidth(progress: 0)
                     

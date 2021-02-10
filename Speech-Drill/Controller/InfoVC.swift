@@ -72,9 +72,8 @@ class InfoVC: UIViewController {
     }
     
     func fetchAndSetCredits() {
-        let ref = Database.database().reference().child("credits")
-        ref.keepSynced(true)
-        ref.observe(.value, with: {(snapshot) in
+        creditsReference.keepSynced(true)
+        creditsReference.observe(.value, with: {(snapshot) in
             if let value = snapshot.value as? String {
                 self.creditsTextView.text = value
                 self.creditsTextView.scrollsToTop = true

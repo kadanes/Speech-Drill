@@ -17,6 +17,7 @@ class ProgressBar: NSObject  {
     private var c4: NSLayoutConstraint?
     
     private override init() {
+        logger.info("Initializing progress bar")
         
         super.init()
         
@@ -38,13 +39,13 @@ class ProgressBar: NSObject  {
                 topController.view.addSubview(self.progressBar)
                 
                 let c1 = NSLayoutConstraint(item: self.progressBar, attribute: .leading, relatedBy: .equal, toItem: topController.view, attribute: .leading, multiplier: 1, constant: 0)
-             
+                
                 let c2 = NSLayoutConstraint(item: self.progressBar, attribute: .bottom, relatedBy: .equal, toItem: topController.view, attribute: .bottom, multiplier: 1, constant: 0)
                 
                 let c3 = NSLayoutConstraint(item: self.progressBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 3)
                 
                 self.c4 = NSLayoutConstraint(item: self.progressBar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30)
-            
+                
                 topController.view.addConstraints([c1, c2, c3, self.c4!])
                 
             }

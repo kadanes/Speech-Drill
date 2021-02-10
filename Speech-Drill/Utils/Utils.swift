@@ -14,6 +14,7 @@ import Firebase
 import StoreKit
 
 func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
+    logger.info("Deleting recording at \(recordingURL)")
     
     let fileManager = FileManager()
     
@@ -33,6 +34,7 @@ func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
 }
 
 func findAndUpdateSection(date: String, recordingUrlsDict:Dictionary<String,Array<URL>>, completion: @escaping (Int,Array<URL>)->()) {
+    logger.info("Updating section for date \(date)")
     
     let sortedRecordingUrlsDict = sortDict(recordingUrlsDict: recordingUrlsDict)
     
@@ -49,6 +51,8 @@ func findAndUpdateSection(date: String, recordingUrlsDict:Dictionary<String,Arra
 }
 
 func openURL(url: URL?) {
+    logger.info("Opening url: \(String(describing: url))")
+    
     guard let url = url else { return }
     //    if UIApplication.shared.canOpenURL(url) {
     //    }
@@ -57,12 +61,16 @@ func openURL(url: URL?) {
 }
 
 func setBtnImgProp(button: UIButton, topPadding: CGFloat, leftPadding: CGFloat) {
+    logger.debug("Setting button image properties")
+    
     button.imageView?.contentMode = .scaleAspectFit
     button.contentEdgeInsets = UIEdgeInsetsMake(topPadding, leftPadding, topPadding, leftPadding)
 }
 
 func setButtonBgImage(button: UIButton, bgImage: UIImage,tintColor color: UIColor) {
     let buttonImg = bgImage.withRenderingMode(.alwaysTemplate)
+    logger.debug("Setting button image properties")
+    
     DispatchQueue.main.async {
         UIView.transition(with: button, duration: 0.3, options: .curveEaseIn, animations: {
             button.setImage(buttonImg, for: .normal)
@@ -72,6 +80,7 @@ func setButtonBgImage(button: UIButton, bgImage: UIImage,tintColor color: UIColo
 }
 
 func splitFileURL(url: URL) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
+    logger.info("Splitting recording url to get details, \(url)")
     
     let urlStr = "\(url)"
     
@@ -99,6 +108,8 @@ func splitFileURL(url: URL) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
 }
 
 func checkIfDate(date: String) -> Bool {
+    logger.info("Verify if passed string is a valid date")
+    
     let dateFormatterGet = DateFormatter()
     dateFormatterGet.dateFormat = "dd/MM/yyyy"
     
@@ -108,7 +119,10 @@ func checkIfDate(date: String) -> Bool {
         return false
     }
 }
+
 func parseDate(timeStamp: Int) -> String {
+    logger.info("Parsing timestamp to dd/MM/yyyy date")
+    
     let ts = Double(timeStamp)
     let date = Date(timeIntervalSince1970: ts)
     let dateFormatter = DateFormatter()
@@ -121,12 +135,16 @@ func parseDate(timeStamp: Int) -> String {
 }
 
 func convertToDate(date: String) -> Date? {
+    logger.info("Parsing date string to date")
+    
     let formatter = DateFormatter()
     formatter.dateFormat = "dd/MM/yyyy"
     return formatter.date(from: date)
 }
 
 func checkIfSilent() {
+    logger.info("Checking if mute switch is on")
+    
     Mute.shared.isPaused = false
     Mute.shared.checkInterval = 0.5
     Mute.shared.alwaysNotify = true
@@ -140,6 +158,8 @@ func checkIfSilent() {
 }
 
 func seperatorPathFor(thinkTime: Int) -> String? {
+    logger.info("Getting audio seperator file path")
+    
     switch  thinkTime {
     case 15:
         return getPath(fileName: independentT2S)
@@ -154,12 +174,16 @@ func seperatorPathFor(thinkTime: Int) -> String? {
 
 ///Get the path for a file locally stored in app. Pass file name with extension
 func getPath(fileName: String ) -> String? {
+    logger.info("Getting path for \(fileName) from bundle")
+    
     let path = Bundle.main.path(forResource: fileName, ofType: nil)
     return path
 }
 
 ///Function to sort list of recording urls by file name (timestamp)
 func sortUrlList(recordingsUrlList: [URL]) -> [URL] {
+    logger.info("Sorting url list by timestamp")
+    
     let sortedRecordingsUrlList = recordingsUrlList.sorted(by: {(url1,url2)-> Bool in
         let timestamp1 = splitFileURL(url: url1).0
         let timestamp2 = splitFileURL(url: url2).0
@@ -170,6 +194,8 @@ func sortUrlList(recordingsUrlList: [URL]) -> [URL] {
 
 ///Sort doctionary of recording urls by date
 func sortDict(recordingUrlsDict: Dictionary<String,Array<URL>>) -> [(key:String,value:Array<URL>)] {
+    logger.info("Sorting dictionary of recordings for dates (\(type(of: recordingUrlsDict)) by date")
+    
     return recordingUrlsDict.sorted { (arg0, arg1) -> Bool in
         let (date1, _) = arg0
         let (date2, _) = arg1
@@ -181,6 +207,7 @@ func sortDict(recordingUrlsDict: Dictionary<String,Array<URL>>) -> [(key:String,
 
 ///Merge and return a new url of list of recordings or url of only recording in the list
 func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActivityIndicatorView? ,completion: @escaping () -> ()) {
+    logger.info("Merging recordings from url list")
     
     if var sortedRecordingsList = recordingsList {
         if let activityIndicator = activityIndicator {
@@ -204,8 +231,7 @@ func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActiv
                     try fileManager.copyItem(at: url, to: getMergedFileUrl())
                     completion()
                 } catch let error as NSError {
-                    print("Error copying file")
-                    print(error.localizedFailureReason ?? "ERROR COPYING")
+                    logger.error("Error copying merged files \(error)")
                 }
             }
             
@@ -214,13 +240,12 @@ func processMultipleRecordings(recordingsList: [URL]?,activityIndicator: UIActiv
                 completion()
             }
         }
-        
-        
     }
 }
 
 ///Open share sheet and share a recording
 func openShareSheet(url: URL,activityIndicator: UIActivityIndicatorView?, completion: @escaping()->()) {
+    logger.event("Opening share sheet to export recording at \(url)")
     
     let activityVC = UIActivityViewController(activityItems: [url],applicationActivities: nil)
     DispatchQueue.main.async {
@@ -250,6 +275,8 @@ func openShareSheet(url: URL,activityIndicator: UIActivityIndicatorView?, comple
 
 ///Get time in mins and seconds format from total seconds
 func convertToMins(seconds: Double) -> String {
+    logger.info("Converting seconds (\(seconds)) to minutes")
+    
     let playbackTime = Int(round(seconds))
     let mins = Int(playbackTime / 60)
     let sec = playbackTime - (mins * 60)
@@ -258,15 +285,17 @@ func convertToMins(seconds: Double) -> String {
 }
 
 func getAppstoreVersion() -> String? {
+    logger.info("Getting app store version of Speech-Drill")
+    
     let infoDictionary = Bundle.main.infoDictionary
     let appID = infoDictionary![appIdKey] as! String
     guard let url = URL(string: "http://itunes.apple.com/lookup?bundleId=\(appID)") else {
-        print("Bad Appstore URL")
+        logger.error("Bad app store url for Speech-Drill")
         return nil
     }
     
     guard let data = try? Data(contentsOf: url) else {
-        print("App data not found")
+        logger.error("App data not found for Speech-Drill")
         return nil
         
     }
@@ -281,29 +310,36 @@ func getAppstoreVersion() -> String? {
             }
         }
     } catch {
-        print("Error getting app store version: ", error)
+        logger.error("Error parsing app store data for Speech-Drill: \(error)")
     }
     
     return nil
 }
 
 func getInstalledVersionNumber() -> String? {
+    logger.debug("Getting current app version number")
     guard let infoDictionary = Bundle.main.infoDictionary, let currentVersionNumber = infoDictionary[appVersionNumberKey] as? String else { return nil}
     return currentVersionNumber
 }
 
 func getInstalledBuildNumber() -> String? {
+    logger.debug("Getting current app build number")
+    
     guard let infoDictionary = Bundle.main.infoDictionary, let currentBuildNumber = infoDictionary[appBuildNumberKey] as? String else { return nil}
     return currentBuildNumber
 }
 
 func getFullInstalledAppVersion() -> String? {
+    logger.debug("Getting installed app version and build number")
+    
     guard let installedVersionNumber = getInstalledVersionNumber() else { return nil }
     guard let installedBuildNumber = getInstalledBuildNumber() else { return "\(installedVersionNumber)(_)" }
     return "\(installedVersionNumber)(\(installedBuildNumber))"
 }
 
 func validateTextView(textView: UITextView) -> Bool {
+    logger.info("Validating text view for non-empty text")
+    
     guard let text = textView.text,
           !text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
         return false
@@ -312,6 +348,8 @@ func validateTextView(textView: UITextView) -> Bool {
 }
 
 func isCallKitSupported() -> Bool {
+    logger.info("Checking if should support call kit in current region")
+    
     let userLocale = NSLocale.current
     
     guard let regionCode = userLocale.regionCode else { return false }
@@ -325,24 +363,29 @@ func isCallKitSupported() -> Bool {
 }
 
 func openAppSettings() {
+    logger.info("Opening settings page for Speech-Drill")
+    
     if let bundleIdentifier = Bundle.main.bundleIdentifier, let appSettings = URL(string: UIApplicationOpenSettingsURLString + bundleIdentifier) {
         if UIApplication.shared.canOpenURL(appSettings) {
             UIApplication.shared.open(appSettings)
         }
     } else {
-        print("Can't open app's settings")
+        logger.error("Can't open settings page for Speech-Drill")
     }
 }
 
 /// Get the user name of logged in user
 /// - Returns: Will return the user's email id by stripping part after @ and removing full stops. E.g: my.dotted.email@domain.com will return mydottedemail.
 func getAuthenticatedUsername() -> String? {
+    logger.info("Getting username for logged in user")
     
     guard let user = Auth.auth().currentUser, let userEmail = user.email else { return nil }
     return getUsernameFromEmail(email: userEmail)
 }
 
 func getUsernameFromEmail(email: String) -> String? {
+    logger.info("Converting \(email) to username without dots and domain name")
+    
     let emailComponents = email.components(separatedBy: "@")
     if emailComponents.count == 0  { return nil }
     let username = emailComponents[0].replacingOccurrences(of: ".", with: "")
@@ -352,6 +395,8 @@ func getUsernameFromEmail(email: String) -> String? {
 /// Returns a UUID to idendify users not logged in.
 /// - Returns: Will return unique identifierForVendor if not nil else a randomly generated UUID. Generated will be stored in user defaults with key uuidKey so same value gets returned if possibke when app is reinstalled or identifierForVendor is nil.
 func getUUID() -> String {
+    logger.info("Getting uuid for device")
+    
     let defaults = UserDefaults.standard
     if let storedUUID = defaults.string(forKey: uuidKey) { return storedUUID }
     
@@ -364,6 +409,8 @@ func getUUID() -> String {
 /// Get a date formatter that parses Date to current timestamp as dd MM yyyy
 /// - Returns: A date formatter object to parse dates
 func getDateFormatter() -> DateFormatter {
+    logger.info("Getting date formatter for dd MM yyyy")
+    
     let dateFormatter = DateFormatter()
     dateFormatter.timeZone = .current
     dateFormatter.dateFormat = "dd MMM yyyy"
@@ -375,7 +422,7 @@ func getDateFormatter() -> DateFormatter {
 /// - Parameter dateString: Date string formated as dd MMM yyyy
 /// - Returns: A date object by parsing date in dd MMM yyy format
 func getDate(from dateString: String) -> Date? {
-    //        print("Date String: ", dateString)
+    logger.info("Converting date string \(dateString) (dd MM yyyy) to date")
     let dateFormatter = getDateFormatter()
     return dateFormatter.date(from: dateString) ?? nil
 }
@@ -384,6 +431,7 @@ func getDate(from dateString: String) -> Date? {
 /// - Parameter timestamp: Timestamp to be converted to date string
 /// - Returns: A date string from passed timestamp in dd MMM yyy format
 func getDateString(from timestamp: Double) -> String {
+    logger.info("Getting date string (dd MM yyyy) from timestamp \(timestamp)")
     let dateFormatter = getDateFormatter()
     let date = Date(timeIntervalSince1970: timestamp)
     let dateString = dateFormatter.string(from: date)
@@ -398,6 +446,8 @@ func getDateString(from timestamp: Double) -> String {
 /// 4. If review has not been asked more than 30 times in the same year for the current version
 /// - Parameter numberOfRecordings: If the number of recordings is greater than 3 then a review will be asked.
 func askForReview(numberOfRecordings: Int = 5) {
+    logger.info("Asking for review")
+    
     let defaults = UserDefaults.standard
     let lastAskedReviewAt = defaults.double(forKey: lastAskedReviewAtKey)
     let dateStringForLastReviewAsk = getDateString(from: lastAskedReviewAt)
@@ -419,12 +469,18 @@ func askForReview(numberOfRecordings: Int = 5) {
             appReviewRequestsCount = 0
             defaults.setValue(0, forKey: appReviewRequestsCountKey)
         }
+        logger.debug("Last asked review for: \(lastReviewAskedForVersion)")
     }
     
     let askingReviewTooManyTimes = appReviewRequestsCount >= 30 && isAskingReviewForSameVersion
     
     let totalRecordingsTillDateCount = defaults.integer(forKey: totalRecordingsTillDateCountKey)
     let localNumberOfRecordings = max(numberOfRecordings, totalRecordingsTillDateCount)
+    
+    logger.debug("Number of recordings: \(localNumberOfRecordings)")
+    logger.debug("Asking review too many times: \(askingReviewTooManyTimes)")
+    logger.debug("Asked review today: \(askedReviewToday)")
+    
     
     if localNumberOfRecordings > 3 && Bool.random() && !askedReviewToday && !askingReviewTooManyTimes {
         SKStoreReviewController.requestReview()

@@ -17,8 +17,10 @@ class VersionInfoView: UIView {
     let downloadBtnWidth: CGFloat = 180
     let versionInfoLbl: UILabel
     let appstoreBtn: UIButton
-        
+    
     override init(frame: CGRect) {
+        logger.info("Initializing version info view")
+        
         versionInfoLbl = UILabel()
         appstoreBtn = UIButton()
         super.init(frame: frame)
@@ -27,7 +29,7 @@ class VersionInfoView: UIView {
         addSubview(versionInfoLbl)
         versionInfoLbl.translatesAutoresizingMaskIntoConstraints = false
         versionInfoLbl.textAlignment = .left
-//        versionInfoLbl.numberOfLines = 0
+        //        versionInfoLbl.numberOfLines = 0
         versionInfoLbl.textColor = UIColor.white
         versionInfoLbl.minimumScaleFactor = 0.5
         versionInfoLbl.adjustsFontSizeToFitWidth = true
@@ -36,11 +38,11 @@ class VersionInfoView: UIView {
         NSLayoutConstraint.activate([
             versionInfoLbl.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             versionInfoLbl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-//            versionInfoLbl.heightAnchor.constraint(equalToConstant: versionInfoLblHeight),
+            //            versionInfoLbl.heightAnchor.constraint(equalToConstant: versionInfoLblHeight),
             versionInfoLbl.widthAnchor.constraint(equalToConstant: 100),
             versionInfoLbl.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
         ])
-                
+        
         addSubview(appstoreBtn)
         appstoreBtn.translatesAutoresizingMaskIntoConstraints = false
         appstoreBtn.addTarget(self, action: #selector(openInAppstore), for: .touchUpInside)
@@ -65,7 +67,7 @@ class VersionInfoView: UIView {
         
         
         let versionInfoString = NSMutableAttributedString(string: "ⓘ ", attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .xxlarge)])
-    
+        
         
         versionInfoString.append(NSMutableAttributedString(string: "v\(fullInstalledVersion)", attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .small)]))
         
@@ -90,6 +92,7 @@ class VersionInfoView: UIView {
     }
     
     @objc func openInAppstore() {
+        logger.info("Opening Speech-Drill in App Store")
         
         var currentVersion = "0"
         var latestVersion = "0"
@@ -99,6 +102,7 @@ class VersionInfoView: UIView {
             currentVersion = cv
             latestVersion = lv
         }
+        
         if currentVersion != latestVersion { isVersionSame = 0 }
         
         Analytics.logEvent(AnalyticsEvent.ViewOnAppstore.rawValue, parameters: [IntegerAnalyticsPropertites.ShowCurrentVersion.rawValue : isVersionSame as NSObject ])

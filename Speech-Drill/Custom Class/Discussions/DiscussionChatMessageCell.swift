@@ -20,6 +20,7 @@ class DiscussionChatMessageCell: UITableViewCell {
     private var bubbleTrailingConstraint: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        logger.info("Initializing discussion message cell")
         
         messageLabel = UITextView()
         senderNameLabel = UILabel()
@@ -50,7 +51,7 @@ class DiscussionChatMessageCell: UITableViewCell {
         messageLabel.textContainer.lineBreakMode = .byWordWrapping
         messageLabel.isScrollEnabled = false
         messageLabel.backgroundColor = .clear
-//        messageLabel.isUserInteractionEnabled = true
+        //        messageLabel.isUserInteractionEnabled = true
         messageLabel.font = getFont(name: .HelveticaNeue, size: .medium)
         
         messageBubble.addSubview(messageSentTimeLabel)
@@ -84,11 +85,11 @@ class DiscussionChatMessageCell: UITableViewCell {
             
             senderNameLabel.topAnchor.constraint(equalTo: messageBubble.topAnchor, constant: 10),
             senderNameLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
-//          Causes constraint errors that need to be broken
+            //          Causes constraint errors that need to be broken
             senderNameLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
-//          Causes lesser constraint errors that need to be broken
-//            senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
-
+            //          Causes lesser constraint errors that need to be broken
+            //            senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
+            
             messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 0),
             messageLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 10),
             messageLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -10),
@@ -127,13 +128,13 @@ class DiscussionChatMessageCell: UITableViewCell {
         
         messageLabel.text = message.message
         messageSentTimeLabel.text = dateString
-
+        
         senderNameLabel.textColor = isSender ? .black : .white
         messageLabel.textColor = isSender ? .black : .white
         messageSentTimeLabel.textColor = isSender ? .black : .white
-//        messageSentTimeLabel.shadowColor = isSender ? transparentBlack : transparentWhite
-//        messageSentTimeLabel.shadowOffset = CGSize(width: 0, height: 1)
-            
+        //        messageSentTimeLabel.shadowColor = isSender ? transparentBlack : transparentWhite
+        //        messageSentTimeLabel.shadowOffset = CGSize(width: 0, height: 1)
+        
         bubbleLeadingConstraint.priority = isSender ? .defaultLow : .defaultHigh
         bubbleTrailingConstraint.priority = isSender ? .defaultHigh : .defaultLow
         
@@ -144,26 +145,28 @@ class DiscussionChatMessageCell: UITableViewCell {
         
         
         messageBubble.layer.maskedCorners = isSender ? senderCorners : nonSenderCorners
-//        updateLastReadMessageTimestamp(message: message)
-//
-//        if let previousMessage = previousMessage {
-//            if message.userEmailAddress == previousMessage.userEmailAddress && message.userCountryCode == previousMessage.userCountryCode && isSender {
-//                senderNameLabel.isHidden = true
-//            } else {
-//                senderNameLabel.isHidden = false
-//            }
-//        } else {
-//            senderNameLabel.isHidden = false
-//        }
+        //        updateLastReadMessageTimestamp(message: message)
+        //
+        //        if let previousMessage = previousMessage {
+        //            if message.userEmailAddress == previousMessage.userEmailAddress && message.userCountryCode == previousMessage.userCountryCode && isSender {
+        //                senderNameLabel.isHidden = true
+        //            } else {
+        //                senderNameLabel.isHidden = false
+        //            }
+        //        } else {
+        //            senderNameLabel.isHidden = false
+        //        }
     }
     
     func updateLastReadMessageTimestamp(message: DiscussionMessage) {
+        logger.info("Updating last read using message sent at \(message.messageTimestamp) with id \(message.messageID ?? "NIL")")
+        
         let defaults = UserDefaults.standard
         let previousLastReadMessageTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
         if previousLastReadMessageTimestamp < message.messageTimestamp {
             defaults.setValue(message.messageTimestamp, forKey: lastReadMessageTimestampKey)
             defaults.setValue(message.messageID, forKey: lastReadMessageIDKey)
-//            print("Saving last read message timestamp: ", message.messageTimestamp, " message id: ", message.messageID)
+            //            print("Saving last read message timestamp: ", message.messageTimestamp, " message id: ", message.messageID)
             saveLastReadMessageTimestamp()
         }
     }

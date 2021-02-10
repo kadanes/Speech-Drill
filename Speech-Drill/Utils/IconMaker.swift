@@ -10,6 +10,7 @@ import UIKit
 
 ///Draw a circle of given diameter and return it as image
 func drawSliderThumb(diameter: CGFloat, backgroundColor: UIColor) -> UIImage {
+    logger.info("Drawing slider thumb icon")
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: diameter, height: diameter))
     let img = renderer.image { ctx in
         ctx.cgContext.setFillColor(backgroundColor.cgColor)

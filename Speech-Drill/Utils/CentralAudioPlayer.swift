@@ -27,13 +27,15 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     ///Return ID of currently playing recording 
     func getPlayingRecordingId() -> String {
+        logger.info("Getting id of currently playing recording")
         return playingRecordingID ?? ""
     }
     
     ///Return URL of recording
     func getPlayingRecordingUrl() -> String {
+        logger.info("Getting url string of currently playing recording")
         if let url = playingRecordingURL {
-             return "\(url)"
+            return "\(url)"
         } else {
             return ""
         }
@@ -41,6 +43,7 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     ///Stop playback and return player to default state
     func stopPlaying() {
+        logger.info("Stopping recording playback")
         isPlaying = false
         playingRecordingURL = nil
         playingRecordingID = nil
@@ -49,8 +52,9 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     ///Play or Pause or Start a recording
-    func playRecording(url: URL,id: String){
-
+    func playRecording(url: URL, id: String){
+        logger.info("Playing recording from url and id")
+        
         if (url != playingRecordingURL || playingRecordingID != id ) {
             
             isPlaying = true
@@ -75,17 +79,16 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
                 audioPlayer.play()
                 
             } catch let error as NSError {
-                print("Error Playing\n",error.localizedDescription)
-                
+                logger.error("Error playing recording with url \(url) and id \(id): \(error)")
             }
             
         } else if (isPlaying) {
-         
+            
             audioPlayer?.pause()
             isPlaying = false
             
         } else if (!isPlaying) {
-      
+            
             checkIfSilent()
             audioPlayer?.play()
             isPlaying = true
@@ -94,43 +97,53 @@ class CentralAudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     ///Reset ui after playing recording(s)
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        logger.info("Restting after playing recording")
         playingRecordingURL = nil
         playingRecordingID = nil
         isPlaying = false
     }
     
     func checkIfPlaying() -> Bool {
+        logger.info("Checking if is playing recording")
         return isPlaying
     }
-
+    
     func checkIfPlaying(id: String) -> Bool {
+        logger.info("Checking if is playing recording of id \(id)")
         
         if playingRecordingID == id {
             return isPlaying
         }
         return false;
     }
-
-    func getPlayBackDuration() -> Double{
+    
+    func getPlayBackDuration() -> Double {
+        logger.info("Getting playback duration")
+        
         if let playBackDuration = audioPlayer?.duration {
             return playBackDuration
         }
+        logger.warn("Could not get correct playback duration")
         return 0.0
     }
     
-    func getPlayBackCurrentTime() -> Double{
+    func getPlayBackCurrentTime() -> Double {
+        logger.info("Getting currently ellapsed playback time")
+        
         if let playBackCurrentTime = audioPlayer?.currentTime {
             return playBackCurrentTime
         }
+        
+        logger.warn("Could not get correct currently ellapsed playback time")
         return 0.0
     }
     
     ///Set the current playing audio time to new time
     func setPlaybackTime(playTime: Double) {
+        logger.info("Setting playback time to \(playTime)")
         audioPlayer?.stop()
         audioPlayer?.currentTime = playTime
         audioPlayer?.prepareToPlay()
         audioPlayer?.play()
     }
 }
-

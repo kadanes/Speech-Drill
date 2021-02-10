@@ -21,7 +21,7 @@ extension DiscussionsViewController {
     }
     
     @objc func displayInfoTapped(_ sender: UIButton) {
-        logger.info()
+        logger.event("Display info tapped")
         //        if GIDSignIn.sharedInstance()?.currentUser == nil {
         if Auth.auth().currentUser == nil {
             let preSignInAlert = UIAlertController(title: "Discussions", message: preLoginInfoMessage, preferredStyle: .alert)

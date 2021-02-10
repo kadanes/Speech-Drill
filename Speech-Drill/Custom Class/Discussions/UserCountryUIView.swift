@@ -14,7 +14,7 @@ class UserCountryUIView: UIView{
     let viewTitleLabel: UILabel
     let countryCollectionView: UICollectionView
     let countryCellReuseIdentifier: String = "UserCountryCell"
-//    var countryUserCount: [String:Int] = ["India": 100000, "Pakistan":300000, "USA": 1000]
+    //    var countryUserCount: [String:Int] = ["India": 100000, "Pakistan":300000, "USA": 1000]
     var countryUserCount: [String:Int] = [:]
     var sortedCountryUserCount: [Dictionary<String, Int>.Element] = []
     var showFlag = true
@@ -26,17 +26,19 @@ class UserCountryUIView: UIView{
     }
     
     override init(frame: CGRect){
+        logger.info("Initializing user country UIView")
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-//        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
-//        layout.estimatedItemSize = CGSize(width: 100, height: 50)
+        //        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+        //        layout.estimatedItemSize = CGSize(width: 100, height: 50)
         
         countryCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         
         viewTitleLabel = UILabel()
         super.init(frame: frame)
         setupTableView()
-//        sortedCountryUserCount = self.countryUserCount.sorted(by: <)
+        //        sortedCountryUserCount = self.countryUserCount.sorted(by: <)
         monitorOnlineUsers()
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleFlagState))
@@ -45,6 +47,7 @@ class UserCountryUIView: UIView{
     }
     
     func setupTableView() {
+        logger.info("Setting up user country tabel view")
         
         self.addSubview(viewTitleLabel)
         viewTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -75,20 +78,24 @@ class UserCountryUIView: UIView{
     }
     
     func monitorOnlineUsers() {
-         userLocationReference.observe(.value) { (snapshot) in
+        logger.info("Monitoring online users")
+        
+        userLocationReference.observe(.value) { (snapshot) in
             
             let onlineUsers = snapshot.value as? [String: String] ?? [:]
-//            print("Online Users: ", onlineUsers)
+            //            print("Online Users: ", onlineUsers)
             self.countryUserCount.removeAll()
             for countryCode in onlineUsers.values {
                 self.countryUserCount[countryCode, default: 0] += 1
             }
             self.sortedCountryUserCount = self.countryUserCount.sorted(by: <)
             self.countryCollectionView.reloadData()
-         }
-     }
+        }
+    }
     
     @objc func toggleFlagState() {
+        logger.event("Toggle between Flag emoji and ISO code")
+        
         showFlag = !showFlag
         countryCollectionView.reloadData()
     }
@@ -98,7 +105,7 @@ extension UserCountryUIView: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 70, height: 30)
-//        return CGSize.zero
+        //        return CGSize.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -119,7 +126,6 @@ extension UserCountryUIView: UICollectionViewDelegate, UICollectionViewDataSourc
         } else {
             countryCell.configureCell(countryName: countryName, countryUserCount: countryUserCount)
         }
-        
         
         return countryCell
     }

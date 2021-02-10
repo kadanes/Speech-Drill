@@ -79,10 +79,10 @@ public struct KeyboardEvent {
         guard
             let curveInt = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue,
             let curve = UIView.AnimationCurve(rawValue: curveInt)
-            else { return nil }
+        else { return nil }
         guard
             let durationDouble = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-            else { return nil }
+        else { return nil }
         
         self.type = type
         self.keyboardFrameBegin = begin

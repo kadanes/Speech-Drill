@@ -10,7 +10,8 @@ import UIKit
 
 class Toast {
     static func show(message: String,type: NotificationType) {
-    
+        logger.event("Showing tost with message \(message)")
+        
         DispatchQueue.main.async {
             if var topController = UIApplication.shared.keyWindow?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
@@ -22,6 +23,7 @@ class Toast {
     }
     
     private static func presentToast(message: String,controller: UIViewController, type: NotificationType) {
+        logger.info("Presenting tost of type \(type)")
         
         var bgColor: UIColor
         
