@@ -13,12 +13,12 @@ import FirebaseAuth
 //MARK:- Login Handler
 extension DiscussionsViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        logger.info()
+        logger.info("Handling google sign in")
+        
         // ...
         if let error = error {
             // ...
-            print("Error signing in")
-            print(error)
+            logger.error("Error signing in with google:\n\(error)")
             return
         }
         
@@ -28,20 +28,21 @@ extension DiscussionsViewController: GIDSignInDelegate {
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
-                print("authentication error \(error.localizedDescription)")
+                logger.error("Authentication error with google login \(error.localizedDescription)")
                 return
             }
         }
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        logger.info()
+        logger.info("Gmail user disconnected from the app")
         // Perform any operations when the user disconnects from app here.
         // ...
     }
     
     func setUserProfileImage() {
-        logger.info()
+        logger.info("Setting user profile image")
+        
         discussionChatView.saveUserEmail()
         //        guard let googleUser = GIDSignIn.sharedInstance()?.currentUser else {
         guard let currentUser = Auth.auth().currentUser else {

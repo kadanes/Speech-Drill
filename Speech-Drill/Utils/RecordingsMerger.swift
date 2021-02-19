@@ -14,7 +14,7 @@ private var isMerging = false
 private var assetExport: AVAssetExportSession?
 
 func checkIfMerging() -> Bool {
-    logger.info("Checking if currently merging? \(isMerging)")
+    logger.debug("Checking if currently merging? \(isMerging)")
     
     return isMerging
 }

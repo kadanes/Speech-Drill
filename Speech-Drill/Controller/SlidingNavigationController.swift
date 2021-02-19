@@ -14,7 +14,7 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
     let revealSideNav = RevealSideNav()
     
     override func viewDidLoad() {
-        logger.info()
+        logger.info("Loaded SlidingNavigationController view")
 
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
@@ -24,13 +24,14 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
     }
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        logger.info()
+        logger.info("Disabling interactive pop on view controller push")
         
         super.pushViewController(viewController, animated: animated)
         interactivePopGestureRecognizer?.isEnabled = false
     }
     
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {        logger.info()
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        logger.info("Enabling interactive pop on view controller show")
 
         interactivePopGestureRecognizer?.isEnabled = true
     }
@@ -38,7 +39,8 @@ class SlidingNavigationController:UINavigationController, UIGestureRecognizerDel
     // IMPORTANT: without this if you attempt swipe on
     // first view controller you may be unable to push the next one
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        logger.info()
+        logger.info("Setting when to begin gesture resognizer for sidenav")
+        
         return viewControllers.count > 1
     }
     

@@ -12,21 +12,20 @@ import CallKit
 //MARK :- Check for call interrupt
 extension MainVC: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
-        logger.info()
-        print("Call: ", call)
-        
+        logger.info("Observing call")
+                
         if call.hasEnded == true {
-            print("Disconnected")
+            logger.info("Disconnected")
         }
         if call.isOutgoing == true && call.hasConnected == false {
-            print("Dialing")
+            logger.info("Dialing")
         }
         if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
-            print("Cancelling recording")
+            logger.info("Cancelling recording due to call event")
             cancelRecording()
         }
         if call.hasConnected == true && call.hasEnded == false {
-            print("Connected")
+            logger.info("Connected")
         }
     }
 }

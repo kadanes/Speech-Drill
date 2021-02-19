@@ -21,7 +21,7 @@ fileprivate func saveAllAds() {
             do {
                 try jsonAds.append(ad.dictionary())
             } catch {
-                print("Error parsing when storing ad", ad)
+                logger.error("Error parsing when storing ad \(ad)")
             }
         }
         sideNavAdsReference.setValue(jsonAds)

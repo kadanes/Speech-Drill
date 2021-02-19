@@ -51,12 +51,15 @@ struct LoggingConfiguration {
      - returns: The configured logger.
      */
     private static func buildReleaseLogger(name: String) -> Logger {
+        guard let bundleIdentifier =  Bundle.main.bundleIdentifier else {
+            return buildDebugLogger(name: name)
+        }
         
-        let osLogWriter = OSLogWriter(subsystem: "com.parthtamane.SpeechTrainer", category: name)
+        let osLogWriter = OSLogWriter(subsystem: bundleIdentifier, category: name)
         
-        let appLogLevels: LogLevel = [.event, .info, .warn, .error, .method]
+        let appLogLevels: LogLevel = [.event, .info, .warn, .error]
         let asynchronousExecution: Logger.ExecutionMethod = .asynchronous(
-            queue: DispatchQueue(label: "com.parthtamane.logging", qos: .utility)
+            queue: DispatchQueue(label: "speech-drill.logging", qos: .utility)
         )
         
         return Logger(logLevels: appLogLevels, writers: [osLogWriter], executionMethod: asynchronousExecution)

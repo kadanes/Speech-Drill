@@ -46,8 +46,8 @@ func storeLocationInFirebase(locationManager: CLLocationManager) {
                 saveUserLocation(isoCode: isoCode)
                 return
             }
-            print(currentLocPlacemark.country ?? "No country found")
-            print(currentLocPlacemark.isoCountryCode ?? "No country code found")
+            logger.debug(currentLocPlacemark.country ?? "No country found")
+            logger.debug(currentLocPlacemark.isoCountryCode ?? "No country code found")
             isoCode = currentLocPlacemark.isoCountryCode ?? isoCode
             
             logger.debug("Saving status for: \(uuid) as \(isoCode)")

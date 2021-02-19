@@ -11,7 +11,8 @@ import UIKit
 
 extension DiscussionsViewController {
     func addHeader() {
-        logger.info()
+        logger.info("Configuring DiscussionsViewControllers header")
+        
         let discussionsTitleLbl = UILabel()
         discussionsTitleLbl.translatesAutoresizingMaskIntoConstraints = false
         discussionsTitleLbl.text = "Discussions"
@@ -67,7 +68,8 @@ extension DiscussionsViewController {
     }
     
     func addDiscussionsMessageBox() {
-        logger.info()
+        logger.info("Adding discussion message box")
+        
         view.addSubview(discussionsMessageBox)
         discussionsMessageBox.translatesAutoresizingMaskIntoConstraints = false
         
@@ -83,7 +85,8 @@ extension DiscussionsViewController {
     }
     
     func addDiscussionChatView() {
-        logger.info()
+        logger.info("Adding discussion chat view")
+        
         self.view.addSubview(discussionChatView)
         discussionChatView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -97,7 +100,8 @@ extension DiscussionsViewController {
     }
     
     func loadBlockedUserList() {
-        logger.info()
+        logger.info("Loading list of blocked users")
+        
         blockedGroupReference.observe(.value) { (snapshot) in
             if let value = snapshot.value as? [String: Any] {
                 self.blockedUsers = Array(value.keys)
@@ -116,7 +120,8 @@ extension DiscussionsViewController {
     }
     
     func readBlockedUserList() {
-        logger.info()
+        logger.info("Reading blocked user list and toggling message box")
+        
         if let userName = getAuthenticatedUsername() {
             if blockedUsers.contains(userName) {
                 self.discussionsMessageBox.isHidden = true

@@ -34,7 +34,7 @@ class SideNavigationController: UIViewController {
     var notificationUserInfo: [AnyHashable : Any]? = nil
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        logger.info()
+        logger.info("Initializing SideNavigationController")
         sideNavContainer = UIView()
         sideNavTableView = UITableView()
         sideNavNoticesTableViewCell = SideNavNoticesTableViewCell()
@@ -56,7 +56,8 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewDidLoad() {
-        logger.info()
+        logger.info("Loaded SideNavigationController view")
+        
         super.viewDidLoad()
         
         sideNavTableView.delegate = self
@@ -75,7 +76,8 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        logger.info()
+        logger.info("SideNavigationControllers view will appear")
+        
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
@@ -95,10 +97,11 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        logger.info()
+        logger.info("SideNavigationControllers view will disapear")
+        
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-    }        
+    }
 }
 
 ////MARK:- Transition Animation
@@ -116,3 +119,5 @@ class SideNavigationController: UIViewController {
 //            return revealSideNav
 //        }
 //}
+
+

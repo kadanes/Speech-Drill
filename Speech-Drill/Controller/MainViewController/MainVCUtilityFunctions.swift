@@ -13,7 +13,8 @@ import FirebaseAnalytics
 extension MainVC {
     
     func countNumberOfRecordings() -> Int {
-        logger.info()
+        logger.info("Counting number of recordings")
+        
         let datedRecordingsCount = recordingUrlsDict.values.map { $0.count }
         let recordingsCount = datedRecordingsCount.reduce(0, { $0 + $1 })
         return recordingsCount
@@ -22,7 +23,7 @@ extension MainVC {
     
     ///Update local list with newly added recording urls
     func updateUrlList() {
-        logger.info()
+        logger.info("Updating url list")
 
         recordingUrlsDict.removeAll()
         
@@ -65,19 +66,21 @@ extension MainVC {
             }
         }
         
-        print("Number of recordings: ", countNumberOfRecordings())
+        logger.debug("Number of recordings: \(countNumberOfRecordings())")
         userDefaults.setValue(countNumberOfRecordings(), forKey: recordingsCountKey)
         saveCurrentNumberOfSavedRecordings()
     }
     
     ///Fetch a list of recordings urls for a day
     func getAudioFilesList(date: String) -> [URL] {
-        logger.info()
+        logger.info("Getting list or recordings urls for \(date)")
+        
         return recordingUrlsDict[date, default: [URL]()]
     }
     
     func readTopics() {
-        logger.info()
+        logger.info("Reading topics")
+        
         do{
             let fileURL = Bundle.main.url(forResource: "topics", withExtension: "csv")
             let content = try String(contentsOf: fileURL!, encoding: String.Encoding.utf8)
@@ -89,13 +92,15 @@ extension MainVC {
     
     ///Increment current displayed topic number by 1
     func incrementTopicNumber() {
-        logger.info()
+        logger.info("Incrementing topic number")
+        
         topicNumber = min(topicNumber + 1, topics.count)
         //topicNumber + 1 < topics.count ? topicNumber + 1 : topicNumber
     }
     
     func renderTopic(topicNumber: Int) {
-        logger.info()
+        logger.info("Rendering topic number \(topicNumber)")
+        
         var topicNumberToShow = 1
         if ( topicNumber > topics.count - 1) {
             topicNumberToShow = topics.count - 1
@@ -110,7 +115,8 @@ extension MainVC {
     
     
     func switchModes() {
-        logger.info()
+        logger.info("Switching recording modes")
+        
         if checkIfRecordingIsOn() {return}
         
         title = isTestMode ? "Practice Mode" : "Test Mode"
@@ -163,13 +169,15 @@ extension MainVC {
     }
     
     func setToTestMode() {
-        logger.info()
+        logger.info("Setting to test mode")
+        
         isTestMode = false
         switchModes()
     }
     
     func setToPracticeMode() {
-        logger.info()
+        logger.info("Setting to practice mode")
+        
         isTestMode = true
         switchModes()
     }

@@ -12,7 +12,8 @@ import FirebaseAnalytics
 extension SideNavigationController {
     
     @objc func closeViewWithEdgeSwipe(sender: UIScreenEdgePanGestureRecognizer) {
-        logger.info()
+        logger.event("Closing side nav with edge swipe")
+        
         guard let calledFromVCIndex = calledFromVCIndex else { return }
         
         let presentedVC = menuItems[calledFromVCIndex].presentedVC
@@ -26,7 +27,8 @@ extension SideNavigationController {
     }
     
     @objc func viewDiscussions(with userInfo: [AnyHashable : Any], viewAnimated: Bool = true ) {
-        logger.info()
+        logger.event("Viewing discussion for notification with user info \(userInfo)")
+        
         var messageID: String? = nil
         var messageTimestamp: Double = 0
         
@@ -55,7 +57,8 @@ extension SideNavigationController {
     }
     
     func updateUnreadCount() {
-        logger.info()
+        logger.info("Updating count of unread messages")
+        
         messagesReference.queryOrdered(byChild: DiscussionMessage.CodingKeys.messageTimestamp.stringValue).queryStarting(atValue: UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)).observe(.value) { (snapshot) in
             if let value = snapshot.value as? [String: Any] {
                 //                print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")

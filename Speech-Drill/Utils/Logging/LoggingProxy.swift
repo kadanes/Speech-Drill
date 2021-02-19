@@ -51,6 +51,7 @@ struct LoggingProxy {
     }
 
     private func format(message: String, file: String, function: String, line: Int) -> String {
+//        return message
 
         #if DEBUG /* I use os_log in production where line numbers and functions are discouraged */
             return "[\(sourceFileName(filePath: file)) / \(function):\(line)] \(message)"

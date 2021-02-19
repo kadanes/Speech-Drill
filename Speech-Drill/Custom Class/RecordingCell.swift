@@ -136,7 +136,7 @@ class RecordingCell: UITableViewCell {
     
     ///Set topic label to topic number or speaking topic type
     func setTopicLblTxt() {
-        logger.info("Setting recording name based on recording type")
+        logger.debug("Setting recording name based on recording type")
         
         if topicNumber != testModeId  {
             recordingNameLbl.text = "Topic \(topicNumber)"
@@ -159,7 +159,7 @@ class RecordingCell: UITableViewCell {
     
     
     func setBtnImage() {
-        logger.info("Setting button images")
+        logger.debug("Setting button images")
         
         let date = parseDate(timeStamp: timeStamp)
         let isRecordingUsedInMerging = checkIfMerging(date: date)
@@ -190,7 +190,7 @@ class RecordingCell: UITableViewCell {
     }
     
     func setBtnProperty() {
-        logger.info("Setting button properties")
+        logger.debug("Setting button properties")
         
         setBtnImgProp(button: deleteRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
         setBtnImgProp(button: shareRecordingBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -200,14 +200,14 @@ class RecordingCell: UITableViewCell {
     }
     
     func selectCheckBox() {
-        logger.event("Selecting check box")
+        logger.debug("Selecting check box")
         
         isRecordningSelected = true
         setButtonBgImage(button: checkBoxBtn, bgImage: checkIcon, tintColor: accentColor)
     }
     
     func deselectCheckBox() {
-        logger.event("Deselecting check box")
+        logger.debug("Deselecting check box")
         
         isRecordningSelected = false
         checkBoxBtn.setImage(nil, for: .normal)
@@ -215,12 +215,12 @@ class RecordingCell: UITableViewCell {
     
     ///Split file name and store its timestamp,topic number and think time
     func getFileDetails() {
-        logger.info("Getting file details for recording url: \(String(describing: recordingURL))")
+        logger.debug("Getting file details for recording url: \(String(describing: recordingURL))")
         (timeStamp,topicNumber,thinkTime) = splitFileURL(url: recordingURL!)
     }
     
     func updatePlayingState() {
-        logger.info("Updating playing state of recording at \(timeStamp)")
+        logger.debug("Updating playing state of recording at \(timeStamp)")
         isPlaying = CentralAudioPlayer.player.checkIfPlaying(id: "\(timeStamp)")
     }
     
@@ -258,7 +258,7 @@ class RecordingCell: UITableViewCell {
     }
     
     func configureRecordingPlayBackSeeker() {
-        logger.info("Configuring playback seeker icon")
+        logger.debug("Configuring playback seeker icon")
         
         if isPlaying {
             seekerView.isHidden = false
@@ -335,7 +335,7 @@ class RecordingCell: UITableViewCell {
     }
     
     func hideDeleteMenu() {
-        logger.event("Hiding delete menu for recoridng \(String(describing: recordingURL))")
+        logger.debug("Hiding delete menu for recoridng \(String(describing: recordingURL))")
         self.playPauseBtn.isHidden = false
         self.cancelDeleteBtn.isHidden = true
         self.shareRecordingBtn.isHidden = false
@@ -344,7 +344,7 @@ class RecordingCell: UITableViewCell {
     }
     
     func hideDeleteMenuAnimated() {
-        logger.event("Hiding delete menu with animation for recoridng \(String(describing: recordingURL))")
+        logger.info("Hiding delete menu with animation for recoridng \(String(describing: recordingURL))")
         
         UIView.animate(withDuration: 0.15, animations: {
             
@@ -408,7 +408,7 @@ class RecordingCell: UITableViewCell {
     }
     
     func disableTimer() {
-        logger.event("Disabling playback timer for \(String(describing: recordingURL))")
+        logger.debug("Disabling playback timer for \(String(describing: recordingURL))")
         recordingPlayBackTimer?.invalidate()
         recordingPlayBackTimer = nil
     }

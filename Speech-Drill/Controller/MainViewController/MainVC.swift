@@ -122,7 +122,8 @@ class MainVC: UIViewController {
     let callObserver = CXCallObserver()
     
     override func viewDidLoad() {
-        logger.info()
+        logger.info("Loaded MainVCs view")
+        
         super.viewDidLoad()
         recordingTableView.dataSource = self
         recordingTableView.delegate = self
@@ -172,17 +173,23 @@ class MainVC: UIViewController {
                 saveBasicUserInfo()
             }
         }
+        
+        #if DEBUG
+            fetchUserInfo()
+        #endif
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        logger.info()
+        logger.info("MainVCs view will appear")
+        
         navigationController?.navigationBar.barTintColor = mainGray
         super.viewWillAppear(true)
         toggleExportMenu()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        logger.info()
+        logger.info("MainVCs view did appear")
+        
         super.viewDidAppear(true)
         recordingTableView.reloadData()
     }

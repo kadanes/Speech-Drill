@@ -13,7 +13,8 @@ import UIKit
 extension DiscussionsViewController {
     
     func handleKeyboardWillChangeFrame(keyboardEvent: KeyboardEvent) {
-        logger.info()
+        logger.info("Moving messag box for keyboard event type \(keyboardEvent.type)")
+        
         let uiScreenHeight = UIScreen.main.bounds.size.height
         let endFrame = keyboardEvent.keyboardFrameEnd
         let endFrameY = endFrame.origin.y

@@ -163,14 +163,23 @@ func saveInstalledAppVersion(deleteUnauth: Bool = false) {
 }
 
 func saveSeenTimestamp(deleteUnauth: Bool = false) {
-    let seenTimestamp = Double(Date().timeIntervalSince1970)
+    let seenDate = Date()
+    let seenDateString = Formatter.iso8601withFractionalSeconds.string(from: seenDate)
+    let seenTimestamp = Double(seenDate.timeIntervalSince1970)
+    
     saveUserActivityInfo(for: .lastSeenTimestamp, as: nil, once: false, deleteUnauth: deleteUnauth)
+    saveUserActivityInfo(for: .lastSeenDate, as: nil, once: false, deleteUnauth: deleteUnauth)
+    
     saveUserActivityInfo(for: .firstSeenTimestamp, as: seenTimestamp, once: true, deleteUnauth: deleteUnauth)
+    saveUserActivityInfo(for: .firstSeenDate, as: seenDateString, once: true, deleteUnauth: deleteUnauth)
 }
 
 func saveLastSeenTimestamp(once: Bool = false, deleteUnauth: Bool = false) {
-    let seenTimestamp = Double(Date().timeIntervalSince1970)
+    let seenDate = Date()
+    let seenDateString = Formatter.iso8601withFractionalSeconds.string(from: seenDate)
+    let seenTimestamp = Double(seenDate.timeIntervalSince1970)
     saveUserActivityInfo(for: .lastSeenTimestamp, as: seenTimestamp, once: once, deleteUnauth: deleteUnauth)
+    saveUserActivityInfo(for: .lastSeenDate, as: seenDateString, once: false, deleteUnauth: deleteUnauth)
 }
 
 func saveUserLocationInfo(deleteUnauth: Bool = false) {

@@ -23,7 +23,7 @@ class SideNavAdCell: UICollectionViewCell {
     var adInformation: SideNavAdStructure?
     
     override init(frame: CGRect) {
-        logger.info()
+        logger.info("Initializing SideNavAdCell")
         
         adView = UIView()
         bannerImageView = UIImageView()
@@ -176,7 +176,7 @@ class SideNavAdCell: UICollectionViewCell {
 extension SideNavAdCell {
     
     func configureContactButton(name: String, contactButton: UIButton) {
-        logger.info()
+        logger.info("Configuring SideNavAdCell button for \(name)")
         
         contactButton.layer.cornerRadius = 10
         contactButton.clipsToBounds = true
@@ -188,7 +188,7 @@ extension SideNavAdCell {
     }
     
     func toggleButtonIcon(_ contactButton: UIButton, callsPhoneNumber: Bool) {
-        logger.info()
+        logger.debug("Setting SideNavAdCell button icon")
         
         contactButton.backgroundColor = callsPhoneNumber ? confirmGreen.withAlphaComponent(0.6) : githubBlue.withAlphaComponent(0.6)
         let buttonImage = callsPhoneNumber ? callIcon.withRenderingMode(.alwaysTemplate) : emailIcon.withRenderingMode(.alwaysTemplate)

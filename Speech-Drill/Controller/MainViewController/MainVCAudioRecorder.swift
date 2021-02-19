@@ -12,7 +12,8 @@ import AVFoundation
 extension MainVC: AVAudioRecorderDelegate {
     
     func recordAudio() {
-        logger.info()
+        logger.event("Recording audio")
+        
         do {
             audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(AVAudioSessionCategoryRecord)
@@ -53,8 +54,7 @@ extension MainVC: AVAudioRecorderDelegate {
             } catch let error as NSError {
                 resetRecordingState()
                 
-                print("Error with recording")
-                print(error.localizedDescription)
+                logger.error("Error recording audio \(error.localizedDescription)")
             }
         } catch let error as NSError{
             print(error.localizedDescription)
@@ -62,7 +62,8 @@ extension MainVC: AVAudioRecorderDelegate {
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        logger.info()
+        logger.event("Finished recording audio")
+        
         if !cancelledRecording{
             Toast.show(message: "Recorded successfully!",type: .Success)
             if let url = currentRecordingURL {
@@ -81,13 +82,15 @@ extension MainVC: AVAudioRecorderDelegate {
     }
     
     func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
-        logger.info()
+        logger.event("Canceling audio recording due to interruption")
+        
         cancelRecording()
     }
     
     ///Reset display of think and speak time
     func resetRecordingState() {
-        logger.info()
+        logger.info("Resetting recording info")
+        
         if reducedTime {
             defaultSpeakTime = 2
             defaultThinkTime = 2
@@ -121,12 +124,14 @@ extension MainVC: AVAudioRecorderDelegate {
     
     ///Check if user is recording a topic
     func checkIfRecordingIsOn() -> Bool {
-        logger.info()
+        logger.info("Checking if recording is on")
+        
         return isThinking || isRecording
     }
     
     func cancelRecording() {
-        logger.info()
+        logger.event("Cancelling recording")
+        
         if isRecording {
             audioRecorder.stop()
             resetRecordingState()

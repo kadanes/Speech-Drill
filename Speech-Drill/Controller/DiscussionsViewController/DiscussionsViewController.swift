@@ -42,13 +42,14 @@ class DiscussionsViewController: UIViewController {
     var preLoginInfoMessage = "You will have to login with your gmail account to send messages."
     
     override func viewDidLoad() {
-        logger.info()
+        logger.info("Loaded DiscussionsViewControllers view")
+        
         view.backgroundColor = UIColor.black
         
         let googleUser = GIDSignIn.sharedInstance()?.currentUser
         let currentUser = Auth.auth().currentUser
         if currentUser == nil && googleUser != nil {
-            NSLog("User was incorrectly signed in, signing him out from gmail account")
+            logger.info("User was incorrectly signed in, signing him out from gmail account")
             GIDSignIn.sharedInstance().signOut()
         }
         
@@ -94,7 +95,8 @@ class DiscussionsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        logger.info()
+        logger.info("DiscussionsViewControllers view will appear")
+        
         super.viewWillAppear(animated)
         //            discussionChatView.scrollTableViewToEnd(animated: true)
         
@@ -118,7 +120,8 @@ class DiscussionsViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool){
-        logger.info()
+        logger.info("DiscussionsViewControllers view will disappear")
+        
         super.viewWillDisappear(animated)
         self.discussionChatView.isPresented = false
     }

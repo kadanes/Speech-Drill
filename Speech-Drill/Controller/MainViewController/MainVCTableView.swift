@@ -12,7 +12,7 @@ import UIKit
 extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     func reloadData() {
-        logger.info()
+        logger.info("Reloading recording data in MainVC")
         updateUrlList()
         DispatchQueue.main.async {
             self.recordingTableView.reloadData()
@@ -20,12 +20,13 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func insertRow(with url:URL ) {
-        logger.info()
+        logger.info("Inserting recording row in MainVC")
+        
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         
         let totalRecordingsTillDateCount = userDefaults.integer(forKey: totalRecordingsTillDateCountKey)
-        NSLog("Total recordings till date: \(totalRecordingsTillDateCount)")
+        logger.debug("Total recordings till date: \(totalRecordingsTillDateCount)")
         
         let currentNumberOfRecordings = countNumberOfRecordings() + 1
         userDefaults.setValue(currentNumberOfRecordings, forKey: recordingsCountKey)
@@ -61,7 +62,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     ///Delete a row refering to the recording url
     func deleteRow(with url: URL) {
-        logger.info()
+        logger.info("Deleting recording row in MainVC")
+
         removeFromExportList(url: url)
         let timestamp = splitFileURL(url: url).timeStamp
         let date = parseDate(timeStamp: timestamp)
@@ -91,7 +93,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func reloadRow(url: URL) {
-        logger.info()
+        logger.info("Reloading section for new row")
+        
         let timestamp = splitFileURL(url:url).timeStamp
         let date = parseDate(timeStamp: timestamp)
         findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
@@ -103,7 +106,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func reloadSection(date: String) {
-        logger.info()
+        logger.info("Reloading section for date string \(date)")
+        
         DispatchQueue.main.async {
             findAndUpdateSection(date: date, recordingUrlsDict: self.recordingUrlsDict) { (section, _) in
                 self.recordingTableView.reloadSections([section], with: .automatic)
@@ -112,7 +116,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func togglePlayIconsFor(previouslyPlayingId: String, nowPlayingId: String) {
-        logger.info()
+        logger.info("Toggling play icons for recordings at \(previouslyPlayingId), \(nowPlayingId)")
+        
         reloadPlayedRow(playingId: previouslyPlayingId, pause: true) {
             //self.reloadPlayedRow(playingId: nowPlayingId, pause: false) {}
         }
@@ -120,7 +125,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     
     func reloadPlayedRow(playingId: String, pause: Bool, completion: @escaping ()->()) {
-        logger.info()
+        logger.info("Reloading played row")
+        
         if checkIfDate(date: playingId) {
             findAndUpdateSection(date: playingId, recordingUrlsDict: recordingUrlsDict) { (section, _) in
                 self.recordingTableView.reloadSections([section], with: .none)
@@ -240,7 +246,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func setHiddenVisibleSectionList() {
-        logger.info()
+        logger.info("Setting hidden and visible section list")
+        
         let dateSortedKeys = recordingUrlsDict.keys.sorted { (date1, date2) -> Bool in
             guard let convertedDate1 = convertToDate(date: date1) else { return false }
             guard let convertedDate2 = convertToDate(date: date2) else { return false }
@@ -261,7 +268,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func toggleSection(date: String) {
-        logger.info()
+        logger.info("Toggling section with date string \(date)")
+        
         if visibleSections.contains(date) {
             hideSection(date: date)
         } else {
@@ -285,7 +293,8 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func updateRowsFor(recordingsOn date: String) {
-        logger.info()
+        logger.info("Updating rows for recordings on \(date)")
+        
         findAndUpdateSection(date: date, recordingUrlsDict: recordingUrlsDict) { (section, urls) in
             
             self.recordingTableView.reloadSections([section], with: .automatic)
@@ -293,21 +302,24 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func hideSection(date: String) {
-        logger.info()
+        logger.info("Hiding section \(date)")
+        
         if hiddenSections.contains(date) {return}
         visibleSections = visibleSections.filter {$0 != date}
         hiddenSections.append(date)
     }
     
     func showSection(date: String) {
-        logger.info()
+        logger.info("Showing section \(date)")
+        
         if visibleSections.contains(date) {return}
         hiddenSections = hiddenSections.filter{$0 != date}
         visibleSections.append(date)
     }
     
     func checkIfHidden(date:String) -> Bool {
-        logger.info()
+        logger.info("Checking if section \(date) is hidden")
+        
         return hiddenSections.contains(date)
     }
 }

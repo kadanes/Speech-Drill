@@ -45,7 +45,7 @@ class InfoVC: UIViewController {
     var accentedIcons = [checkIcon,singleLeftIcon,singleRightIcon,doubleLeftIcon,doubleRightIcon,tripleLeftIcon,tripleRightIcon,infoIcon,sideNavIcon]
     
     override func viewDidLoad() {
-        logger.info()
+        logger.info("Loaded InfoVC view")
 
         super.viewDidLoad()
         
@@ -65,7 +65,7 @@ class InfoVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        logger.info()
+        logger.info("InfoVC view will appear")
 
         super.viewWillAppear(true)
         navigationController?.navigationBar.barTintColor = .black
@@ -84,7 +84,7 @@ class InfoVC: UIViewController {
     
     
     func addHeader() {
-        logger.info()
+        logger.info("Configuring InfoVC header")
 
         title = "About"
         
@@ -103,7 +103,7 @@ class InfoVC: UIViewController {
     
     
     @IBAction func displaySideNavTapped(_ sender: Any) {
-        logger.info()
+        logger.event("Displaying side nav on tap in InfoVC")
 
         Analytics.logEvent(AnalyticsEvent.ShowSideNav.rawValue, parameters: nil)
         
@@ -117,7 +117,7 @@ class InfoVC: UIViewController {
     
     
     func setButtonProp() {
-        logger.info()
+        logger.info("Setting InfoVC buttons prop")
 
         
         //        setBtnImgProp(button: displaySideNavBtn, topPadding: buttonVerticalInset, leftPadding: buttonHorizontalInset)
@@ -141,30 +141,31 @@ class InfoVC: UIViewController {
     }
     
     func setInfoButtonProps(button: UIButton, image: UIImage) {
-        logger.info()
+        logger.info("Setting InfoVC button props")
 
         button.contentHorizontalAlignment = .center
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        button.titleLabel?.font = getFont(name: .HelveticaNeue, size: .medium)
+        button.titleLabel?.font = getFont(name: .HelveticaNeue, size: .large)
     }
     
     @IBAction func gitHubTapped(_ sender: UIButton) {
-        logger.info()
+        logger.event("Opening github to raise an issue in github")
 
         Analytics.logEvent(AnalyticsEvent.OpenRepo.rawValue, parameters: nil)
         openURL(url: repoURL)
     }
     
-    @IBAction func gmailTapped(_ sender: UIButton) {        logger.info()
+    @IBAction func gmailTapped(_ sender: UIButton) {
+        logger.event("Opening gmail to report bug to the developer")
 
         Analytics.logEvent(AnalyticsEvent.SendMail.rawValue, parameters: nil)
         openURL(url: reportBugURL)
     }
     
     @IBAction func twitterTapped(_ sender: Any) {
-        logger.info()
+        logger.event("Opening twitter to request a feature")
 
         Analytics.logEvent(AnalyticsEvent.SendTweet.rawValue, parameters: nil)
         let screenName =  "parthv21"
@@ -179,13 +180,15 @@ class InfoVC: UIViewController {
         }
     }
     
-    @IBAction func showLicenseTapped(_ sender: UIButton) {        logger.info()
+    @IBAction func showLicenseTapped(_ sender: UIButton) {
+        logger.event("Showing license")
 
         Analytics.logEvent(AnalyticsEvent.OpenFontAwesome.rawValue, parameters: nil)
         openURL(url: licenseURL)
     }
     
-    @IBAction func fromTTSTapped(_ sender: UIButton) {        logger.info()
+    @IBAction func fromTTSTapped(_ sender: UIButton) {
+        logger.event("Opening TextToSpeech information website")
 
         Analytics.logEvent(AnalyticsEvent.OpenTextToSpeech.rawValue, parameters: nil)
         openURL(url: ttsURL)

@@ -109,11 +109,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let uuid = getUUID()
         userLocationReference.child(uuid).onDisconnectSetValue(nil) { (error, reference) in
             if let error = error {
-                print("Error marking \(uuid) offline: \(error)")
+                logger.error("Error marking \(uuid) offline: \(error)")
             }
         }
         saveLastSeenTimestamp(once: true)
-        NSLog("Marking uuid", uuid, "ofline")
+        logger.event("Marking uuid \(uuid) ofline")
     }
     
     open func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -126,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("Storing location on change")
+        logger.debug("Storing location on change")
         
         if CLLocationManager.authorizationStatus() ==  CLAuthorizationStatus.notDetermined {
             locationManager.requestWhenInUseAuthorization()

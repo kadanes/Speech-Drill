@@ -20,7 +20,7 @@ class SideNavMenuItemCell: UITableViewCell {
         menuItemName = UILabel()
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        logger.info()
+        logger.info("Configuring SideNavMenuItemCell cell")
         
         backgroundColor = .clear
         contentView.addSubview(menuItemIcon)

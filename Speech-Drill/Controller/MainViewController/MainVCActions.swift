@@ -24,7 +24,7 @@ extension MainVC {
     }
     
     @IBAction func startPulsing(_ sender: UIButton) {
-        logger.event("Starting pulsing button")
+        logger.debug("Starting pulsing button")
         let pulse = Pulsing(numberOfPulses: 1, diameter: sender.layer.bounds.width, position: CGPoint(x:sender.layer.bounds.width/2,y: sender.layer.bounds.height/2))
         sender.layer.addSublayer(pulse)
     }

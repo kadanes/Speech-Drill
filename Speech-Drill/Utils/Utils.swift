@@ -25,7 +25,8 @@ func deleteStoredRecording(recordingURL: URL) -> DeleteResult {
             try FileManager.default.removeItem(at: recordingURL)
             return .Success
         } catch let error as NSError {
-            print("Could Not Delete File\n",error.localizedDescription)
+            logger.error("Could not delete file \(error.localizedDescription)")
+
             return .Failed
         }
     } else {
@@ -47,7 +48,6 @@ func findAndUpdateSection(date: String, recordingUrlsDict:Dictionary<String,Arra
             
         }
     }
-    
 }
 
 func openURL(url: URL?) {
@@ -80,7 +80,7 @@ func setButtonBgImage(button: UIButton, bgImage: UIImage,tintColor color: UIColo
 }
 
 func splitFileURL(url: URL) -> (timeStamp:Int,topicNumber:Int,thinkTime:Int) {
-    logger.info("Splitting recording url to get details, \(url)")
+    logger.debug("Splitting recording url to get details, \(url)")
     
     let urlStr = "\(url)"
     
@@ -121,7 +121,7 @@ func checkIfDate(date: String) -> Bool {
 }
 
 func parseDate(timeStamp: Int) -> String {
-    logger.info("Parsing timestamp to dd/MM/yyyy date")
+    logger.debug("Parsing timestamp to dd/MM/yyyy date")
     
     let ts = Double(timeStamp)
     let date = Date(timeIntervalSince1970: ts)
@@ -135,7 +135,7 @@ func parseDate(timeStamp: Int) -> String {
 }
 
 func convertToDate(date: String) -> Date? {
-    logger.info("Parsing date string to date")
+    logger.debug("Parsing date string to date")
     
     let formatter = DateFormatter()
     formatter.dateFormat = "dd/MM/yyyy"
@@ -143,7 +143,7 @@ func convertToDate(date: String) -> Date? {
 }
 
 func checkIfSilent() {
-    logger.info("Checking if mute switch is on")
+    logger.debug("Checking if mute switch is on")
     
     Mute.shared.isPaused = false
     Mute.shared.checkInterval = 0.5
@@ -151,14 +151,14 @@ func checkIfSilent() {
     Mute.shared.notify = { isMute in
         Mute.shared.isPaused = true
         if isMute {
-            print("Muted")
+            logger.debug("Muted")
             Toast.show(message: "Please turn silent mode off!", type: .Failure)
         }
     }
 }
 
 func seperatorPathFor(thinkTime: Int) -> String? {
-    logger.info("Getting audio seperator file path")
+    logger.debug("Getting audio seperator file path")
     
     switch  thinkTime {
     case 15:
@@ -174,7 +174,7 @@ func seperatorPathFor(thinkTime: Int) -> String? {
 
 ///Get the path for a file locally stored in app. Pass file name with extension
 func getPath(fileName: String ) -> String? {
-    logger.info("Getting path for \(fileName) from bundle")
+    logger.debug("Getting path for \(fileName) from bundle")
     
     let path = Bundle.main.path(forResource: fileName, ofType: nil)
     return path
@@ -377,14 +377,14 @@ func openAppSettings() {
 /// Get the user name of logged in user
 /// - Returns: Will return the user's email id by stripping part after @ and removing full stops. E.g: my.dotted.email@domain.com will return mydottedemail.
 func getAuthenticatedUsername() -> String? {
-    logger.info("Getting username for logged in user")
+    logger.debug("Getting username for logged in user")
     
     guard let user = Auth.auth().currentUser, let userEmail = user.email else { return nil }
     return getUsernameFromEmail(email: userEmail)
 }
 
 func getUsernameFromEmail(email: String) -> String? {
-    logger.info("Converting \(email) to username without dots and domain name")
+    logger.debug("Converting \(email) to username without dots and domain name")
     
     let emailComponents = email.components(separatedBy: "@")
     if emailComponents.count == 0  { return nil }
@@ -395,7 +395,7 @@ func getUsernameFromEmail(email: String) -> String? {
 /// Returns a UUID to idendify users not logged in.
 /// - Returns: Will return unique identifierForVendor if not nil else a randomly generated UUID. Generated will be stored in user defaults with key uuidKey so same value gets returned if possibke when app is reinstalled or identifierForVendor is nil.
 func getUUID() -> String {
-    logger.info("Getting uuid for device")
+    logger.debug("Getting uuid for device")
     
     let defaults = UserDefaults.standard
     if let storedUUID = defaults.string(forKey: uuidKey) { return storedUUID }
@@ -409,7 +409,7 @@ func getUUID() -> String {
 /// Get a date formatter that parses Date to current timestamp as dd MM yyyy
 /// - Returns: A date formatter object to parse dates
 func getDateFormatter() -> DateFormatter {
-    logger.info("Getting date formatter for dd MM yyyy")
+    logger.debug("Getting date formatter for dd MM yyyy")
     
     let dateFormatter = DateFormatter()
     dateFormatter.timeZone = .current
@@ -422,7 +422,7 @@ func getDateFormatter() -> DateFormatter {
 /// - Parameter dateString: Date string formated as dd MMM yyyy
 /// - Returns: A date object by parsing date in dd MMM yyy format
 func getDate(from dateString: String) -> Date? {
-    logger.info("Converting date string \(dateString) (dd MM yyyy) to date")
+    logger.debug("Converting date string \(dateString) (dd MM yyyy) to date")
     let dateFormatter = getDateFormatter()
     return dateFormatter.date(from: dateString) ?? nil
 }
@@ -431,7 +431,7 @@ func getDate(from dateString: String) -> Date? {
 /// - Parameter timestamp: Timestamp to be converted to date string
 /// - Returns: A date string from passed timestamp in dd MMM yyy format
 func getDateString(from timestamp: Double) -> String {
-    logger.info("Getting date string (dd MM yyyy) from timestamp \(timestamp)")
+    logger.debug("Getting date string (dd MM yyyy) from timestamp \(timestamp)")
     let dateFormatter = getDateFormatter()
     let date = Date(timeIntervalSince1970: timestamp)
     let dateString = dateFormatter.string(from: date)
@@ -489,5 +489,37 @@ func askForReview(numberOfRecordings: Int = 5) {
             defaults.setValue(versionNumber, forKey: lastReviewAskedForVersionKey)
         }
         defaults.setValue(appReviewRequestsCount + 1, forKey: appReviewRequestsCountKey)
+    }
+}
+
+func fetchUserInfo() {
+    
+    var userInfoRef: DatabaseReference
+    
+    if let userName = getAuthenticatedUsername() {
+        userInfoRef = authenticatedUsersReference.child(userName)
+    } else {
+        let uuid = getUUID()
+        userInfoRef = unauthenticatedUsersReferences.child(uuid)
+        logger.debug("Fetching user info for \(userInfoRef)")
+    }
+        
+    userInfoRef.observeSingleEvent(of: .value) { (snapshot) in
+        if let value = snapshot.value {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601withFractionalSeconds
+                
+                let userInfo = try decoder.decode(UserInfo.self, from: data)
+                
+                logger.debug("User Info: \(userInfo)")
+                logger.debug("First online: \(userInfo.activity.firstSeenDate)")
+                logger.debug("Type of First online: \(type(of: userInfo.activity.firstSeenDate))")
+
+            } catch {
+                logger.error("Could not decode user info \(error)")
+            }
+        }
     }
 }

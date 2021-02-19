@@ -12,7 +12,7 @@ import UIKit
 extension SideNavigationController {
     
     func configureSideNav() {
-        logger.info()
+        logger.info("Configuring side nav view")
         view.addSubview(sideNavContainer)
         sideNavContainer.translatesAutoresizingMaskIntoConstraints = false
         
