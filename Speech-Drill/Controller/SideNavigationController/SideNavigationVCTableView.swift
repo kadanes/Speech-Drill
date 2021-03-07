@@ -60,4 +60,38 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
             self.navigationController?.pushViewController(presentedVC, animated: true)
         }
     }
+    
+    func updateUnreadMessagesCount() {
+            logger.info("Updating count of unread messages")
+
+            let messageTimestampKey = DiscussionMessage.CodingKeys.messageTimestamp.stringValue
+            let defaults = UserDefaults.standard
+    //        let query = messagesReference.observe(.childAdded) { (snapshot) in
+    //            if snapshot.exists() {
+    //                let startTimestamp = defaults.double(forKey: lastReadMessageTimestampKey)
+    //                let offset: Double = 0.00000001
+    //                messagesReference.queryOrdered(byChild: messageTimestampKey).queryStarting(atValue: startTimestamp + offset).observe(.value) { (snapshot) in
+    //                    if let value = snapshot.value as? [String: Any] {
+    //                        print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
+    //                    }
+    //                }
+    //            }
+    //        }
+            
+            unreadMessageCountUpdateQueryHandle = messagesReference.queryOrdered(byChild: messageTimestampKey).queryStarting(atValue: defaults.double(forKey: lastReadMessageTimestampKey) + 0.000001).observe(.value) { (snapshot) in
+                if let value = snapshot.value as? [String: Any] {
+                    print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
+                    self.menuItems[1].itemName = "Discussions (\(value.count))"
+                    self.sideNavTableView.reloadData()
+                } else {
+                    self.menuItems[1].itemName = "Discussions"
+                    self.sideNavTableView.reloadData()
+                }
+            }
+        }
+        
+        func stopUpdatingUnreadMessagesCount() {
+            guard let handle = unreadMessageCountUpdateQueryHandle else { return }
+            messagesReference.removeObserver(withHandle: handle)
+        }
 }

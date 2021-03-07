@@ -33,6 +33,8 @@ class SideNavigationController: UIViewController {
     var shouldAutoNavigateToChild = true
     var notificationUserInfo: [AnyHashable : Any]? = nil
     
+    var unreadMessageCountUpdateQueryHandle: DatabaseHandle?
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         logger.info("Initializing SideNavigationController")
         sideNavContainer = UIView()
@@ -80,6 +82,7 @@ class SideNavigationController: UIViewController {
         
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        updateUnreadMessagesCount()
         
         if let userInfo = notificationUserInfo {
             calledFromVCIndex = 1
@@ -100,6 +103,7 @@ class SideNavigationController: UIViewController {
         logger.info("SideNavigationControllers view will disapear")
         
         super.viewWillDisappear(animated)
+        stopUpdatingUnreadMessagesCount()
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }
