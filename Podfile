@@ -6,15 +6,15 @@ target 'Speech-Drill' do
   use_frameworks!
 
   # Pods for Speech-Drill
-  pod 'Mute'
-  pod 'Firebase/Core'
-  pod 'Firebase/Database'
-  pod 'Firebase/Auth'
-  pod 'FirebaseStorage'
-  pod 'GoogleSignIn'
-  pod 'FontAwesome.swift'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Analytics'
-  pod 'Siren'
+  pod 'Mute', '0.6.0'
+  pod 'Firebase/Core', '6.14.0'
+  pod 'Firebase/Database', '6.14.0'
+  pod 'Firebase/Auth', '6.14.0'
+  pod 'FirebaseStorage', '3.5.0' 
+  pod 'GoogleSignIn', '5.0.2'
+  pod 'FontAwesome.swift', '1.8.3'
+  pod 'Firebase/Messaging', '6.14.0'
+  pod 'Firebase/Analytics', '6.14.0'
+  pod 'Siren', '5.5.1'
   pod 'Willow', '6.0.0'
 end

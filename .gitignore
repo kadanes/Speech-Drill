@@ -7,4 +7,8 @@ Pods/
 Speech-Drill/GoogleService-Info.plist
 .DS_Store
 firebase-debug.log
-Speech-Drill.xcworkspace/xcuserdata
+
+#UserData
+Speech-Drill.xcworkspace/xcuserdata/
+Speech-Drill.xcodeproj/project.xcworkspace/xcuserdata/
+Speech-Drill.xcodeproj/xcuserdata/
