@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseAnalytics
+import UIKit
 
 //MARK:- Utility Functions
 extension MainVC {
