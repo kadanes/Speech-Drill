@@ -1,14 +1,13 @@
-ios/
-minus-solid.afdesign
-plus-solid.afdesign
-speech_practicer_logo.afdesign
-Podfile.lock
-Pods/
+#Plists
 Speech-Drill/GoogleService-Info.plist
+
+#Common Files
 .DS_Store
+
+#Logs
 firebase-debug.log
 
-#UserData
+#XCUserData
 Speech-Drill.xcworkspace/xcuserdata/
 Speech-Drill.xcodeproj/project.xcworkspace/xcuserdata/
 Speech-Drill.xcodeproj/xcuserdata/
