@@ -17,7 +17,7 @@ extension SideNavigationController {
         
         guard let calledFromVCIndex = calledFromVCIndex else { return }
         
-        let presentedVC = menuItems[calledFromVCIndex].presentedVC
+        let presentedVC = getSideNavMenuItem(at: calledFromVCIndex).presentedVC
         
         if !(navigationController?.topViewController?.isKind(of: type(of: presentedVC)) ?? true) {
             navigationController?.pushViewController(presentedVC, animated: true)
@@ -40,8 +40,10 @@ extension SideNavigationController {
             }
         }
         
-        guard let presentedVC = menuItems[1].presentedVC as? DiscussionsViewController else { return }
-        
+//        guard let presentedVC = menuItems[1].presentedVC as? DiscussionsViewController else { return }
+
+        guard let presentedVC = menuItems[.DISCUSSIONS]?.presentedVC as? DiscussionsViewController else { return }
+
         guard let alreadyPresentedDiscussions = navigationController?.topViewController?.isKind(of: type(of: presentedVC)) else { return }
         
         guard let alreadyPresentingSideNavigationController = navigationController?.topViewController?.isKind(of: type(of: self)) else { return }
@@ -54,16 +56,20 @@ extension SideNavigationController {
             
             navigationController?.pushViewController(presentedVC, animated: true)
         }
+        
         presentedVC.discussionChatView.setReseivedMessageInfo(at: messageTimestamp, with: messageID, viewAnimated: viewAnimated)
     }
     
-    func updateUnreadCount() {
-        logger.info("Updating count of unread messages")
-        
-        messagesReference.queryOrdered(byChild: DiscussionMessage.CodingKeys.messageTimestamp.stringValue).queryStarting(atValue: UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)).observe(.value) { (snapshot) in
-            if let value = snapshot.value as? [String: Any] {
-                //                print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
-            }
-        }
-    }
+//    func updateUnreadMessageCount() {
+//        logger.info("Updating count of unread messages")
+//        
+//        messagesReference.queryOrdered(byChild: DiscussionMessage.CodingKeys.messageTimestamp.stringValue).queryStarting(atValue: UserDefaults.standard.double(forKey: lastReadMessageTimestampKey)).observe(.value) { (snapshot) in
+//            if let value = snapshot.value as? [String: Any] {
+//                //                print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
+//                let unreadMessagesCount = value.count
+//                (self.menuItems[.RECORDINGS]?.presentedVC as? MainVC)?.setUnreadMessagesCount(unreadMessagesCount: unreadMessagesCount)
+//                (self.menuItems[.ABOUT]?.presentedVC as? InfoVC)?.setUnreadMessagesCount(unreadMessagesCount: unreadMessagesCount)
+//            }
+//        }
+//    }
 }

@@ -9,9 +9,16 @@
 import Foundation
 import UIKit
 
-struct sideNavMenuItemStruct {
-    var itemName: String
+struct SideNavMenuItemStruct {
+    let itemName: SideNavItemName
+    var itemTag: String?
     let itemImg: UIImage
     let itemImgClr: UIColor
     let presentedVC: UIViewController
+}
+
+enum SideNavItemName: String {
+    case RECORDINGS = "Recordings"
+    case DISCUSSIONS = "Discussions"
+    case ABOUT = "About"
 }

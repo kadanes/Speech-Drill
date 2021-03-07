@@ -76,7 +76,7 @@ class SideNavNoticesTableViewCell: UITableViewCell {
             noticesPagingIndicator.topAnchor.constraint(equalTo: noticesCollectionView.bottomAnchor),
             noticesPagingIndicator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             
-            noticesCollectionView.topAnchor.constraint(equalTo: noticeLbl.bottomAnchor, constant: 2),
+            noticesCollectionView.topAnchor.constraint(equalTo: noticeLbl.bottomAnchor, constant: 8),
             noticesCollectionView.bottomAnchor.constraint(equalTo: noticesPagingIndicator.bottomAnchor, constant: -8),
             noticesCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             noticesCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
@@ -139,7 +139,7 @@ extension SideNavNoticesTableViewCell: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: frame.size.width - 16, height: 140)
+        return CGSize(width: frame.size.width - 16, height: 130)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

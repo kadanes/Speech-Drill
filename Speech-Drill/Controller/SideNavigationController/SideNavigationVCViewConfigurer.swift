@@ -19,13 +19,15 @@ extension SideNavigationController {
         sideNavContainer.addSubview(versionInfoView)
         versionInfoView.translatesAutoresizingMaskIntoConstraints = false
         
-        let mainVCMenuItem = sideNavMenuItemStruct(itemName: "Recordings", itemImg: recordIcon, itemImgClr: accentColor, presentedVC: mainVC)
-        let infoVCMenuItem = sideNavMenuItemStruct(itemName: "About", itemImg: infoIcon, itemImgClr: accentColor, presentedVC: infoVC)
-        let discussionsVCMenuItem = sideNavMenuItemStruct(itemName: "Discussions", itemImg: discussionIcon, itemImgClr: accentColor, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: T##String)
+        let mainVCMenuItem = SideNavMenuItemStruct(itemName: .RECORDINGS, itemTag: nil, itemImg: recordIcon, itemImgClr: accentColor, presentedVC: mainVC)
+        let infoVCMenuItem = SideNavMenuItemStruct(itemName: .ABOUT, itemTag: nil, itemImg: infoIcon, itemImgClr: accentColor, presentedVC: infoVC)
+        let discussionsVCMenuItem = SideNavMenuItemStruct(itemName: .DISCUSSIONS, itemTag: nil, itemImg: discussionIcon, itemImgClr: accentColor, presentedVC: DiscussionsVC) //Look into using SF Symbols with UIImage(systemName: T##String)
         
-        menuItems.append(mainVCMenuItem)
-        menuItems.append(discussionsVCMenuItem)
-        menuItems.append(infoVCMenuItem)
+        menuItems[.RECORDINGS] = mainVCMenuItem
+        menuItems[.ABOUT] = infoVCMenuItem
+        menuItems[.DISCUSSIONS] = discussionsVCMenuItem
+        
+        orderedMenuItemNames = [.RECORDINGS, .DISCUSSIONS, .ABOUT]
         
         sideNavTableView.allowsMultipleSelection = false
         

@@ -52,8 +52,9 @@ extension MainVC {
         setBtnImgProp(button: hamburgerBtn, topPadding: 45/4, leftPadding: 5)
         hamburgerBtn.addTarget(self, action: #selector(displaySideNavTapped), for: .touchUpInside)
         hamburgerBtn.contentMode = .scaleAspectFit
+        hamburgerBarButton = UIBarButtonItem(customView: hamburgerBtn)
+        navigationItem.leftBarButtonItem = hamburgerBarButton
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
         
         switchModeButton.translatesAutoresizingMaskIntoConstraints = false
         switchModeButton.setImage(practiceModeIcon.withRenderingMode(.alwaysTemplate), for: .normal)

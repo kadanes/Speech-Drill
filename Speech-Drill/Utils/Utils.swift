@@ -334,7 +334,7 @@ func getFullInstalledAppVersion() -> String? {
     
     guard let installedVersionNumber = getInstalledVersionNumber() else { return nil }
     guard let installedBuildNumber = getInstalledBuildNumber() else { return "\(installedVersionNumber)(_)" }
-    return "\(installedVersionNumber)(\(installedBuildNumber))"
+    return "\(installedVersionNumber) (\(installedBuildNumber))"
 }
 
 func validateTextView(textView: UITextView) -> Bool {

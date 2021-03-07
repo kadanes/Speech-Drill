@@ -30,7 +30,7 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
         }
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: sideNavMenuItemReuseIdentifier) as? SideNavMenuItemCell else { return UITableViewCell() }
-        cell.configureCell(with: menuItems[indexPath.row])
+        cell.configureCell(with: getSideNavMenuItem(at: indexPath.row))
         return cell
     }
     
@@ -53,7 +53,7 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
             return
         }
         
-        let presentedVC = menuItems[indexPath.row].presentedVC
+        let presentedVC = getSideNavMenuItem(at: indexPath.row).presentedVC
         self.calledFromVCIndex = indexPath.row
         presentedVC.modalPresentationStyle = .fullScreen
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -79,14 +79,20 @@ extension SideNavigationController: UITableViewDelegate, UITableViewDataSource  
     //        }
             
             unreadMessageCountUpdateQueryHandle = messagesReference.queryOrdered(byChild: messageTimestampKey).queryStarting(atValue: defaults.double(forKey: lastReadMessageTimestampKey) + 0.000001).observe(.value) { (snapshot) in
+                var unreadMessagesCount: Int = 0
+                
                 if let value = snapshot.value as? [String: Any] {
-                    print("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
-                    self.menuItems[1].itemName = "Discussions (\(value.count))"
+                    logger.debug("Number of unread messages: \(value.count) Last Read TS \(UserDefaults.standard.double(forKey: lastReadMessageTimestampKey))")
+                    unreadMessagesCount = value.count
                     self.sideNavTableView.reloadData()
                 } else {
-                    self.menuItems[1].itemName = "Discussions"
+                    unreadMessagesCount = 0
                     self.sideNavTableView.reloadData()
                 }
+                                
+                self.menuItems[.DISCUSSIONS]?.itemTag = unreadMessagesCount == 0 ? nil : "(\(unreadMessagesCount) new)"
+                (self.menuItems[.RECORDINGS]?.presentedVC as? MainVC)?.setUnreadMessagesCount(unreadMessagesCount: unreadMessagesCount)
+                (self.menuItems[.ABOUT]?.presentedVC as? InfoVC)?.setUnreadMessagesCount(unreadMessagesCount: unreadMessagesCount)
             }
         }
         

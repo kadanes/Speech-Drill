@@ -121,6 +121,14 @@ class MainVC: UIViewController {
     
     let callObserver = CXCallObserver()
     
+    var hamburgerBarButton: UIBarButtonItem?
+    private var unreadMessagesCount: Int = 0 {
+        didSet {
+            logger.debug("Updating unread messages count \(unreadMessagesCount)")
+            hamburgerBarButton?.setBadge(text: unreadMessagesCount == 0 ? nil : "\(unreadMessagesCount)")
+        }
+    }
+    
     override func viewDidLoad() {
         logger.info("Loaded MainVCs view")
         
@@ -192,5 +200,10 @@ class MainVC: UIViewController {
         
         super.viewDidAppear(true)
         recordingTableView.reloadData()
+        hamburgerBarButton?.setBadge(text: unreadMessagesCount == 0 ? nil : "\(unreadMessagesCount)")
+    }
+    
+    func setUnreadMessagesCount(unreadMessagesCount: Int) {
+        self.unreadMessagesCount = unreadMessagesCount
     }
 }

@@ -61,9 +61,9 @@ class SideNavMenuItemCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(with menuItem: sideNavMenuItemStruct) {
+    func configureCell(with menuItem: SideNavMenuItemStruct) {
         menuItemIcon.image = menuItem.itemImg.withRenderingMode(.alwaysTemplate)
         menuItemIcon.tintColor = menuItem.itemImgClr
-        menuItemName.text = menuItem.itemName
+        menuItemName.text = "\(menuItem.itemName.rawValue) \(menuItem.itemTag ?? "")"
     }
 }

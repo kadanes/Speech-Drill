@@ -24,7 +24,10 @@ class SideNavigationController: UIViewController {
     let sideNavNoticesTableViewCell: SideNavNoticesTableViewCell
     let sideNavAdsTableViewCell: SideNavAdsTableViewCell
     let versionInfoView: VersionInfoView
-    var menuItems = [sideNavMenuItemStruct]()
+    //var menuItems = [sideNavMenuItemStruct]()
+    
+    var menuItems = [SideNavItemName: SideNavMenuItemStruct]()
+    var orderedMenuItemNames = [SideNavItemName]()
     
     let mainVC: MainVC
     let infoVC: InfoVC
@@ -74,7 +77,7 @@ class SideNavigationController: UIViewController {
         
         view.backgroundColor = MenuHelper.menuBGColor
         
-        updateUnreadCount()
+//        updateUnreadMessagesCount()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,7 +93,8 @@ class SideNavigationController: UIViewController {
             notificationUserInfo = nil
         } else if shouldAutoNavigateToChild {
             if calledFromVCIndex == nil { calledFromVCIndex = indexOfVCToShowOnLoad }
-            navigationController?.pushViewController(menuItems[calledFromVCIndex!].presentedVC, animated: false)
+            let menuItemToPresent = getSideNavMenuItem(at: calledFromVCIndex!)
+            navigationController?.pushViewController(menuItemToPresent.presentedVC, animated: false)
             shouldAutoNavigateToChild = false
         } else {
             guard let calledFromVCIndex = calledFromVCIndex else { return }
@@ -100,11 +104,19 @@ class SideNavigationController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        logger.info("SideNavigationControllers view will disapear")
+        logger.info("SideNavigationController's view will disapear")
         
         super.viewWillDisappear(animated)
-        stopUpdatingUnreadMessagesCount()
+        if navigationController?.topViewController?.isKind(of: type(of: DiscussionsVC)) ?? true {
+            logger.debug("Calling stopUpdatingUnreadMessagesCount while presenting \(navigationController?.topViewController)")
+            stopUpdatingUnreadMessagesCount()
+        }
+        
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    func getSideNavMenuItem(at index: Int) -> SideNavMenuItemStruct {
+        return menuItems[orderedMenuItemNames[index]]!
     }
 }
 

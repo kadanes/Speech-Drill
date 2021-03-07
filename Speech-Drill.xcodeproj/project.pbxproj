@@ -44,6 +44,7 @@
 		B26DEB9F2161556D006FE754 /* SceenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26DEB9E2161556D006FE754 /* SceenType.swift */; };
 		B2ACC673212D0E16009AE30D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ACC672212D0E16009AE30D /* RoundedImage.swift */; };
 		B2ACC677212D0F59009AE30D /* blackbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2ACC676212D0F58009AE30D /* blackbg.jpg */; };
+		B2AF198E25F51E720085AB11 /* BadgeBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AF198D25F51E720085AB11 /* BadgeBarButton.swift */; };
 		B2B3C66725BD49F000DC9B86 /* SideNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3C66625BD49F000DC9B86 /* SideNavigationController.swift */; };
 		B2B3C66A25BD579000DC9B86 /* SlidingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3C66925BD579000DC9B86 /* SlidingNavigationController.swift */; };
 		B2BBE29725AEF1DD0054DE1F /* DiscussionChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BBE29625AEF1DD0054DE1F /* DiscussionChatView.swift */; };
@@ -165,6 +166,7 @@
 		B26DEB9E2161556D006FE754 /* SceenType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceenType.swift; sourceTree = "<group>"; };
 		B2ACC672212D0E16009AE30D /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
 		B2ACC676212D0F58009AE30D /* blackbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blackbg.jpg; sourceTree = "<group>"; };
+		B2AF198D25F51E720085AB11 /* BadgeBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeBarButton.swift; sourceTree = "<group>"; };
 		B2B3C66225BB106F00DC9B86 /* Speech-Drill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Speech-Drill.entitlements"; sourceTree = "<group>"; };
 		B2B3C66625BD49F000DC9B86 /* SideNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideNavigationController.swift; sourceTree = "<group>"; };
 		B2B3C66925BD579000DC9B86 /* SlidingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingNavigationController.swift; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 				B221BED125CC31FD00C7F40E /* SafeArrayExtension.swift */,
 				B221BED425CD8A8800C7F40E /* DateTimeIntervalExtension.swift */,
 				B2E1D0CD25DF98ED005140EB /* DateToISOFormatHelperExtensions.swift */,
+				B2AF198D25F51E720085AB11 /* BadgeBarButton.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2B3C66725BD49F000DC9B86 /* SideNavigationController.swift in Sources */,
+				B2AF198E25F51E720085AB11 /* BadgeBarButton.swift in Sources */,
 				B22C81372114133300104E02 /* RoundButton.swift in Sources */,
 				B206B61221609CA700B1CCBA /* SlideInVC.swift in Sources */,
 				B221BED225CC31FD00C7F40E /* SafeArrayExtension.swift in Sources */,

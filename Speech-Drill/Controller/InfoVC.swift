@@ -44,6 +44,14 @@ class InfoVC: UIViewController {
     
     var accentedIcons = [checkIcon,singleLeftIcon,singleRightIcon,doubleLeftIcon,doubleRightIcon,tripleLeftIcon,tripleRightIcon,infoIcon,sideNavIcon]
     
+    var hamburgerBarButton: UIBarButtonItem?
+    private var unreadMessagesCount: Int = 0 {
+        didSet {
+            logger.debug("Updating unread messages count \(unreadMessagesCount)")
+            hamburgerBarButton?.setBadge(text: unreadMessagesCount == 0 ? nil : "\(unreadMessagesCount)")
+        }
+    }
+    
     override func viewDidLoad() {
         logger.info("Loaded InfoVC view")
 
@@ -69,6 +77,16 @@ class InfoVC: UIViewController {
 
         super.viewWillAppear(true)
         navigationController?.navigationBar.barTintColor = .black
+        hamburgerBarButton?.setBadge(text: unreadMessagesCount == 0 ? nil : "\(unreadMessagesCount)")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        hamburgerBarButton?.setBadge(text: unreadMessagesCount == 0 ? nil : "\(unreadMessagesCount)")
+    }
+    
+    func setUnreadMessagesCount(unreadMessagesCount: Int) {
+        self.unreadMessagesCount = unreadMessagesCount
     }
     
     func fetchAndSetCredits() {
@@ -97,7 +115,8 @@ class InfoVC: UIViewController {
         hamburgerBtn.addTarget(self, action: #selector(displaySideNavTapped), for: .touchUpInside)
         hamburgerBtn.contentMode = .scaleAspectFit
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: hamburgerBtn)
+        hamburgerBarButton = UIBarButtonItem(customView: hamburgerBtn)
+        navigationItem.leftBarButtonItem = hamburgerBarButton
         
     }
     

@@ -55,7 +55,7 @@ class VersionInfoView: UIView {
         
         NSLayoutConstraint.activate([
             appstoreBtn.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            appstoreBtn.leadingAnchor.constraint(equalTo: versionInfoLbl.trailingAnchor, constant:  2),
+            appstoreBtn.leadingAnchor.constraint(equalTo: versionInfoLbl.trailingAnchor, constant:  10),
             appstoreBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             appstoreBtn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
         ])
@@ -65,12 +65,13 @@ class VersionInfoView: UIView {
         let fullInstalledVersion = getFullInstalledAppVersion() ?? "-"
         let latestVersion = getAppstoreVersion()
         
+        let infoIconFont = getFont(name: .HelveticaNeueBold, size: .xlarge)
+        let fullVersionFont = getFont(name: .HelveticaNeueBold, size: .small)
+        let baseLineOffset = (infoIconFont.xHeight - fullVersionFont.xHeight) / 2
         
-        let versionInfoString = NSMutableAttributedString(string: "ⓘ ", attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .xxlarge)])
+        let versionInfoString = NSMutableAttributedString(string: "ⓘ ", attributes: [NSAttributedStringKey.font: infoIconFont])
         
-        
-        versionInfoString.append(NSMutableAttributedString(string: "v\(fullInstalledVersion)", attributes: [NSAttributedStringKey.font: getFont(name: .HelveticaNeueBold, size: .small)]))
-        
+        versionInfoString.append(NSMutableAttributedString(string: "v\(fullInstalledVersion)", attributes: [NSAttributedStringKey.font: fullVersionFont, NSAttributedStringKey.baselineOffset: baseLineOffset]))
         
         if let latestVersion = latestVersion {
             if installedVersion == latestVersion {
